@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EasMe">
+      <HintPath>..\..\..\easme-lib\EasMe\bin\Release\net6.0\EasMe.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,6 @@
     <Folder Include="Services\" />
     <Folder Include="Identity\" />
     <Folder Include="Files\" />
-    <Folder Include="Common\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +32,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EasMe">
+      <HintPath>..\..\..\easme-lib\EasMe\bin\Release\net6.0\EasMe.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

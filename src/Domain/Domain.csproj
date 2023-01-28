@@ -9,8 +9,8 @@
   <ItemGroup>
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
-    <Folder Include="ValueObjects\" />
     <Folder Include="Events\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,17 +19,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="LOC\EN.Designer.cs">
+    <Reference Include="EasMe">
+      <HintPath>..\..\..\easme-lib\EasMe\bin\Release\net6.0\EasMe.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EN.resx</DependentUpon>
+      <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="LOC\EN.resx">
+    <EmbeddedResource Update="Resources\Resource.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.tr-TR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EN.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

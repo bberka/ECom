@@ -2,4 +2,12 @@
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Text;
-global using System.Threading.Tasks;
+global using Domain.ValueObjects;
+global using Domain.Entities;
+global using Domain.Constants;
+global using Domain.Interfaces;
+global using Domain.Lib;
+global using Domain.Localization;
+global using Domain.Models;
+global using Domain.Utils;
+global using Infrastructure.Validators;

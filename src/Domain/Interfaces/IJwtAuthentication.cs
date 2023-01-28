@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Domain.Interfaces
 {
 	public interface IJwtAuthentication
 	{
-		public JwtTokenModel Authenticate(string username, string password);
-		public string Refresh(string token);
+		public ResultData<JwtTokenModel> Authenticate(LoginModel model);
+		public ResultData<string> Refresh(string token);
 	}
 }

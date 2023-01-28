@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common
+namespace Domain.Lib
 {
-	public static class ConstantLib
+	public static class ConfigLib
 	{
 		public static string? GetString(string key)
 		{

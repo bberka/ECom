@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
-    [DbContext(typeof(EComContext))]
+    [DbContext(typeof(EComDbContext))]
     [Migration("20221223192551_optimization")]
     partial class optimization
     {
