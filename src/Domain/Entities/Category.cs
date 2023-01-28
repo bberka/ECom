@@ -15,5 +15,8 @@ namespace Domain.Entities
 		[Required]
 		[MaxLength(32)]
 		public string Name { get; set; }
-	}
+        [Required]
+        [ForeignKey("Language")]
+        public int LanguageId { get; set; }
+    }
 }

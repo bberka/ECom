@@ -8,36 +8,30 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class SmtpOption
+    public class Slider
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        public bool IsValid { get; set; }
+        [MaxLength(50)]
+        public string Title { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Alt { get; set; }
 
         [Required]
-        [MaxLength(128)]
-        public string Host { get; set; }
+        [MaxLength(50)]
+        public int Order { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string Email { get; set; }
-
-        [MaxLength(255)]
-        [Required]
-        public string Sifre { get; set; }
-
-        [Required]
-        public bool Ssl { get; set; }
-
-        [Required]
-        [Range(0,65535)]
-        public int Port { get; set; }
+        [ForeignKey("Image")]
+        public int ImageId { get; set; }
 
         [Required]
         [ForeignKey("Language")]
         public int LanguageId { get; set; }
+
     }
 }

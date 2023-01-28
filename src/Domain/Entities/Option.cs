@@ -65,8 +65,6 @@ namespace Domain.Entities
         [MaxLength(16)]
         public string Currency { get; set; }
 
-        [Required]
-        public float Tax { get; set; }
 
 
         [Required]
@@ -103,6 +101,8 @@ namespace Domain.Entities
 
         [Required]
         public bool ShowStock { get; set; }
+
+       
 
     }
 }

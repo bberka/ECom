@@ -31,6 +31,10 @@ namespace Infrastructure
         public DbSet<Collection> Collections { get; set; }
         public DbSet<CollectionProduct> CollectionProducts { get; set; }
         public DbSet<SmtpOption> SmtpOptions { get; set; }
+        public DbSet<PaymentOption> PaymentOptions { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<Slider> Sliders { get; set; }
+        public DbSet<DiscountNotify> DiscountNotifies { get; set; }
 
 
     }

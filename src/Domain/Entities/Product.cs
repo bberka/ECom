@@ -25,12 +25,9 @@ namespace Domain.Entities
 
 		public bool IsLimited { get; set; }
 
-		[Required]
-		[MaxLength(64)]
-		public string Name { get; set; }
 
 		[MaxLength(1000)]
-		public string? ImagePaths { get; set; }
+		public string? ImageIds { get; set; }
 
 		[Required]
 		[Range(0, 1_000_000_000)]
@@ -43,6 +40,8 @@ namespace Domain.Entities
 		[Required]
 		[Range(0, 1_000_000_000)]
 		public int Price { get; set; }
-		
-	}
+
+
+
+    }
 }

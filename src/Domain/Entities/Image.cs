@@ -16,5 +16,9 @@ namespace Domain.Entities
 
 		[Required]
 		public string Path { get; set; }
-	}
+
+        [Required]
+        [ForeignKey("Language")]
+        public int LanguageId { get; set; }
+    }
 }

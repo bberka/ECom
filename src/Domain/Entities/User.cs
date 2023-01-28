@@ -71,6 +71,6 @@ namespace Domain.Entities
 
         [Required]
         [MaxLength(6)]
-        public string? Culture { get; set; }
+        public string? PreferredLanguage { get; set; }
     }
 }
