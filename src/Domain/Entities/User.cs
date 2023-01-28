@@ -69,5 +69,8 @@ namespace Domain.Entities
 		public DateTime? LastPasswordUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
 
-	}
+        [Required]
+        [MaxLength(6)]
+        public string? Culture { get; set; }
+    }
 }

@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20230128164753_smtp-option-table")]
+    partial class smtpoptiontable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,30 +272,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("CompanyAddress")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("ContactEmail")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DomainUrl")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -300,17 +279,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("EmailVerificationTimeoutMinutes")
                         .HasColumnType("int");
-
-                    b.Property<string>("FacebookLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("FavIcoImageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InstagramLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsDebug")
                         .HasColumnType("bit");
@@ -340,17 +308,11 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<int>("LogoImageId")
-                        .HasColumnType("int");
-
                     b.Property<byte>("PagingProductCount")
                         .HasColumnType("tinyint");
 
                     b.Property<byte>("PasswordMinLength")
                         .HasColumnType("tinyint");
-
-                    b.Property<int?>("PhoneNumber")
-                        .HasColumnType("int");
 
                     b.Property<bool>("RequireLowerCaseInPassword")
                         .HasColumnType("bit");
@@ -364,12 +326,6 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("RequireUpperCaseInPassword")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("ShowStock")
-                        .HasColumnType("bit");
-
-                    b.Property<float>("Tax")
-                        .HasColumnType("real");
-
                     b.Property<byte>("UsernameMinLength")
                         .HasColumnType("tinyint");
 
@@ -377,13 +333,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
-
-                    b.Property<int?>("WhatsApp")
-                        .HasColumnType("int");
-
-                    b.Property<string>("YoutubeLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("IsOpen");
 

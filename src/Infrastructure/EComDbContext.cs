@@ -27,6 +27,10 @@ namespace Infrastructure
         public DbSet<Admin> Admins { get; set; }
         public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
         public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+        public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
+        public DbSet<Collection> Collections { get; set; }
+        public DbSet<CollectionProduct> CollectionProducts { get; set; }
+        public DbSet<SmtpOption> SmtpOptions { get; set; }
 
 
     }

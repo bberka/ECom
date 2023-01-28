@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,6 +61,48 @@ namespace Domain.Entities
         [Range(15,43200)]
         public int EmailVerificationTimeoutMinutes { get; set; }
 
-        
+        [Required]
+        [MaxLength(16)]
+        public string Currency { get; set; }
+
+        [Required]
+        public float Tax { get; set; }
+
+
+        [Required]
+        [MaxLength(128)]
+        public string CompanyName { get; set; }
+        public string Description { get; set; }
+
+        [Required]
+        [ForeignKey("Image")]
+        public int LogoImageId { get; set; }
+        [Required]
+        [ForeignKey("Image")]
+        public int FavIcoImageId { get; set; }
+
+        public int? PhoneNumber { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string ContactEmail { get; set; }
+
+        public int? WhatsApp { get; set; }
+
+
+        [Required]
+        [MaxLength(255)]
+        public string CompanyAddress { get; set; }
+
+        [MaxLength(255)]
+        public string? FacebookLink { get; set; }
+        [MaxLength(255)]
+        public string? InstagramLink { get; set; }
+        [MaxLength(255)]
+        public string? YoutubeLink { get; set; }
+
+        [Required]
+        public bool ShowStock { get; set; }
+
     }
 }
