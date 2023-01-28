@@ -59,5 +59,7 @@ namespace Domain.Entities
         [Required]
         [Range(15,43200)]
         public int EmailVerificationTimeoutMinutes { get; set; }
+
+        
     }
 }

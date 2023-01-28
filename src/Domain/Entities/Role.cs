@@ -15,8 +15,11 @@ namespace Domain.Entities
 		public int Id { get; set; }
 
 		[Required]
-		[MaxLength(16)]
+		[MaxLength(32)]
 		public string RoleName { get; set; }
+
+        [MaxLength(256)]
+        public string? Memo { get; set; }
 
 		[Required]
 		public bool IsValid { get; set; }

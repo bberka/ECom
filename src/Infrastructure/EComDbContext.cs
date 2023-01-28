@@ -24,6 +24,9 @@ namespace Infrastructure
         public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Option> Options { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
 
     }

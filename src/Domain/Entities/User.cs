@@ -40,17 +40,21 @@ namespace Domain.Entities
 		[MaxLength(255)]
 		public string? TwoFactorKey { get; set; }
 
-		[Required]
-		public bool IsEnabledTwoFactor { get; set; } = false;
+		/// <summary>
+		/// 0: Email
+		/// 1: Phone
+		/// 2: Authy
+		/// </summary>
+        public byte? TwoFactorType { get; set; }
 
 		[Required]
-		public byte Role { get; set; } = 255;
+		public bool IsEnabledTwoFactor { get; set; } = false;
 
 		[Required]
 		public int TotalLoginCount { get; set; }
 		
 		[Required]
-		[MaxLength(16)]
+		[MaxLength(64)]
 		public string? LastLoginIp { get; set; }
 
 		[Required]
@@ -64,5 +68,6 @@ namespace Domain.Entities
 
 		public DateTime? LastPasswordUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
+
 	}
 }
