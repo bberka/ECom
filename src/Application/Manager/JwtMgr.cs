@@ -25,6 +25,7 @@ namespace Application.Manager
             {
                 return ResultData<JwtTokenModel>.Error("InvalidPassword");
             }
+            
             var ctx = EComDbContext.New();
 
             //md5 hash password

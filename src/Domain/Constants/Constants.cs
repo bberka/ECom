@@ -11,7 +11,9 @@ namespace Domain.Constants
 {
 	public class Constants
 	{
-     
+        public const int UsernameMaxLength = 32;
+        public const int PasswordMaxLength = 64;
+
 
     }
 }

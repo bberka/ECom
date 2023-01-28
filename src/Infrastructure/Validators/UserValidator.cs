@@ -17,7 +17,7 @@ namespace Infrastructure.Validators
 			{
 				return false;
 			}
-			if (input.Length > DbCacheHelper.Option.Get().UsernameMaxLength)
+			if (input.Length > Constants.UsernameMaxLength)
 			{
 				return false;
 			}
@@ -25,11 +25,11 @@ namespace Infrastructure.Validators
 		}
 		public static bool ValidatePassword(string input)
 		{
-			if (input.Length < DbCacheHelper.Option.Get().PasswordMaxLength)
+			if (input.Length < DbCacheHelper.Option.Get().PasswordMinLength)
 			{
 				return false;
 			}
-			if (input.Length > DbCacheHelper.Option.Get().PasswordMaxLength)
+			if (input.Length > Constants.PasswordMaxLength)
 			{
 				return false;
 			}

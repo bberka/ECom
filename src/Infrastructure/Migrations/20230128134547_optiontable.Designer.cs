@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20230128134547_optiontable")]
+    partial class optiontable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,24 +87,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Option", b =>
                 {
-                    b.Property<bool>("IsOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("AllowedSpecialCharactersInPassword")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("AllowedSpecialCharactersInUsername")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("DomainUrl")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("EmailVerificationTimeoutMinutes")
-                        .HasColumnType("int");
+                    b.Property<byte>("Key")
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("IsDebug")
                         .HasColumnType("bit");
@@ -109,12 +96,14 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsMaintenance")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsUseRefreshToken")
                         .HasColumnType("bit");
 
                     b.Property<string>("JwtAudience")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("JwtExpireMinutesDefault")
                         .HasColumnType("int");
@@ -123,41 +112,31 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("JwtIssuer")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JwtSecret")
                         .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("PagingProductCount")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("PasswordMaxLength")
                         .HasColumnType("tinyint");
 
                     b.Property<byte>("PasswordMinLength")
                         .HasColumnType("tinyint");
 
-                    b.Property<bool>("RequireLowerCaseInPassword")
+                    b.Property<bool>("RequireStrongPassword")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("RequireNumberInPassword")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RequireSpecialCharacterInPassword")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RequireUpperCaseInPassword")
-                        .HasColumnType("bit");
+                    b.Property<byte>("UsernameMaxLength")
+                        .HasColumnType("tinyint");
 
                     b.Property<byte>("UsernameMinLength")
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("WebApiUrl")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.HasKey("IsOpen");
+                    b.HasKey("Key");
 
                     b.ToTable("Options");
                 });
