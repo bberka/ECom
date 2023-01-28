@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-	public class Category
+	public class SubCategory
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -11,6 +11,10 @@ namespace Domain.Entities
 
 		[Required]
 		public bool IsValid { get; set; }
+
+        [Required]
+        [ForeignKey("Category")]
+        public int MainCategoryId { get; set; }
 
         [Required]
 		[MaxLength(32)]

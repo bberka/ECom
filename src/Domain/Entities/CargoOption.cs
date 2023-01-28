@@ -8,17 +8,27 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Language
+    public class CargoOption
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        public string Culture { get; set; }
-
-        [Required]
         public bool IsValid { get; set; }
 
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        [ForeignKey("Language")]
+        public int LanguageId { get; set; }
+
+        [Required]
+        [ForeignKey("Image")]
+        public int ImageId { get; set; }
+
+        [Required]
+        public int FreeShippingMinCost { get; set; }
     }
 }

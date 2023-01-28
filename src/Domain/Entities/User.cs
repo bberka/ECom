@@ -37,7 +37,19 @@ namespace Domain.Entities
 		[Required]
 		public bool IsEmailVerified { get; set; } = false;
 
-		[MaxLength(255)]
+        [Required]
+        [MaxLength(32)]
+        public string PhoneNumber { get; set; }
+
+        public int? CitizenShipNumber { get; set; }
+        public int? TaxNumber { get; set; }
+
+        [MaxLength(512)]
+        public string? OAuthKey { get; set; }
+
+        public byte? OAuthType { get; set; }
+
+        [MaxLength(255)]
 		public string? TwoFactorKey { get; set; }
 
 		/// <summary>
@@ -72,5 +84,12 @@ namespace Domain.Entities
         [Required]
         [MaxLength(6)]
         public string? PreferredLanguage { get; set; }
+
+        [Required]
+		[ForeignKey("Address")]
+        public int LastShippingAddressId { get; set; }
+        [Required]
+        [ForeignKey("Address")]
+        public int LastBillingAddressId { get; set; }
     }
 }

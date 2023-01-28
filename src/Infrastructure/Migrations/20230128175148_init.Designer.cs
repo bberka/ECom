@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComContextModelSnapshot : ModelSnapshot
+    [Migration("20230128175148_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,6 +111,14 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
@@ -175,9 +186,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.DiscountCoupon", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DiscountCategory")
                         .HasColumnType("int");
@@ -198,11 +211,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.DiscountNotify", b =>
                 {
-                    b.Property<int>("Key")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Key"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -220,7 +233,7 @@ namespace Infrastructure.Migrations
                     b.Property<long>("UserNo")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Key");
+                    b.HasKey("Id");
 
                     b.ToTable("DiscountNotifies");
                 });
@@ -294,9 +307,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Language", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Culture")
                         .IsRequired()
@@ -723,6 +738,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CitizenShipNumber")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
@@ -746,6 +764,9 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
+                    b.Property<int>("LastBillingAddressId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime2");
 
@@ -762,10 +783,25 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastPasswordUpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("LastShippingAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OAuthKey")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<byte?>("OAuthType")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("PreferredLanguage")
                         .IsRequired()
@@ -774,6 +810,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("TaxNumber")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalLoginCount")
                         .HasColumnType("int");

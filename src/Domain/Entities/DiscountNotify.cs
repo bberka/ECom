@@ -12,7 +12,7 @@ namespace Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Key { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public long UserNo { get; set; }
