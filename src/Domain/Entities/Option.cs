@@ -102,7 +102,9 @@ namespace Domain.Entities
         [Required]
         public bool ShowStock { get; set; }
 
-       
+        [Required]
+        [ForeignKey("Language")]
+        public int DefaultLanguageId { get; set; }
 
     }
 }

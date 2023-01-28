@@ -8,18 +8,17 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Language
+    public class ProductCommentImageLink
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int Id { get; set; }
-
         [Required]
-        public string Culture { get; set; }
-
+        [ForeignKey("Image")]
+        public int ImageId { get; set; }
         [Required]
-        public bool IsValid { get; set; }
-
-
+        [ForeignKey("Comment")]
+        public int CommentId { get; set; }
     }
 }

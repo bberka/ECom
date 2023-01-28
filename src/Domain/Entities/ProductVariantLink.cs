@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Language
+    public class ProductVariantLink
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int Id { get; set; }
 
         [Required]
-        public string Culture { get; set; }
-
+        [ForeignKey("Product")]
+        public int MainProductId { get; set; }
         [Required]
-        public bool IsValid { get; set; }
+        [ForeignKey("Product")]
+        public int SubProductId { get; set; }
 
 
     }

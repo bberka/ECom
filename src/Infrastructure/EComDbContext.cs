@@ -35,6 +35,15 @@ namespace Infrastructure
         public DbSet<Language> Languages { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<DiscountNotify> DiscountNotifies { get; set; }
+        public DbSet<ProductDetails> ProductDetailss { get; set; }
+        public DbSet<ProductImageLink> ProductImageLinks { get; set; }
+        public DbSet<ProductVariantLink> ProductVariantLinks { get; set; }
+        public DbSet<ProductComment> ProductComments { get; set; }
+        public DbSet<ProductCommentImageLink> ProductCommentImageLinks { get; set; }
+        public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<Log> Logs { get; set; }
+        public DbSet<CargoOption> CargoOptions { get; set; }
 
 
     }
