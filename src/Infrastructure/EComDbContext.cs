@@ -20,7 +20,7 @@ namespace Infrastructure
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
         public DbSet<ProductDiscount> ProductDiscounts { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Roles { get; set; }
         public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Option> Options { get; set; }
@@ -35,16 +35,16 @@ namespace Infrastructure
         public DbSet<Language> Languages { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<DiscountNotify> DiscountNotifies { get; set; }
-        public DbSet<ProductDetails> ProductDetailss { get; set; }
-        public DbSet<ProductImageLink> ProductImageLinks { get; set; }
-        public DbSet<ProductVariantLink> ProductVariantLinks { get; set; }
+        public DbSet<ProductDetails> ProductDetails { get; set; }
+        public DbSet<ProductImageBind> ProductImageBinds { get; set; }
+        public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
-        public DbSet<ProductCommentImageLink> ProductCommentImageLinks { get; set; }
+        public DbSet<ProductCommentImageBind> ProductCommentImageBinds { get; set; }
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<CargoOption> CargoOptions { get; set; }
-
-
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RoleBind> RoleBinds { get; set; }
     }
 }

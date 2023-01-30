@@ -8,15 +8,21 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class Image
+	public class Permission
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
 		[Required]
-		public string DefaultPath { get; set; }
-        public string? EN_Path { get; set; }
-        public string? TR_Path { get; set; }
-    }
+		[MaxLength(32)]
+		public string Name { get; set; }
+
+        [MaxLength(256)]
+        public string? Memo { get; set; }
+
+		[Required]
+		public bool IsValid { get; set; }
+
+	}
 }

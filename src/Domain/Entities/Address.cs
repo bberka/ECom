@@ -17,9 +17,6 @@ namespace Domain.Entities
         [Required]
         public DateTime RegisterDate { get; set; }
 
-        [Required]
-        [ForeignKey("User")]
-        public DateTime UserId { get; set; }
 
         [Required]
         [MaxLength(64)]
@@ -42,6 +39,15 @@ namespace Domain.Entities
         public string Details { get; set; }
         [Required]
         public int PhoneNumber { get; set; }
+
+        [Required]
+        public bool IsPreferred { get; set; }
+
+        [ForeignKey("UserId")]
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
+
+
 
     }
 }

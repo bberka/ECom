@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class ProductVariantLink
+    public class RoleBind
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
         public int Id { get; set; }
 
-        [Required]
-        [ForeignKey("Product")]
-        public int MainProductId { get; set; }
-        [Required]
-        [ForeignKey("Product")]
-        public int SubProductId { get; set; }
+        [ForeignKey("RoleId")]
+        public int? RoleId { get; set; }
+        public virtual Role Role { get; set; }
 
-
+        [ForeignKey("PermissionId")]
+        public int? PermissionId { get; set; }
+        public virtual Permission Permission { get; set; }
     }
 }

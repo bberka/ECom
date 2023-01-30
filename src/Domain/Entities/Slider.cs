@@ -25,13 +25,15 @@ namespace Domain.Entities
         [MaxLength(50)]
         public int Order { get; set; }
 
-        [Required]
-        [ForeignKey("Image")]
-        public int ImageId { get; set; }
 
-        [Required]
-        [ForeignKey("Language")]
-        public int LanguageId { get; set; }
+        [ForeignKey("ImageId")]
+        public int? ImageId { get; set; }
+        public virtual Image Image { get; set; }
+
+
+        [ForeignKey("LanguageId")]
+        public int? LanguageId { get; set; }
+        public virtual Language Language { get; set; }
 
     }
 }

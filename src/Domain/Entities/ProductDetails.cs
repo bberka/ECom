@@ -14,16 +14,6 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        public DateTime RegisterDate { get; set; }
-
-        [Required]
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
-
-        [Required]
-        [ForeignKey("Language")]
-        public int LanguageId { get; set; }
 
         [Required]
         [MaxLength(64)]
@@ -39,6 +29,13 @@ namespace Domain.Entities
 
         [MaxLength(5000)]
         public string? TechnicalInformationHTML { get; set; }
+
+        [ForeignKey("ProductId")]
+        public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
+        [ForeignKey("LanguageId")]
+        public int? LanguageId { get; set; }
+        public virtual Language Language { get; set; }
 
 
     }

@@ -25,13 +25,14 @@ namespace Domain.Entities
         [MaxLength(32)]
         [Required]
         public string IpAddress { get; set; }
-        public long? UserNo { get; set; }
+
         [MaxLength(2000)]
         [Required]
         public string Params { get; set; }
-        [Required]
-        [ForeignKey("Language")]
-        public int LanguageId { get; set; }
+
+        [ForeignKey("UserId")]
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
 
     }
 }

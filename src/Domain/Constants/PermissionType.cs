@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Lib
+namespace Domain.Constants
 {
-	public static class CommonLib
-	{
-	}
+    public enum PermissionType
+    {
+        None = 0,
+        
+    }
 }

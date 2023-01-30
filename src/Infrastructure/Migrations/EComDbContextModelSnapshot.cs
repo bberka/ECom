@@ -77,8 +77,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Role")
-                        .HasColumnType("tinyint");
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalLoginCount")
                         .HasColumnType("int");
@@ -97,6 +97,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Admins");
                 });
 
@@ -111,13 +113,13 @@ namespace Infrastructure.Migrations
                     b.Property<int>("FreeShippingMinCost")
                         .HasColumnType("int");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int?>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -125,6 +127,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageId");
 
                     b.ToTable("CargoOptions");
                 });
@@ -137,18 +143,13 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int?>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -157,6 +158,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageId");
 
                     b.ToTable("Categories");
                 });
@@ -169,7 +174,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<byte>("DiscountPercent")
@@ -182,6 +187,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("CategoryDiscounts");
                 });
@@ -202,10 +209,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Collections");
                 });
@@ -218,19 +227,25 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("CollectionId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CollectionProducts");
                 });
@@ -243,7 +258,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DiscountCategory")
+                    b.Property<int?>("DiscountCategoryId")
                         .HasColumnType("int");
 
                     b.Property<byte>("DiscountPercent")
@@ -257,6 +272,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DiscountCategoryId");
+
                     b.ToTable("DiscountCoupons");
                 });
 
@@ -268,23 +285,17 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("DiscountNotifies");
                 });
@@ -300,16 +311,21 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsUsed")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Token");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("EmailVerifyTokens");
                 });
@@ -322,16 +338,20 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FavoriteProducts");
                 });
@@ -348,10 +368,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EN_US_Path")
+                    b.Property<string>("EN_Path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TR_TR_Path")
+                    b.Property<string>("TR_Path")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -392,9 +412,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
                     b.Property<int>("LogType")
                         .HasColumnType("int");
 
@@ -412,10 +429,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Logs");
                 });
@@ -472,7 +491,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("FavIcoImageId")
+                    b.Property<int?>("FavIcoImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("InstagramLink")
@@ -507,7 +526,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<int>("LogoImageId")
+                    b.Property<int?>("LogoImageId")
                         .HasColumnType("int");
 
                     b.Property<byte>("PagingProductCount")
@@ -551,6 +570,12 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("IsOpen");
 
+                    b.HasIndex("DefaultLanguageId");
+
+                    b.HasIndex("FavIcoImageId");
+
+                    b.HasIndex("LogoImageId");
+
                     b.ToTable("Options");
                 });
 
@@ -560,16 +585,21 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsUsed")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Token");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PasswordResetTokens");
                 });
@@ -593,7 +623,7 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int?>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -626,7 +656,34 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LanguageId");
+
                     b.ToTable("PaymentOptions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Memo")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -637,20 +694,22 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageIds")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
                     b.Property<bool>("IsLimited")
                         .HasColumnType("bit");
 
+                    b.Property<int>("OriginalPrice")
+                        .HasColumnType("int");
+
                     b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductVariantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
@@ -665,7 +724,14 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("StockEndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Tax")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductVariantId");
 
                     b.ToTable("Products");
                 });
@@ -678,10 +744,19 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AuthorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte>("Star")
                         .HasColumnType("tinyint");
@@ -691,15 +766,14 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<long>("UserNo")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorUserId");
 
                     b.ToTable("ProductComments");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ProductCommentImageLink", b =>
+            modelBuilder.Entity("Domain.Entities.ProductCommentImageBind", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -707,15 +781,19 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CommentId")
+                    b.Property<int?>("CommentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCommentImageLinks");
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("ProductCommentImageBinds");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductDetails", b =>
@@ -736,7 +814,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int?>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -744,11 +822,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("TechnicalInformationHTML")
                         .HasMaxLength(5000)
@@ -756,7 +831,11 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductDetailss");
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductDiscount", b =>
@@ -773,7 +852,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
@@ -781,10 +860,12 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("ProductDiscounts");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ProductImageLink", b =>
+            modelBuilder.Entity("Domain.Entities.ProductImageBind", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -792,18 +873,22 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductImageLinks");
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImageBinds");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ProductVariantLink", b =>
+            modelBuilder.Entity("Domain.Entities.ProductVariant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -811,15 +896,17 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MainProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("SubProductId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductVariantLinks");
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("Domain.Entities.PurchaseHistory", b =>
@@ -829,6 +916,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DiscountCouponId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("DiscountedPrice")
                         .HasColumnType("int");
@@ -840,19 +930,22 @@ namespace Infrastructure.Migrations
                     b.Property<int>("OriginalPrice")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UsedCouponId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DiscountCouponId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PurchaseHistories");
                 });
@@ -868,18 +961,40 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Memo")
+                    b.Property<int>("Memo")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("int");
 
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<int>("Name")
+                        .HasMaxLength(64)
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoleBind", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleBinds");
                 });
 
             modelBuilder.Entity("Domain.Entities.Slider", b =>
@@ -895,10 +1010,10 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int?>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<int>("Order")
@@ -911,6 +1026,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageId");
 
                     b.ToTable("Sliders");
                 });
@@ -936,7 +1055,7 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LanguageId")
+                    b.Property<int?>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<int>("Port")
@@ -952,6 +1071,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LanguageId");
+
                     b.ToTable("SmtpOptions");
                 });
 
@@ -963,21 +1084,10 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MainCategoryId")
+                    b.Property<int?>("MainCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -986,6 +1096,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MainCategoryId");
 
                     b.ToTable("SubCategories");
                 });
@@ -1015,17 +1127,11 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsEmailVerified")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsEnabledTwoFactor")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsTestAccount")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
-
-                    b.Property<int>("LastBillingAddressId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime2");
@@ -1042,9 +1148,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastPasswordUpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LastShippingAddressId")
-                        .HasColumnType("int");
 
                     b.Property<string>("OAuthKey")
                         .HasMaxLength(512)
@@ -1063,10 +1166,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<string>("PreferredLanguage")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                    b.Property<int?>("PreferredLanguageId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
@@ -1081,7 +1182,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<byte?>("TwoFactorType")
+                    b.Property<byte>("TwoFactorType")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("Username")
@@ -1091,7 +1192,341 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PreferredLanguageId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Admin", b =>
+                {
+                    b.HasOne("Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CargoOption", b =>
+                {
+                    b.HasOne("Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.HasOne("Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Category", b =>
+                {
+                    b.HasOne("Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.HasOne("Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CategoryDiscount", b =>
+                {
+                    b.HasOne("Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Collection", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CollectionProduct", b =>
+                {
+                    b.HasOne("Domain.Entities.Collection", "Collection")
+                        .WithMany()
+                        .HasForeignKey("CollectionId");
+
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DiscountCoupon", b =>
+                {
+                    b.HasOne("Domain.Entities.Category", "DiscountCategory")
+                        .WithMany()
+                        .HasForeignKey("DiscountCategoryId");
+
+                    b.Navigation("DiscountCategory");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DiscountNotify", b =>
+                {
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EmailVerifyToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FavoriteProduct", b =>
+                {
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Log", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Option", b =>
+                {
+                    b.HasOne("Domain.Entities.Language", "DefaultLanguage")
+                        .WithMany()
+                        .HasForeignKey("DefaultLanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Image", "FavIcoImage")
+                        .WithMany()
+                        .HasForeignKey("FavIcoImageId");
+
+                    b.HasOne("Domain.Entities.Image", "LogoImage")
+                        .WithMany()
+                        .HasForeignKey("LogoImageId");
+
+                    b.Navigation("DefaultLanguage");
+
+                    b.Navigation("FavIcoImage");
+
+                    b.Navigation("LogoImage");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PasswordResetToken", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PaymentOption", b =>
+                {
+                    b.HasOne("Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Product", b =>
+                {
+                    b.HasOne("Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Domain.Entities.ProductVariant", "Variant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ProductComment", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "AuthorUser")
+                        .WithMany()
+                        .HasForeignKey("AuthorUserId");
+
+                    b.Navigation("AuthorUser");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ProductCommentImageBind", b =>
+                {
+                    b.HasOne("Domain.Entities.ProductComment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ProductDetails", b =>
+                {
+                    b.HasOne("Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ProductDiscount", b =>
+                {
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ProductImageBind", b =>
+                {
+                    b.HasOne("Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PurchaseHistory", b =>
+                {
+                    b.HasOne("Domain.Entities.DiscountCoupon", "DiscountCoupon")
+                        .WithMany()
+                        .HasForeignKey("DiscountCouponId");
+
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("DiscountCoupon");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoleBind", b =>
+                {
+                    b.HasOne("Domain.Entities.Permission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionId");
+
+                    b.HasOne("Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Slider", b =>
+                {
+                    b.HasOne("Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.HasOne("Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SmtpOption", b =>
+                {
+                    b.HasOne("Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SubCategory", b =>
+                {
+                    b.HasOne("Domain.Entities.Category", "MainCategory")
+                        .WithMany()
+                        .HasForeignKey("MainCategoryId");
+
+                    b.Navigation("MainCategory");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Category", "PreferredLanguage")
+                        .WithMany()
+                        .HasForeignKey("PreferredLanguageId");
+
+                    b.Navigation("PreferredLanguage");
                 });
 #pragma warning restore 612, 618
         }

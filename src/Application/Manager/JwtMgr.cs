@@ -50,7 +50,7 @@ namespace Application.Manager
 		        throw new Exception("TestAccountsUsedOnlyDebug");
 #endif
             }
-            if (user.IsEnabledTwoFactor)
+            if (user.TwoFactorType != 0)
             {
                 ThrowHelper.NotImplemented();
             }

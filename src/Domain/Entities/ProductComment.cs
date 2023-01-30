@@ -16,18 +16,24 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required]
+        public DateTime RegisterDate { get; set; }
+
+        public DateTime? DeletedDate { get; set; }
+        [Required]
         [MaxLength(64)]
         public string Title { get; set; }
         [Required]
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        [ForeignKey("User")]
-        public long UserNo { get; set; }
 
         [Range(0,5)]
         public byte Star { get; set; }
 
+
+        [ForeignKey("AuthorUserId")]
+        public int? AuthorUserId { get; set; }
+        public virtual User AuthorUser { get; set; }
 
     }
 }

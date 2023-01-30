@@ -8,17 +8,21 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class ProductImageLink
+    public class ProductCommentImageBind
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
         public int Id { get; set; }
-        [Required]
-        [ForeignKey("Image")]
-        public int ImageId { get; set; }
-        [Required]
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+
+        [ForeignKey("ImageId")]
+        public int? ImageId { get; set; }
+        public virtual Image Image { get; set; }
+
+        [ForeignKey("CommentId")]
+        public int? CommentId { get; set; }
+        public virtual ProductComment Comment { get; set; }
+
+
     }
 }

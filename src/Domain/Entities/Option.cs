@@ -58,7 +58,7 @@ namespace Domain.Entities
         public string WebApiUrl { get; set; }
 
         [Required]
-        [Range(15,43200)]
+        [Range(15, 43200)]
         public int EmailVerificationTimeoutMinutes { get; set; }
 
         [Required]
@@ -72,12 +72,7 @@ namespace Domain.Entities
         public string CompanyName { get; set; }
         public string Description { get; set; }
 
-        [Required]
-        [ForeignKey("Image")]
-        public int LogoImageId { get; set; }
-        [Required]
-        [ForeignKey("Image")]
-        public int FavIcoImageId { get; set; }
+
 
         public int? PhoneNumber { get; set; }
 
@@ -102,9 +97,16 @@ namespace Domain.Entities
         [Required]
         public bool ShowStock { get; set; }
 
-        [Required]
-        [ForeignKey("Language")]
-        public int DefaultLanguageId { get; set; }
+        public virtual Language DefaultLanguage { get; set; }
+
+
+        [ForeignKey("LogoImageId")]
+        public int? LogoImageId { get; set; }
+        public virtual Image LogoImage { get; set; }
+
+        [ForeignKey("FavIcoImageId")]
+        public int? FavIcoImageId { get; set; }
+        public virtual Image FavIcoImage { get; set; }
 
     }
 }

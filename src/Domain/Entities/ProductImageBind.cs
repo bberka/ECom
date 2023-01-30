@@ -8,25 +8,19 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class CollectionProduct
+    public class ProductImageBind
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int Id { get; set; }
 
-        [Required]
-        public DateTime RegisterDate { get; set; }
-
-        [ForeignKey("UserId")]
-        public int? UserId { get; set; }
-        public virtual User User { get; set; }
+        [ForeignKey("ImageId")]
+        public int? ImageId { get; set; }
+        public virtual Image Image { get; set; }
 
         [ForeignKey("ProductId")]
         public int? ProductId { get; set; }
         public virtual Product Product { get; set; }
-
-        [ForeignKey("CollectionId")]
-        public int? CollectionId { get; set; }
-        public virtual Collection Collection { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Lib
 {
-	public static class ConfigLib
+	public static class ConfigHelper
 	{
 		public static string? GetString(string key)
 		{

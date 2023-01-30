@@ -17,12 +17,12 @@ namespace Domain.Entities
         [Required]
         public DateTime RegisterDate { get; set; }
 
-        [Required]
-        [ForeignKey("User")]
-        public long UserNo { get; set; }
+        [ForeignKey("UserId")]
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
 
-        [Required]
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+        [ForeignKey("ProductId")]
+        public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

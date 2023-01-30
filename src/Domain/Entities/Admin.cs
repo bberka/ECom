@@ -51,8 +51,6 @@ namespace Domain.Entities
         [Required]
         public bool IsEnabledTwoFactor { get; set; } = false;
 
-        [Required]
-        public byte Role { get; set; } = 255;
 
         [Required]
         public int TotalLoginCount { get; set; }
@@ -72,5 +70,11 @@ namespace Domain.Entities
 
         public DateTime? LastPasswordUpdateDate { get; set; }
         public DateTime? DeletedDate { get; set; }
+
+
+        [ForeignKey("RoleId")]
+        public int? RoleId { get; set; }
+        public virtual Role Role { get; set; }
+
     }
 }

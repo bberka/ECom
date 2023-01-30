@@ -52,15 +52,15 @@ namespace Domain.Entities
         [MaxLength(255)]
 		public string? TwoFactorKey { get; set; }
 
-		/// <summary>
-		/// 0: Email
-		/// 1: Phone
-		/// 2: Authy
-		/// </summary>
-        public byte? TwoFactorType { get; set; }
+        /// <summary>
+        /// 0: None
+        /// 1: Email
+        /// 2: Phone
+        /// 3: Authy
+        /// </summary>
+        [Required]
+        public byte TwoFactorType { get; set; } = 0;
 
-		[Required]
-		public bool IsEnabledTwoFactor { get; set; } = false;
 
 		[Required]
 		public int TotalLoginCount { get; set; }
@@ -81,15 +81,9 @@ namespace Domain.Entities
 		public DateTime? LastPasswordUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
 
-        [Required]
-        [MaxLength(6)]
-        public string? PreferredLanguage { get; set; }
+        [ForeignKey("PreferredLanguageId")]
+        public int? PreferredLanguageId { get; set; }
+        public virtual Category PreferredLanguage { get; set; }
 
-        [Required]
-		[ForeignKey("Address")]
-        public int LastShippingAddressId { get; set; }
-        [Required]
-        [ForeignKey("Address")]
-        public int LastBillingAddressId { get; set; }
     }
 }

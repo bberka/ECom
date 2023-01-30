@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,6 @@ namespace Domain.Entities
         [MaxLength(512)]
         public string Token { get; set; }
         [Required]
-        public long UserNo { get; set; }
-        [Required]
         [MaxLength(512)]
         public string Email { get; set; }
 
@@ -24,5 +23,12 @@ namespace Domain.Entities
 
         [Required]
         public DateTime RegisterDate { get; set; }
+        [Required]
+        public DateTime ExpireDate { get; set; }
+
+        [ForeignKey("UserId")]
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
+
     }
 }

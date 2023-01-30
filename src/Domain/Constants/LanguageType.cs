@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Lib
+namespace Domain.Constants
 {
-	public static class CommonLib
-	{
-	}
+    public enum LanguageType
+    {
+        Default,
+        English,
+        Turkish
+    }
 }

@@ -61,8 +61,10 @@ namespace Domain.Entities
         [MaxLength(512)]
         public string? Password { get; set; }
 
-        [Required]
-        [ForeignKey("Language")]
-        public int LanguageId { get; set; }
+        [ForeignKey("LanguageId")]
+        public int? LanguageId { get; set; }
+        public virtual Language Language { get; set; }
+
+
     }
 }

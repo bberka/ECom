@@ -21,14 +21,17 @@ namespace Domain.Entities
         public string Name { get; set; }
 
         [Required]
-        [ForeignKey("Language")]
-        public int LanguageId { get; set; }
-
-        [Required]
-        [ForeignKey("Image")]
-        public int ImageId { get; set; }
-
-        [Required]
         public int FreeShippingMinCost { get; set; }
+
+
+        [ForeignKey("LanguageId")]
+        public int? LanguageId { get; set; }
+        public virtual Language Language { get; set; }
+
+
+
+        [ForeignKey("ImageId")]
+        public int? ImageId { get; set; }
+        public virtual Image Image { get; set; }
     }
 }

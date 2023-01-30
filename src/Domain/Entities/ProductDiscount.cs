@@ -25,8 +25,8 @@ namespace Domain.Entities
 		[Range(0,100)]
 		public byte DiscountPercent { get; set; }
 
-		[Required]
-		[ForeignKey("Product")]
-		public int ProductId { get; set; }
+        [ForeignKey("ProductId")]
+        public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
 	}
 }

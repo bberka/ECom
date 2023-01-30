@@ -17,12 +17,14 @@ namespace Domain.Entities
         [Required]
         public DateTime RegisterDate { get; set; }
 
-        [Required]
-        [ForeignKey("User")]
-        public long UserNo { get; set; }
 
         [Required]
         [MaxLength(128)]
         public string Name { get; set; }
+
+        [ForeignKey("UserId")]
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
+
     }
 }

@@ -14,8 +14,6 @@ namespace Domain.Entities
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		[ForeignKey("Category")]
-		public int CategoryId { get; set; }
 
 		[Required]
 		public DateTime RegisterDate { get; set; }
@@ -24,10 +22,6 @@ namespace Domain.Entities
 		public DateTime? StockEndDate { get; set; }
 
 		public bool IsLimited { get; set; }
-
-
-		[MaxLength(1000)]
-		public string? ImageIds { get; set; }
 
 		[Required]
 		[Range(0, 1_000_000_000)]
@@ -41,6 +35,22 @@ namespace Domain.Entities
 		[Range(0, 1_000_000_000)]
 		public int Price { get; set; }
 
+        [Required]
+        [Range(0, 1_000_000_000)]
+        public int OriginalPrice { get; set; }
+
+
+        [Required]
+        [Range(0, 100000)]
+        public int Tax { get; set; }
+
+        [ForeignKey("ProductVariantId")]
+        public int? ProductVariantId { get; set; }
+        public virtual ProductVariant Variant { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public int? CategoryId { get; set; }
+        public virtual Category Category { get; set; }
 
 
     }

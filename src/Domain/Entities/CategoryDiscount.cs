@@ -17,7 +17,6 @@ namespace Domain.Entities
 		[Required]
 		public DateTime RegisterDate { get; set; }
 
-		
 		[Required]
 		public DateTime EndDate { get; set; }
 
@@ -25,8 +24,8 @@ namespace Domain.Entities
 		[Range(0,100)]
 		public byte DiscountPercent { get; set; }
 
-		[Required]
-		[ForeignKey("Category")]
-		public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public int? CategoryId { get; set; }
+        public virtual Category Category { get; set; }
 	}
 }
