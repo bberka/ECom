@@ -11,19 +11,19 @@ namespace Domain.Entities
     public class EmailVerifyToken
     {
         [Key]
-        [Required]
+        
         [MaxLength(512)]
         public string Token { get; set; }
-        [Required]
+        
         [MaxLength(512)]
         public string Email { get; set; }
 
-        [Required]
+        
         public bool IsUsed { get; set; }
 
-        [Required]
+        
         public DateTime RegisterDate { get; set; }
-        [Required]
+        
         public DateTime ExpireDate { get; set; }
 
         [ForeignKey("UserId")]

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 using Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,16 @@ namespace Application.Manager
 {
     public static class UserMgr
     {
-        public static User? GetUser(long userNo)
+        public static User? GetUser(int userId)
         {
             var ctx = EComDbContext.New();
-            var user = ctx.Users.Where(x => x.Id == userNo).FirstOrDefault();
+            var user = ctx.Users.Where(x => x.Id == userId).FirstOrDefault();
             return user;
         }
-        public static User GetUserSingle(long userNo)
+        public static User GetUserSingle(int userId)
         {
             var ctx = EComDbContext.New();
-            var user = ctx.Users.Where(x => x.Id == userNo).Single();
+            var user = ctx.Users.Where(x => x.Id == userId).Single();
             return user;
         }
         public static User? GetUser(string username)
@@ -33,6 +34,12 @@ namespace Application.Manager
             var ctx = EComDbContext.New();
             var user = ctx.Users.Where(x => x.Username == username).Single();
             return user;
+        }
+        public static void ValidateUser(int userId)
+        {
+            var ctx = EComDbContext.New();
+            var exist = ctx.Users.Where(x => x.Id == userId).Any();
+            if (!exist) throw new BaseException(Response.User_NotExist);
         }
     }
 }

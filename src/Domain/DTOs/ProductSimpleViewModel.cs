@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class ProductSimpleView
+    public class ProductSimpleViewModel
     {
         public Product Product { get; set; }
         public ProductDetails Details { get; set; }

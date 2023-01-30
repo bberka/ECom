@@ -11,17 +11,17 @@ namespace Domain.Entities
     public class PasswordResetToken
     {
         [Key]
-        [Required]
+        
         [MaxLength(512)]
         public string Token { get; set; }
 
-        [Required]
+        
         public bool IsUsed { get; set; }
 
-        [Required]
+        
         public DateTime RegisterDate { get; set; }
 
-        [Required]
+        
         public DateTime ExpireDate { get; set; }
 
         [ForeignKey("UserId")]

@@ -19,11 +19,11 @@ namespace Application.Manager
         {
             if (!UserValidator.ValidateUsername(model.Username))
             {
-                return ResultData<JwtTokenModel>.Error("InvalidUsername");
+                return ResultData<JwtTokenModel>.Error(1, Response.User_InvalidUsername);
             }
             if (!UserValidator.ValidatePassword(model.Password))
             {
-                return ResultData<JwtTokenModel>.Error("InvalidPassword");
+                return ResultData<JwtTokenModel>.Error(2, Response.User_InvalidPassword);
             }
             
             var ctx = EComDbContext.New();
@@ -33,16 +33,16 @@ namespace Application.Manager
             var user = ctx.Users.Where(x => x.Username == model.Username).SingleOrDefault();
             if (user is null)
             {
-                return ResultData<JwtTokenModel>.Error("UsernameIsWrong");
+                return ResultData<JwtTokenModel>.Error(3,Response.User_WrongUsername);
             }
             var realPasswordHashed = user.Password.MD5Hash();
             if (hashed != realPasswordHashed)
             {
-                return ResultData<JwtTokenModel>.Error("PasswordIsWrong");
+                return ResultData<JwtTokenModel>.Error(4, Response.User_WrongPassword);
             }
             if (user.IsValid)
             {
-                return ResultData<JwtTokenModel>.Error("UserIsInvalid");
+                return ResultData<JwtTokenModel>.Error(5,Response.User_NotValid);
             }
             if (user.IsTestAccount)
             {
@@ -57,7 +57,7 @@ namespace Application.Manager
             if (!user.IsEmailVerified)
             {
                 //TODO: Send verify email
-                return ResultData<JwtTokenModel>.Error("EmailIsNotVerified");
+                return ResultData<JwtTokenModel>.Error(6, Response.User_EmailIsNotVerified);
             }
             var userClaimsDic = user.ToClaimsIdentity();
             DateTime expire = DateTime.Now.AddMinutes(DbCacheHelper.Option.Get().JwtExpireMinutesDefault);

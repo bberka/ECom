@@ -12,7 +12,7 @@ namespace Infrastructure.Common
 {
     public static class DbCacheHelper
     {
-        public static readonly EasCache<Option> Option = new(GetOption, 3);
+        public static readonly EasCache<Option> Option = new(GetOption, 1);
         private static Option GetOption()
         {
             return EComDbContext.New().Options.FirstOrDefault() ?? throw new Exception("Option table is empty");

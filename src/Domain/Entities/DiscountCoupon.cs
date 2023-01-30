@@ -14,13 +14,13 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-		[Required]
+		
 		public DateTime RegisterDate { get; set; }
 
-		[Required]
+		
 		public DateTime EndDate { get; set; }
 
-		[Required]
+		
 		[Range(0, 100)]
 		public byte DiscountPercent { get; set; }
 

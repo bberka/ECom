@@ -18,10 +18,9 @@ namespace Infrastructure
 		public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
-        public DbSet<ProductDiscount> ProductDiscounts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Permission> Roles { get; set; }
-        public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Option> Options { get; set; }
         public DbSet<Admin> Admins { get; set; }
@@ -42,9 +41,14 @@ namespace Infrastructure
         public DbSet<ProductCommentImageBind> ProductCommentImageBinds { get; set; }
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
-        public DbSet<Log> Logs { get; set; }
+        public DbSet<UserLog> UserLogs { get; set; }
+        public DbSet<AdminLog> AdminLogs { get; set; }
+        public DbSet<SecurityLog> SecurityLogs { get; set; }
         public DbSet<CargoOption> CargoOptions { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RoleBind> RoleBinds { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<BasketProduct> BasketProducts { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

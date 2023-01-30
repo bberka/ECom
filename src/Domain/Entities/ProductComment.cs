@@ -15,14 +15,14 @@ namespace Domain.Entities
 
         public int Id { get; set; }
 
-        [Required]
+        
         public DateTime RegisterDate { get; set; }
 
         public DateTime? DeletedDate { get; set; }
-        [Required]
+        
         [MaxLength(64)]
         public string Title { get; set; }
-        [Required]
+        
         [MaxLength(1000)]
         public string Description { get; set; }
 
@@ -34,6 +34,10 @@ namespace Domain.Entities
         [ForeignKey("AuthorUserId")]
         public int? AuthorUserId { get; set; }
         public virtual User AuthorUser { get; set; }
+
+        [ForeignKey("ProductId")]
+        public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
 
     }
 }

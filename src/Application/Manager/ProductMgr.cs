@@ -1,5 +1,6 @@
 ﻿
 
+using Domain.DTOs;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Common;
@@ -9,26 +10,64 @@ namespace Application.Manager
 {
     public static class ProductMgr
     {
-        public static List<Product> ListProductsByCategory(int categoryId,uint page,OrderByType type = OrderByType.Recommended)
+        public static List<Product> ListProductsBaseByCategory(int categoryId, uint page, OrderByType type = OrderByType.Recommended)
         {
-            var lastIdx = DbCacheHelper.Option.Get().PagingProductCount * ( page - 1);
+            var lastIdx = (int)(DbCacheHelper.Option.Get().PagingProductCount * (page - 1));
+            var pageProductCount = DbCacheHelper.Option.Get().PagingProductCount;
             var products = EComDbContext.New().Products
                 .Where(p => p.Category.Id == categoryId)
+                .Skip(lastIdx)
+                .Take(pageProductCount)
                 .OrderByDescending(x => x.RegisterDate)
                 .ToList();
             return products;
         }
-        //public static List<Product> ListProductsByFilter(int categoryId, uint page, OrderByType type = OrderByType.Recommended)
-        //{
-        //    var lastIdx = Constants.PAGE_MAX_PRODUCT_COUNT * (page - 1);
-        //    var ctx = new EComDbContext();
-        //    var products = ctx.Products
-        //        .Where(p => p.CategoryId == categoryId)
-        //        .OrderByDescending(x => x.RegisterDate)
-        //        .ToList();
-        //    return products;
-        //}
+        public static List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(int categoryId, uint page, OrderByType type = OrderByType.Recommended)
+        {
+            var lastIdx = (int)(DbCacheHelper.Option.Get().PagingProductCount * (page - 1));
+            var pageProductCount = DbCacheHelper.Option.Get().PagingProductCount;
+            var ctx = EComDbContext.New();
+            var products = ctx.Products
+                .Where(p => p.CategoryId == categoryId)
+                .Skip(lastIdx)
+                .Take(pageProductCount)
+                .OrderByDescending(x => x.RegisterDate)
+                .Join(
+                ctx.ProductDetails,
+                x => x.Id,
+                x => x.ProductId,
+                (p, d) =>
+                new ProductSimpleViewModel
+                {
+                    Product = p,
+                    Details = d
+                })
+                .ToList();
+            return products;
+        }
 
+        public static List<Product> GetVariantProducts(int variantId)
+        {
+            var ctx = EComDbContext.New();
+            var list = ctx.Products.Where(x => x.ProductVariantId == variantId).ToList();
+            return list;
+        }
+
+        public static List<ProductVariant> GetVariants()
+        {
+            var ctx = EComDbContext.New();
+            return ctx.ProductVariants.ToList();
+        }
+        public static ProductVariant? GetVariant(int id)
+        {
+            var ctx = EComDbContext.New();
+            return ctx.ProductVariants.Where(x => x.Id == id).FirstOrDefault();
+        }
+        public static ProductVariant GetVariantSingle(int id)
+        {
+            var ctx = EComDbContext.New();
+            return ctx.ProductVariants.Where(x => x.Id == id).Single();
+        }
         public static Product? GetProduct(long productNo)
         {
             var ctx = EComDbContext.New();
@@ -42,23 +81,27 @@ namespace Application.Manager
             var product = ctx.Products.Where(x => x.Id == productNo).Single();
             return product;
         }
-        //public static List<Product> SearchProduct(string value,LanguageType language)
-        //{
-        //    var ctx = EComDbContext.New();
-        //    var product = from p in ctx.Products
-        //                  join d in ctx.ProductDetails
-        //                  on p.Id equals d.ProductId
-        //                  select new
-        //                  {
-        //                      Product = p,
-        //                      Detail = d
-        //                  };
-        //    var result = product
-        //        .Where(x => x.Detail.Name.Contains(value) && x.Detail.LanguageId == (int)language);
-            
 
-        //    return product;
-        //}
+        public static List<ProductDetails>? GetProductDetails(long productNo)
+        {
+            var ctx = EComDbContext.New();
+            var products = ctx.ProductDetails.Where(x => x.Id == productNo).ToList();
+            return products;
+        }
+        public static ProductDetails? GetProductDetails(long productNo, LanguageType type)
+        {
+            var ctx = EComDbContext.New();
+            var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).FirstOrDefault();
+            return product;
+        }
+        public static ProductDetails GetProductDetailsSingle(long productNo, LanguageType type)
+        {
+            var ctx = EComDbContext.New();
+            var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).Single();
+            return product;
+        }
+
+
 
     }
 }

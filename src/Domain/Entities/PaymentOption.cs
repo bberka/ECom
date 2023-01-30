@@ -23,7 +23,7 @@ namespace Domain.Entities
         /// Transfer = 5,
         /// CashOnDelivery = 6,
         /// </summary>
-        [Required]
+        
         public int Type { get; set; }
 
         /// <summary>
@@ -35,18 +35,18 @@ namespace Domain.Entities
         /// Transfer = 5,
         /// CashOnDelivery = 6,
         /// </summary>
-        [Required]
+        
         [MaxLength(32)]
         public string TypeName { get; set; }
 
-        [Required]
+        
         public bool IsValid { get; set; }
 
-        [Required]
+        
         [MaxLength(64)]
         public string Name { get; set; }
 
-        [Required]
+        
         public float Tax { get; set; }
 
 

@@ -14,11 +14,11 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        
         public DateTime RegisterDate { get; set; }
 
 
-        [Required]
+        
         [MaxLength(128)]
         public string Name { get; set; }
 

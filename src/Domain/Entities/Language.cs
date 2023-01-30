@@ -14,10 +14,10 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        
         public string Culture { get; set; }
 
-        [Required]
+        
         public bool IsValid { get; set; }
 
 

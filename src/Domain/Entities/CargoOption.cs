@@ -14,20 +14,19 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        
         public bool IsValid { get; set; }
 
-        [Required]
+        
         public string Name { get; set; }
 
-        [Required]
+        
         public int FreeShippingMinCost { get; set; }
 
 
         [ForeignKey("LanguageId")]
         public int? LanguageId { get; set; }
         public virtual Language Language { get; set; }
-
 
 
         [ForeignKey("ImageId")]

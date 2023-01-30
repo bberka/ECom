@@ -11,38 +11,46 @@ namespace Domain.Entities
     public class Option
     {
         [Key]
-        [Required]
+        
         public bool IsOpen { get; set; }
-        [Required]
+        
         public bool IsMaintenance { get; set; }
-        [Required]
+        
         public bool IsDebug { get; set; }
-        [Required]
+        
         [MaxLength(512)]
         public string JwtSecret { get; set; }
+
+        public bool JwtValidateAudience { get; set; }
         [MaxLength(128)]
         public string? JwtAudience { get; set; }
+
+        public bool JwtValidateIssuer { get; set; }
+
         [MaxLength(128)]
         public string? JwtIssuer { get; set; }
-        [Required]
+        
         public int JwtExpireMinutesDefault { get; set; }
-        [Required]
+        
         public int JwtExpireMinutesLong { get; set; }
-        [Required]
+
+        [MaxLength(512)]
+        public string JwtSecret_Admin { get; set; }
+
         public bool IsUseRefreshToken { get; set; }
-        [Required]
+        
         public byte PagingProductCount { get; set; }
-        [Required]
+        
         public byte UsernameMinLength { get; set; }
-        [Required]
+        
         public byte PasswordMinLength { get; set; }
-        [Required]
+        
         public bool RequireUpperCaseInPassword { get; set; }
-        [Required]
+        
         public bool RequireLowerCaseInPassword { get; set; }
-        [Required]
+        
         public bool RequireSpecialCharacterInPassword { get; set; }
-        [Required]
+        
         public bool RequireNumberInPassword { get; set; }
 
         [MaxLength(128)]
@@ -50,24 +58,24 @@ namespace Domain.Entities
         [MaxLength(128)]
         public string? AllowedSpecialCharactersInPassword { get; set; }
 
-        [Required]
+        
         [MaxLength(128)]
         public string DomainUrl { get; set; }
-        [Required]
+        
         [MaxLength(128)]
         public string WebApiUrl { get; set; }
 
-        [Required]
+        
         [Range(15, 43200)]
         public int EmailVerificationTimeoutMinutes { get; set; }
 
-        [Required]
+        
         [MaxLength(16)]
         public string Currency { get; set; }
 
 
 
-        [Required]
+        
         [MaxLength(128)]
         public string CompanyName { get; set; }
         public string Description { get; set; }
@@ -76,14 +84,14 @@ namespace Domain.Entities
 
         public int? PhoneNumber { get; set; }
 
-        [Required]
+        
         [MaxLength(255)]
         public string ContactEmail { get; set; }
 
         public int? WhatsApp { get; set; }
 
 
-        [Required]
+        
         [MaxLength(255)]
         public string CompanyAddress { get; set; }
 
@@ -94,9 +102,14 @@ namespace Domain.Entities
         [MaxLength(255)]
         public string? YoutubeLink { get; set; }
 
-        [Required]
+        
         public bool ShowStock { get; set; }
 
+        public byte ProductImageLimit { get; set; }
+        public byte ProductCommentImageLimit { get; set; }
+
+        [ForeignKey("DefaultLanguageId")]
+        public int? DefaultLanguageId { get; set; }
         public virtual Language DefaultLanguage { get; set; }
 
 
