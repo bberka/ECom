@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class ProductCommentImageBind
-    {
+    public class ProductCommentImageBind : IEntity
+	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 

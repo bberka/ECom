@@ -1,11 +1,12 @@
 ﻿
-namespace ECom.Application.Manager
+
+namespace ECom.Application.UsrManager
 {
-    public static class UserMgr
+    public static class Usr_AccountMgr
     {
         public static User? GetUser(int userId)
         {
-            var ctx = EComDbContext.New();
+			var ctx = EComDbContext.New();
             var user = ctx.Users.Where(x => x.Id == userId).FirstOrDefault();
             return user;
         }

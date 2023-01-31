@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class SecurityLog
-    {
+    public class SecurityLog : IEntity
+	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }

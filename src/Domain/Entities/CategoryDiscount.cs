@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class CategoryDiscount
-    {
+	public class CategoryDiscount : IEntity
+	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }

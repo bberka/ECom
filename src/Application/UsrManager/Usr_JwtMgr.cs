@@ -1,9 +1,9 @@
 ﻿using EasMe;
 using EasMe.Extensions;
 
-namespace ECom.Application.Manager
+namespace ECom.Application.UsrManager
 {
-    public class JwtMgr : IJwtAuthentication
+    public class Usr_JwtMgr : IJwtAuthentication
     {
         private static readonly EasJWT _easJWT = new(OptionHelper.Option.Get().JwtSecret);
         private static HashSet<JwtTokenModel> _tokens = new HashSet<JwtTokenModel>();

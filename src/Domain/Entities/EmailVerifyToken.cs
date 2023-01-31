@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class EmailVerifyToken
-    {
+    public class EmailVerifyToken : IEntity
+	{
         [Key]
         
         [MaxLength(512)]

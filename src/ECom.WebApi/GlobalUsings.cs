@@ -22,5 +22,4 @@ global using ECom.Domain.Localization;
 global using ECom.Domain.Models;
 global using ECom.Infrastructure.Validators;
 global using ECom.Domain.Constants;
-global using ECom.Application.Manager;
 global using ECom.Infrastructure.Common;

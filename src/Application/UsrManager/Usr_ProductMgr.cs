@@ -1,8 +1,8 @@
 ﻿
 
-namespace ECom.Application.Manager
+namespace ECom.Application.UsrManager
 {
-    public static class ProductMgr
+    public static class Usr_ProductMgr
     {
         public static List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model)
         {

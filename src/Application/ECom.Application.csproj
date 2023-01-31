@@ -23,4 +23,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AdmManager\" />
+  </ItemGroup>
+
 </Project>

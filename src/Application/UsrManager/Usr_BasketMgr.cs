@@ -1,10 +1,10 @@
-﻿namespace ECom.Application.Manager
+﻿namespace ECom.Application.UsrManager
 {
-    public static class BasketMgr
+    public static class Usr_BasketMgr
     {
         public static Result AddOrIncreaseProduct(int userId, int productId,int count)
         {
-            UserMgr.ValidateUser(userId);
+            Usr_AccountMgr.ValidateUser(userId);
             var ctx = EComDbContext.New();
             var existing = ctx.BasketProducts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
             if(existing != null)
@@ -33,7 +33,7 @@
         }
         public static Result RemoveOrDecreaseProduct(int userId, int productId)
         {
-            UserMgr.ValidateUser(userId);
+            Usr_AccountMgr.ValidateUser(userId);
             var ctx = EComDbContext.New();
             var exist = ctx.BasketProducts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
             if(exist is null) 
@@ -58,14 +58,14 @@
         }
         public static int GetBasketProductCount(int userId)
         {
-            UserMgr.ValidateUser(userId);
+            Usr_AccountMgr.ValidateUser(userId);
             var ctx = EComDbContext.New();
             var count = ctx.BasketProducts.Count(x => x.UserId == userId);
             return count;
         }
         public static List<BasketProduct> GetBasketProducts(int userId)
         {
-            UserMgr.ValidateUser(userId);
+            Usr_AccountMgr.ValidateUser(userId);
             var ctx = EComDbContext.New();
             var list = ctx.BasketProducts.Where(x => x.UserId == userId).ToList();
             return list ?? new();

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class PasswordResetToken
-    {
+    public class PasswordResetToken : IEntity
+	{
         [Key]
         
         [MaxLength(512)]

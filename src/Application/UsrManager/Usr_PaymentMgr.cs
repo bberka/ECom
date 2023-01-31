@@ -1,6 +1,6 @@
-﻿namespace ECom.Application.Manager
+﻿namespace ECom.Application.UsrManager
 {
-    public static class PaymentProcessMgr
+    public static class Usr_PaymentMgr
     {
         public static Result BeginProcessPayment()
         {

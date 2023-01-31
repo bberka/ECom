@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class Admin
-    {
+    public class Admin : IEntity
+	{
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
