@@ -1,15 +1,4 @@
-﻿using Domain.Entities;
-using Domain.ValueObjects;
-using Infrastructure;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Manager
+﻿namespace ECom.Application.Manager
 {
     public static class BasketMgr
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace ECom.Domain.Entities
 {
     public class CollectionProduct
     {
@@ -14,7 +14,6 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        
         public DateTime RegisterDate { get; set; }
 
         [ForeignKey("UserId")]

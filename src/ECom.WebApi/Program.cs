@@ -1,11 +1,8 @@
 using EasMe;
 using EasMe.Extensions;
-using Infrastructure.Common;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using MoonApp.Middleware;
-using System.Text;
 
 AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) =>
 {
@@ -40,7 +37,7 @@ builder.Services
         op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer("User_Bearer", token =>
+    .AddJwtBearer("Bearer", token =>
     {
 #if DEBUG
         token.RequireHttpsMetadata = false;
@@ -49,35 +46,20 @@ builder.Services
         token.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(DbCacheHelper.Option.Get().JwtSecret.ConvertToByteArray()),
-            ValidateIssuer = DbCacheHelper.Option.Get().JwtValidateIssuer,
-            ValidateAudience = DbCacheHelper.Option.Get().JwtValidateAudience,
-            RequireExpirationTime = true,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero,
-        };
-    })
-    .AddJwtBearer("Admin_Bearer",token =>
-    {
-        token.RequireHttpsMetadata = false;
-        token.SaveToken = true;
-        token.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(DbCacheHelper.Option.Get().JwtSecret_Admin.ConvertToByteArray()),
-            ValidateIssuer = DbCacheHelper.Option.Get().JwtValidateIssuer,
-            ValidateAudience = DbCacheHelper.Option.Get().JwtValidateAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(OptionHelper.GetJwtSecret().ConvertToByteArray()),
+            ValidateIssuer = OptionHelper.Option.Get().JwtValidateIssuer,
+            ValidateAudience = OptionHelper.Option.Get().JwtValidateAudience,
             RequireExpirationTime = true,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
         };
     });
 
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
-//    options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
-//});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
+    options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
+});
 
 builder.Services.AddMemoryCache();
 builder.Services.AddDataProtection();
@@ -95,7 +77,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<AdminAuthMiddleware>();
+
 app.UseStaticFiles();
 
 app.UseRouting();

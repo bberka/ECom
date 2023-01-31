@@ -1,34 +1,50 @@
 ﻿
 
-using Domain.DTOs;
-using Domain.Entities;
-using Infrastructure;
-using Infrastructure.Common;
-using System.Security.Cryptography.X509Certificates;
-
-namespace Application.Manager
+namespace ECom.Application.Manager
 {
     public static class ProductMgr
     {
-        public static List<Product> ListProductsBaseByCategory(int categoryId, uint page, OrderByType type = OrderByType.Recommended)
+        public static List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model)
         {
-            var lastIdx = (int)(DbCacheHelper.Option.Get().PagingProductCount * (page - 1));
-            var pageProductCount = DbCacheHelper.Option.Get().PagingProductCount;
+            var lastIdx = (int)(OptionHelper.Option.Get().PagingProductCount * (model.Page - 1));
+            var pageProductCount = OptionHelper.Option.Get().PagingProductCount;
             var products = EComDbContext.New().Products
-                .Where(p => p.Category.Id == categoryId)
+                .Where(p => p.Category.Id == model.CategoryId)
                 .Skip(lastIdx)
                 .Take(pageProductCount)
                 .OrderByDescending(x => x.RegisterDate)
                 .ToList();
             return products;
         }
-        public static List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(int categoryId, uint page, OrderByType type = OrderByType.Recommended)
+        public static List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
         {
-            var lastIdx = (int)(DbCacheHelper.Option.Get().PagingProductCount * (page - 1));
-            var pageProductCount = DbCacheHelper.Option.Get().PagingProductCount;
+            var lastIdx = (int)(OptionHelper.Option.Get().PagingProductCount * (model.Page - 1));
+            var pageProductCount = OptionHelper.Option.Get().PagingProductCount;
             var ctx = EComDbContext.New();
             var products = ctx.Products
-                .Where(p => p.CategoryId == categoryId)
+                .Where(p => p.CategoryId == model.CategoryId)
+                .Skip(lastIdx)
+                .Take(pageProductCount)
+                .OrderByDescending(x => x.RegisterDate)
+                .Join(
+                ctx.ProductDetails,
+                x => x.Id,
+                x => x.ProductId,
+                (p, d) =>
+                new ProductSimpleViewModel
+                {
+                    Product = p,
+                    Details = d
+                })
+                .ToList();
+            return products;
+        }
+        public static List<ProductSimpleViewModel> ListProductsSimpleViewModel(ListProductsModel model)
+        {
+            var lastIdx = (int)(OptionHelper.Option.Get().PagingProductCount * (model.Page - 1));
+            var pageProductCount = OptionHelper.Option.Get().PagingProductCount;
+            var ctx = EComDbContext.New();
+            var products = ctx.Products
                 .Skip(lastIdx)
                 .Take(pageProductCount)
                 .OrderByDescending(x => x.RegisterDate)

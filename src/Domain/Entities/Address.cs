@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace ECom.Domain.Entities
 {
     public class Address
     {
@@ -28,15 +28,15 @@ namespace Domain.Entities
         [MaxLength(64)]
         public string Town { get; set; }
         
-        [MaxLength(64)]
+        [MaxLength(32)]
         public string Country { get; set; }
         public string Provience { get; set; }
         
         [MaxLength(64)]
         public string Details { get; set; }
-        
-        public int PhoneNumber { get; set; }
 
+        [MaxLength(64)]
+        public string PhoneNumber { get; set; }
         public bool IsPreferred { get; set; }
 
         [ForeignKey("UserId")]

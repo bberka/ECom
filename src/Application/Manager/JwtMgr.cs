@@ -1,29 +1,21 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
-using Infrastructure.Validators;
-using Domain.ValueObjects;
-using Infrastructure;
-using System.Security.Cryptography;
-using EasMe;
+﻿using EasMe;
 using EasMe.Extensions;
-using Domain.Constants;
-using Infrastructure.Common;
 
-namespace Application.Manager
+namespace ECom.Application.Manager
 {
     public class JwtMgr : IJwtAuthentication
     {
-        private static readonly EasJWT _easJWT = new(DbCacheHelper.Option.Get().JwtSecret);
+        private static readonly EasJWT _easJWT = new(OptionHelper.Option.Get().JwtSecret);
         private static HashSet<JwtTokenModel> _tokens = new HashSet<JwtTokenModel>();
         public ResultData<JwtTokenModel> Authenticate(LoginModel model)
         {
             if (!UserValidator.ValidateUsername(model.Username))
             {
-                return ResultData<JwtTokenModel>.Error(1, Response.User_InvalidUsername);
+                return ResultData<JwtTokenModel>.Error(1, Response.InvalidUsername);
             }
             if (!UserValidator.ValidatePassword(model.Password))
             {
-                return ResultData<JwtTokenModel>.Error(2, Response.User_InvalidPassword);
+                return ResultData<JwtTokenModel>.Error(2, Response.InvalidPassword);
             }
             
             var ctx = EComDbContext.New();
@@ -33,16 +25,16 @@ namespace Application.Manager
             var user = ctx.Users.Where(x => x.Username == model.Username).SingleOrDefault();
             if (user is null)
             {
-                return ResultData<JwtTokenModel>.Error(3,Response.User_WrongUsername);
+                return ResultData<JwtTokenModel>.Error(3,Response.WrongUsername);
             }
             var realPasswordHashed = user.Password.MD5Hash();
             if (hashed != realPasswordHashed)
             {
-                return ResultData<JwtTokenModel>.Error(4, Response.User_WrongPassword);
+                return ResultData<JwtTokenModel>.Error(4, Response.WrongPassword);
             }
             if (user.IsValid)
             {
-                return ResultData<JwtTokenModel>.Error(5,Response.User_NotValid);
+                return ResultData<JwtTokenModel>.Error(5,Response.NotValid);
             }
             if (user.IsTestAccount)
             {
@@ -57,17 +49,17 @@ namespace Application.Manager
             if (!user.IsEmailVerified)
             {
                 //TODO: Send verify email
-                return ResultData<JwtTokenModel>.Error(6, Response.User_EmailIsNotVerified);
+                return ResultData<JwtTokenModel>.Error(6, Response.EmailIsNotVerified);
             }
             var userClaimsDic = user.ToClaimsIdentity();
-            DateTime expire = DateTime.Now.AddMinutes(DbCacheHelper.Option.Get().JwtExpireMinutesDefault);
+            DateTime expire = DateTime.Now.AddMinutes(OptionHelper.Option.Get().JwtExpireMinutesDefault);
             if (model.RememberMe)
             {
-                expire = DateTime.Now.AddMinutes(DbCacheHelper.Option.Get().JwtExpireMinutesLong);
+                expire = DateTime.Now.AddMinutes(OptionHelper.Option.Get().JwtExpireMinutesLong);
             }
             var token = _easJWT.GenerateJwtToken(userClaimsDic, expire);
             string? refresh = null;
-            if (DbCacheHelper.Option.Get().IsUseRefreshToken)
+            if (OptionHelper.Option.Get().IsUseRefreshToken)
             {
                 refresh = EasGenerate.GenerateRandomString(128);
             }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.Admin
+namespace ECom.WebApi.Controllers.AdminControllers
 {
 
     public class ProductController : BaseAdminController

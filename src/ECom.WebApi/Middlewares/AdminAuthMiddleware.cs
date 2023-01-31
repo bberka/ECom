@@ -1,4 +1,4 @@
-﻿namespace MoonApp.Middleware
+﻿namespace ECom.WebApi.Middlewares
 {
     public class AdminAuthMiddleware
     {

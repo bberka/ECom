@@ -1,13 +1,5 @@
-﻿using Domain.Entities;
-using Domain.Exceptions;
-using Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Manager
+﻿
+namespace ECom.Application.Manager
 {
     public static class UserMgr
     {
@@ -39,7 +31,7 @@ namespace Application.Manager
         {
             var ctx = EComDbContext.New();
             var exist = ctx.Users.Where(x => x.Id == userId).Any();
-            if (!exist) throw new BaseException(Response.User_NotExist);
+            if (!exist) throw new BaseException(Response.NotExist);
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
-namespace Infrastructure
+namespace ECom.Infrastructure
 {
     public class EComDbContext : DbContext
     {

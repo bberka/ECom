@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.User
+namespace ECom.WebApi.Controllers.UserControllers
 {
-
     public class UserController : BaseUserController
     {
         

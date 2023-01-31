@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Constants
+namespace ECom.Domain.Constants
 {
     public enum Response
     {
@@ -15,13 +15,13 @@ namespace Domain.Constants
         Warning,
         InternalDbError,
 
-        User_InvalidUsername,
-        User_InvalidPassword,
-        User_WrongUsername,
-        User_WrongPassword,
-        User_NotValid,
-        User_EmailIsNotVerified,
-        User_NotExist,
+        InvalidUsername,
+        InvalidPassword,
+        WrongUsername,
+        WrongPassword,
+        NotValid,
+        EmailIsNotVerified,
+        NotExist,
         
         //Basket 
         Basket_AddOrIncreaseProduct_Success,

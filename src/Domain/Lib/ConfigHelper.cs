@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Lib
+namespace ECom.Domain.Lib
 {
 	public static class ConfigHelper
 	{

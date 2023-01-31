@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 
-namespace MoonApp.Middleware
+namespace ECom.WebApi.Middlewares
 {
     public class UserAuthMiddleware
     {

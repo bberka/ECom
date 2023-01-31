@@ -1,19 +1,12 @@
-﻿using Domain.Constants;
-using Domain.Interfaces;
-using Infrastructure.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ECom.Infrastructure.Common;
 
-namespace Infrastructure.Validators
+namespace ECom.Infrastructure.Validators
 {
 	public static class UserValidator
 	{
 		public static bool ValidateUsername(string input)
 		{
-			if (input.Length < DbCacheHelper.Option.Get().UsernameMinLength)
+			if (input.Length < OptionHelper.Option.Get().UsernameMinLength)
 			{
 				return false;
 			}
@@ -25,7 +18,7 @@ namespace Infrastructure.Validators
 		}
 		public static bool ValidatePassword(string input)
 		{
-			if (input.Length < DbCacheHelper.Option.Get().PasswordMinLength)
+			if (input.Length < OptionHelper.Option.Get().PasswordMinLength)
 			{
 				return false;
 			}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using EasMe;
 using EasMe.Extensions;
 
-namespace Domain.Constants
+namespace ECom.Domain.Constants
 {
 	public class Constants
 	{

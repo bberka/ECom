@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace ECom.WebApi.Controllers
 {
     [ApiController]
     [Route("api/User/[controller]/[action]")]
-    [Authorize(AuthenticationSchemes = "User_Bearer")]
+    [Authorize(Policy = "UserOnly")]
     public class BaseUserController : Controller
     {
 

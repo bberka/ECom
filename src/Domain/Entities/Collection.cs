@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace ECom.Domain.Entities
 {
     public class Collection
     {
@@ -14,11 +14,8 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        
         public DateTime RegisterDate { get; set; }
 
-
-        
         [MaxLength(128)]
         public string Name { get; set; }
 
