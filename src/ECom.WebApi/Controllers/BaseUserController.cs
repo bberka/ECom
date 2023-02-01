@@ -11,6 +11,6 @@ namespace ECom.WebApi.Controllers
 #endif
     public class BaseUserController : Controller
     {
-        private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(BaseUserController));
+        protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseUserController));
     }
 }

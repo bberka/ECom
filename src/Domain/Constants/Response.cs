@@ -50,5 +50,11 @@ namespace ECom.Domain.Constants
         Basket_AddOrIncreaseProduct_Success,
         Basket_RemoveOrDecreaseProduct_Success,
         Basket_ProductNotFound,
+
+        CategoryIsNull,
+        CategoryNotExists,
+        CategoryAlreadyExists,
+        CategoryUpdated,
+        CategoryDeleted,
     }
 }

@@ -10,6 +10,7 @@ namespace ECom.WebApi.Controllers
 #endif
     public class BaseAdminController : Controller
     {
+        protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseAdminController));
 
     }
 }

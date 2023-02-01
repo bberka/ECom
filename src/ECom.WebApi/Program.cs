@@ -3,7 +3,7 @@ using EasMe.Extensions;
 using ECom.Application.BaseManager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
+using Newtonsoft.Json;
 AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) =>
 {
     try

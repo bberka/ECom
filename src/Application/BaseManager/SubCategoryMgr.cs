@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.BaseManager
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ECom.Application.BaseManager
 {
 	public class SubCategoryMgr : EfEntityRepositoryBase<SubCategory, EComDbContext>
 	{
@@ -13,5 +15,7 @@
 			}
 		}
 		private static SubCategoryMgr? Instance;
+
+		
 	}
 }
