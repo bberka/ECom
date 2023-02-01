@@ -35,13 +35,13 @@ namespace ECom.Domain.Entities
         public string? TwoFactorKey { get; set; }
 
         /// <summary>
-        /// 0: Email
-        /// 1: Phone
-        /// 2: Authy
+        /// 0: None
+        /// 1: Email
+        /// 2: Phone
+        /// 3: Authy
         /// </summary>
-        public byte? TwoFactorType { get; set; }
+        public byte TwoFactorType { get; set; } = 0;
         
-        public bool IsEnabledTwoFactor { get; set; } = false;
 
         public int TotalLoginCount { get; set; }
 
@@ -58,6 +58,7 @@ namespace ECom.Domain.Entities
         [ForeignKey("RoleId")]
         public int? RoleId { get; set; }
         public virtual Role? Role { get; set; }
+        public List<Permission> Permissions { get; set; }
 
     }
 }

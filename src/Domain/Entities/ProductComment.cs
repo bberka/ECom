@@ -39,5 +39,9 @@ namespace ECom.Domain.Entities
         public int? ProductId { get; set; }
         public virtual Product Product { get; set; }
 
+        public List<Image> Images { get; set; }
+
+
+
     }
 }

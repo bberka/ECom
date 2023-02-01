@@ -1,6 +1,6 @@
 using EasMe;
 using EasMe.Extensions;
-
+using ECom.Application.BaseManager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -46,7 +46,7 @@ builder.Services
         token.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(OptionHelper.GetJwtSecret().ConvertToByteArray()),
+            IssuerSigningKey = new SymmetricSecurityKey(OptionMgr.This.GetSingle().JwtSecret.ConvertToByteArray()),
             ValidateIssuer = OptionHelper.Option.Get().JwtValidateIssuer,
             ValidateAudience = OptionHelper.Option.Get().JwtValidateAudience,
             RequireExpirationTime = true,
@@ -83,9 +83,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseCookiePolicy();
 
+#if !DEBUG
 app.UseAuthentication();
 app.UseAuthorization();
-
+#endif
 
 app.MapControllers();
 

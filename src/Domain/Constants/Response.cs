@@ -18,8 +18,14 @@ namespace ECom.Domain.Constants
 		DbErrorForeignKeyIsInvalid,
 
 
+        AccountIsNotValid,
+        AccountDeleted,
+        AccountDisabled,
+        AdminDebugAccountCanNotBeUsed,
+
 		InvalidUsername,
         InvalidPassword,
+        WrongUsernameOrPassword,
         WrongUsername,
         WrongPassword,
         NotValid,
