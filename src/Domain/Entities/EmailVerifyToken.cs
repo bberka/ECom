@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class EmailVerifyToken : IEntity
+    public class EmailVerifyToken : IEfEntity
 	{
         [Key]
         

@@ -27,7 +27,7 @@
             var saveRes = ctx.SaveChanges();
             if(saveRes == 0)
             {
-                return Result.Error(1, Response.InternalDbError);
+                return Result.Error(1, Response.DbErrorInternal);
             }
             return Result.Success(Response.Basket_AddOrIncreaseProduct_Success);
         }
@@ -52,7 +52,7 @@
             var saveRes = ctx.SaveChanges();
             if (saveRes == 0)
             {
-                return Result.Error(1, Response.InternalDbError);
+                return Result.Error(1, Response.DbErrorInternal);
             }
             return Result.Success(Response.Basket_AddOrIncreaseProduct_Success);
         }

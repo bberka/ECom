@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class Product : IEntity
+	public class Product : IEfEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -38,6 +38,8 @@ namespace ECom.Domain.Entities
         public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; }
 
-
-    }
+		[ForeignKey("ProductDetailsId")]
+		public int? ProductDetailsId { get; set; }
+		public virtual ProductDetails ProductDetails { get; set; }
+	}
 }

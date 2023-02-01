@@ -29,3 +29,4 @@ global using ECom.Domain.Models;
 global using ECom.Domain.Constants;
 global using ECom.Domain.Models;
 global using ECom.Domain.ValueObjects;
+global using EasMe.EFCore;

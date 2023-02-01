@@ -15,3 +15,4 @@ global using ECom.Domain.DTOs;
 global using ECom.Infrastructure;
 global using ECom.Infrastructure.Common;
 global using ECom.Domain.Exceptions;
+global using EasMe.EFCore;

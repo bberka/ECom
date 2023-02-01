@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class DiscountCoupon : IEntity
+	public class DiscountCoupon : IEfEntity
 	{
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

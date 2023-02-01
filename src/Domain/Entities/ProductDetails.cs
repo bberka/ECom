@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class ProductDetails : IEntity
+    public class ProductDetails : IEfEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-
-        
         [MaxLength(64)]
         public string Name { get; set; }
 

@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class ProductImageBind : IEntity
+    public class ProductImageBind : IEfEntity
 	{
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
-        [ForeignKey("ImageId")]
+		[Key]
+		[ForeignKey("ImageId")]
         public int? ImageId { get; set; }
         public virtual Image Image { get; set; }
 
-        [ForeignKey("ProductId")]
+		[Key]
+		[ForeignKey("ProductId")]
         public int? ProductId { get; set; }
         public virtual Product Product { get; set; }
     }

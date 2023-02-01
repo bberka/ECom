@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class RoleBind : IEntity
+    public class RoleBind : IEfEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,5 +21,7 @@ namespace ECom.Domain.Entities
         [ForeignKey("PermissionId")]
         public int? PermissionId { get; set; }
         public virtual Permission Permission { get; set; }
+        public bool IsValid { get; set; }
+
     }
 }

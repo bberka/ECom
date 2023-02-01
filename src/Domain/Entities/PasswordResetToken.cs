@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class PasswordResetToken : IEntity
+    public class PasswordResetToken : IEfEntity
 	{
         [Key]
         

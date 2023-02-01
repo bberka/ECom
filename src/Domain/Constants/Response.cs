@@ -13,9 +13,12 @@ namespace ECom.Domain.Constants
         Exception,
         Fatal,
         Warning,
-        InternalDbError,
 
-        InvalidUsername,
+        DbErrorInternal,
+		DbErrorForeignKeyIsInvalid,
+
+
+		InvalidUsername,
         InvalidPassword,
         WrongUsername,
         WrongPassword,
@@ -23,6 +26,9 @@ namespace ECom.Domain.Constants
         EmailIsNotVerified,
         NotExist,
         
+        NotAuthorized,
+        SessionExpired,
+        TokenExpired,
         //Basket 
         Basket_AddOrIncreaseProduct_Success,
         Basket_RemoveOrDecreaseProduct_Success,

@@ -35,3 +35,4 @@ global using ECom.Infrastructure.Validators;
 global using ECom.Domain.Constants;
 global using EasMe;
 global using ECom.Infrastructure.Common;
+global using EasMe.EFCore;

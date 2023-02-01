@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECom.Domain.Entities
 {
-	public class SubCategory : IEntity
+	public class SubCategory : IEfEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

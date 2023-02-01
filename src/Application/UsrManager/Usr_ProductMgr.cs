@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
+
 namespace ECom.Application.UsrManager
 {
     public static class Usr_ProductMgr
@@ -16,29 +18,30 @@ namespace ECom.Application.UsrManager
                 .ToList();
             return products;
         }
-        public static List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
-        {
-            var lastIdx = (int)(OptionHelper.Option.Get().PagingProductCount * (model.Page - 1));
-            var pageProductCount = OptionHelper.Option.Get().PagingProductCount;
-            var ctx = EComDbContext.New();
-            var products = ctx.Products
-                .Where(p => p.CategoryId == model.CategoryId)
-                .Skip(lastIdx)
-                .Take(pageProductCount)
-                .OrderByDescending(x => x.RegisterDate)
-                .Join(
-                ctx.ProductDetails,
-                x => x.Id,
-                x => x.ProductId,
-                (p, d) =>
-                new ProductSimpleViewModel
-                {
-                    Product = p,
-                    Details = d
-                })
-                .ToList();
-            return products;
-        }
+		public static List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
+		{
+			var lastIdx = (int)(OptionHelper.Option.Get().PagingProductCount * (model.Page - 1));
+			var pageProductCount = OptionHelper.Option.Get().PagingProductCount;
+			var ctx = EComDbContext.New();
+			var products = ctx.Products
+				.Where(p => p.CategoryId == model.CategoryId)
+				.Skip(lastIdx)
+				.Take(pageProductCount)
+				.OrderByDescending(x => x.RegisterDate)
+				.Join(
+				ctx.ProductDetails,
+				x => x.Id,
+				x => x.ProductId,
+				(p, d) =>
+				new ProductSimpleViewModel
+				{
+					Product = p,
+					Details = d
+				})
+				.ToList();
+			return products;
+		}
+		
         public static List<ProductSimpleViewModel> ListProductsSimpleViewModel(ListProductsModel model)
         {
             var lastIdx = (int)(OptionHelper.Option.Get().PagingProductCount * (model.Page - 1));

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class Option : IEntity
+    public class Option : IEfEntity
 	{
         [Key]
         
