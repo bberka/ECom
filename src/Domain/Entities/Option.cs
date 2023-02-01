@@ -51,11 +51,6 @@ namespace ECom.Domain.Entities
         
         public bool RequireNumberInPassword { get; set; }
 
-        [MaxLength(128)]
-        public string? AllowedSpecialCharactersInUsername { get; set; }
-        [MaxLength(128)]
-        public string? AllowedSpecialCharactersInPassword { get; set; }
-
         
         [MaxLength(128)]
         public string DomainUrl { get; set; }

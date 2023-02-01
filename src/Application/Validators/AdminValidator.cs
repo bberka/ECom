@@ -3,10 +3,10 @@ using FluentValidation;
 
 namespace ECom.Application.Validators
 {
-	public class UserValidator : AbstractValidator<User>
+	public class AdminValidator : AbstractValidator<Admin>
 	{
 
-		public static UserValidator This
+		public static AdminValidator This
 		{
 			get
 			{
@@ -14,8 +14,8 @@ namespace ECom.Application.Validators
 				return Instance;
 			}
 		}
-		private static UserValidator? Instance;
-		private UserValidator()
+		private static AdminValidator? Instance;
+		private AdminValidator()
 		{
 			RuleFor(x => x.EmailAddress)
 				.NotNull()

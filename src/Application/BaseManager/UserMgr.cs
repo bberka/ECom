@@ -30,37 +30,31 @@ namespace ECom.Application.BaseManager
 			}
 			var user = model.ToUserEntity();
 			var res = Add(user);
-			if (res == false) return Result.Error(1, Response.DbErrorInternal);
+			if (res == false) return Result.Error(2, Response.DbErrorInternal);
 			return Result.Success();
 		}
 		public ResultData<User> Login(LoginModel model)
 		{
-			var user = GetUser(model.Username);
+			var validateResult = LoginValidator.This.Validate(model);
+			if (!validateResult.IsValid)
+			{
+				return ResultData<User>.Error(1, validateResult.Errors.First().ErrorCode.ToResponseEnum());
+			}
+			var user = GetUser(model.EmailAddress);
 			if (user is null)
 			{
-				return ResultData<User>.Error(1, Response.WrongUsernameOrPassword);
-			}
-			if (user.IsValid == true)
-			{
-				return ResultData<User>.Error(2, Response.AccountIsNotValid);
-			}
-			if (user.DeletedDate != null)
-			{
-				return ResultData<User>.Error(3, Response.AccountDeleted);
-			}
-			if (OptionMgr.This.GetSingle().IsDebug == false && user.IsTestAccount == true)
-			{
-				throw new BaseException(Response.AdminDebugAccountCanNotBeUsed);
+				return ResultData<User>.Error(2, Response.AccountNotFound);
 			}
 			var hashed = model.Password.MD5Hash().ConvertToString();
 			if (user.Password != hashed)
 			{
 				IncreaseFailedPasswordCount(user);
-				return ResultData<User>.Error(4, Response.WrongUsernameOrPassword);
+				return ResultData<User>.Error(3, Response.AccountNotFound);
 			}
-			if (user.IsEmailVerified == false)
+			var validateResult2 = UserValidator.This.Validate(user);
+			if (!validateResult2.IsValid)
 			{
-				return ResultData<User>.Error(5, Response.EmailIsNotVerified);
+				return ResultData<User>.Error(4, validateResult.Errors.First().ErrorCode.ToResponseEnum());
 			}
 			if (user.TwoFactorType != 0)
 			{
@@ -94,14 +88,14 @@ namespace ECom.Application.BaseManager
 			var res = UpdateSingleOrDefault(x => x.Id == userId, x => x.FailedPasswordCount++);
 			return res;
 		}
-		public User? GetUser(string username)
+		public User? GetUser(string email)
 		{
-			var user = GetFirstOrDefault(x => x.Username == username);
+			var user = GetFirstOrDefault(x => x.EmailAddress == email);
 			return user;
 		}
-		public User GetUserSingle(string username)
+		public User GetUserSingle(string email)
 		{
-			var user = GetSingle(x => x.Username == username);
+			var user = GetSingle(x => x.EmailAddress == email);
 			return user;
 		}
 		public void CheckUserExist(int userId)
@@ -109,13 +103,6 @@ namespace ECom.Application.BaseManager
 			var exist = Any(x => x.Id == userId);
 			if (!exist) throw new BaseException(Response.UserNotExist);
 		}
-		public bool NotExistUsername(string username)
-		{
-			return !Any(x => x.Username == username);
-		}
-		public bool NotExistEmail(string username)
-		{
-			return !Any(x => x.Username == username);
-		}
+		
 	}
 }

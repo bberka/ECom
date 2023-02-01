@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using EasMe;
 using EasMe.Extensions;
 using ECom.Domain.Extensions;
+using ECom.Application.Validators;
 
 namespace ECom.Application.BaseManager
 {
@@ -35,33 +36,26 @@ namespace ECom.Application.BaseManager
 		}
 		public ResultData<Admin> Login(LoginModel model)
 		{
-			var ctx = new EComDbContext();
-			var admin = ctx.Admins.Where(x => x.Username == model.Username).SingleOrDefault();
+			var validateResult = LoginValidator.This.Validate(model);
+			if (!validateResult.IsValid)
+			{
+				return ResultData<Admin>.Error(1, validateResult.Errors.First().ErrorCode.ToResponseEnum());
+			}
+			var admin = GetAdmin(model.EmailAddress);
 			if (admin is null)
 			{
-				return ResultData<Admin>.Error(1, Response.WrongUsernameOrPassword);
-			}
-			if(admin.IsValid == true)
-			{
-				return ResultData<Admin>.Error(2, Response.AccountIsNotValid);
-			}
-			if(admin.DeletedDate != null)
-			{
-				return ResultData<Admin>.Error(3, Response.AccountDeleted);
-			}
-			if (OptionMgr.This.GetSingle().IsDebug == false && admin.IsTestAccount == true)
-			{
-				throw new BaseException(Response.AdminDebugAccountCanNotBeUsed);
+				return ResultData<Admin>.Error(2, Response.AccountNotFound);
 			}
 			var hashed = model.Password.MD5Hash().ConvertToString();
-			if(admin.Password != hashed)
+			if (admin.Password != hashed)
 			{
 				IncreaseFailedPasswordCount(admin);
-				return ResultData<Admin>.Error(4, Response.WrongUsernameOrPassword);
+				return ResultData<Admin>.Error(3, Response.AccountNotFound);
 			}
-			if (admin.IsEmailVerified == false)
+			var validateResult2 = AdminValidator.This.Validate(admin);
+			if (!validateResult2.IsValid)
 			{
-				return ResultData<Admin>.Error(5, Response.EmailIsNotVerified);
+				return ResultData<Admin>.Error(4, validateResult.Errors.First().ErrorCode.ToResponseEnum());
 			}
 			if (admin.TwoFactorType != 0)
 			{
@@ -88,6 +82,10 @@ namespace ECom.Application.BaseManager
 			admin.FailedPasswordCount++; 
 			ctx.Update(admin);
 			return ctx.SaveChanges() == 1;
+		}
+		public Admin? GetAdmin(string email)
+		{
+			return GetFirst(x => x.EmailAddress == email);
 		}
 
 

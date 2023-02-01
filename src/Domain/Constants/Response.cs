@@ -21,24 +21,23 @@ namespace ECom.Domain.Constants
 
 
         AccountIsNotValid,
-        AccountDeleted,
+        AccountIsDeleted,
         AccountDisabled,
-        AdminDebugAccountCanNotBeUsed,
+        DebugAccountCanNotBeUsed,
 
-        UsernameRequired,
         PasswordRequired,
-        UsernameTooShort,
-        UsernameTooLong,
         PasswordTooShort,
         PasswordTooLong,
-        PasswordCanNotBeEqualUsername,
-        UsernameCanNotBeEqualEmail,
         InvalidEmailAddress,
-        UsernameIsInUse,
         EmailIsInUse,
+        PasswordCanNotContainSpace,
+        PasswordMustContainSpecialCharacter,
+        PasswordMustContainNumber,
+		PasswordMustContainLowerCase,
+		PasswordMustContainUpperCase,
 
-        WrongUsernameOrPassword,
-        WrongUsername,
+
+        AccountNotFound,
         WrongPassword,
         NotValid,
         EmailIsNotVerified,

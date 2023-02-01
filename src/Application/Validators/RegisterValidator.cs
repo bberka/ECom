@@ -1,4 +1,5 @@
-﻿using ECom.Application.BaseManager;
+﻿using EasMe;
+using ECom.Application.BaseManager;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -22,22 +23,6 @@ namespace ECom.Application.Validators
 		private static RegisterValidator? Instance;
 		private RegisterValidator()
 		{
-			RuleFor(x => x.Username)
-				.NotNull()
-				.NotEmpty()
-				.WithErrorCode(Response.UsernameRequired.ToString());
-
-			RuleFor(x => x.Username)
-				.MinimumLength(ConstantMgr.UsernameMinLength)
-				.WithErrorCode(Response.UsernameTooShort.ToString());
-
-			RuleFor(x => x.Username)
-				.MaximumLength(ConstantMgr.UsernameMaxLength)
-				.WithErrorCode(Response.UsernameTooLong.ToString());
-
-			RuleFor(x => x.Username)
-				.NotEqual(x => x.EmailAddress)
-				.WithErrorCode(Response.UsernameCanNotBeEqualEmail.ToString());
 
 			RuleFor(x => x.Password)
 				.NotNull()
@@ -52,9 +37,6 @@ namespace ECom.Application.Validators
 				.MaximumLength(ConstantMgr.PasswordMaxLength)
 				.WithErrorCode(Response.PasswordTooLong.ToString());
 
-			RuleFor(x => x.Password)
-				.NotEqual(x => x.Username)
-				.WithErrorCode(Response.PasswordCanNotBeEqualUsername.ToString());
 
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
@@ -63,23 +45,74 @@ namespace ECom.Application.Validators
 				.WithErrorCode(Response.InvalidEmailAddress.ToString());
 
 
-			RuleFor(x => x.Username)
-				.Must(NotExistUsername)
-				.WithErrorCode(Response.UsernameIsInUse.ToString());
+			RuleFor(x => x.Password)
+				.Must(NotHasSpace)
+				.WithErrorCode(Response.PasswordCanNotContainSpace.ToString());
+
+			RuleFor(x => x.Password)
+				.Must(NotHasSpecialChar)
+				.WithErrorCode(Response.PasswordMustContainSpecialCharacter.ToString());
+
+			RuleFor(x => x.Password)
+				.Must(NotHasNumber)
+				.WithErrorCode(Response.PasswordMustContainNumber.ToString());
+
+			RuleFor(x => x.Password)
+				.Must(NotHasLowerCase)
+				.WithErrorCode(Response.PasswordMustContainLowerCase.ToString());
+
+			RuleFor(x => x.Password)
+				.Must(NotHasUpperCase)
+				.WithErrorCode(Response.PasswordMustContainUpperCase.ToString());
 
 			RuleFor(x => x.EmailAddress)
-				.Must(NotExistEmail)
-				.WithErrorCode(Response.EmailIsInUse.ToString());
-		}
-		public bool NotExistUsername(string username)
-		{
-			return !UserMgr.This.Any(x => x.Username == username);
-		}
-		public bool NotExistEmail(string email)
-		{
-			return !UserMgr.This.Any(x => x.Email == email);
+			.Must(NotExistEmail)
+			.WithErrorCode(Response.EmailIsInUse.ToString());
 		}
 
-
+		private bool NotExistEmail(string email)
+		{
+			return !UserMgr.This.Any(x => x.EmailAddress == email);
+		}
+		private bool NotHasSpecialChar(string password)
+		{
+			var option = OptionMgr.This.Cache.Get();
+			if (!option.RequireSpecialCharacterInPassword)
+			{
+				return true;
+			}
+			return !EasValidate.HasSpecialChars(password);
+		}
+		private bool NotHasNumber(string password)
+		{
+			var option = OptionMgr.This.Cache.Get();
+			if (!option.RequireNumberInPassword)
+			{
+				return true;
+			}
+			return !password.Any(x => char.IsDigit(x));
+		}
+		private bool NotHasLowerCase(string password)
+		{
+			var option = OptionMgr.This.Cache.Get();
+			if (!option.RequireLowerCaseInPassword)
+			{
+				return true;
+			}
+			return !password.Any(x => char.IsLower(x));
+		}
+		private bool NotHasUpperCase(string password)
+		{
+			var option = OptionMgr.This.Cache.Get();
+			if (!option.RequireUpperCaseInPassword)
+			{
+				return true;
+			}
+			return !password.Any(x => char.IsUpper(x));
+		}
+		private bool NotHasSpace(string password)
+		{
+			return !password.Any(x => x == ' ');
+		}
 	}
 }

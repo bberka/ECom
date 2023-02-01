@@ -20,14 +20,12 @@ namespace ECom.Domain.Entities
         public bool IsValid { get; set; }
         public bool IsTestAccount { get; set; } = false;
 
-        [MaxLength(32)]
-        public string Username { get; set; }
 
         [MaxLength(64)]
         public string Password { get; set; }
 
         [MaxLength(255)]
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
 
         public bool IsEmailVerified { get; set; } = false;
 

@@ -12,7 +12,6 @@ namespace ECom.Domain.Models
 {
 	public class RegisterModel
 	{
-		public string Username { get; set; }
 		public string Password { get; set; }
 		public string EmailAddress { get; set; }
 		public string PhoneNumber { get; set; }
@@ -27,10 +26,9 @@ namespace ECom.Domain.Models
 				CitizenShipNumber = CitizenshipNumber,
 				RegisterDate = DateTime.Now,
 				DeletedDate = null,
-				Email = EmailAddress,
+				EmailAddress = EmailAddress,
 				PhoneNumber = PhoneNumber,
 				FailedPasswordCount = 0,
-				Username = Username,
 				Password = Convert.ToBase64String(Password.MD5Hash()),
 				IsEmailVerified = false,
 				IsValid = true,

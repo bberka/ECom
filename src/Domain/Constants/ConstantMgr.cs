@@ -11,13 +11,13 @@ namespace ECom.Domain.Constants
 {
 	public class ConstantMgr
 	{
-		public const int UsernameMinLength = 3;
-		public const int UsernameMaxLength = 32;
+		public const int NameMinLength = 3;
+		public const int NameMaxLength = 32;
 
+		public const int EmailMaxLength = 255;
 
 		public const int PasswordMinLength = 3;
 		public const int PasswordMaxLength = 32;
-		public const int EmailMaxLength = 255;
 
 
 	}

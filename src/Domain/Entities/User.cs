@@ -21,21 +21,29 @@ namespace ECom.Domain.Entities
 
 		public bool IsTestAccount { get; set; } = false;
 
-		[MaxLength(ConstantMgr.UsernameMaxLength)]
-		public string Username{ get; set; }
+
 		
 		[MaxLength(ConstantMgr.PasswordMaxLength)]
 		public string Password { get; set; }
 
 		[MaxLength(ConstantMgr.EmailMaxLength)]
-		public string Email { get; set; }
+		public string EmailAddress { get; set; }
+
+
 
 		public bool IsEmailVerified { get; set; } = false;
 
         [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
-        public int? CitizenShipNumber { get; set; }
+		[MaxLength(ConstantMgr.NameMaxLength)]
+		public string Name { get; set; }
+
+
+		[MaxLength(ConstantMgr.NameMaxLength)]
+		public string Surname { get; set; }
+
+		public int? CitizenShipNumber { get; set; }
         public int? TaxNumber { get; set; }
 
         [MaxLength(512)]
