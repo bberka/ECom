@@ -14,12 +14,11 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        
         [MaxLength(64)]
-        public int Name { get; set; }
+        public string Name { get; set; }
         
         [MaxLength(256)]
-        public int Memo { get; set; }
+        public string Memo { get; set; }
         
         public bool IsValid { get; set; }
     }

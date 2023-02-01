@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECom.Domain.Constants;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,18 +21,18 @@ namespace ECom.Domain.Entities
 
 		public bool IsTestAccount { get; set; } = false;
 
-		[MaxLength(32)]
+		[MaxLength(ConstantMgr.UsernameMaxLength)]
 		public string Username{ get; set; }
 		
-		[MaxLength(64)]
+		[MaxLength(ConstantMgr.PasswordMaxLength)]
 		public string Password { get; set; }
 
-		[MaxLength(255)]
+		[MaxLength(ConstantMgr.EmailMaxLength)]
 		public string Email { get; set; }
 
 		public bool IsEmailVerified { get; set; } = false;
 
-        [MaxLength(32)]
+        [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
         public int? CitizenShipNumber { get; set; }
@@ -63,14 +64,14 @@ namespace ECom.Domain.Entities
 
 		public DateTime? LastLoginDate { get; set; }
 
-		public byte FailedPasswordCount { get; set; } = 0;
+		public int FailedPasswordCount { get; set; } = 0;
 
 		public DateTime? LastPasswordUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
 
         [ForeignKey("PreferredLanguageId")]
         public int? PreferredLanguageId { get; set; }
-        public virtual Category PreferredLanguage { get; set; }
+        public virtual Language PreferredLanguage { get; set; }
 
     }
 }

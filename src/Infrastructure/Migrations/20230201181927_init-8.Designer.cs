@@ -4,6 +4,7 @@ using ECom.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230201181927_init-8")]
+    partial class init8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -873,7 +876,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("AdminId");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
@@ -1085,10 +1088,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Memo")
-                        .IsRequired()
+                    b.Property<int>("Memo")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1097,7 +1099,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.RoleBind", b =>
@@ -1787,7 +1789,7 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.User", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Language", "PreferredLanguage")
+                    b.HasOne("ECom.Domain.Entities.Category", "PreferredLanguage")
                         .WithMany()
                         .HasForeignKey("PreferredLanguageId");
 

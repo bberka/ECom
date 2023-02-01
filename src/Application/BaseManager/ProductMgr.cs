@@ -1,5 +1,6 @@
 ﻿
 using ECom.Application.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,10 +27,14 @@ namespace ECom.Application.BaseManager
 
 		public List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model)
 		{
-			var lastIdx = (int)(OptionMgr.This.Cache.Get().PagingProductCount * (model.Page - 1));
-			var pageProductCount = OptionMgr.This.Cache.Get().PagingProductCount;
+			var option = OptionMgr.This.Cache.Get();
+			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
+			var pageProductCount = option.PagingProductCount;
 			var products = EComDbContext.New().Products
 				.Where(p => p.Category.Id == model.CategoryId)
+				.Include(x => x.Comments)
+				.Include(x => x.Details)
+				.Include(x => x.Variants)
 				.Skip(lastIdx)
 				.Take(pageProductCount)
 				.OrderByDescending(x => x.RegisterDate)

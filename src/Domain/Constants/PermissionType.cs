@@ -8,7 +8,7 @@ namespace ECom.Domain.Constants
 {
     public enum PermissionType
     {
-        None = 0,
+        None,
         
     }
 }

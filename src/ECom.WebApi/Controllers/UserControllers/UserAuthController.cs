@@ -32,6 +32,26 @@ namespace ECom.WebApi.Controllers.UserControllers
                 return StatusCode(500);
             }
         }
+		[HttpPost]
+		public IActionResult Register([FromBody] RegisterModel model)
+		{
+			try
+			{
+				var res = UserMgr.This.Register(model);
+				if (!res.IsSuccess)
+				{
+					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+					return BadRequest(res);
+				}
+				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+				return Ok(res);
 
-    }
+			}
+			catch (Exception ex)
+			{
+				logger.Exception(ex, $"Login({model.ToJsonString()})");
+				return StatusCode(500);
+			}
+		}
+	}
 }

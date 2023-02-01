@@ -8,7 +8,9 @@ namespace ECom.Domain.Constants
 {
     public enum Response
     {
-        Success,
+
+		None,
+		Success,
         UnexpectedError,
         Exception,
         Fatal,
@@ -23,8 +25,18 @@ namespace ECom.Domain.Constants
         AccountDisabled,
         AdminDebugAccountCanNotBeUsed,
 
-		InvalidUsername,
-        InvalidPassword,
+        UsernameRequired,
+        PasswordRequired,
+        UsernameTooShort,
+        UsernameTooLong,
+        PasswordTooShort,
+        PasswordTooLong,
+        PasswordCanNotBeEqualUsername,
+        UsernameCanNotBeEqualEmail,
+        InvalidEmailAddress,
+        UsernameIsInUse,
+        EmailIsInUse,
+
         WrongUsernameOrPassword,
         WrongUsername,
         WrongPassword,

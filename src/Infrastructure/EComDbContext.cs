@@ -29,7 +29,6 @@ namespace ECom.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Permission> Roles { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Option> Options { get; set; }
@@ -57,6 +56,7 @@ namespace ECom.Infrastructure
         public DbSet<CargoOption> CargoOptions { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RoleBind> RoleBinds { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<BasketProduct> BasketProducts { get; set; }
         public DbSet<Address> Addresses { get; set; }

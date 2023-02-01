@@ -15,7 +15,7 @@ AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledException
         EasLogFactory.StaticLogger.Fatal(e.ToJsonString(), "UnhandledException");
     }
 };
-
+EasLogFactory.LoadConfig_TraceDefault(true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,7 +84,7 @@ app.UseRouting();
 app.UseCookiePolicy();
 
 
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 

@@ -1,5 +1,6 @@
 ﻿using EasMe;
 using EasMe.Extensions;
+using ECom.Application.Validators;
 using ECom.Domain.Entities;
 using ECom.Domain.Extensions;
 using ECom.Infrastructure.Abstract;
@@ -20,43 +21,53 @@ namespace ECom.Application.BaseManager
 		}
 		private static UserMgr? Instance;
 
-	
+		public Result Register(RegisterModel model)
+		{
+			var validateResult = RegisterValidator.This.Validate(model);
+			if (!validateResult.IsValid)
+			{
+				return Result.Error(1, validateResult.Errors.First().ErrorCode.ToResponseEnum());
+			}
+			var user = model.ToUserEntity();
+			var res = Add(user);
+			if (res == false) return Result.Error(1, Response.DbErrorInternal);
+			return Result.Success();
+		}
 		public ResultData<User> Login(LoginModel model)
 		{
-			var ctx = new EComDbContext();
-			var admin = ctx.Users.Where(x => x.Username == model.Username).SingleOrDefault();
-			if (admin is null)
+			var user = GetUser(model.Username);
+			if (user is null)
 			{
 				return ResultData<User>.Error(1, Response.WrongUsernameOrPassword);
 			}
-			if (admin.IsValid == true)
+			if (user.IsValid == true)
 			{
 				return ResultData<User>.Error(2, Response.AccountIsNotValid);
 			}
-			if (admin.DeletedDate != null)
+			if (user.DeletedDate != null)
 			{
 				return ResultData<User>.Error(3, Response.AccountDeleted);
 			}
-			if (OptionMgr.This.GetSingle().IsDebug == false && admin.IsTestAccount == true)
+			if (OptionMgr.This.GetSingle().IsDebug == false && user.IsTestAccount == true)
 			{
 				throw new BaseException(Response.AdminDebugAccountCanNotBeUsed);
 			}
 			var hashed = model.Password.MD5Hash().ConvertToString();
-			if (admin.Password != hashed)
+			if (user.Password != hashed)
 			{
-				IncreaseFailedPasswordCount(admin);
+				IncreaseFailedPasswordCount(user);
 				return ResultData<User>.Error(4, Response.WrongUsernameOrPassword);
 			}
-			if (admin.IsEmailVerified == false)
+			if (user.IsEmailVerified == false)
 			{
 				return ResultData<User>.Error(5, Response.EmailIsNotVerified);
 			}
-			if (admin.TwoFactorType != 0)
+			if (user.TwoFactorType != 0)
 			{
 				//TODO
 			}
-			UpdateSuccessLogin(admin);
-			return ResultData<User>.Success(admin);
+			UpdateSuccessLogin(user);
+			return ResultData<User>.Success(user);
 		}
 		
 		public bool UpdateSuccessLogin(User user)
@@ -97,6 +108,14 @@ namespace ECom.Application.BaseManager
 		{
 			var exist = Any(x => x.Id == userId);
 			if (!exist) throw new BaseException(Response.UserNotExist);
+		}
+		public bool NotExistUsername(string username)
+		{
+			return !Any(x => x.Username == username);
+		}
+		public bool NotExistEmail(string username)
+		{
+			return !Any(x => x.Username == username);
 		}
 	}
 }
