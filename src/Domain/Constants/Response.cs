@@ -30,7 +30,7 @@ namespace ECom.Domain.Constants
         WrongPassword,
         NotValid,
         EmailIsNotVerified,
-        NotExist,
+        UserNotExist,
         
         NotAuthorized,
         SessionExpired,

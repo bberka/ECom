@@ -40,7 +40,6 @@ namespace ECom.Domain.Entities
 
 		public List<ProductDetails> Details { get; set; }
 		public List<ProductComment> Comments { get; set; }
-
 		public List<Product> Variants { get; set; }
 
 	}

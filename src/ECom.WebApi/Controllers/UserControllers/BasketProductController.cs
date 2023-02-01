@@ -2,7 +2,7 @@
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-    public class UserController : BaseUserController
+    public class BasketProductController : BaseUserController
     {
         
     }

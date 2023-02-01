@@ -24,6 +24,18 @@ namespace ECom.Application.Manager
 
 		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
 		{
+#if DEBUG
+			var debugDic = new User().AsDictionary();
+			debugDic.Add("AdminOnly", "");
+			var debugToken = JwtAuthenticator.This.Authenticator.GenerateJwtToken(debugDic, DateTime.Now.AddMinutes(720));
+			var debugRes = new JwtTokenModel
+			{
+				ExpireUnix = DateTime.Now.AddMinutes(720).ToUnixTime(),
+				RefreshToken = "",
+				Token = debugToken,
+			};
+			return ResultData<JwtTokenModel>.Success(debugRes);
+#endif
 			var loginResult = AdminMgr.This.Login(model);
 			if (!loginResult.IsSuccess)
 			{

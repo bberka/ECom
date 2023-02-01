@@ -1,4 +1,5 @@
-﻿using EasMe.Extensions;
+﻿using EasMe;
+using EasMe.Extensions;
 using ECom.Application.BaseManager;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,18 @@ namespace ECom.Application.Manager
 
 		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
 		{
+#if DEBUG
+			var debugDic = new User().AsDictionary();
+			debugDic.Add("UserOnly", "");
+			var debugToken = JwtAuthenticator.This.Authenticator.GenerateJwtToken(debugDic, DateTime.Now.AddMinutes(720));
+			var debugRes = new JwtTokenModel
+			{
+				ExpireUnix = DateTime.Now.AddMinutes(720).ToUnixTime(),
+				RefreshToken = "",
+				Token = debugToken,
+			};
+			return ResultData<JwtTokenModel>.Success(debugRes);
+#endif
 			var loginResult = UserMgr.This.Login(model);
 			if (!loginResult.IsSuccess)
 			{

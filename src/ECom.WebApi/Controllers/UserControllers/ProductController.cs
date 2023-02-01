@@ -1,5 +1,5 @@
 ﻿
-using ECom.Application.UsrManager;
+using ECom.Application.BaseManager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -9,7 +9,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [HttpPost]
         public IActionResult ListProducts([FromBody] ListProductsModel model)
         {
-            return Ok(Usr_ProductMgr.ListProductsSimpleViewModel(model));
+            return Ok(ProductMgr.This.ListProductsSimpleViewModel(model));
         }
     }
 }

@@ -6,7 +6,7 @@ using ECom.Infrastructure.Abstract;
 
 namespace ECom.Application.BaseManager
 {
-	public class UserMgr : EfEntityRepositoryBase<User, EComDbContext>, IUserMgr
+	public class UserMgr : EfEntityRepositoryBase<User, EComDbContext>
 	{
 
 		private UserMgr() { }
@@ -77,6 +77,26 @@ namespace ECom.Application.BaseManager
 			user.FailedPasswordCount++;
 			ctx.Update(user);
 			return ctx.SaveChanges() == 1;
+		}
+		public bool IncreaseFailedPasswordCount(int userId)
+		{
+			var res = UpdateSingleOrDefault(x => x.Id == userId, x => x.FailedPasswordCount++);
+			return res;
+		}
+		public User? GetUser(string username)
+		{
+			var user = GetFirstOrDefault(x => x.Username == username);
+			return user;
+		}
+		public User GetUserSingle(string username)
+		{
+			var user = GetSingle(x => x.Username == username);
+			return user;
+		}
+		public void CheckUserExist(int userId)
+		{
+			var exist = Any(x => x.Id == userId);
+			if (!exist) throw new BaseException(Response.UserNotExist);
 		}
 	}
 }

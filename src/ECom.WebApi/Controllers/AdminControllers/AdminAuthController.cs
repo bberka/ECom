@@ -1,6 +1,4 @@
-﻿using EasMe;
-using EasMe.Extensions;
-using Microsoft.AspNetCore.Mvc;
+﻿
 
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -12,7 +10,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public IActionResult Login([FromBody] LoginModel model)
         {
 #if DEBUG
-            var jwt = new EasJWT(OptionHelper.GetJwtSecret());
+            var jwt = new EasJWT(OptionMgr.This.Cache.Get().JwtSecret);
             var adm = new Admin();
             var dic = adm.AsDictionary();
             dic.Add("AdminOnly","");

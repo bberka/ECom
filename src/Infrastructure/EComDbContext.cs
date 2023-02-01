@@ -11,8 +11,19 @@ namespace ECom.Infrastructure
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["EComDB"].ConnectionString);
+
+
 		}
-        public static EComDbContext New() => new EComDbContext();
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<ProductImageBind>()
+                .HasKey(u => new
+			{
+				u.ProductId,
+				u.ImageId
+			});
+		}
+		public static EComDbContext New() => new EComDbContext();
 
 		public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }

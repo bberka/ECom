@@ -1,5 +1,6 @@
 ﻿using EasMe;
 using EasMe.Extensions;
+using ECom.Application.Manager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -8,17 +9,28 @@ namespace ECom.WebApi.Controllers.UserControllers
     [Route("api/User/[controller]/[action]")]
     public class AuthController : Controller
     {
-        [HttpPost]
+		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
+
+		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
-#if DEBUG
-            var jwt = new EasJWT(OptionHelper.GetJwtSecret());
-            var adm = new Admin();
-            var dic = adm.AsDictionary();
-            dic.Add("UserOnly", "");
-            var token = jwt.GenerateJwtToken(dic, DateTime.Now.AddMinutes(10));
-#endif
-            return Ok(token);
+            try
+            {
+                var res = UserJwtAuthenticator.This.Authenticate(model);
+                if (!res.IsSuccess)
+                {
+				    logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+					return BadRequest(res);
+                }
+                logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+				return Ok(res);
+
+			}
+			catch (Exception ex)
+            {
+				logger.Exception(ex,$"Login({model.ToJsonString()})");
+                return StatusCode(500);
+            }
         }
 
     }

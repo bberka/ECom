@@ -31,8 +31,6 @@ global using ECom.Domain.Interfaces;
 global using ECom.Domain.Lib;
 global using ECom.Domain.Localization;
 global using ECom.Domain.Models;
-global using ECom.Infrastructure.Validators;
 global using ECom.Domain.Constants;
 global using EasMe;
-global using ECom.Infrastructure.Common;
 global using EasMe.EFCore;

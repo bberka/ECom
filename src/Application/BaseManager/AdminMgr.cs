@@ -14,7 +14,7 @@ using ECom.Domain.Extensions;
 
 namespace ECom.Application.BaseManager
 {
-	public class AdminMgr : EfEntityRepositoryBase<Admin, EComDbContext>, IAdminMgr,IPersonMgrBase
+	public class AdminMgr : EfEntityRepositoryBase<Admin, EComDbContext>
 	{
 		private AdminMgr() { }
 		public static AdminMgr This
@@ -73,6 +73,7 @@ namespace ECom.Application.BaseManager
 		public bool UpdateSuccessLogin(Admin admin)
 		{
 			var req = HttpContextHelper.Current.GetNecessaryRequestData();
+			if (req == null) return false;
 			admin.TotalLoginCount++;
 			admin.LastLoginDate= DateTime.Now;
 			admin.LastLoginIp = req.IpAddress;

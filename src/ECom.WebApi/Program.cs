@@ -47,8 +47,8 @@ builder.Services
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(OptionMgr.This.GetSingle().JwtSecret.ConvertToByteArray()),
-            ValidateIssuer = OptionHelper.Option.Get().JwtValidateIssuer,
-            ValidateAudience = OptionHelper.Option.Get().JwtValidateAudience,
+            ValidateIssuer = OptionMgr.This.Cache.Get().JwtValidateIssuer,
+            ValidateAudience = OptionMgr.This.Cache.Get().JwtValidateAudience,
             RequireExpirationTime = true,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
@@ -83,10 +83,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseCookiePolicy();
 
-#if !DEBUG
-app.UseAuthentication();
+
+//app.UseAuthentication();
 app.UseAuthorization();
-#endif
+
 
 app.MapControllers();
 

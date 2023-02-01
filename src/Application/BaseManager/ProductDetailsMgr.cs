@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace ECom.Domain.Entities
+namespace ECom.Application.BaseManager
 {
 	public class ProductDetailsMgr : EfEntityRepositoryBase<ProductDetails, EComDbContext>
 	{

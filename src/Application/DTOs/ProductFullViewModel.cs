@@ -1,5 +1,5 @@
 ﻿
-namespace ECom.Domain.DTOs
+namespace ECom.Application.DTOs
 {
     public class ProductFullViewModel
     {
