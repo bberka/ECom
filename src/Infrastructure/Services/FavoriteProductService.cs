@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class FavoriteProductDal : EfEntityRepositoryBase<FavoriteProduct, EComDbContext>
+	public interface IFavoriteProductService : IEfEntityRepository<FavoriteProduct>
+	{
+	}
+	public class FavoriteProductService : EfEntityRepositoryBase<FavoriteProduct, EComDbContext>, IFavoriteProductService
 	{
 
 	}

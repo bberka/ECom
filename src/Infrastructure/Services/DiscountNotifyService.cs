@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-    public class DiscountNotifyService : EfEntityRepositoryBase<DiscountCoupon, EComDbContext>
+	public interface IDiscountNotifyService : IEfEntityRepository<DiscountNotify>
+	{
+	}
+	public class DiscountNotifyService : EfEntityRepositoryBase<DiscountNotify, EComDbContext>, IDiscountNotifyService
 	{
 
 	}

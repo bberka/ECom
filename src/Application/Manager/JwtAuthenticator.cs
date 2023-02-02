@@ -8,9 +8,8 @@ namespace ECom.Application.Manager
 
 		private JwtAuthenticator() 
 		{
-			var optionService = ServiceProviderProxy.GetService<IOptionService>();
-			var option = optionService.GetFromCache();
-			Authenticator = new(option.JwtSecret);
+			var jwtOption = ServiceProviderProxy.GetService<IJwtOptionService>().GetFromCache();
+			Authenticator = new(jwtOption.Secret);
 		}
 		public static JwtAuthenticator This
 		{

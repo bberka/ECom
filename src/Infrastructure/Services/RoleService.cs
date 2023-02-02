@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class RoleService : EfEntityRepositoryBase<Role, EComDbContext>
+	public interface IRoleService : IEfEntityRepository<Role>
+	{
+	}
+	public class RoleService : EfEntityRepositoryBase<Role, EComDbContext>, IRoleService
 	{
 
 	}

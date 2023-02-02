@@ -16,8 +16,8 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public IActionResult Login([FromBody] LoginModel model)
         {
 #if DEBUG
-			var optionService = ServiceProviderProxy.GetService<IOptionService>();
-			var jwt = new EasJWT(optionService.GetFromCache().JwtSecret);
+			var optionService = ServiceProviderProxy.GetService<IJwtOptionService>();
+			var jwt = new EasJWT(optionService.GetFromCache().Secret);
             var adm = new Admin();
             var dic = adm.AsDictionary();
             dic.Add("AdminOnly","");

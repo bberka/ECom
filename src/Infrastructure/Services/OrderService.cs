@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class OrderDal : EfEntityRepositoryBase<Order, EComDbContext>
+	public interface IOrderService : IEfEntityRepository<Order>
+	{
+	}
+	public class OrderService : EfEntityRepositoryBase<Order, EComDbContext>, IOrderService
 	{
 
 

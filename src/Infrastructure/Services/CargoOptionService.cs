@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-    public class CargoOptionService : EfEntityRepositoryBase<Cart, EComDbContext>
+	public interface ICargoOptionService : IEfEntityRepository<CargoOption>
+	{
+	}
+	public class CargoOptionService : EfEntityRepositoryBase<CargoOption, EComDbContext>, ICargoOptionService
 	{
 
 	}

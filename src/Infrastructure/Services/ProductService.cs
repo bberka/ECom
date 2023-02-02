@@ -10,9 +10,9 @@ namespace ECom.Infrastructure.Services
 		void CheckExists(int id);
 		void CheckExists(uint id);
 		Product? GetProduct(long productNo);
-		List<ProductDetails>? GetProductDetails(long productNo);
-		ProductDetails? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
-		ProductDetails GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
+		List<ProductDetail>? GetProductDetails(long productNo);
+		ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
+		ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
 		Product? GetProductSingle(long productNo);
 		ProductVariant? GetVariant(int id);
 		List<Product> GetVariantProducts(int variantId);
@@ -136,19 +136,19 @@ namespace ECom.Infrastructure.Services
 			return product;
 		}
 
-		public List<ProductDetails>? GetProductDetails(long productNo)
+		public List<ProductDetail>? GetProductDetails(long productNo)
 		{
 			var ctx = EComDbContext.New();
 			var products = ctx.ProductDetails.Where(x => x.Id == productNo).ToList();
 			return products;
 		}
-		public ProductDetails? GetProductDetails(long productNo, LanguageType type = LanguageType.Default)
+		public ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default)
 		{
 			var ctx = EComDbContext.New();
 			var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).FirstOrDefault();
 			return product;
 		}
-		public ProductDetails GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default)
+		public ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default)
 		{
 			var ctx = EComDbContext.New();
 			var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).Single();

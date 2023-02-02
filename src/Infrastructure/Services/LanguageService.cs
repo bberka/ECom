@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class LanguageService : EfEntityRepositoryBase<Language, EComDbContext>
+	public interface ILanguageService : IEfEntityRepository<Language>
+	{
+	}
+	public class LanguageService : EfEntityRepositoryBase<Language, EComDbContext>, ILanguageService
 	{
 
 	}

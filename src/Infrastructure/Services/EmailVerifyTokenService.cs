@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class EmailVerifyTokenDal : EfEntityRepositoryBase<EmailVerifyToken, EComDbContext>
+	public interface IEmailVerifyTokenService : IEfEntityRepository<EmailVerifyToken>
+	{
+	}
+	public class EmailVerifyTokenService : EfEntityRepositoryBase<EmailVerifyToken, EComDbContext>, IEmailVerifyTokenService
 	{
 
 	}

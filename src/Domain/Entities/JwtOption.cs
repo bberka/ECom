@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class JwtOption
+	public class JwtOption : IEfEntity
 	{
 		/// <summary>
 		/// 0: Debug

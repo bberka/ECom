@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class ProductImageBindService : EfEntityRepositoryBase<ProductImageBind, EComDbContext>
+	public interface IProductImageBindService : IEfEntityRepository<ProductImageBind>
+	{
+	}
+	public class ProductImageBindService : EfEntityRepositoryBase<ProductImageBind, EComDbContext>, IProductImageBindService
 	{
 
 	

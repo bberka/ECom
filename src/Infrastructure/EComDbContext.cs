@@ -43,7 +43,7 @@ namespace ECom.Infrastructure
         public DbSet<Language> Languages { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<DiscountNotify> DiscountNotifies { get; set; }
-        public DbSet<ProductDetails> ProductDetails { get; set; }
+        public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductImageBind> ProductImageBinds { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }

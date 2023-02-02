@@ -3,6 +3,6 @@
     public class ProductSimpleViewModel
     {
         public Product Product { get; set; }
-        public ProductDetails Details { get; set; }
+        public ProductDetail Details { get; set; }
     }
 }

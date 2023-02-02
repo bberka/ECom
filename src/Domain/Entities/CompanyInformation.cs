@@ -1,4 +1,4 @@
-﻿,using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class CompanyInfo
+	public class CompanyInformation : IEfEntity
 	{
 		[Key]
 		public bool IsRelease { get; set; }

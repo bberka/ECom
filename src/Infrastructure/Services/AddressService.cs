@@ -2,8 +2,13 @@
 
 namespace ECom.Infrastructure.Services
 {
-    public class AddressService : EfEntityRepositoryBase<Address,EComDbContext>
+	public interface IAddressService : IEfEntityRepository<Address>
+	{
+	}
+	public class AddressService : EfEntityRepositoryBase<Address,EComDbContext>, IAddressService
 	{
 
 	}
+
+	
 }

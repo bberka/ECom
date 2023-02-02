@@ -9,19 +9,13 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class CategoryDiscountService : EfEntityRepositoryBase<CategoryDiscount, EComDbContext>
+	public interface ICategoryDiscountService : IEfEntityRepository<CategoryDiscount>
+	{
+	}
+	public class CategoryDiscountService : EfEntityRepositoryBase<CategoryDiscount, EComDbContext>, ICategoryDiscountService
 	{
 
-		private CategoryDiscountService() { }
-		public static CategoryDiscountService This
-		{
-			get
-			{
-				Instance ??= new();
-				return Instance;
-			}
-		}
-		private static CategoryDiscountService? Instance;
+	
 	}
 	
 }

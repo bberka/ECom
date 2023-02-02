@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class DiscountCouponService : EfEntityRepositoryBase<DiscountCoupon, EComDbContext>
+	public interface IDiscountCouponService : IEfEntityRepository<DiscountCoupon>
+	{
+	}
+	public class DiscountCouponService : EfEntityRepositoryBase<DiscountCoupon, EComDbContext>, IDiscountCouponService
 	{
 
 

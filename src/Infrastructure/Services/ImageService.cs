@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class ImageDal : EfEntityRepositoryBase<Image, EComDbContext>
+	public interface IImageService : IEfEntityRepository<Image>
+	{
+	}
+	public class ImageService : EfEntityRepositoryBase<Image, EComDbContext>, IImageService
 	{
 
 	}

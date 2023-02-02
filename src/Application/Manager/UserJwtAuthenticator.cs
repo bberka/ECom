@@ -42,8 +42,9 @@ namespace ECom.Application.Manager
 			var userAsDic = loginResult.Data.AsDictionary();
 			userAsDic.Add("UserOnly","");
 			var option = optionService.GetFromCache();
-			var expireMins = option.JwtExpireMinutesDefault;
-			if (model.RememberMe) expireMins = option.JwtExpireMinutesLong;
+			var jwtOptionService = ServiceProviderProxy.GetService<IJwtOptionService>().GetFromCache();
+			var expireMins = jwtOptionService.ExpireMinutesDefault;
+			if (model.RememberMe) expireMins = jwtOptionService.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);
 			var token = JwtAuthenticator.This.Authenticator.GenerateJwtToken(userAsDic, date);
 			var res = new JwtTokenModel
@@ -52,7 +53,7 @@ namespace ECom.Application.Manager
 				RefreshToken = null,
 				Token = token,
 			};
-			if (option.IsUseRefreshToken)
+			if (jwtOptionService.IsUseRefreshToken)
 			{
 				//TODO: 
 				throw new NotImplementedException();

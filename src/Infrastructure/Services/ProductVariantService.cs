@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class ProductVariantService : EfEntityRepositoryBase<ProductVariant, EComDbContext>
+	public interface IProductVariantService : IEfEntityRepository<ProductVariant>
+	{
+	}
+	public class ProductVariantService : EfEntityRepositoryBase<ProductVariant, EComDbContext> , IProductVariantService
 	{
 
 

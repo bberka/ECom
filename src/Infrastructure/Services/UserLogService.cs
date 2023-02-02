@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class UserLogService : EfEntityRepositoryBase<UserLog, EComDbContext>
+	public interface IUserLogService : IEfEntityRepository<UserLog>
+	{
+	}
+	public class UserLogService : EfEntityRepositoryBase<UserLog, EComDbContext>, IUserLogService
 	{
 
 	}

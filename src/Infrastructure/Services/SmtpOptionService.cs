@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class SmtpOptionService : EfEntityRepositoryBase<SmtpOption, EComDbContext>
+	public interface ISmtpOptionService : IEfEntityRepository<SmtpOption>
+	{
+	}
+	public class SmtpOptionService : EfEntityRepositoryBase<SmtpOption, EComDbContext>, ISmtpOptionService
 	{
 
 	}

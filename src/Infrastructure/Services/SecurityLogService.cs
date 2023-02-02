@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class SecurityLogService : EfEntityRepositoryBase<SecurityLog, EComDbContext>
+	public interface ISecurityLogService : IEfEntityRepository<SecurityLog>
+	{
+	}
+	public class SecurityLogService : EfEntityRepositoryBase<SecurityLog, EComDbContext>, ISecurityLogService
 	{
 
 	}

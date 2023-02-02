@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class PasswordResetTokenService : EfEntityRepositoryBase<PasswordResetToken, EComDbContext>
+	public interface IPasswordResetTokenService : IEfEntityRepository<PasswordResetToken>
+	{
+	}
+	public class PasswordResetTokenService : EfEntityRepositoryBase<PasswordResetToken, EComDbContext>, IPasswordResetTokenService
 	{
 
 

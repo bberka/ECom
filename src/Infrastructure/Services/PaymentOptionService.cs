@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
-	public class PaymentOptionService : EfEntityRepositoryBase<PaymentOption, EComDbContext>
+	public interface IPaymentOptionService : IEfEntityRepository<PaymentOption>
+	{
+	}
+	public class PaymentOptionService : EfEntityRepositoryBase<PaymentOption, EComDbContext>, IPaymentOptionService
 	{
 
 	}

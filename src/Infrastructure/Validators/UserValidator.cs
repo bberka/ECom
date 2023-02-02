@@ -45,7 +45,7 @@ namespace ECom.Infrastructure.Validators
 			if (!isTesterAccount) return false;
 			var instance = ServiceProviderProxy.GetService<IOptionService>();
 			var option = instance.GetFromCache();
-			return option.IsDebug;
+			return !option.IsRelease;
 		}
 
 		
