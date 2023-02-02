@@ -1,4 +1,7 @@
-﻿namespace ECom.Infrastructure.Validators
+﻿using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+using ECom.Infrastructure.Services;
+
+namespace ECom.Infrastructure.Validators
 {
 	public class UserValidator : AbstractValidator<User>
 	{
@@ -40,7 +43,8 @@
 		private bool DebugModeOn(bool isTesterAccount)
 		{
 			if (!isTesterAccount) return false;
-			var option = OptionDal.This.Cache.Get();
+			var instance = ServiceProviderProxy.GetService<IOptionService>();
+			var option = instance.GetFromCache();
 			return option.IsDebug;
 		}
 

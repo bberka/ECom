@@ -1,4 +1,8 @@
-﻿namespace ECom.Infrastructure.Validators
+﻿using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+using ECom.Infrastructure.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace ECom.Infrastructure.Validators
 {
 	public class RegisterValidator : AbstractValidator<RegisterModel>
 	{
@@ -63,11 +67,13 @@
 
 		private bool NotExistEmail(string email)
 		{
-			return !UserDal.This.Any(x => x.EmailAddress == email);
+			var instance = ServiceProviderProxy.GetService<IUserService>();
+			return !instance.Any(x => x.EmailAddress == email);
 		}
 		private bool NotHasSpecialChar(string password)
 		{
-			var option = OptionDal.This.Cache.Get();
+			var instance = ServiceProviderProxy.GetService<IOptionService>();
+			var option = instance.GetFromCache();
 			if (!option.RequireSpecialCharacterInPassword)
 			{
 				return true;
@@ -76,7 +82,8 @@
 		}
 		private bool NotHasNumber(string password)
 		{
-			var option = OptionDal.This.Cache.Get();
+			var instance = ServiceProviderProxy.GetService<IOptionService>();
+			var option = instance.GetFromCache();
 			if (!option.RequireNumberInPassword)
 			{
 				return true;
@@ -85,7 +92,8 @@
 		}
 		private bool NotHasLowerCase(string password)
 		{
-			var option = OptionDal.This.Cache.Get();
+			var instance = ServiceProviderProxy.GetService<IOptionService>();
+			var option = instance.GetFromCache();
 			if (!option.RequireLowerCaseInPassword)
 			{
 				return true;
@@ -94,7 +102,8 @@
 		}
 		private bool NotHasUpperCase(string password)
 		{
-			var option = OptionDal.This.Cache.Get();
+			var instance = ServiceProviderProxy.GetService<IOptionService>();
+			var option = instance.GetFromCache();
 			if (!option.RequireUpperCaseInPassword)
 			{
 				return true;

@@ -10,7 +10,6 @@
   <ItemGroup>
     <Folder Include="Common\" />
     <Folder Include="Persistance\" />
-    <Folder Include="Services\" />
     <Folder Include="Identity\" />
     <Folder Include="Files\" />
   </ItemGroup>

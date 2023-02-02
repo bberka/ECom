@@ -1,6 +1,7 @@
 ﻿using EasMe;
 using EasMe.Extensions;
 using ECom.Application.Manager;
+using ECom.Infrastructure.DependencyResolvers.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -26,7 +27,8 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public IActionResult Register([FromBody] RegisterModel model)
 		{
-			var res = UserDal.This.Register(model);
+			var userService = ServiceProviderProxy.GetService<IUserService>();
+			var res = userService.Register(model);
 			if (!res.IsSuccess)
 			{
 				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");

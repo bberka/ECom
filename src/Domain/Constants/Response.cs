@@ -47,9 +47,9 @@ namespace ECom.Domain.Constants
         SessionExpired,
         TokenExpired,
 
-        BasketAddOrIncreaseProduct_Success,
-        BasketRemoveOrDecreaseProduct_Success,
-        BasketProductNotFound,
+        CartAddOrIncreaseProductSuccess,
+        CartRemoveOrDecreaseProductSuccess,
+        CartProductNotFound,
 
         CategoryIsNull,
         CategoryNotFound,
@@ -63,5 +63,7 @@ namespace ECom.Domain.Constants
         AnnouncementNotFound,
 		AnnouncementUpdated,
 		AnnouncementDeleted,
+
+        OptionUpdated,
 	}
 }

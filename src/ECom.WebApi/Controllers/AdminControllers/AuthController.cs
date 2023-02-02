@@ -2,6 +2,8 @@
 
 
 
+using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+
 namespace ECom.WebApi.Controllers.AdminControllers
 {
     [ApiController]
@@ -14,7 +16,8 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public IActionResult Login([FromBody] LoginModel model)
         {
 #if DEBUG
-            var jwt = new EasJWT(OptionDal.This.Cache.Get().JwtSecret);
+			var optionService = ServiceProviderProxy.GetService<IOptionService>();
+			var jwt = new EasJWT(optionService.GetFromCache().JwtSecret);
             var adm = new Admin();
             var dic = adm.AsDictionary();
             dic.Add("AdminOnly","");
@@ -39,7 +42,8 @@ namespace ECom.WebApi.Controllers.AdminControllers
 #if !DEBUG
             return NotFound();
 #endif
-            var res = AdminDal.This.Add(model);
+			var adminService = ServiceProviderProxy.GetService<IAdminService>();
+			var res = adminService.Add(model);
 			return Ok(res);
 		}
 

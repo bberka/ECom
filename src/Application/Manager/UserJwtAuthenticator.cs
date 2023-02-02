@@ -1,6 +1,10 @@
-﻿namespace ECom.Application.Manager
+﻿using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+using ECom.Infrastructure.Interfaces;
+using ECom.Infrastructure.Services;
+
+namespace ECom.Application.Manager
 {
-	public class UserJwtAuthenticator : IJwtAuthentication
+    public class UserJwtAuthenticator : IJwtAuthentication
 	{
 		private UserJwtAuthenticator() { }
 		public static UserJwtAuthenticator This
@@ -27,7 +31,9 @@
 			};
 			return ResultData<JwtTokenModel>.Success(debugRes);
 #endif
-			var loginResult = UserDal.This.Login(model);
+			var userService = ServiceProviderProxy.GetService<IUserService>();
+			var optionService = ServiceProviderProxy.GetService<IOptionService>();
+			var loginResult = userService.Login(model);
 			if (!loginResult.IsSuccess)
 			{
 				return ResultData<JwtTokenModel>.Error(loginResult.Rv, loginResult.Response);
@@ -35,7 +41,7 @@
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var userAsDic = loginResult.Data.AsDictionary();
 			userAsDic.Add("UserOnly","");
-			var option = OptionDal.This.GetSingle();
+			var option = optionService.GetFromCache();
 			var expireMins = option.JwtExpireMinutesDefault;
 			if (model.RememberMe) expireMins = option.JwtExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);

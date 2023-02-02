@@ -1,5 +1,4 @@
-﻿using ECom.Application.Abstract;
-using ECom.Domain.Entities;
+﻿using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -10,7 +9,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         private readonly IAnnouncementService _announcementService;
         public AnnouncementController(IAnnouncementService announcementService)
         {
-            _announcementService= announcementService;  
+            _announcementService = announcementService;  
         }
         [HttpGet]
         public IActionResult List()
@@ -18,6 +17,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             var res = _announcementService.GetList();
 			logger.Info();
 			return Ok(res.ToJsonString());
+            
         }
 
 

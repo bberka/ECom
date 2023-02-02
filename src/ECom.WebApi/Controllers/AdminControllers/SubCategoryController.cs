@@ -6,11 +6,15 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
     public class SubCategoryController : BaseAdminController
     {
-
+		private readonly ISubCategoryService _subCategoryService;
+		public SubCategoryController(ISubCategoryService subCategoryService)
+		{
+			_subCategoryService = subCategoryService;
+		}
 		[HttpPost]
         public IActionResult Update([FromBody] SubCategory category) 
         {
-			var res = SubCategoryDal.This.UpdateSubCategory(category);
+			var res = _subCategoryService.UpdateSubCategory(category);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", category.ToJsonString());
@@ -23,7 +27,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpDelete]
 		public IActionResult Delete([FromBody] uint id)
 		{
-			var res = SubCategoryDal.This.DeleteSubCategory(id);
+			var res = _subCategoryService.DeleteSubCategory(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
@@ -35,7 +39,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPut]
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
-			var res = SubCategoryDal.This.EnableOrDisable(id);
+			var res = _subCategoryService.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);

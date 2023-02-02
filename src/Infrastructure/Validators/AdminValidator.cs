@@ -1,5 +1,9 @@
 ﻿
 
+
+using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+using ECom.Infrastructure.Services;
+
 namespace ECom.Infrastructure.Validators
 {
 	public class AdminValidator : AbstractValidator<Admin>
@@ -41,8 +45,9 @@ namespace ECom.Infrastructure.Validators
 		}
 		private bool DebugModeOn(bool isTesterAccount)
 		{
+			var service = ServiceProviderProxy.GetService<IOptionService>();
 			if (!isTesterAccount) return false;
-			var option = OptionDal.This.Cache.Get();
+			var option = service.GetFromCache();
 			return option.IsDebug;
 		}
 

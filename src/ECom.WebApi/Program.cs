@@ -1,19 +1,8 @@
-using EasMe;
-using EasMe.Extensions;
-using ECom.Application.DependencyResolvers.AspNetCore;
-using ECom.Application.DependencyResolvers.Ninject;
-using ECom.Infrastructure;
+using ECom.Infrastructure.DependencyResolvers.AspNetCore;
 using ECom.WebApi.Filters;
 using ECom.WebApi.Middlewares;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Ninject;
-using System;
-using System.Reflection;
 
 
 
@@ -21,25 +10,11 @@ EasLogFactory.LoadConfig_TraceDefault(true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-#region Exception Handling
-AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) =>
-{
-    try
-    {
-        EasLogFactory.StaticLogger.Exception((Exception?)e.ExceptionObject ?? new Exception("FATAL|EXCEPTION IS NULL"), "UnhandledException");
-    }
-    catch (Exception)
-    {
-        EasLogFactory.StaticLogger.Fatal(e.ToJsonString(), "UnhandledException");
-    }
-};
+AppDomain.CurrentDomain.AddUnexpectedExceptionHandling();
 builder.Services.AddControllers(x =>
 {
 	x.Filters.Add(new ExceptionHandleFilter());
 });
-#endregion
-
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -53,6 +28,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
+builder.Services.AddBusinessDependencies();
 builder.Services
     .AddAuthentication(op =>
     {
@@ -69,9 +45,9 @@ builder.Services
         token.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(OptionDal.This.GetSingle().JwtSecret.ConvertToByteArray()),
-            ValidateIssuer = OptionDal.This.Cache.Get().JwtValidateIssuer,
-            ValidateAudience = OptionDal.This.Cache.Get().JwtValidateAudience,
+            IssuerSigningKey = new SymmetricSecurityKey("vztgffzaoyszvahsacfqxxjvtvbbrnbdtrxwarveycuwpyhkrtuhgkimowfuoiitubvvfedfuqkeztjbbkaapbgsuxcvcjrwxgegdedonqvguuputqqjcmznmqojbjvv".ConvertToByteArray()),
+            ValidateIssuer = false,
+            ValidateAudience = false,
             RequireExpirationTime = true,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
@@ -96,9 +72,10 @@ builder.Services.AddDistributedMemoryCache();
 #endregion
 
 
-builder.Services.AddBusinessDependencies();
+
 
 var app = builder.Build();
+app.Services.Initialize();
 
 
 #region Default

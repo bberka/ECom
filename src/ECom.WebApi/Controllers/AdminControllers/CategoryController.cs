@@ -6,12 +6,16 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
     public class CategoryController : BaseAdminController
     {
-      
+		private readonly ICategoryService _categoryService;
+		public CategoryController(ICategoryService categoryService)
+		{
+			_categoryService = categoryService;
+		}
 
 		[HttpPost]
         public IActionResult Update([FromBody] CategoryUpdateModel category) 
         {
-			var res = CategoryDal.This.UpdateCategory(category);
+			var res = _categoryService.UpdateCategory(category);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", category.ToJsonString());
@@ -24,7 +28,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpDelete]
 		public IActionResult Delete([FromBody] uint id)
 		{
-			var res = CategoryDal.This.DeleteCategory(id);
+			var res = _categoryService.DeleteCategory(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
@@ -36,7 +40,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPut]
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
-			var res = CategoryDal.This.EnableOrDisable(id);
+			var res = _categoryService.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
