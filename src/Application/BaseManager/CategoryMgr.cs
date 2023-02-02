@@ -20,20 +20,17 @@ namespace ECom.Application.BaseManager
 
 		public List<Category> ListCategories()
 		{
-			using var ctx = new EComDbContext();
-			return ctx.Categories
-				.Where(x => x.IsValid == true)
+			return Get(x => x.IsValid == true)
 				.Include(x => x.SubCategories)
 				.Include(x => x.Language)
-				.Include(x => x.Image)
 				.ToList();
 		}
-		public Result EnableOrDisableCategory(int id)
+		public Result EnableOrDisable(uint id)
 		{
-			var category = Find(id);
+			var category = Find((int)id);
 			if(category == null)
 			{
-				return Result.Error(1, Response.CategoryNotExists);
+				return Result.Error(1, Response.CategoryNotFound);
 			}
 			category.IsValid = !category.IsValid;
 			var res = Update(category);
@@ -43,25 +40,34 @@ namespace ECom.Application.BaseManager
 			}
 			return Result.Success(Response.CategoryUpdated);
 		}
-		public Result UpdateCategory(Category? category)
+		public Result UpdateCategory(CategoryUpdateModel model)
 		{
-			if (category == null)
+			if (!Any(x => x.Id == model.CategoryId))
 			{
-				return Result.Error(1,Response.CategoryIsNull);
+				return Result.Error(1, Response.CategoryNotFound);
 			}
-			var res = Update(category);
+			if (!LanguageMgr.This.Any(x => x.Id == model.LanguageId))
+			{
+				return Result.Error(3, Response.LanguageNotFound);
+			}
+			var res = UpdateWhereSingle(x => x.Id == model.CategoryId, x =>
+			{
+				x.IsValid = model.IsValid;
+				x.Name = model.Name;
+				x.LanguageId = model.LanguageId;
+			});
 			if (!res)
 			{
-				return Result.Error(2, Response.DbErrorInternal);
+				return Result.Error(4, Response.DbErrorInternal);
 			}
 			return Result.Success(Response.CategoryUpdated);
 		}
-		public Result DeleteCategory(int id)
+		public Result DeleteCategory(uint id)
 		{
-			var category = Find(id);
+			var category = Find((int)id);
 			if (category == null)
 			{
-				return Result.Error(1, Response.CategoryNotExists);
+				return Result.Error(1, Response.CategoryNotFound);
 			}
 			var res = Delete(category);
 			if (res == false)

@@ -25,19 +25,20 @@ namespace ECom.Application.BaseManager
 
 		public Result AddOrIncreaseProduct(AddOrIncreaseProductModel model)
 		{
-			UserMgr.This.CheckUserExist(model.UserId);
+			UserMgr.This.CheckExists(model.UserId);
+			ProductMgr.This.CheckExists(model.ProductId);
 			var existing = GetFirstOrDefault(x => x.UserId == model.UserId && x.ProductId == model.ProductId);
 			var isSuccess = false;
 			if (existing != null)
 			{
-				existing.Count += model.Count;
+				existing.Count++;
 				isSuccess = Update(existing);
 			}
 			else
 			{
 				var newBasket = new BasketProduct
 				{
-					Count = model.Count,
+					Count = 1,
 					RegisterDate = DateTime.Now,
 					ProductId = model.ProductId,
 					UserId = model.UserId,
@@ -53,7 +54,7 @@ namespace ECom.Application.BaseManager
 		}
 		public Result RemoveOrDecreaseProduct(RemoveOrDecreaseProductModel model)
 		{
-			UserMgr.This.CheckUserExist(model.UserId);
+			UserMgr.This.CheckExists(model.UserId);
 			var exist = GetFirstOrDefault(x => x.UserId == model.UserId && x.ProductId == model.ProductId);
 			if (exist is null)
 			{
@@ -77,14 +78,14 @@ namespace ECom.Application.BaseManager
 		}
 		public int GetBasketProductCount(int userId)
 		{
-			UserMgr.This.CheckUserExist(userId);
+			UserMgr.This.CheckExists(userId);
 			var count = Count(x => x.UserId == userId);
 			return count;
 		}
 		public List<BasketProduct> ListBasketProducts(int userId)
 		{
-			UserMgr.This.CheckUserExist(userId);
-			var list = GetList(x => x.UserId == userId);
+			UserMgr.This.CheckExists(userId);
+			var list = Get(x => x.UserId == userId).ToList();
 			return list ?? new();
 		}
 	}

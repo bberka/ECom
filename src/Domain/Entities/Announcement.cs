@@ -12,6 +12,7 @@ namespace ECom.Domain.Entities
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Range(0,int.MaxValue)]
         public int Id { get; set; }
         public int Order { get; set; }
 

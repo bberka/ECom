@@ -4,27 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 namespace ECom.WebApi.Controllers.AdminControllers
 {
 
-    public class CategoryController : BaseAdminController
+    public class AnnouncementController : BaseAdminController
     {
-      
-
 		[HttpPost]
-        public IActionResult Update([FromBody] CategoryUpdateModel category) 
+        public IActionResult Update([FromBody] Announcement data) 
         {
-			var res = CategoryMgr.This.UpdateCategory(category);
+			var res = AnnouncementMgr.This.UpdateAnnouncement(data);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", category.ToJsonString());
+				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", data.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(category.ToJsonString());
+			logger.Info(data.ToJsonString());
 			return Ok(res);
 		}
 		
 		[HttpDelete]
 		public IActionResult Delete([FromBody] uint id)
 		{
-			var res = CategoryMgr.This.DeleteCategory(id);
+			var res = AnnouncementMgr.This.DeleteAnnouncement(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
@@ -36,7 +34,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPut]
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
-			var res = CategoryMgr.This.EnableOrDisable(id);
+			var res = AnnouncementMgr.This.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);

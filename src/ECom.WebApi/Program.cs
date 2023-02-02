@@ -2,8 +2,11 @@ using EasMe;
 using EasMe.Extensions;
 using ECom.Application.BaseManager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System;
+
 AppDomain.CurrentDomain.UnhandledException += (object sender, UnhandledExceptionEventArgs e) =>
 {
     try
@@ -73,6 +76,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+	
 }
 
 app.UseHttpsRedirection();

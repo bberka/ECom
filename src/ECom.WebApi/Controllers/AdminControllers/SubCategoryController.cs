@@ -4,14 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace ECom.WebApi.Controllers.AdminControllers
 {
 
-    public class CategoryController : BaseAdminController
+    public class SubCategoryController : BaseAdminController
     {
-      
 
 		[HttpPost]
-        public IActionResult Update([FromBody] CategoryUpdateModel category) 
+        public IActionResult Update([FromBody] SubCategory category) 
         {
-			var res = CategoryMgr.This.UpdateCategory(category);
+			var res = SubCategoryMgr.This.UpdateSubCategory(category);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", category.ToJsonString());
@@ -24,7 +23,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpDelete]
 		public IActionResult Delete([FromBody] uint id)
 		{
-			var res = CategoryMgr.This.DeleteCategory(id);
+			var res = SubCategoryMgr.This.DeleteSubCategory(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
@@ -36,7 +35,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPut]
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
-			var res = CategoryMgr.This.EnableOrDisable(id);
+			var res = SubCategoryMgr.This.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);

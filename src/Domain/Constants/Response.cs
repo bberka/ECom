@@ -52,9 +52,16 @@ namespace ECom.Domain.Constants
         Basket_ProductNotFound,
 
         CategoryIsNull,
-        CategoryNotExists,
+        CategoryNotFound,
         CategoryAlreadyExists,
         CategoryUpdated,
         CategoryDeleted,
-    }
+
+        ImageNotFound,
+		LanguageNotFound,
+        ProductNotFound,
+        AnnouncementNotFound,
+		AnnouncementUpdated,
+		AnnouncementDeleted,
+	}
 }

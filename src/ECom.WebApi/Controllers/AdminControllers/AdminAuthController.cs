@@ -18,5 +18,16 @@ namespace ECom.WebApi.Controllers.AdminControllers
 #endif
             return Ok(token);
         }
-    }
+
+		[HttpPost]
+		private IActionResult AddNewAdmin([FromBody] Admin model)
+		{
+#if !DEBUG
+            return NotFound();
+#endif
+            var res = AdminMgr.This.Add(model);
+			return Ok(res);
+		}
+
+	}
 }

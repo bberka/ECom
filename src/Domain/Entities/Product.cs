@@ -34,13 +34,12 @@ namespace ECom.Domain.Entities
         public int? ProductVariantId { get; set; }
         public virtual ProductVariant? Variant { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public int? CategoryId { get; set; }
-        public virtual Category? Category { get; set; }
-
-		public List<ProductDetails> Details { get; set; }
-		public List<ProductComment> Comments { get; set; }
-		public List<Product> Variants { get; set; }
+        [ForeignKey("SubCategoryId")]
+        public int? SubCategoryId { get; set; }
+        public virtual SubCategory? Category { get; set; }
+		public List<ProductDetails> Details { get; set; } = new();
+		public List<ProductComment> Comments { get; set; } = new();
+		public List<Product> Variants { get; set; } = new();
 
 	}
 }

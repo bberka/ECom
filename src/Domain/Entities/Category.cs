@@ -8,7 +8,6 @@ namespace ECom.Domain.Entities
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		[JsonIgnore]
 		public int Id { get; set; }
 		
 		public bool IsValid { get; set; }
@@ -20,11 +19,7 @@ namespace ECom.Domain.Entities
         public int? LanguageId { get; set; }
         public virtual Language? Language { get; set; }
 
-        [ForeignKey("ImageId")]
-        public int? ImageId { get; set; }
-        public virtual Image? Image { get; set; }
-
-		public List<SubCategory> SubCategories { get; set; }
+		public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 	}
 
 }

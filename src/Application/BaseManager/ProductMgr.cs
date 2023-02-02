@@ -43,11 +43,16 @@ namespace ECom.Application.BaseManager
 		}
 		public List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
 		{
-			var lastIdx = (int)(OptionMgr.This.Cache.Get().PagingProductCount * (model.Page - 1));
-			var pageProductCount = OptionMgr.This.Cache.Get().PagingProductCount;
+			var option = OptionMgr.This.Cache.Get();
+			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
+			var pageProductCount = option.PagingProductCount;
 			var ctx = EComDbContext.New();
+			var subCategories = SubCategoryMgr.This
+				.Get(x => x.CategoryId == model.CategoryId)
+				.Select(x => x.Id)
+				.ToArray();
 			var products = ctx.Products
-				.Where(p => p.CategoryId == model.CategoryId)
+				.Where(p => subCategories.Contains(model.CategoryId))
 				.Skip(lastIdx)
 				.Take(pageProductCount)
 				.OrderByDescending(x => x.RegisterDate)
@@ -141,6 +146,13 @@ namespace ECom.Application.BaseManager
 			var ctx = EComDbContext.New();
 			var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).Single();
 			return product;
+		}
+
+
+		public void CheckExists(int id)
+		{
+			var exist = Any(x => x.Id == id);
+			if (!exist) throw new BaseException(Response.ProductNotFound);
 		}
 	}
 }

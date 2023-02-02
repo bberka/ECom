@@ -85,7 +85,7 @@ namespace ECom.Application.BaseManager
 		}
 		public bool IncreaseFailedPasswordCount(int userId)
 		{
-			var res = UpdateSingleOrDefault(x => x.Id == userId, x => x.FailedPasswordCount++);
+			var res = UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
 			return res;
 		}
 		public User? GetUser(string email)
@@ -98,11 +98,11 @@ namespace ECom.Application.BaseManager
 			var user = GetSingle(x => x.EmailAddress == email);
 			return user;
 		}
-		public void CheckUserExist(int userId)
+		public void CheckExists(int id)
 		{
-			var exist = Any(x => x.Id == userId);
+			var exist = Any(x => x.Id == id);
 			if (!exist) throw new BaseException(Response.UserNotExist);
 		}
-		
+
 	}
 }
