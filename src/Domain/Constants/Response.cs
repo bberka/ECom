@@ -66,6 +66,6 @@ namespace ECom.Domain.Constants
 
         OptionUpdated,
         JwtOptionUpdated,
-
+		CompanyInformationUpdated,
 	}
 }

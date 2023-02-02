@@ -13,7 +13,7 @@ namespace ECom.Infrastructure.DependencyResolvers.AspNetCore
 		private static IServiceProvider? _serviceProvider;
 		public static void Initialize(this IServiceProvider serviceProvider)
 		{
-			if (serviceProvider != null) throw new Exception("Already initialized");
+			if (_serviceProvider != null) throw new Exception("Already initialized");
 			_serviceProvider = serviceProvider;
 		}
 		public static IServiceProvider Get()

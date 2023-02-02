@@ -6,24 +6,32 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Services
 {
+
 	public interface IJwtOptionService : IEfEntityRepository<JwtOption>
 	{
-		public JwtOption GetFromCache();
-		public Result UpdateJwtOption(JwtOption jwtOption);
+		JwtOption GetFromCache();
+		JwtOption GetOption();
+		Result UpdateJwtOption(JwtOption option);
 	}
-
 
 	public class JwtOptionService : EfEntityRepositoryBase<JwtOption, EComDbContext>, IJwtOptionService
 	{
 
 		public JwtOptionService()
 		{
-			Cache = new(GetSingle, CACHE_REFRESH_INTERVAL_MINS);
+			Cache = new(GetOption, CACHE_REFRESH_INTERVAL_MINS);
 		}
 
 		const byte CACHE_REFRESH_INTERVAL_MINS = 10;
 		private readonly EasCache<JwtOption> Cache;
-
+		public JwtOption GetOption()
+		{
+#if DEBUG
+			return GetSingle(x => x.IsRelease == false);
+#else
+			return GetSingle(x => x.IsRelease == true);
+#endif
+		}
 		public JwtOption GetFromCache()
 		{
 			return Cache.Get();
@@ -42,5 +50,5 @@ namespace ECom.Infrastructure.Services
 		}
 	}
 
-	
+
 }

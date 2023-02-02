@@ -10,10 +10,16 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		private readonly IOptionService _optionService;
 		public OptionController(IOptionService optionService)
 		{
-			_optionService= optionService;
+			_optionService = optionService;
 		}
 		[HttpGet]
-		public IActionResult Get()
+		public IActionResult GetList()
+		{
+			var options = _optionService.GetList();
+			return Ok(options);
+		}
+		[HttpGet]
+		public IActionResult GetCurrent()
 		{
 			var option = _optionService.GetSingle();
 			return Ok(option);

@@ -3,7 +3,7 @@
 namespace ECom.WebApi.Controllers.UserControllers
 {
 
-    public class HomeController : BaseUserController
+    public class StatusController : BaseUserController
     {
         [HttpGet]
         [Route("/Status")]
