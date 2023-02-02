@@ -26,7 +26,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public IActionResult Register([FromBody] RegisterModel model)
 		{
-			var res = UserMgr.This.Register(model);
+			var res = UserDal.This.Register(model);
 			if (!res.IsSuccess)
 			{
 				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");

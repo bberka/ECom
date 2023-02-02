@@ -11,6 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.Application", "src\App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.WebApi", "src\ECom.WebApi\ECom.WebApi.csproj", "{2D996BA8-05A5-4D55-8D1D-F4F37ED44F80}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Domain", "1. Domain", "{0E2C12EA-BCCD-4AF6-B61E-2F267057362D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Infrastructure", "2. Infrastructure", "{26013BDA-8E18-4D60-9054-2C16E6E5CA50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Application", "3. Application", "{9C9FE62C-915A-48BA-BC1D-BACF6D76AD25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{32DEEA9E-4D2C-4DB4-8447-825F372D8433}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +44,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{749BAC2D-0586-43DA-8AF2-AD4FB30A1596} = {0E2C12EA-BCCD-4AF6-B61E-2F267057362D}
+		{9DBAB588-9577-47C2-82FF-5C4E22C205D4} = {26013BDA-8E18-4D60-9054-2C16E6E5CA50}
+		{636E2FA5-B7AA-4E25-860D-5800442BDF30} = {9C9FE62C-915A-48BA-BC1D-BACF6D76AD25}
+		{2D996BA8-05A5-4D55-8D1D-F4F37ED44F80} = {32DEEA9E-4D2C-4DB4-8447-825F372D8433}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5CF92F4B-C824-4F8F-B0D5-433075F64207}

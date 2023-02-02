@@ -9,7 +9,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [HttpGet]
         public IActionResult List()
         {
-            var res = CategoryMgr.This.ListCategories();
+            var res = CategoryDal.This.ListCategories();
 			logger.Info();
 			return Ok(res.ToJsonString());
         }

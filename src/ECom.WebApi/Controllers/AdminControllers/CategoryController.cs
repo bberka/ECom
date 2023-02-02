@@ -11,7 +11,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPost]
         public IActionResult Update([FromBody] CategoryUpdateModel category) 
         {
-			var res = CategoryMgr.This.UpdateCategory(category);
+			var res = CategoryDal.This.UpdateCategory(category);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", category.ToJsonString());
@@ -24,7 +24,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpDelete]
 		public IActionResult Delete([FromBody] uint id)
 		{
-			var res = CategoryMgr.This.DeleteCategory(id);
+			var res = CategoryDal.This.DeleteCategory(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
@@ -36,7 +36,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPut]
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
-			var res = CategoryMgr.This.EnableOrDisable(id);
+			var res = CategoryDal.This.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);

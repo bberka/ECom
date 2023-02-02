@@ -1,14 +1,4 @@
-﻿using EasMe;
-using EasMe.Extensions;
-using ECom.Application.BaseManager;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECom.Application.Manager
+﻿namespace ECom.Application.Manager
 {
 	public class UserJwtAuthenticator : IJwtAuthentication
 	{
@@ -37,7 +27,7 @@ namespace ECom.Application.Manager
 			};
 			return ResultData<JwtTokenModel>.Success(debugRes);
 #endif
-			var loginResult = UserMgr.This.Login(model);
+			var loginResult = UserDal.This.Login(model);
 			if (!loginResult.IsSuccess)
 			{
 				return ResultData<JwtTokenModel>.Error(loginResult.Rv, loginResult.Response);
@@ -45,7 +35,7 @@ namespace ECom.Application.Manager
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var userAsDic = loginResult.Data.AsDictionary();
 			userAsDic.Add("UserOnly","");
-			var option = OptionMgr.This.GetSingle();
+			var option = OptionDal.This.GetSingle();
 			var expireMins = option.JwtExpireMinutesDefault;
 			if (model.RememberMe) expireMins = option.JwtExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);

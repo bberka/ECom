@@ -6,10 +6,15 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
     public class AnnouncementController : BaseAdminController
     {
+		private readonly IAnnouncementService _announcementService;
+		public AnnouncementController(IAnnouncementService announcementService)
+		{
+			_announcementService = announcementService;
+		}
 		[HttpPost]
         public IActionResult Update([FromBody] Announcement data) 
         {
-			var res = AnnouncementMgr.This.UpdateAnnouncement(data);
+			var res = _announcementService.UpdateAnnouncement(data);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", data.ToJsonString());
@@ -22,7 +27,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpDelete]
 		public IActionResult Delete([FromBody] uint id)
 		{
-			var res = AnnouncementMgr.This.DeleteAnnouncement(id);
+			var res = _announcementService.DeleteAnnouncement(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
@@ -34,7 +39,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPut]
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
-			var res = AnnouncementMgr.This.EnableOrDisable(id);
+			var res = _announcementService.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);

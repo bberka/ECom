@@ -10,7 +10,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult AddOrIncreaseProduct(uint productId)
 		{
 			var userId = User.GetUserId();
-			var res = BasketProductMgr.This.AddOrIncreaseProduct(userId, productId);
+			var res = BasketProductDal.This.AddOrIncreaseProduct(userId, productId);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", productId.ToJsonString());
@@ -24,7 +24,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult RemoveOrDecreaseProduct(uint productId)
 		{
 			var userId =User.GetUserId();
-			var res = BasketProductMgr.This.RemoveOrDecreaseProduct(userId,productId);
+			var res = BasketProductDal.This.RemoveOrDecreaseProduct(userId,productId);
 			if (!res.IsSuccess)
 			{
 				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", productId);
@@ -38,14 +38,14 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult ProductCount()
 		{
 			var userId = User.GetUserId();
-			var res = BasketProductMgr.This.GetBasketProductCount(userId);
+			var res = BasketProductDal.This.GetBasketProductCount(userId);
 			return Ok(res);
 		}
 		[HttpGet]
 		public IActionResult List()
 		{
 			var userId = User.GetUserId();
-			var res = BasketProductMgr.This.ListBasketProducts(userId);
+			var res = BasketProductDal.This.ListBasketProducts(userId);
 			return Ok(res);
 		}
 		

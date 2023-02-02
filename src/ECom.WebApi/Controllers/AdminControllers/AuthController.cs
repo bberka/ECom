@@ -1,7 +1,6 @@
 ﻿
 
-using ECom.Application.Manager;
-using Microsoft.Extensions.Logging;
+
 
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -15,7 +14,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public IActionResult Login([FromBody] LoginModel model)
         {
 #if DEBUG
-            var jwt = new EasJWT(OptionMgr.This.Cache.Get().JwtSecret);
+            var jwt = new EasJWT(OptionDal.This.Cache.Get().JwtSecret);
             var adm = new Admin();
             var dic = adm.AsDictionary();
             dic.Add("AdminOnly","");
@@ -40,7 +39,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 #if !DEBUG
             return NotFound();
 #endif
-            var res = AdminMgr.This.Add(model);
+            var res = AdminDal.This.Add(model);
 			return Ok(res);
 		}
 

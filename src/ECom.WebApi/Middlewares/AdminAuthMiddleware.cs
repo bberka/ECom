@@ -21,7 +21,6 @@ namespace ECom.WebApi.Middlewares
             await _next(context);
 		}
       
-
     }
 
 }
