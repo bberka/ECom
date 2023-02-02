@@ -1,12 +1,17 @@
 ﻿
 
+using ECom.Application.Manager;
+using Microsoft.Extensions.Logging;
+
 namespace ECom.WebApi.Controllers.AdminControllers
 {
     [ApiController]
     [Route("api/Admin/[controller]/[action]")]
     public class AuthController : Controller
     {
-        [HttpPost]
+		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
+
+		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
 #if DEBUG
@@ -16,7 +21,17 @@ namespace ECom.WebApi.Controllers.AdminControllers
             dic.Add("AdminOnly","");
             var token = jwt.GenerateJwtToken(dic ,DateTime.Now.AddMinutes(10));
 #endif
-            return Ok(token);
+
+			HttpContext.Session.SetString("admin-token",token);
+			return Ok();
+			var res = AdminJwtAuthenticator.This.Authenticate(model);
+			if (!res.IsSuccess)
+			{
+				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+				return BadRequest(res);
+			}
+			logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+			return Ok(res);
         }
 
 		[HttpPost]

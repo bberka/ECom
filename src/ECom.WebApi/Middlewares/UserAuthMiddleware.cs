@@ -15,10 +15,10 @@ namespace ECom.WebApi.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            
 
+			await _next(context);
 		}
 
-    }
+	}
 
 }

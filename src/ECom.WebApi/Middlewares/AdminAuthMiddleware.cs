@@ -1,4 +1,5 @@
-﻿namespace ECom.WebApi.Middlewares
+﻿
+namespace ECom.WebApi.Middlewares
 {
     public class AdminAuthMiddleware
     {
@@ -12,8 +13,12 @@
 
         public async Task InvokeAsync(HttpContext context)
         {
-           
-
+            var token = context.Session.GetString("admin-token");
+            if (token != null)
+            {
+				context.Request.Headers.Add("Authorization", "Bearer " + token);
+			}
+            await _next(context);
 		}
       
 

@@ -23,11 +23,11 @@ namespace ECom.Application.BaseManager
 		}
 		private static BasketProductMgr? Instance;
 
-		public Result AddOrIncreaseProduct(AddOrIncreaseProductModel model)
+		public Result AddOrIncreaseProduct(uint userId, uint productId)
 		{
-			UserMgr.This.CheckExists(model.UserId);
-			ProductMgr.This.CheckExists(model.ProductId);
-			var existing = GetFirstOrDefault(x => x.UserId == model.UserId && x.ProductId == model.ProductId);
+			UserMgr.This.CheckExists(userId);
+			ProductMgr.This.CheckExists(productId);
+			var existing = GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			var isSuccess = false;
 			if (existing != null)
 			{
@@ -40,8 +40,8 @@ namespace ECom.Application.BaseManager
 				{
 					Count = 1,
 					RegisterDate = DateTime.Now,
-					ProductId = model.ProductId,
-					UserId = model.UserId,
+					ProductId = (int)productId,
+					UserId = (int)userId,
 					LastUpdateDate = DateTime.Now,
 				};
 				isSuccess = Add(newBasket);
@@ -50,15 +50,15 @@ namespace ECom.Application.BaseManager
 			{
 				return Result.Error(1, Response.DbErrorInternal);
 			}
-			return Result.Success(Response.Basket_AddOrIncreaseProduct_Success);
+			return Result.Success(Response.BasketAddOrIncreaseProduct_Success);
 		}
-		public Result RemoveOrDecreaseProduct(RemoveOrDecreaseProductModel model)
+		public Result RemoveOrDecreaseProduct(uint userId,uint productId)
 		{
-			UserMgr.This.CheckExists(model.UserId);
-			var exist = GetFirstOrDefault(x => x.UserId == model.UserId && x.ProductId == model.ProductId);
+			UserMgr.This.CheckExists(userId);
+			var exist = GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
 			{
-				return Result.Error(1, Response.Basket_ProductNotFound);
+				return Result.Error(1, Response.BasketProductNotFound);
 			}
 			var isSuccess = false;
 			if (exist.Count > 1)
@@ -74,15 +74,15 @@ namespace ECom.Application.BaseManager
 			{
 				return Result.Error(1, Response.DbErrorInternal);
 			}
-			return Result.Success(Response.Basket_AddOrIncreaseProduct_Success);
+			return Result.Success(Response.BasketAddOrIncreaseProduct_Success);
 		}
-		public int GetBasketProductCount(int userId)
+		public int GetBasketProductCount(uint userId)
 		{
 			UserMgr.This.CheckExists(userId);
 			var count = Count(x => x.UserId == userId);
 			return count;
 		}
-		public List<BasketProduct> ListBasketProducts(int userId)
+		public List<BasketProduct> ListBasketProducts(uint userId)
 		{
 			UserMgr.This.CheckExists(userId);
 			var list = Get(x => x.UserId == userId).ToList();

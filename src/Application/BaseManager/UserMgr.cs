@@ -103,6 +103,10 @@ namespace ECom.Application.BaseManager
 			var exist = Any(x => x.Id == id);
 			if (!exist) throw new BaseException(Response.UserNotExist);
 		}
-
+		public void CheckExists(uint id)
+		{
+			var exist = Any(x => x.Id == id);
+			if (!exist) throw new BaseException(Response.UserNotExist);
+		}
 	}
 }

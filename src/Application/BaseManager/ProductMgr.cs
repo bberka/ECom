@@ -154,5 +154,10 @@ namespace ECom.Application.BaseManager
 			var exist = Any(x => x.Id == id);
 			if (!exist) throw new BaseException(Response.ProductNotFound);
 		}
+		public void CheckExists(uint id)
+		{
+			var exist = Any(x => x.Id == id);
+			if (!exist) throw new BaseException(Response.ProductNotFound);
+		}
 	}
 }

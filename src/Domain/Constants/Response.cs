@@ -46,10 +46,10 @@ namespace ECom.Domain.Constants
         NotAuthorized,
         SessionExpired,
         TokenExpired,
-        //Basket 
-        Basket_AddOrIncreaseProduct_Success,
-        Basket_RemoveOrDecreaseProduct_Success,
-        Basket_ProductNotFound,
+
+        BasketAddOrIncreaseProduct_Success,
+        BasketRemoveOrDecreaseProduct_Success,
+        BasketProductNotFound,
 
         CategoryIsNull,
         CategoryNotFound,

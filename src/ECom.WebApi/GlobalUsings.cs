@@ -25,3 +25,4 @@ global using EasMe;
 global using EasMe.Extensions;
 global using ECom.Application.BaseManager;
 global using Microsoft.AspNetCore.Mvc;
+global using EasMe.Extensions;

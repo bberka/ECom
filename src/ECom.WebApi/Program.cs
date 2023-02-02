@@ -1,6 +1,7 @@
 using EasMe;
 using EasMe.Extensions;
 using ECom.Application.BaseManager;
+using ECom.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +26,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSession();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -84,15 +86,18 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+app.UseSession();
 app.UseRouting();
 app.UseCookiePolicy();
 
+app.UseMiddleware<AdminAuthMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 
 app.MapControllers();
+
 
 app.Run();
 
