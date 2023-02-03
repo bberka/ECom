@@ -40,12 +40,11 @@ namespace ECom.Domain.Constants
 		CanNotContainSpace,
 
         MustContainSpecialCharacter,
-        MustContainNumber,
+        MustContainDigit,
 		MustContainLowerCase,
 		MustContainUpperCase,
 
         WrongData,
-		InvalidData,
-
+		Invalid,
 	}
 }

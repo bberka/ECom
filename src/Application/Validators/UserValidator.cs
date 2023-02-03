@@ -13,20 +13,20 @@ namespace ECom.Application.Validators
 				.NotNull()
 				.NotEmpty()
 				.EmailAddress()
-				.WithErrorCode("InvalidData:Email");
+				.WithErrorCode("InvalidData");
 
 			RuleFor(x => x.IsValid)
 				.Equal(x => false)
-				.WithErrorCode("NotValid:Account");	
+				.WithErrorCode("NotValid");	
 
 			RuleFor(x => x.IsTestAccount)
 				.Equal(x => true)
 				.Must(DebugModeOn)
-				.WithErrorCode("CanNotBeUsed:DebugAccount");
+				.WithErrorCode("CanNotBeUsed");
 
 			RuleFor(x => x.IsEmailVerified)
 				.Equal(x => false)
-				.WithErrorCode("NotVerified:Email");
+				.WithErrorCode("NotVerified");
 
 			RuleFor(x => x.DeletedDate)
 				.NotEqual(x => null)

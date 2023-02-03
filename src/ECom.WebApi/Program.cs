@@ -1,12 +1,12 @@
 
 using ECom.Application.DependencyResolvers.AspNetCore;
+using ECom.Application.Validators;
 using ECom.WebApi.Filters;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
-
+using System.Globalization;
 
 EasLogFactory.LoadConfig_TraceDefault(true);
 
@@ -63,6 +63,7 @@ builder.Services.AddAuthorization(options =>
 
 #endregion
 
+ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
 builder.Services.AddFluentValidationAutoValidation();
 
 #region Session-Memory

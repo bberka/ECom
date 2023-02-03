@@ -71,16 +71,8 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IProductVariantService, ProductVariantService>();
 
 
-			services.AddSingleton<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
-			services.AddSingleton<IUserJwtAuthenticator, UserJwtAuthenticator>();
-
-
-
-
-
-
-
-
+			services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
+			services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();
 
 
 

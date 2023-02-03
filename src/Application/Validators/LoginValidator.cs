@@ -11,20 +11,20 @@ namespace ECom.Application.Validators
 				.NotEmpty()
 				.NotNull()
 				.EmailAddress()
-				.WithErrorCode("InvalidData:Email");
+				.WithErrorCode("InvalidData");
 
 			RuleFor(x => x.Password)
 				.NotNull()
 				.NotEmpty()
-				.WithErrorCode("Required:Password");
+				.WithErrorCode("Required");
 
 			RuleFor(x => x.Password)
 				.MinimumLength(ConstantMgr.PasswordMinLength)
-				.WithErrorCode("TooShort:Password");
+				.WithErrorCode("TooShort");
 
 			RuleFor(x => x.Password)
 				.MaximumLength(ConstantMgr.PasswordMaxLength)
-				.WithErrorCode("TooLong:Password");
+				.WithErrorCode("TooLong");
 		}
 
 	}

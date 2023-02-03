@@ -16,41 +16,41 @@ namespace ECom.Application.Validators
 			RuleFor(x => x.Password)
 				.NotNull()
 				.NotEmpty()
-				.WithErrorCode("Required:Password");
+				.WithErrorCode("Required");
 
 			RuleFor(x => x.Password)
 				.MinimumLength(ConstantMgr.PasswordMinLength)
-				.WithErrorCode("TooShort:Password");
+				.WithErrorCode("TooShort");
 
 			RuleFor(x => x.Password)
 				.MaximumLength(ConstantMgr.PasswordMaxLength)
-				.WithErrorCode("TooLong:Password");
+				.WithErrorCode("TooLong");
 
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
 				.NotEmpty()
 				.EmailAddress()
-				.WithErrorCode("InvalidData:Email");
+				.WithErrorCode("Invalid");
 
 			RuleFor(x => x.Password)
 				.Must(NotHasSpace)
-				.WithErrorCode("CanNotContainSpace:Password");
+				.WithErrorCode("CanNotContainSpace");
 
 			RuleFor(x => x.Password)
 				.Must(NotHasSpecialChar)
-				.WithErrorCode("MustContainSpecialCharacter:Password");
+				.WithErrorCode("MustContainSpecialCharacter");
 
 			RuleFor(x => x.Password)
 				.Must(NotHasNumber)
-				.WithErrorCode("MustContainNumber:Password");
+				.WithErrorCode("MustContainNumber");
 
 			RuleFor(x => x.Password)
 				.Must(NotHasLowerCase)
-				.WithErrorCode("MustContainLowerCase:Password");
+				.WithErrorCode("MustContainLowerCase");
 
 			RuleFor(x => x.Password)
 				.Must(NotHasUpperCase)
-				.WithErrorCode("MustContainUpperCase:Password");
+				.WithErrorCode("MustContainUpperCase");
 
 			RuleFor(x => x.EmailAddress)
 				.Must(NotExistEmail)
