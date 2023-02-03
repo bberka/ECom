@@ -34,14 +34,13 @@ namespace ECom.Application.Services
 			this._userRepo = userRepo;
 			this._adminRepo = adminRepo;
 			this._optionService = optionService;
-			_option = _optionService.GetFullOptionCache().Option;
+			_option = _optionService.GetOptionFromCache();
 		}
 
 		public bool AllowTester(bool isTesterAccount)
 		{
 			if (!isTesterAccount) return false;
-			var option = _optionService.GetFullOptionCache().Option;
-			return !option.IsRelease;
+			return !_option.IsRelease;
 		}
 		public bool NotUsedEmail_Admin(string email)
 		{

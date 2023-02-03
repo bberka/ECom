@@ -15,8 +15,8 @@ namespace ECom.WebApi.Controllers.UserControllers
         public IActionResult List()
         {
             var res = _service.ListCategories();
-			logger.Info();
-			return Ok(res.ToJsonString());
+			logger.Info(res.ToJsonString());
+			return Ok(res);
         }
 
 	}

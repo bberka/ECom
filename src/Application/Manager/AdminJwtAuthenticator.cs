@@ -11,14 +11,14 @@ namespace ECom.Application.Manager
 	{
 		private readonly IAdminService _adminService;
 		private readonly IOptionService _optionService;
-		public readonly EasJWT _jwtManager;
-
+		private readonly EasJWT _jwtManager;
+		private readonly JwtOption _jwtOption;
 		public AdminJwtAuthenticator(IAdminService adminService,IOptionService optionService)
 		{
 			this._adminService = adminService;
 			this._optionService = optionService;
-			var option = _optionService.GetJwtOption();
-			_jwtManager = new(option.Secret, option.Issuer, option.Audience);
+			_jwtOption = _optionService.GetJwtOption();
+			_jwtManager = new(_jwtOption.Secret, _jwtOption.Issuer, _jwtOption.Audience);
 		}
 
 
@@ -44,9 +44,8 @@ namespace ECom.Application.Manager
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var adminAsDic = loginResult.Data.AsDictionary();
 			adminAsDic.Add("AdminOnly", "");
-			var option = _optionService.GetFullOptionCache().JwtOption;
-			var expireMins = option.ExpireMinutesDefault;
-			if (model.RememberMe) expireMins = option.ExpireMinutesLong;
+			var expireMins = _jwtOption.ExpireMinutesDefault;
+			if (model.RememberMe) expireMins = _jwtOption.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);
 			var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
 			var res = new JwtTokenModel
@@ -55,7 +54,7 @@ namespace ECom.Application.Manager
 				RefreshToken = null,
 				Token = token,
 			};
-			if (option.IsUseRefreshToken)
+			if (_jwtOption.IsUseRefreshToken)
 			{
 				//TODO:
 				throw new NotImplementedException();

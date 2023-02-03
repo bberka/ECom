@@ -3,6 +3,7 @@
 
 
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ECom.Application.Services
 {
@@ -13,12 +14,18 @@ namespace ECom.Application.Services
 		List<CargoOption> GetCargoOptions();
 		List<PaymentOption> GetPaymentOptions();
 		List<SmtpOption> GetSmtpOptions();
+
+		JwtOption GetJwtOptionFromCache();
+		Option GetOptionFromCache();
+		List<CargoOption> GetCargoOptionsFromCache();
+		List<PaymentOption> GetPaymentOptionsFromCache();
+		List<SmtpOption> GetSmtpOptionsFromCache();
+		
 		Result UpdateCargoOption(CargoOption option);
 		Result UpdateJwtOption(JwtOption option);
 		Result UpdateOption(Option option);
 		Result UpdatePaymentOption(PaymentOption option);
 		Result UpdateSmtpOption(SmtpOption option);
-		public FullOption GetFullOptionCache();
 		public void RefreshCache();
 	}
 
@@ -99,17 +106,7 @@ namespace ECom.Application.Services
 		}
 
 
-		public FullOption GetFullOptionCache()
-		{
-			return new FullOption
-			{
-				CargoOptions = CargoOptionCache.Get(),
-				SmtpOptions = SmtpOptionCache.Get(),
-				JwtOption = JwtOptionCache.Get(),
-				Option = OptionCache.Get(),
-				PaymentOptions = PaymentOptionCache.Get(),
-			};
-		}
+		
 		public Option GetOption()
 		{
 #if DEBUG
@@ -151,6 +148,31 @@ namespace ECom.Application.Services
 			JwtOptionCache.Refresh();
 			CargoOptionCache.Refresh();
 
+		}
+
+		public JwtOption GetJwtOptionFromCache()
+		{
+			return JwtOptionCache.Get();
+		}
+
+		public Option GetOptionFromCache()
+		{
+			return OptionCache.Get();
+		}
+
+		public List<CargoOption> GetCargoOptionsFromCache()
+		{
+			return CargoOptionCache.Get();
+		}
+
+		public List<PaymentOption> GetPaymentOptionsFromCache()
+		{
+			return PaymentOptionCache.Get();
+		}
+
+		public List<SmtpOption> GetSmtpOptionsFromCache()
+		{
+			return SmtpOptionCache.Get();
 		}
 	}
 }

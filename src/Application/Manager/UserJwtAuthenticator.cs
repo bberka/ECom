@@ -1,4 +1,5 @@
 ﻿
+using ECom.Domain.Entities;
 using ECom.Infrastructure.Interfaces;
 
 
@@ -14,13 +15,14 @@ namespace ECom.Application.Manager
 		private readonly IUserService _userService;
 		private readonly IOptionService _optionService;
 		public readonly EasJWT _jwtManager;
+		public readonly JwtOption _jwtOption;
 
 		public UserJwtAuthenticator(IUserService userService, IOptionService optionService)
 		{
 			this._userService = userService;
 			this._optionService = optionService;
-			var option = _optionService.GetFullOptionCache().JwtOption;
-			_jwtManager = new(option.Secret, option.Issuer, option.Audience);
+			_jwtOption = _optionService.GetJwtOption();
+			_jwtManager = new(_jwtOption.Secret, _jwtOption.Issuer, _jwtOption.Audience);
 		}
 		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
 		{
@@ -44,9 +46,8 @@ namespace ECom.Application.Manager
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var userAsDic = loginResult.Data.AsDictionary();
 			userAsDic.Add("UserOnly", "");
-			var option = _optionService.GetFullOptionCache().JwtOption;
-			var expireMins = option.ExpireMinutesDefault;
-			if (model.RememberMe) expireMins = option.ExpireMinutesLong;
+			var expireMins = _jwtOption.ExpireMinutesDefault;
+			if (model.RememberMe) expireMins = _jwtOption.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);
 			var token = _jwtManager.GenerateJwtToken(userAsDic, date);
 			var res = new JwtTokenModel
@@ -55,7 +56,7 @@ namespace ECom.Application.Manager
 				RefreshToken = null,
 				Token = token,
 			};
-			if (option.IsUseRefreshToken)
+			if (_jwtOption.IsUseRefreshToken)
 			{
 				//TODO: 
 				throw new NotImplementedException();

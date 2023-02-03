@@ -12,17 +12,35 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		{
 			_optionService = optionService;
 		}
-		[HttpGet]
-		public IActionResult GetFullOption()
-		{
-			_optionService.RefreshCache();
-			var options = _optionService.GetFullOptionCache();
-			return Ok(options);
-		}
+		
 		[HttpGet]
 		public IActionResult GetCurrentOption()
 		{
 			var option = _optionService.GetOption();
+			return Ok(option);
+		}
+		[HttpGet]
+		public IActionResult GetCurrentJwtOption()
+		{
+			var option = _optionService.GetJwtOption();
+			return Ok(option);
+		}
+		[HttpGet]
+		public IActionResult ListCargoOptions()
+		{
+			var option = _optionService.GetCargoOptions();
+			return Ok(option);
+		}
+		[HttpGet]
+		public IActionResult ListPaymentOptions()
+		{
+			var option = _optionService.GetPaymentOptions();
+			return Ok(option);
+		}
+		[HttpGet]
+		public IActionResult ListSmtpOptions()
+		{
+			var option = _optionService.GetSmtpOptions();
 			return Ok(option);
 		}
 		[HttpPost]

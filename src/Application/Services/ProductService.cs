@@ -41,6 +41,7 @@ namespace ECom.Application.Services
 		private readonly IOptionService _optionService;
 		private readonly ICategoryService _categoryService;
 
+		private readonly Option _option;
 		public ProductService(
 			IEfEntityRepository<Product> productRepo,
 			IEfEntityRepository<ProductDetail> productDetailRepo,
@@ -65,12 +66,13 @@ namespace ECom.Application.Services
 			this._categoryRepo = categoryRepo;
 			this._optionService = optionService;
 			this._categoryService = categoryService;
+
+			_option = _optionService.GetOptionFromCache();
 		}
 		public List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model)
 		{
-			var option = _optionService.GetFullOptionCache().Option;
-			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
-			var pageProductCount = option.PagingProductCount;
+			var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
+			var pageProductCount = _option.PagingProductCount;
 			var products = EComDbContext.New().Products
 				.Where(p => p.Category.Id == model.CategoryId)
 				.Include(x => x.Comments)
@@ -84,9 +86,8 @@ namespace ECom.Application.Services
 		}
 		public List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
 		{
-			var option = _optionService.GetFullOptionCache().Option;
-			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
-			var pageProductCount = option.PagingProductCount;
+			var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
+			var pageProductCount = _option.PagingProductCount;
 			var ctx = EComDbContext.New();
 			var subCategories = _subCategoryRepo
 				.Get(x => x.CategoryId == model.CategoryId)
@@ -113,9 +114,8 @@ namespace ECom.Application.Services
 
 		public List<ProductSimpleViewModel> ListProductsSimpleViewModel(ListProductsModel model)
 		{
-			var option = _optionService.GetFullOptionCache().Option;
-			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
-			var pageProductCount = option.PagingProductCount;
+			var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
+			var pageProductCount = _option.PagingProductCount;
 			var ctx = EComDbContext.New();
 			var products = ctx.Products
 				.Skip(lastIdx)
