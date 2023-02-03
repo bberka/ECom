@@ -91,6 +91,30 @@ namespace ECom.WebApi.Controllers.UserControllers
 			}
 			
 		}
-		
+		[HttpPost]
+		public IActionResult Clear()
+		{
+
+			if (HttpContext.IsUserAuthorized())
+			{
+				var user = HttpContext.GetUser();
+				var res = _service.Clear(user.Id);
+				if (!res.IsSuccess)
+				{
+					logger.Warn(res.Rv, res.ErrorCode, res.Parameters);
+					return BadRequest(res.ToJsonString());
+				}
+				logger.Info();
+				return Ok(res);
+
+			}
+			else
+			{
+				HttpContext.ClearCart();
+				return Ok(Result.Success());
+			}
+
+		}
+
 	}
 }

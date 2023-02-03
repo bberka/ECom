@@ -15,6 +15,7 @@ namespace ECom.Application.Services
 		int GetBasketProductCount(int userId);
 		List<Cart> ListBasketProducts(int userId);
 		Result RemoveOrDecreaseProduct(int userId, int productId);
+		Result Clear(int userId);
 	}
 
 	public class CartService : ICartService
@@ -94,5 +95,11 @@ namespace ECom.Application.Services
 			return list ?? new();
 		}
 
+		public Result Clear(int userId)
+		{
+			var res = _cartRepo.DeleteWhere(x => x.UserId == userId);
+			if (res == 0) return Result.Error(1, ErrCode.DbErrorInternal);
+			return Result.Success("Deleted");
+		}
 	}
 }
