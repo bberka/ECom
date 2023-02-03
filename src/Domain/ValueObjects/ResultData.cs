@@ -10,15 +10,19 @@ namespace ECom.Domain.ValueObjects
 		[JsonIgnore]
 		public ushort Rv { get; set; } = ushort.MaxValue;
 		public bool IsSuccess { get => Rv == 0; }
-		public Response Response { get; set; } = Response.None;
-		public string ResponseAsString { get => Response.ToString(); }
-
-		[JsonIgnore]
-		public int ResponseAsInt { get => (int)Response; }
-
+		public string ErrorCode { get; set; } = Constants.ErrCode.None.ToString();
 		public T? Data { get; set; }
-		public static ResultData<T> Success(T data) => new() { Rv = 0, Data = data, Response = Response.Success };
-		public static ResultData<T> Success(T data,Response res) => new() { Rv = 0, Data = data, Response = res };
-		public static ResultData<T> Error(ushort rv, Response res) => new() { Rv = rv, Response = res };
+		public string[] Parameters { get; set; }
+		public static ResultData<T> Success(T data) 
+			=> new() { Rv = 0, ErrorCode = Constants.ErrCode.Success.ToString(), Data = data };
+		public static ResultData<T> Success(T data, ErrCode err) 
+			=> new() { Rv = 0, ErrorCode = err.ToString(),Data = data };
+		public static ResultData<T> Success(T data, ErrCode err, params string[] parameters) 
+			=> new() { Rv = 0, ErrorCode = err.ToString(), Parameters = parameters,Data =data, };
+		public static ResultData<T> Error(ushort rv, ErrCode res) => new() { Rv = rv, ErrorCode = res.ToString() };
+		public static ResultData<T> Error(ushort rv, string res) => new() { Rv = rv, ErrorCode = res };
+		public static ResultData<T> Error(ushort rv, ErrCode res, params string[] parameters) => new() { Rv = rv, ErrorCode = res.ToString(), Parameters = parameters };
+		public static ResultData<T> Error(ushort rv, string res, params string[] parameters) => new() { Rv = rv, ErrorCode = res, Parameters = parameters };
+
 	}
 }

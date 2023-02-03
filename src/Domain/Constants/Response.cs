@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Constants
 {
-    public enum Response
+    public enum ErrCode
     {
 
 		None,
@@ -14,58 +14,38 @@ namespace ECom.Domain.Constants
         UnexpectedError,
         Exception,
         Fatal,
+		Error,
         Warning,
+		DbErrorInternal,
 
-        DbErrorInternal,
-		DbErrorForeignKeyIsInvalid,
+		NullReference,
+		Deleted,
+		Disabled,
+        Required,
+        TooShort,
+        TooLong,
+        Expired,
 
+		AlreadyExists,
+		AlreadyInUse,
+		AlreadyDeleted,
 
-        AccountIsNotValid,
-        AccountIsDeleted,
-        AccountDisabled,
-        DebugAccountCanNotBeUsed,
+		NotFound,
+		NotVerified,
+		NotValid,
+		NotExist,
+		NotAuthorized,
 
-        PasswordRequired,
-        PasswordTooShort,
-        PasswordTooLong,
-        InvalidEmailAddress,
-        EmailIsInUse,
-        PasswordCanNotContainSpace,
-        PasswordMustContainSpecialCharacter,
-        PasswordMustContainNumber,
-		PasswordMustContainLowerCase,
-		PasswordMustContainUpperCase,
+		CanNotBeUsed,
+		CanNotContainSpace,
 
+        MustContainSpecialCharacter,
+        MustContainNumber,
+		MustContainLowerCase,
+		MustContainUpperCase,
 
-        AccountNotFound,
-        WrongPassword,
-        NotValid,
-        EmailIsNotVerified,
-        UserNotExist,
-        
-        NotAuthorized,
-        SessionExpired,
-        TokenExpired,
+        WrongData,
+		InvalidData,
 
-        CartAddOrIncreaseProductSuccess,
-        CartRemoveOrDecreaseProductSuccess,
-        CartProductNotFound,
-
-        CategoryIsNull,
-        CategoryNotFound,
-        CategoryAlreadyExists,
-        CategoryUpdated,
-        CategoryDeleted,
-
-        ImageNotFound,
-		LanguageNotFound,
-        ProductNotFound,
-        AnnouncementNotFound,
-		AnnouncementUpdated,
-		AnnouncementDeleted,
-
-        OptionUpdated,
-        JwtOptionUpdated,
-		CompanyInformationUpdated,
 	}
 }

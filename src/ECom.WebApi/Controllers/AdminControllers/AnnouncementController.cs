@@ -17,7 +17,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var res = _announcementService.UpdateAnnouncement(data);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", data.ToJsonString());
+				logger.Warn(res.Rv, res.ErrorCode,res.Parameters, data.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(data.ToJsonString());
@@ -30,7 +30,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var res = _announcementService.DeleteAnnouncement(id);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, id);
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(id);
@@ -42,7 +42,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var res = _announcementService.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, id);
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(id);

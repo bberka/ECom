@@ -1,7 +1,7 @@
 ﻿using EasMe;
 using EasMe.Extensions;
 using ECom.Application.Manager;
-using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+using ECom.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -11,7 +11,12 @@ namespace ECom.WebApi.Controllers.UserControllers
     public class AuthController : Controller
     {
 		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
+		private readonly IUserService _userService;
 
+		public AuthController(IUserService userService)
+		{
+			this._userService = userService;
+		}
 		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
@@ -27,8 +32,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public IActionResult Register([FromBody] RegisterModel model)
 		{
-			var userService = ServiceProviderProxy.GetService<IUserService>();
-			var res = userService.Register(model);
+			var res = _userService.Register(model);
 			if (!res.IsSuccess)
 			{
 				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");

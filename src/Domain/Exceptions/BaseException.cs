@@ -14,7 +14,7 @@ namespace ECom.Domain.Exceptions
         { 
 
         }
-        public BaseException(Response resp) : base(resp.ToString())
+        public BaseException(ErrCode resp) : base(resp.ToString())
         {
 
         }

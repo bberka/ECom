@@ -1,5 +1,5 @@
 ﻿using ECom.Infrastructure;
-using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
 

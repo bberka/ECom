@@ -45,7 +45,5 @@ global using EasMe;
 global using EasMe.Extensions;
 global using ECom.Domain.Extensions;
 global using ECom.Domain.Exceptions;
-global using ECom.Infrastructure.Validators;
-global using ECom.Infrastructure.Validators;
 global using ECom.Infrastructure.DTOs;
 global using FluentValidation;

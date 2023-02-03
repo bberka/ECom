@@ -66,7 +66,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordUpdateDate")
+                    b.Property<DateTime?>("LastPasswordNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
@@ -189,7 +189,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LastUpdateDate")
+                    b.Property<DateTime>("LastNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ProductId")
@@ -1244,7 +1244,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordUpdateDate")
+                    b.Property<DateTime?>("LastPasswordNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OAuthKey")

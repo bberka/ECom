@@ -65,7 +65,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordUpdateDate")
+                    b.Property<DateTime?>("LastPasswordNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
@@ -1145,7 +1145,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordUpdateDate")
+                    b.Property<DateTime?>("LastPasswordNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OAuthKey")

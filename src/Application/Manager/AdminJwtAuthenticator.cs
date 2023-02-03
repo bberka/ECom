@@ -1,6 +1,4 @@
-﻿using ECom.Infrastructure.DependencyResolvers.AspNetCore;
-using ECom.Infrastructure.Interfaces;
-using ECom.Infrastructure.Services;
+﻿using ECom.Infrastructure.Interfaces;
 
 namespace ECom.Application.Manager
 {
@@ -31,18 +29,18 @@ namespace ECom.Application.Manager
 			};
 			return ResultData<JwtTokenModel>.Success(debugRes);
 #endif
-			var adminService = ServiceProviderProxy.GetService<IAdminService>();
-			var optionService = ServiceProviderProxy.GetService<IOptionService>();
+			var adminService = ServiceProviderProxy.This.GetService<IAdminService>();
+			var optionService = ServiceProviderProxy.This.GetService<IOptionService>();
 			var loginResult = adminService.Login(model);
 			if (!loginResult.IsSuccess)
 			{
-				return ResultData<JwtTokenModel>.Error(loginResult.Rv, loginResult.Response);
+				return ResultData<JwtTokenModel>.Error(loginResult.Rv, loginResult.ErrorCode);
 			}
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var adminAsDic = loginResult.Data.AsDictionary();
 			adminAsDic.Add("AdminOnly","");
 			var option = optionService.GetFromCache();
-			var jwtOption = ServiceProviderProxy.GetService<IJwtOptionService>().GetFromCache();
+			var jwtOption = ServiceProviderProxy.This.GetService<IJwtOptionService>().GetFromCache();
 			var expireMins = jwtOption.ExpireMinutesDefault;
 			if (model.RememberMe) expireMins = jwtOption.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);

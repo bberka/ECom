@@ -50,7 +50,7 @@ namespace ECom.Domain.Entities
         public string? LastLoginUserAgent { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public byte FailedPasswordCount { get; set; } = 0;
-        public DateTime? LastPasswordUpdateDate { get; set; }
+        public DateTime? LastPasswordNotFoundate { get; set; }
         public DateTime? DeletedDate { get; set; }
 
         [ForeignKey("RoleId")]

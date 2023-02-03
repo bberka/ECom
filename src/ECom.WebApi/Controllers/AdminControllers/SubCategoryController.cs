@@ -17,7 +17,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var res = _subCategoryService.UpdateSubCategory(category);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", category.ToJsonString());
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, category.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(category.ToJsonString());
@@ -30,7 +30,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var res = _subCategoryService.DeleteSubCategory(id);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, id);
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(id);
@@ -42,7 +42,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var res = _subCategoryService.EnableOrDisable(id);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", id);
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, id);
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(id);

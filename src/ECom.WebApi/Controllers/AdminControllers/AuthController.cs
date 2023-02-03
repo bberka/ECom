@@ -2,7 +2,9 @@
 
 
 
-using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+
+
+using ECom.Application.Services;
 
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -11,13 +13,19 @@ namespace ECom.WebApi.Controllers.AdminControllers
     public class AuthController : Controller
     {
 		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
+		private readonly IAdminService _adminService;
+		private readonly IJwtOptionService _jwtOptionService;
 
+		public AuthController(IAdminService adminService,IJwtOptionService jwtOptionService)
+		{
+			this._adminService = adminService;
+			this._jwtOptionService = jwtOptionService;
+		}
 		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
 #if DEBUG
-			var optionService = ServiceProviderProxy.GetService<IJwtOptionService>();
-			var jwt = new EasJWT(optionService.GetFromCache().Secret);
+			var jwt = new EasJWT(_jwtOptionService.GetFromCache().Secret);
             var adm = new Admin();
             var dic = adm.AsDictionary();
             dic.Add("AdminOnly","");
@@ -42,8 +50,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 #if !DEBUG
             return NotFound();
 #endif
-			var adminService = ServiceProviderProxy.GetService<IAdminService>();
-			var res = adminService.Add(model);
+			var res = _adminService.Add(model);
 			return Ok(res);
 		}
 

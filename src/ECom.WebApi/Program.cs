@@ -1,6 +1,8 @@
-using ECom.Infrastructure.DependencyResolvers.AspNetCore;
+
+using ECom.Application.DependencyResolvers.AspNetCore;
 using ECom.WebApi.Filters;
 using ECom.WebApi.Middlewares;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,6 +16,7 @@ AppDomain.CurrentDomain.AddUnexpectedExceptionHandling();
 builder.Services.AddControllers(x =>
 {
 	x.Filters.Add(new ExceptionHandleFilter());
+    x.Filters.Add(new ValidationFilter());
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -28,7 +31,6 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-builder.Services.AddBusinessDependencies();
 builder.Services
     .AddAuthentication(op =>
     {
@@ -59,9 +61,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
     options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
 });
+
 #endregion
 
-
+builder.Services.AddFluentValidationAutoValidation();
 
 #region Session-Memory
 builder.Services.AddSession();
@@ -72,11 +75,11 @@ builder.Services.AddDistributedMemoryCache();
 #endregion
 
 
+builder.Services.AddBusinessDependencies();
 
 
 var app = builder.Build();
-app.Services.Initialize();
-
+//ServiceProviderProxy.This.Load(app.Services);
 
 #region Default
 if (app.Environment.IsDevelopment())
@@ -96,7 +99,9 @@ app.UseCookiePolicy();
 
 #region Custom Middlewares
 
-app.UseMiddleware<AdminAuthMiddleware>();
+app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<MaintenanceCheckMiddleware>();
+app.UseMiddleware<AuthMiddleware>();
 
 #endregion
 

@@ -298,7 +298,7 @@ namespace ECom.Infrastructure.Migrations
                     LastLoginUserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FailedPasswordCount = table.Column<byte>(type: "tinyint", nullable: false),
-                    LastPasswordUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastPasswordNotFoundate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -456,7 +456,7 @@ namespace ECom.Infrastructure.Migrations
                     LastLoginUserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FailedPasswordCount = table.Column<byte>(type: "tinyint", nullable: false),
-                    LastPasswordUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastPasswordNotFoundate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PreferredLanguageId = table.Column<int>(type: "int", nullable: true)
                 },

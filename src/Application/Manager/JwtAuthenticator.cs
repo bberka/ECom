@@ -1,5 +1,5 @@
-﻿using ECom.Infrastructure.DependencyResolvers.AspNetCore;
-using ECom.Infrastructure.Services;
+﻿
+
 
 namespace ECom.Application.Manager
 {
@@ -8,7 +8,7 @@ namespace ECom.Application.Manager
 
 		private JwtAuthenticator() 
 		{
-			var jwtOption = ServiceProviderProxy.GetService<IJwtOptionService>().GetFromCache();
+			var jwtOption = ServiceProviderProxy.This.GetService<IJwtOptionService>().GetFromCache();
 			Authenticator = new(jwtOption.Secret);
 		}
 		public static JwtAuthenticator This

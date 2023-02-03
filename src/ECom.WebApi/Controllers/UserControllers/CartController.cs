@@ -20,7 +20,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			var res = _service.AddOrIncreaseProduct(userId, productId);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", productId.ToJsonString());
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(productId.ToJsonString());
@@ -34,7 +34,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			var res = _service.RemoveOrDecreaseProduct(userId,productId);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(res.Rv, $"{res.ResponseAsInt}:{res.ResponseAsString}", productId);
+				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId);
 				return BadRequest(res.ToJsonString());
 			}
 			logger.Info(productId);

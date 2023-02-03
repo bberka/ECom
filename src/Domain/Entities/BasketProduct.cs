@@ -15,7 +15,7 @@ namespace ECom.Domain.Entities
         public int Id { get; set; }
 
         public DateTime RegisterDate { get; set; }
-        public DateTime LastUpdateDate { get; set; }
+        public DateTime LastNotFoundate { get; set; }
 
         [ForeignKey("UserId")]
         public int? UserId { get; set; }

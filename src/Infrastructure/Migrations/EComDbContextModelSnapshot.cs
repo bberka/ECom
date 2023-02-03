@@ -124,7 +124,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordUpdateDate")
+                    b.Property<DateTime?>("LastPasswordNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
@@ -275,7 +275,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LastUpdateDate")
+                    b.Property<DateTime>("LastNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ProductId")
@@ -990,7 +990,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductCommentImageBinds");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductDetails", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1315,7 +1315,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordUpdateDate")
+                    b.Property<DateTime?>("LastPasswordNotFoundate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -1675,7 +1675,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductDetails", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
