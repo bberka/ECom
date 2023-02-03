@@ -17,22 +17,28 @@ namespace ECom.Application.Services
 		bool NotHasUpperCase(string password);
 		bool NotUsedEmail_Admin(string email);
 		bool NotUsedEmail_User(string email);
+
+		public bool NotHasPreferredBillingAddress(int? userId);
+		public bool HasPreferredShippingAddress(int? userId);
 	}
 
 	public class ValidationDbService : IValidationDbService
 	{
 		private readonly IEfEntityRepository<User> _userRepo;
 		private readonly IEfEntityRepository<Admin> _adminRepo;
+		private readonly IEfEntityRepository<Address> _addressRepo;
 		private readonly IOptionService _optionService;
 		private readonly Option _option;
 		public ValidationDbService(
 			IEfEntityRepository<User> userRepo,
 			IEfEntityRepository<Admin> adminRepo,
+			IEfEntityRepository<Address> addressRepo,
 			IOptionService optionService
 			)
 		{
 			this._userRepo = userRepo;
 			this._adminRepo = adminRepo;
+			this._addressRepo = addressRepo;
 			this._optionService = optionService;
 			_option = _optionService.GetOptionFromCache();
 		}
@@ -87,6 +93,17 @@ namespace ECom.Application.Services
 		public bool NotHasSpace(string password)
 		{
 			return !password.Any(x => x == ' ');
+		}
+
+		public bool NotHasPreferredBillingAddress(int? userId)
+		{
+
+			throw new NotImplementedException();
+		}
+
+		public bool HasPreferredShippingAddress(int? userId)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -11,10 +11,10 @@ namespace ECom.Application.Services
 {
 	public interface ICartService
 	{
-		Result AddOrIncreaseProduct(uint userId, uint productId);
-		int GetBasketProductCount(uint userId);
-		List<Cart> ListBasketProducts(uint userId);
-		Result RemoveOrDecreaseProduct(uint userId, uint productId);
+		Result AddOrIncreaseProduct(int userId, uint productId);
+		int GetBasketProductCount(int userId);
+		List<Cart> ListBasketProducts(int userId);
+		Result RemoveOrDecreaseProduct(int userId, uint productId);
 	}
 
 	public class CartService : ICartService
@@ -31,9 +31,9 @@ namespace ECom.Application.Services
 			this._userService = userService;
 			this._productService = productService;
 		}
-		public Result AddOrIncreaseProduct(uint userId, uint productId)
+		public Result AddOrIncreaseProduct(int userId, uint productId)
 		{
-			_userService.CheckExists(userId);
+			_userService.CheckExistsOrThrow(userId);
 			_productService.CheckExists(productId);
 			var existing = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			var isSuccess = false;
@@ -60,7 +60,7 @@ namespace ECom.Application.Services
 			}
 			return Result.Success(ErrCode.Success,nameof(AddOrIncreaseProduct));
 		}
-		public Result RemoveOrDecreaseProduct(uint userId, uint productId)
+		public Result RemoveOrDecreaseProduct(int userId, uint productId)
 		{
 			var exist = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
@@ -83,12 +83,12 @@ namespace ECom.Application.Services
 			}
 			return Result.Success(nameof(RemoveOrDecreaseProduct));
 		}
-		public int GetBasketProductCount(uint userId)
+		public int GetBasketProductCount(int userId)
 		{
 			var count = _cartRepo.Count(x => x.UserId == userId);
 			return count;
 		}
-		public List<Cart> ListBasketProducts(uint userId)
+		public List<Cart> ListBasketProducts(int userId)
 		{
 			var list = _cartRepo.Get(x => x.UserId == userId).ToList();
 			return list ?? new();

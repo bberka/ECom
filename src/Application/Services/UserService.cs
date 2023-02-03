@@ -10,10 +10,11 @@ namespace ECom.Application.Services
 {
 	public interface IUserService
 	{
-		void CheckExists(int id);
-		void CheckExists(uint id);
+		void CheckExistsOrThrow(int id);
+		void CheckExistsOrThrow(uint id);
 		bool Exists(string email);
 		User? GetUser(string email);
+		User? GetUser(int id);
 		User GetUserSingle(string email);
 		bool IncreaseFailedPasswordCount(int userId);
 		bool IncreaseFailedPasswordCount(User user);
@@ -103,12 +104,13 @@ namespace ECom.Application.Services
 			var user = _userRepo.GetSingle(x => x.EmailAddress == email);
 			return user;
 		}
-		public void CheckExists(int id)
+		public void CheckExistsOrThrow(int id)
 		{
+			if(id < 1) throw new BaseException("NotValid:UserId");
 			var exist = _userRepo.Any(x => x.Id == id);
 			if (!exist) throw new BaseException("NotExist:User");
 		}
-		public void CheckExists(uint id)
+		public void CheckExistsOrThrow(uint id)
 		{
 			var exist = _userRepo.Any(x => x.Id == id);
 			if (!exist) throw new BaseException("NotExist:User");
@@ -117,6 +119,11 @@ namespace ECom.Application.Services
 		public bool Exists(string email)
 		{
 			return _userRepo.Any(x => x.EmailAddress == email);
+		}
+
+		public User? GetUser(int id)
+		{
+			return _userRepo.Find(id);
 		}
 	}
 }

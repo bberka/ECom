@@ -30,7 +30,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public IActionResult RemoveOrDecreaseProduct(uint productId)
 		{
-			var userId =User.GetUserId();
+			var userId = User.GetUserId();
 			var res = _service.RemoveOrDecreaseProduct(userId,productId);
 			if (!res.IsSuccess)
 			{

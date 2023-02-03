@@ -32,6 +32,7 @@ namespace ECom.Domain.Constants
 		Wrong,
 		InvalidAccount,
 		TestAccountCanNotBeUsed,
+		Null,
 
 	}
 }

@@ -15,7 +15,7 @@ namespace ECom.Application.Validators
 				.NotEmpty();
 
 			RuleFor(x => x.Password)
-				.MinimumLength(ConstantMgr.PasswordMinLength);
+				.MinimumLength(ConstantMgr.StringMinLength);
 
 			RuleFor(x => x.Password)
 				.MaximumLength(ConstantMgr.PasswordMaxLength);
@@ -47,7 +47,7 @@ namespace ECom.Application.Validators
 
 			RuleFor(x => x.EmailAddress)
 				.Must(_validationDbService.NotUsedEmail_User)
-				.WithErrorCode(ErrCode.AlreadyInUse.ToString());
+				.WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
 		}
 
 

@@ -32,7 +32,6 @@ namespace ECom.Application.Validators
 			AddTranslation("en", CustomValidationType.TestAccountCanNotBeUsed.ToString(), "This account can not be used.");
 
 
-
 			AddTranslation("tr", CustomValidationType.TooShort.ToString(), "'{PropertyName}' çok kısa.");
 			AddTranslation("tr", CustomValidationType.TooLong.ToString(), "'{PropertyName}' çok uzun.");
 			AddTranslation("tr", CustomValidationType.Expired.ToString(), "'{PropertyName}' süresi doldu.");

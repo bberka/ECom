@@ -11,14 +11,19 @@ namespace ECom.Domain.Entities
         public int Id { get; set; }
 
         public DateTime RegisterDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public DateTime? LastUseDate { get; set; }
 
-        [MaxLength(64)]
+        [MinLength(ConstantMgr.StringMinLength)]
+        [MaxLength(ConstantMgr.NameMaxLength)]
         public string Name { get; set; }
         
-        [MaxLength(64)]
-        public string Surname { get; set; }
-        
-        [MaxLength(64)]
+		[MinLength(ConstantMgr.StringMinLength)]
+		[MaxLength(ConstantMgr.NameMaxLength)]
+		public string Surname { get; set; }
+
+		[MinLength(ConstantMgr.StringMinLength)]
+		[MaxLength(ConstantMgr.TitleMaxLength)]
         public string Title { get; set; }
         
         [MaxLength(64)]
@@ -31,13 +36,12 @@ namespace ECom.Domain.Entities
         [MaxLength(64)]
         public string Details { get; set; }
 
-        [MaxLength(64)]
-        public string PhoneNumber { get; set; }
-        public bool IsPreferred { get; set; }
+        [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
+        public string PhoneNumber { get; set; } = null!;
+
 
         [ForeignKey("UserId")]
         public int? UserId { get; set; }
-        public virtual User? User { get; set; }
 
     }
 }

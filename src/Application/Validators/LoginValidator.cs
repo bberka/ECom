@@ -16,7 +16,7 @@ namespace ECom.Application.Validators
 				.NotEmpty();
 
 			RuleFor(x => x.Password)
-				.MinimumLength(ConstantMgr.PasswordMinLength);
+				.MinimumLength(ConstantMgr.StringMinLength);
 
 			RuleFor(x => x.Password)
 				.MaximumLength(ConstantMgr.PasswordMaxLength);

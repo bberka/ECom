@@ -10,12 +10,12 @@ namespace ECom.Domain.Extensions
 {
 	public static class AuthExtensions
 	{
-		public static uint GetUserId(this ClaimsPrincipal principal)
+		public static int GetUserId(this ClaimsPrincipal principal)
 		{
 			var userIdString = principal.FindFirst("Id")?.Value;
-			var userId = userIdString.StringConversion<uint>();
+			var userId = userIdString.StringConversion<int>();
 #if DEBUG
-			if (userId == 0) userId = 8;
+			if (userId == 0) throw new NotAuthorizedException();
 #endif
 			return userId;
 		}
