@@ -1,4 +1,5 @@
 ﻿using ECom.Domain.Constants;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,7 @@ namespace ECom.Domain.Entities
 
 		
 		[MaxLength(ConstantMgr.PasswordMaxLength)]
+		[JsonIgnore]
 		public string Password { get; set; }
 
 		[MaxLength(ConstantMgr.EmailMaxLength)]

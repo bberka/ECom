@@ -5,6 +5,7 @@
 
 
 using ECom.Application.Services;
+using ECom.Infrastructure.Interfaces;
 
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -16,27 +17,45 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		private readonly IAdminService _adminService;
 		private readonly IOptionService _optionService;
 		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
+		private readonly IAuthenticator<Admin> _authenticator;
 
 		public AuthController(
 			IAdminService adminService,
 			IOptionService optionService,
-			IAdminJwtAuthenticator adminJwtAuthenticator)
+			IAdminJwtAuthenticator adminJwtAuthenticator,
+			IAuthenticator<Admin> authenticator)
 		{
 			this._adminService = adminService;
 			this._optionService = optionService;
 			this._adminJwtAuthenticator = adminJwtAuthenticator;
+			this._authenticator = authenticator;
 		}
 		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
-			var res = _adminJwtAuthenticator.Authenticate(model);
-			if (!res.IsSuccess)
+			if (ConstantMgr.isUseJwtAuth)
 			{
-				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-				return BadRequest(res);
+				var res = _adminJwtAuthenticator.Authenticate(model);
+				if (!res.IsSuccess)
+				{
+					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+					return BadRequest(res);
+				}
+				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+				return Ok(res);
 			}
-			logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-			return Ok(res);
+			else
+			{
+				var res = _authenticator.Authenticate(model);
+				if (!res.IsSuccess)
+				{
+					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+					return BadRequest(res);
+				}
+				HttpContext.Session.SetString("admin", res.Data.ToJsonString());
+				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+				return Ok(res);
+			}
         }
 
 		[HttpPost]

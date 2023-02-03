@@ -29,7 +29,7 @@ namespace ECom.Application.Validators
 			AddTranslation("en", CustomValidationType.MustContainUpperCase.ToString(), "'{PropertyName}' must contain at least 1 upper case character.");
 			AddTranslation("en", CustomValidationType.Wrong.ToString(), "'{PropertyName}' is wrong.");
 			AddTranslation("en", CustomValidationType.InvalidAccount.ToString(), "Account is invalid.");
-			AddTranslation("en", CustomValidationType.TestAccountCanNotBeUsed.ToString(), "This account can not be used.");
+			AddTranslation("en", CustomValidationType.AccountCanNotBeUsed.ToString(), "This account can not be used.");
 
 
 			AddTranslation("tr", CustomValidationType.TooShort.ToString(), "'{PropertyName}' çok kısa.");
@@ -50,7 +50,7 @@ namespace ECom.Application.Validators
 			AddTranslation("tr", CustomValidationType.MustContainUpperCase.ToString(), "'{PropertyName}' en az 1 adet büyük harf bulunmalı.");
 			AddTranslation("tr", CustomValidationType.Wrong.ToString(), "'{PropertyName}' yanlış.");
 			AddTranslation("en", CustomValidationType.InvalidAccount.ToString(), "Bu hesap geçersiz.");
-			AddTranslation("en", CustomValidationType.TestAccountCanNotBeUsed.ToString(), "Bu hesap kullanılamaz.");
+			AddTranslation("en", CustomValidationType.AccountCanNotBeUsed.ToString(), "Bu hesap kullanılamaz.");
 		}
 	}
 }

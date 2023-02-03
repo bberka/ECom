@@ -2,7 +2,7 @@
 
 namespace ECom.Application.Manager
 {
-	public interface IAdminJwtAuthenticator : IJwtAuthentication
+	public interface IAdminJwtAuthenticator : IJwtAuthenticator
 	{
 	
 	}

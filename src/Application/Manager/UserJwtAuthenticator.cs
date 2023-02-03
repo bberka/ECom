@@ -5,7 +5,7 @@ using ECom.Infrastructure.Interfaces;
 
 namespace ECom.Application.Manager
 {
-	public interface IUserJwtAuthenticator : IJwtAuthentication
+	public interface IUserJwtAuthenticator : IJwtAuthenticator
 	{
 
 	}

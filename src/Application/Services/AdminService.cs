@@ -56,19 +56,19 @@ namespace ECom.Application.Services
 			var admin = GetAdmin(model.EmailAddress);
 			if (admin is null)
 			{
-				return ResultData<Admin>.Error(2, ErrCode.NotFound);
+				return ResultData<Admin>.Error(1, ErrCode.NotFound, nameof(Admin));
 			}
-			var hashed = model.Password.MD5Hash().ConvertToString();
+			var hashed = Convert.ToBase64String(model.Password.MD5Hash());
 			if (admin.Password != hashed)
 			{
 				IncreaseFailedPasswordCount(admin);
-				return ResultData<Admin>.Error(3, ErrCode.NotFound);
+				return ResultData<Admin>.Error(2, ErrCode.NotFound,nameof(Admin));
 			}
 			var validator = new AdminValidator(_validationDbService);
 			var validateResult = validator.Validate(admin);
 			if (!validateResult.IsValid)
 			{
-				return ResultData<Admin>.Error(4, validateResult.Errors.First().ErrorCode);
+				return ResultData<Admin>.Error(3, validateResult.Errors.First().ErrorCode);
 			}
 			if (admin.TwoFactorType != 0)
 			{

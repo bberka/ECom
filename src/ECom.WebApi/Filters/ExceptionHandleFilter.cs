@@ -20,20 +20,11 @@ namespace ECom.WebApi.Filters
 			logger.Exception(context.Exception, $"Query({query})");
 			context.HttpContext.Response.StatusCode = 500;
 
-			//var userId = context.HttpContext.User.GetUserId();
-			//if(userId != 0)
-			//{
-			//    logger.Exception(context.Exception, $"AdminNo:{userId} Query({query})");
-			//    context.ExceptionHandled = true;
-			//    var message = Regex.Replace(context.Exception.Message, @"[^\u0000-\u007F]+", string.Empty).RemoveLineEndings();
-			//    context.HttpContext.Response.Redirect("/Home/ErrorPage?message=" + message);
-			//}
-			//else
-			//{
-			//    logger.Exception(context.Exception, $"Query({query})");
-			//    context.ExceptionHandled = true;
-			//    context.HttpContext.Response.StatusCode = 500;
-			//}
+			if(context.Exception.GetType().Equals(typeof(NotAuthorizedException))) 
+			{
+				context.HttpContext.Response.StatusCode = 403;
+			}
+			
 		}
 	}
 }

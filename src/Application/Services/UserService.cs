@@ -50,19 +50,19 @@ namespace ECom.Application.Services
 			var user = GetUser(model.EmailAddress);
 			if (user is null)
 			{
-				return ResultData<User>.Error(2, ErrCode.NotFound);
+				return ResultData<User>.Error(1, ErrCode.NotFound, nameof(User));
 			}
-			var hashed = model.Password.MD5Hash().ConvertToString();
+			var hashed = Convert.ToBase64String(model.Password.MD5Hash());
 			if (user.Password != hashed)
 			{
 				IncreaseFailedPasswordCount(user);
-				return ResultData<User>.Error(3, ErrCode.NotFound);
+				return ResultData<User>.Error(2, ErrCode.NotFound, nameof(User));
 			}
 			var validator = new UserValidator(_validationDbService);
 			var validateResult = validator.Validate(user);
 			if (!validateResult.IsValid)
 			{
-				return ResultData<User>.Error(4, validateResult.Errors.First().ErrorCode);
+				return ResultData<User>.Error(3, validateResult.Errors.First().ErrorCode);
 			}
 			if (user.TwoFactorType != 0)
 			{

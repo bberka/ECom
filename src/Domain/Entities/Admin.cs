@@ -22,7 +22,8 @@ namespace ECom.Domain.Entities
 
 
         [MaxLength(64)]
-        public string Password { get; set; }
+		[JsonIgnore]
+		public string Password { get; set; }
 
         [MaxLength(255)]
         public string EmailAddress { get; set; }

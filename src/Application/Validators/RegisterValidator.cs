@@ -10,6 +10,7 @@ namespace ECom.Application.Validators
 		public RegisterValidator(IValidationDbService validationDbService)
 		{
 			this._validationDbService = validationDbService;
+			
 			RuleFor(x => x.Password)
 				.NotNull()
 				.NotEmpty();

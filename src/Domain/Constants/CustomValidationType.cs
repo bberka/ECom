@@ -31,7 +31,7 @@ namespace ECom.Domain.Constants
 		MustContainUpperCase,
 		Wrong,
 		InvalidAccount,
-		TestAccountCanNotBeUsed,
+		AccountCanNotBeUsed,
 		Null,
 
 	}

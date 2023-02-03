@@ -30,36 +30,41 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-builder.Services
-    .AddAuthentication(op =>
-    {
-        op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer("Bearer", token =>
-    {
-#if DEBUG
-        token.RequireHttpsMetadata = false;
-#endif
-        token.SaveToken = true;
-        token.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey("vztgffzaoyszvahsacfqxxjvtvbbrnbdtrxwarveycuwpyhkrtuhgkimowfuoiitubvvfedfuqkeztjbbkaapbgsuxcvcjrwxgegdedonqvguuputqqjcmznmqojbjvv".ConvertToByteArray()),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            RequireExpirationTime = true,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero,
-        };
-    });
-
-builder.Services.AddAuthorization(options =>
+if (ConstantMgr.isUseJwtAuth)
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
-    options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
-});
+	builder.Services
+	.AddAuthentication(op =>
+	{
+		op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	})
+	.AddJwtBearer("Bearer", token =>
+	{
+#if DEBUG
+		token.RequireHttpsMetadata = false;
+#endif
+		token.SaveToken = true;
+		token.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuerSigningKey = true,
+			IssuerSigningKey = new SymmetricSecurityKey("vztgffzaoyszvahsacfqxxjvtvbbrnbdtrxwarveycuwpyhkrtuhgkimowfuoiitubvvfedfuqkeztjbbkaapbgsuxcvcjrwxgegdedonqvguuputqqjcmznmqojbjvv".ConvertToByteArray()),
+			ValidateIssuer = false,
+			ValidateAudience = false,
+			RequireExpirationTime = true,
+			ValidateLifetime = true,
+			ClockSkew = TimeSpan.Zero,
+		};
+	});
+
+	builder.Services.AddAuthorization(options =>
+	{
+		options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
+		options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
+	});
+}
+
+
 
 #endregion
 
@@ -101,12 +106,16 @@ app.UseCookiePolicy();
 
 app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<MaintenanceCheckMiddleware>();
-app.UseMiddleware<AuthMiddleware>();
 
 #endregion
 
-app.UseAuthentication();
-app.UseAuthorization();
+if (ConstantMgr.isUseJwtAuth)
+{
+	app.UseMiddleware<AuthMiddleware>();
+	app.UseAuthentication();
+	app.UseAuthorization();
+}
+
 
 
 app.MapControllers();

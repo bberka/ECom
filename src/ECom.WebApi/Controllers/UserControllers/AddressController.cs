@@ -16,53 +16,49 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpGet]
 		public IActionResult ListUserAddreses()
 		{
-			var userId = User.GetUserId();
-			var res = _service.GetUserAddresses(userId);
-			logger.Info(userId);
+			var res = _service.GetUserAddresses(UserId);
+			logger.Info(UserId);
 			return Ok(res);
 		}
 
 		[HttpPut]
 		public IActionResult Add([FromBody] Address address)
 		{
-			var userId = User.GetUserId();
-			address.UserId = userId;
+			address.UserId = UserId;
 			var res = _service.AddAddress(address);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(userId, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
+				logger.Warn(UserId, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(userId, address.ToJsonString());
+			logger.Info(UserId, address.ToJsonString());
 			return Ok(res);
 
 		}
 		[HttpPost]
 		public IActionResult Update([FromBody] Address address)
 		{
-			var userId = User.GetUserId();
-			address.UserId = userId;
+			address.UserId = UserId;
 			var res = _service.UpdateAddress(address);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(userId, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
+				logger.Warn(UserId, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(userId,address.ToJsonString());
+			logger.Info(UserId,address.ToJsonString());
 			return Ok(res);
 		}
 
 		[HttpDelete]
 		public IActionResult Delete([FromBody] int id)
 		{
-			var userId = User.GetUserId();
-			var res = _service.DeleteAddress(userId, id);
+			var res = _service.DeleteAddress(UserId, id);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(userId, res.Rv, res.ErrorCode, res.Parameters, id);
+				logger.Warn(UserId, res.Rv, res.ErrorCode, res.Parameters, id);
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(userId, id);
+			logger.Info(UserId, id);
 			return Ok(res);
 		}
 

@@ -18,8 +18,8 @@ namespace ECom.Application.Services
 		bool NotUsedEmail_Admin(string email);
 		bool NotUsedEmail_User(string email);
 
-		public bool NotHasPreferredBillingAddress(int? userId);
-		public bool HasPreferredShippingAddress(int? userId);
+		bool IsRelease();
+
 	}
 
 	public class ValidationDbService : IValidationDbService
@@ -95,15 +95,11 @@ namespace ECom.Application.Services
 			return !password.Any(x => x == ' ');
 		}
 
-		public bool NotHasPreferredBillingAddress(int? userId)
-		{
 
-			throw new NotImplementedException();
+		public bool IsRelease()
+		{
+			return _option.IsRelease;
 		}
 
-		public bool HasPreferredShippingAddress(int? userId)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

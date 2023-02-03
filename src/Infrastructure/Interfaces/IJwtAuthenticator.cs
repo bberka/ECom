@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Interfaces
 {
-    public interface IJwtAuthentication
+    public interface IJwtAuthenticator
     {
         public ResultData<JwtTokenModel> Authenticate(LoginModel model);
         public ResultData<string> Refresh(string token);
     }
+
+
 }

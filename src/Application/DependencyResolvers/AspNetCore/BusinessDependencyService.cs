@@ -2,6 +2,7 @@
 using ECom.Application.Validators;
 using ECom.Infrastructure;
 using ECom.Infrastructure.Concrete;
+using ECom.Infrastructure.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -71,9 +72,14 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<ICollectionService, CollectionService>();
 			services.AddScoped<ICartService, CartService>();
 			services.AddScoped<IProductService, ProductService>();
+
+			//JWT AUTH
 			services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
 			services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();
 
+			//AUTH
+			services.AddScoped<IAuthenticator<Admin>, AdminAuthenticator>();
+			services.AddScoped<IAuthenticator<User>, UserAuthenticator>();
 
 			//Validator
 			services.AddTransient<IValidator<LoginModel>, LoginValidator>();

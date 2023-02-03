@@ -20,6 +20,8 @@ namespace ECom.Domain.Constants
 		public const byte PhoneNumberMaxLength = 32;
 
 
+		public const bool isUseJwtAuth = false;
+
 
 	}
 }
