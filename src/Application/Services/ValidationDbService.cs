@@ -10,11 +10,11 @@ namespace ECom.Application.Services
 	public interface IValidationDbService
 	{
 		bool AllowTester(bool isTesterAccount);
-		bool NotHasLowerCase(string password);
-		bool NotHasNumber(string password);
+		bool HasLowerCase(string password);
+		bool HasNumber(string password);
 		bool NotHasSpace(string password);
 		bool NotHasSpecialChar(string password);
-		bool NotHasUpperCase(string password);
+		bool HasUpperCase(string password);
 		bool NotUsedEmail_Admin(string email);
 		bool NotUsedEmail_User(string email);
 
@@ -64,31 +64,31 @@ namespace ECom.Application.Services
 			{
 				return true;
 			}
-			return !EasValidate.HasSpecialChars(password);
+			return EasValidate.HasSpecialChars(password);
 		}
-		public bool NotHasNumber(string password)
+		public bool HasNumber(string password)
 		{
 			if (!_option.RequireNumberInPassword)
 			{
 				return true;
 			}
-			return !password.Any(x => char.IsDigit(x));
+			return password.Any(x => char.IsDigit(x));
 		}
-		public bool NotHasLowerCase(string password)
+		public bool HasLowerCase(string password)
 		{
 			if (!_option.RequireLowerCaseInPassword)
 			{
 				return true;
 			}
-			return !password.Any(x => char.IsLower(x));
+			return password.Any(x => char.IsLower(x));
 		}
-		public bool NotHasUpperCase(string password)
+		public bool HasUpperCase(string password)
 		{
 			if (!_option.RequireUpperCaseInPassword)
 			{
 				return true;
 			}
-			return !password.Any(x => char.IsUpper(x));
+			return password.Any(x => char.IsUpper(x));
 		}
 		public bool NotHasSpace(string password)
 		{

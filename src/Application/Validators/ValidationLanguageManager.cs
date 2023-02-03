@@ -17,8 +17,8 @@ namespace ECom.Application.Validators
 			AddTranslation("en", CustomValidationType.AlreadyDeleted.ToString(), "'{PropertyName}' already deleted.");
 			AddTranslation("en", CustomValidationType.AlreadyExists.ToString(), "'{PropertyName}' is already exist.");
 			AddTranslation("en", CustomValidationType.AlreadyInUse.ToString(), "'{PropertyName}' is already in use.");
-			AddTranslation("en", CustomValidationType.NotFound.ToString(), "'{PropertyName}' not found.");
-			AddTranslation("en", CustomValidationType.NotVerified.ToString(), "'{PropertyName}' not verified.");
+			AddTranslation("en", CustomValidationType.NotFound.ToString(), "'{PropertyName}' is not found.");
+			AddTranslation("en", CustomValidationType.NotVerified.ToString(), "'{PropertyName}' is not verified.");
 			AddTranslation("en", CustomValidationType.NotValid.ToString(), "'{PropertyName}' is invalid.");
 			AddTranslation("en", CustomValidationType.NotExist.ToString(), "'{PropertyName}' does not exist.");
 			AddTranslation("en", CustomValidationType.CanNotBeUsed.ToString(), "'{PropertyName}' can not be used.");

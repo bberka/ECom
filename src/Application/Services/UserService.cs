@@ -26,7 +26,7 @@ namespace ECom.Application.Services
 	public class UserService : IUserService
 	{
 		private readonly IEfEntityRepository<User> _userRepo;
-		private readonly IOptionService optionService;
+		private readonly IOptionService _optionService;
 		private readonly IValidationDbService _validationDbService;
 
 		public UserService(
@@ -35,7 +35,7 @@ namespace ECom.Application.Services
 			IValidationDbService validationDbService)
 		{
 			this._userRepo = userRepo;
-			this.optionService = optionService;
+			this._optionService = optionService;
 			this._validationDbService = validationDbService;
 		}
 		public Result Register(RegisterModel model)
@@ -62,7 +62,10 @@ namespace ECom.Application.Services
 			var validateResult = validator.Validate(user);
 			if (!validateResult.IsValid)
 			{
-				return ResultData<User>.Error(3, validateResult.Errors.First().ErrorCode);
+				return ResultData<User>.Error(
+					3,
+					ErrCode.ValidationError ,
+					validateResult.Errors.Select(x => $"{x.ErrorCode}:{x.PropertyName}").ToArray());
 			}
 			if (user.TwoFactorType != 0)
 			{

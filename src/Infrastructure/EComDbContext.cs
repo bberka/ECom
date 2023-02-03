@@ -58,7 +58,7 @@ namespace ECom.Infrastructure
         public DbSet<RoleBind> RoleBinds { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
-        public DbSet<Cart> BasketProducts { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<JwtOption> JwtOptions { get; set; }
         public DbSet<CompanyInformation> CompanyInformations { get; set; }

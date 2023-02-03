@@ -5,6 +5,7 @@ using ECom.WebApi.Filters;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 
@@ -19,9 +20,29 @@ builder.Services.AddControllers(x =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
+
+
+#region Session-Memory
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromSeconds(720);
+	options.Cookie.HttpOnly = true;
+	// Make the session cookie essential
+	options.Cookie.IsEssential = true;
+});
+builder.Services.AddMemoryCache();
+builder.Services.AddDataProtection();
+builder.Services.AddDistributedMemoryCache();
+
+#endregion
+
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSwaggerGen();
+
 
 #region Authentication
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -71,13 +92,7 @@ if (ConstantMgr.isUseJwtAuth)
 ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
 builder.Services.AddFluentValidationAutoValidation();
 
-#region Session-Memory
-builder.Services.AddSession();
-builder.Services.AddMemoryCache();
-builder.Services.AddDataProtection();
-builder.Services.AddDistributedMemoryCache();
 
-#endregion
 
 
 builder.Services.AddBusinessDependencies();
@@ -96,9 +111,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSession();
-app.UseRouting();
+	app.UseSession();
 app.UseCookiePolicy();
+app.UseRouting();
 
 #endregion
 

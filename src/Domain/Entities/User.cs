@@ -1,11 +1,11 @@
 ﻿using ECom.Domain.Constants;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
@@ -76,7 +76,7 @@ namespace ECom.Domain.Entities
 
 		public int FailedPasswordCount { get; set; } = 0;
 
-		public DateTime? LastPasswordUpdateDate { get; set; }
+		public DateTime? PasswordLastUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
 
         [ForeignKey("PreferredLanguageId")]

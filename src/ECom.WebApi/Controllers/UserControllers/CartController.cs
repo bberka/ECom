@@ -14,42 +14,82 @@ namespace ECom.WebApi.Controllers.UserControllers
 			_service = service;
 		}
 		[HttpPost]
-		public IActionResult AddOrIncreaseProduct(uint productId)
+		public IActionResult AddOrIncreaseProduct(int productId)
 		{
-			var res = _service.AddOrIncreaseProduct(UserId, productId);
-			if (!res.IsSuccess)
+			if (HttpContext.IsUserAuthorized())
 			{
-				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId.ToJsonString());
-				return BadRequest(res.ToJsonString());
+				var user = HttpContext.GetUser();
+				var res = _service.AddOrIncreaseProduct(user.Id, productId);
+				if (!res.IsSuccess)
+				{
+					logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId.ToJsonString());
+					return BadRequest(res.ToJsonString());
+				}
+				logger.Info(productId.ToJsonString());
+				return Ok(res);
 			}
-			logger.Info(productId.ToJsonString());
-			return Ok(res);
+			else
+			{
+				HttpContext.AddOrIncreaseInCart(productId);
+				return Ok(Result.Success());
+			}
 		}
 
 		[HttpPost]
-		public IActionResult RemoveOrDecreaseProduct(uint productId)
+		public IActionResult RemoveOrDecreaseProduct(int productId)
 		{
-			var res = _service.RemoveOrDecreaseProduct(UserId,productId);
-			if (!res.IsSuccess)
+
+			if (HttpContext.IsUserAuthorized())
 			{
-				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId);
-				return BadRequest(res.ToJsonString());
+				var user = HttpContext.GetUser();
+				var res = _service.RemoveOrDecreaseProduct(user.Id, productId);
+				if (!res.IsSuccess)
+				{
+					logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId);
+					return BadRequest(res.ToJsonString());
+				}
+				logger.Info(productId);
+				return Ok(res);
+
 			}
-			logger.Info(productId);
-			return Ok(res);
+			else
+			{
+				HttpContext.RemoveOrDecreaseInCart(productId);
+				return Ok(Result.Success());
+			}
+			
 		}
 
 		[HttpGet]
 		public IActionResult ProductCount()
 		{
-			var res = _service.GetBasketProductCount(UserId);
-			return Ok(res);
+			if (HttpContext.IsUserAuthorized())
+			{
+				var user = HttpContext.GetUser();
+				var res = _service.GetBasketProductCount(user.Id);
+				return Ok(res);
+			}
+			else
+			{
+				return Ok(HttpContext.GetCart().Count);
+			}
+			
 		}
 		[HttpGet]
 		public IActionResult List()
 		{
-			var res = _service.ListBasketProducts(UserId);
-			return Ok(res);
+			if (HttpContext.IsUserAuthorized())
+			{
+				var user = HttpContext.GetUser();
+				var res = _service.ListBasketProducts(user.Id);
+				return Ok(res);
+			}
+			else
+			{
+				var res = HttpContext.GetDbCartEntity(-1).ToList();
+				return Ok(res);
+			}
+			
 		}
 		
 	}

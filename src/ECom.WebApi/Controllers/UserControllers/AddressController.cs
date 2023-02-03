@@ -1,11 +1,13 @@
 ﻿using ECom.Domain.Entities;
 using ECom.Domain.Extensions;
+using ECom.WebApi.Filters;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
+	[UserAuthFilter]
     public class AddressController : BaseUserController
     {
 		private readonly IAddressService _service;
@@ -14,51 +16,55 @@ namespace ECom.WebApi.Controllers.UserControllers
 			_service = service;
 		}
 		[HttpGet]
-		public IActionResult ListUserAddreses()
+		public IActionResult List()
 		{
-			var res = _service.GetUserAddresses(UserId);
-			logger.Info(UserId);
+			var user = HttpContext.GetUser();
+			var res = _service.GetUserAddresses(user.Id);
+			logger.Info(user.Id);
 			return Ok(res);
 		}
 
 		[HttpPut]
 		public IActionResult Add([FromBody] Address address)
 		{
-			address.UserId = UserId;
+			var user = HttpContext.GetUser();
 			var res = _service.AddAddress(address);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(UserId, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
+				logger.Warn(user.Id, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(UserId, address.ToJsonString());
+			logger.Info(user.Id, address.ToJsonString());
 			return Ok(res);
 
 		}
 		[HttpPost]
 		public IActionResult Update([FromBody] Address address)
 		{
-			address.UserId = UserId;
+			var user = HttpContext.GetUser();
+
 			var res = _service.UpdateAddress(address);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(UserId, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
+				logger.Warn(user.Id, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(UserId,address.ToJsonString());
+			logger.Info(user.Id,address.ToJsonString());
 			return Ok(res);
 		}
 
 		[HttpDelete]
 		public IActionResult Delete([FromBody] int id)
 		{
-			var res = _service.DeleteAddress(UserId, id);
+			var user = HttpContext.GetUser();
+
+			var res = _service.DeleteAddress(user.Id, id);
 			if (!res.IsSuccess)
 			{
-				logger.Warn(UserId, res.Rv, res.ErrorCode, res.Parameters, id);
+				logger.Warn(user.Id, res.Rv, res.ErrorCode, res.Parameters, id);
 				return BadRequest(res.ToJsonString());
 			}
-			logger.Info(UserId, id);
+			logger.Info(user.Id, id);
 			return Ok(res);
 		}
 

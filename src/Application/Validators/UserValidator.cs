@@ -35,10 +35,11 @@ namespace ECom.Application.Validators
 				.WithErrorCode(CustomValidationType.AccountCanNotBeUsed.ToString());
 			}
 			
-
 			RuleFor(x => x.IsEmailVerified)
 				.Equal(x => true)
-				.WithErrorCode(CustomValidationType.NotVerified.ToString());
+				.WithErrorCode(CustomValidationType.NotVerified.ToString())
+				.WithName("Email Address");
+
 
 			RuleFor(x => x.DeletedDate)
 				.Equal(x => null)

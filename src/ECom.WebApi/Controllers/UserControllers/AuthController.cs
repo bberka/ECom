@@ -28,6 +28,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public IActionResult Login([FromBody] LoginModel model)
 		{
+			HttpContext.Session.Clear();
 			if (ConstantMgr.isUseJwtAuth)
 			{
 				var res = _userJwtAuthenticator.Authenticate(model);
@@ -47,7 +48,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 					return BadRequest(res);
 				}
-				HttpContext.Session.SetString("admin", res.Data.ToJsonString());
+				HttpContext.SetUser(res.Data);
 				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 				return Ok(res);
 			}

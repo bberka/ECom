@@ -35,15 +35,15 @@ namespace ECom.Application.Validators
 				.WithErrorCode(CustomValidationType.MustContainSpecialCharacter.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(_validationDbService.NotHasNumber)
+				.Must(_validationDbService.HasNumber)
 				.WithErrorCode(CustomValidationType.MustContainDigit.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(_validationDbService.NotHasLowerCase)
+				.Must(_validationDbService.HasLowerCase)
 				.WithErrorCode(CustomValidationType.MustContainLowerCase.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(_validationDbService.NotHasUpperCase)
+				.Must(_validationDbService.HasUpperCase)
 				.WithErrorCode(CustomValidationType.MustContainUpperCase.ToString());
 
 			RuleFor(x => x.EmailAddress)

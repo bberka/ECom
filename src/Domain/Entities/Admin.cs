@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasMe.EFCore;
+using Newtonsoft.Json;
+
 namespace ECom.Domain.Entities
 {
     public class Admin : IEfEntity
@@ -51,7 +53,7 @@ namespace ECom.Domain.Entities
         public string? LastLoginUserAgent { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public byte FailedPasswordCount { get; set; } = 0;
-        public DateTime? LastPasswordNotFoundate { get; set; }
+        public DateTime? PasswordLastUpdateDate { get; set; }
         public DateTime? DeletedDate { get; set; }
 
         [ForeignKey("RoleId")]

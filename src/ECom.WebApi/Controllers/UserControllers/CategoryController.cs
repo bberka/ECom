@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-
     public class CategoryController : BaseUserController
     {
         private readonly ICategoryService _service;

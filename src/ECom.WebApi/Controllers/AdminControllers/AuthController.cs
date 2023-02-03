@@ -33,6 +33,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
+			HttpContext.Session.Clear();
 			if (ConstantMgr.isUseJwtAuth)
 			{
 				var res = _adminJwtAuthenticator.Authenticate(model);
@@ -52,14 +53,14 @@ namespace ECom.WebApi.Controllers.AdminControllers
 					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 					return BadRequest(res);
 				}
-				HttpContext.Session.SetString("admin", res.Data.ToJsonString());
+				HttpContext.SetAdmin(res.Data);
 				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 				return Ok(res);
 			}
         }
 
 		[HttpPost]
-		private IActionResult AddNewAdmin([FromBody] Admin model)
+		public IActionResult Add([FromBody] AdminAddModel model)
 		{
 #if !DEBUG
             return NotFound();

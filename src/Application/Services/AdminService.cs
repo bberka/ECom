@@ -23,7 +23,7 @@ namespace ECom.Application.Services
 		bool IncreaseFailedPasswordCount(Admin admin);
 		ResultData<Admin> Login(LoginModel model);
 		bool UpdateSuccessLogin(Admin admin);
-		Result AddAdmin(Admin admin);
+		Result AddAdmin(AdminAddModel admin);
 	}
 
 	public class AdminService : IAdminService
@@ -98,7 +98,7 @@ namespace ECom.Application.Services
 		}
 		public Admin? GetAdmin(string email)
 		{
-			return _adminRepo.GetFirst(x => x.EmailAddress == email);
+			return _adminRepo.GetFirstOrDefault(x => x.EmailAddress == email);
 		}
 
 		public Admin? GetAdmin(int id)
@@ -126,9 +126,10 @@ namespace ECom.Application.Services
 			return _adminRepo.GetList();
 		}
 
-		public Result AddAdmin(Admin admin)
+		public Result AddAdmin(AdminAddModel admin)
 		{
-			var res = _adminRepo.Add(admin);
+
+			var res = _adminRepo.Add(admin.ToAdminEntity());
 			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
 			return Result.Success("Updated");
 		}
