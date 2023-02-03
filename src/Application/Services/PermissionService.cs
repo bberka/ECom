@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface IPermissionService : IEfEntityRepository<Permission>
+	public interface IPermissionService 
 	{
 	}
-	public class PermissionService : EfEntityRepositoryBase<Permission, EComDbContext>, IPermissionService
+	public class PermissionService :  IPermissionService
 	{
 
 

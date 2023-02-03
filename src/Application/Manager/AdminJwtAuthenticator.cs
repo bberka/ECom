@@ -10,14 +10,14 @@ namespace ECom.Application.Manager
 	public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 	{
 		private readonly IAdminService _adminService;
-		private readonly IJwtOptionService _jwtOptionService;
+		private readonly IOptionService _optionService;
 		public readonly EasJWT _jwtManager;
 
-		public AdminJwtAuthenticator(IAdminService adminService,IJwtOptionService jwtOptionService)
+		public AdminJwtAuthenticator(IAdminService adminService,IOptionService optionService)
 		{
 			this._adminService = adminService;
-			this._jwtOptionService = jwtOptionService;
-			var option = _jwtOptionService.GetFromCache();
+			this._optionService = optionService;
+			var option = _optionService.GetJwtOption();
 			_jwtManager = new(option.Secret, option.Issuer, option.Audience);
 		}
 
@@ -44,7 +44,7 @@ namespace ECom.Application.Manager
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var adminAsDic = loginResult.Data.AsDictionary();
 			adminAsDic.Add("AdminOnly", "");
-			var option = _jwtOptionService.GetFromCache();
+			var option = _optionService.GetFullOptionCache().JwtOption;
 			var expireMins = option.ExpireMinutesDefault;
 			if (model.RememberMe) expireMins = option.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);

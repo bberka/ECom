@@ -34,7 +34,7 @@ namespace ECom.Application.Validators
 		private bool DebugModeOn(bool isTesterAccount)
 		{
 			if (!isTesterAccount) return false;
-			var option = _optionService.GetFromCache();
+			var option = _optionService.GetFullOptionCache().Option;
 			return !option.IsRelease;
 		}
 

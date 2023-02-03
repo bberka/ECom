@@ -4,32 +4,48 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECom.Application.Services
 {
-	public interface ICategoryService : IEfEntityRepository<Category>
+	public interface ICategoryService
 	{
 		Result DeleteCategory(uint id);
-		Result EnableOrDisable(uint id);
+		Result DeleteSubCategory(uint id);
+		Result EnableOrDisableCategory(uint id);
+		Result EnableOrDisableSubCategory(uint id);
 		List<Category> ListCategories();
 		Result UpdateCategory(CategoryUpdateModel model);
+		Result UpdateSubCategory(SubCategory? data);
 	}
 
-	public class CategoryService : EfEntityRepositoryBase<Category, EComDbContext>, ICategoryService
+	public class CategoryService : ICategoryService
 	{
+		private readonly IEfEntityRepository<Category> _categoryRepo;
+		private readonly IEfEntityRepository<SubCategory> _subCategoryRepo;
+		private readonly IEfEntityRepository<Language> _languageRepo;
+
+		public CategoryService(
+			IEfEntityRepository<Category> categoryRepo,
+			IEfEntityRepository<SubCategory> subCategoryRepo,
+			IEfEntityRepository<Language> languageRepo)
+		{
+			this._categoryRepo = categoryRepo;
+			this._subCategoryRepo = subCategoryRepo;
+			this._languageRepo = languageRepo;
+		}
 		public List<Category> ListCategories()
 		{
-			return Get(x => x.IsValid == true)
+			return _categoryRepo.Get(x => x.IsValid == true)
 				.Include(x => x.SubCategories)
 				.Include(x => x.Language)
 				.ToList();
 		}
-		public Result EnableOrDisable(uint id)
+		public Result EnableOrDisableCategory(uint id)
 		{
-			var category = Find((int)id);
+			var category = _categoryRepo.Find((int)id);
 			if (category == null)
 			{
 				return Result.Error(1, ErrCode.NotFound);
 			}
 			category.IsValid = !category.IsValid;
-			var res = Update(category);
+			var res = _categoryRepo.Update(category);
 			if (res == false)
 			{
 				return Result.Error(2, ErrCode.DbErrorInternal);
@@ -38,16 +54,15 @@ namespace ECom.Application.Services
 		}
 		public Result UpdateCategory(CategoryUpdateModel model)
 		{
-			if (!Any(x => x.Id == model.CategoryId))
+			if (!_categoryRepo.Any(x => x.Id == model.CategoryId))
 			{
 				return Result.Error(1, ErrCode.NotFound);
 			}
-			var langService = new LanguageService();
-			if (!langService.Any(x => x.Id == model.LanguageId))
+			if (!_languageRepo.Any(x => x.Id == model.LanguageId))
 			{
 				return Result.Error(3, ErrCode.NotFound);
 			}
-			var res = UpdateWhereSingle(x => x.Id == model.CategoryId, x =>
+			var res = _categoryRepo.UpdateWhereSingle(x => x.Id == model.CategoryId, x =>
 			{
 				x.IsValid = model.IsValid;
 				x.Name = model.Name;
@@ -61,12 +76,56 @@ namespace ECom.Application.Services
 		}
 		public Result DeleteCategory(uint id)
 		{
-			var category = Find((int)id);
+			var category = _categoryRepo.Find((int)id);
 			if (category == null)
 			{
 				return Result.Error(1, ErrCode.NotFound);
 			}
-			var res = Delete(category);
+			var res = _categoryRepo.Delete(category);
+			if (res == false)
+			{
+				return Result.Error(2, ErrCode.DbErrorInternal);
+			}
+			return Result.Success(ErrCode.Deleted);
+
+		}
+		public Result EnableOrDisableSubCategory(uint id)
+		{
+			var category = _subCategoryRepo.Find((int)id);
+			if (category == null)
+			{
+				return Result.Error(1, ErrCode.NotFound);
+			}
+			category.IsValid = !category.IsValid;
+			var res = _subCategoryRepo.Update(category);
+			if (res == false)
+			{
+				return Result.Error(2, ErrCode.DbErrorInternal);
+			}
+			return Result.Success(ErrCode.NotFound);
+		}
+		public Result UpdateSubCategory(SubCategory? data)
+		{
+			if (data == null)
+			{
+				return Result.Error(1, ErrCode.NullReference);
+			}
+			var res = _subCategoryRepo.Update(data);
+			if (!res)
+			{
+				return Result.Error(2, ErrCode.DbErrorInternal);
+			}
+			return Result.Success(ErrCode.NotFound);
+		}
+		public Result DeleteSubCategory(uint id)
+		{
+			var category = _subCategoryRepo.Find((int)id);
+			if (category == null)
+			{
+				return Result.Error(1, ErrCode.NotFound);
+			}
+
+			var res = _subCategoryRepo.Delete(category);
 			if (res == false)
 			{
 				return Result.Error(2, ErrCode.DbErrorInternal);

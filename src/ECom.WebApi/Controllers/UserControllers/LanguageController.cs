@@ -12,7 +12,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpGet]
 		public IActionResult List()
 		{
-			var res = _languageService.GetList();
+			var res = _languageService.GetLanguages();
 			return Ok(res);
 		}
 		

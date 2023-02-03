@@ -11,31 +11,42 @@ using ECom.Domain.Lib;
 
 namespace ECom.Application.Services
 {
-	public interface IAdminService : IEfEntityRepository<Admin>
+	public interface IAdminService 
 	{
+		List<Admin> GetAdmins();
+		Admin? GetAdmin(int id);
+		Admin GetAdminSingle(int id);
+		bool Exists(int id);
+		bool Exists(string email);
 		Admin? GetAdmin(string email);
 		bool HasPermission(int adminId, int permissionId);
 		bool IncreaseFailedPasswordCount(Admin admin);
 		ResultData<Admin> Login(LoginModel model);
 		bool UpdateSuccessLogin(Admin admin);
+		Result AddAdmin(Admin admin);
 	}
 
-	public class AdminService : EfEntityRepositoryBase<Admin, EComDbContext>, IAdminService
+	public class AdminService : IAdminService
 	{
-		private readonly IRoleBindService roleBindService;
-		private readonly IOptionService optionService;
+		private readonly IEfEntityRepository<Admin> _adminRepo;
+		private readonly IEfEntityRepository<RoleBind> _roleBindRepo;
+		private readonly IOptionService _optionService;
 
-		public AdminService(IRoleBindService roleBindService,IOptionService optionService)
+		public AdminService(
+			IEfEntityRepository<Admin> adminRepo, 
+			IEfEntityRepository<RoleBind> roleBindRepo,
+			IOptionService optionService)
 		{
-			this.roleBindService = roleBindService;
-			this.optionService = optionService;
+			this._adminRepo = adminRepo;
+			this._roleBindRepo = roleBindRepo;
+			this._optionService = optionService;
 		}
 		public bool HasPermission(int adminId, int permissionId)
 		{
 			var ctx = new EComDbContext();
-			var admin = GetSingle(x => x.Id == adminId && x.IsValid == true && x.IsEmailVerified == true && x.DeletedDate != null);
+			var admin = _adminRepo.GetSingle(x => x.Id == adminId && x.IsValid == true && x.IsEmailVerified == true && x.DeletedDate != null);
 			if (admin.RoleId is null) throw new BaseException("DbErrorInternal:ForeignKey");
-			return roleBindService.Any(x => x.PermissionId == permissionId && x.RoleId == admin.RoleId && x.IsValid == true);
+			return _roleBindRepo.Any(x => x.PermissionId == permissionId && x.RoleId == admin.RoleId && x.IsValid == true);
 		}
 		public ResultData<Admin> Login(LoginModel model)
 		{
@@ -50,7 +61,7 @@ namespace ECom.Application.Services
 				IncreaseFailedPasswordCount(admin);
 				return ResultData<Admin>.Error(3, ErrCode.NotFound);
 			}
-			var validator = new AdminValidator(optionService);
+			var validator = new AdminValidator(_optionService);
 			var validateResult = validator.Validate(admin);
 			if (!validateResult.IsValid)
 			{
@@ -84,7 +95,39 @@ namespace ECom.Application.Services
 		}
 		public Admin? GetAdmin(string email)
 		{
-			return GetFirst(x => x.EmailAddress == email);
+			return _adminRepo.GetFirst(x => x.EmailAddress == email);
+		}
+
+		public Admin? GetAdmin(int id)
+		{
+			return _adminRepo.Find(id);
+		}
+
+		public Admin GetAdminSingle(int id)
+		{
+			return _adminRepo.GetSingle(x => x.Id == id);
+		}
+
+		public bool Exists(int id)
+		{
+			return _adminRepo.Any(x => x.Id == id);
+		}
+
+		public bool Exists(string email)
+		{
+			return _adminRepo.Any(x => x.EmailAddress == email);
+		}
+
+		public List<Admin> GetAdmins()
+		{
+			return _adminRepo.GetList();
+		}
+
+		public Result AddAdmin(Admin admin)
+		{
+			var res = _adminRepo.Add(admin);
+			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			return Result.Success("Updated");
 		}
 	}
 }

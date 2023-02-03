@@ -14,16 +14,16 @@ namespace ECom.WebApi.Controllers.AdminControllers
     {
 		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
 		private readonly IAdminService _adminService;
-		private readonly IJwtOptionService _jwtOptionService;
+		private readonly IOptionService _optionService;
 		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
 
 		public AuthController(
 			IAdminService adminService,
-			IJwtOptionService jwtOptionService,
+			IOptionService optionService,
 			IAdminJwtAuthenticator adminJwtAuthenticator)
 		{
 			this._adminService = adminService;
-			this._jwtOptionService = jwtOptionService;
+			this._optionService = optionService;
 			this._adminJwtAuthenticator = adminJwtAuthenticator;
 		}
 		[HttpPost]
@@ -45,7 +45,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 #if !DEBUG
             return NotFound();
 #endif
-			var res = _adminService.Add(model);
+			var res = _adminService.AddAdmin(model);
 			return Ok(res);
 		}
 

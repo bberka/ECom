@@ -2,48 +2,155 @@
 
 
 
+using System.Collections.Generic;
+
 namespace ECom.Application.Services
 {
-
-	public interface IOptionService : IEfEntityRepository<Option>
+	public interface IOptionService
 	{
-		Option GetFromCache();
+		JwtOption GetJwtOption();
 		Option GetOption();
+		List<CargoOption> GetCargoOptions();
+		List<PaymentOption> GetPaymentOptions();
+		List<SmtpOption> GetSmtpOptions();
+		Result UpdateCargoOption(CargoOption option);
+		Result UpdateJwtOption(JwtOption option);
 		Result UpdateOption(Option option);
+		Result UpdatePaymentOption(PaymentOption option);
+		Result UpdateSmtpOption(SmtpOption option);
+		public FullOption GetFullOptionCache();
+		public void RefreshCache();
 	}
 
-	public class OptionService : EfEntityRepositoryBase<Option, EComDbContext>, IOptionService
+	public class OptionService : IOptionService
 	{
-		public OptionService()
+		const byte CACHE_REFRESH_INTERVAL_MINS = 1;
+
+		private readonly EasCache<Option> OptionCache;
+		private readonly EasCache<JwtOption> JwtOptionCache;
+		private readonly EasCache<List<CargoOption>> CargoOptionCache;
+		private readonly EasCache<List<SmtpOption>> SmtpOptionCache;
+		private readonly EasCache<List<PaymentOption>> PaymentOptionCache;
+
+
+		private readonly IEfEntityRepository<Option> _optionRepo;
+		private readonly IEfEntityRepository<JwtOption> _jwtOptionRepo;
+		private readonly IEfEntityRepository<SmtpOption> _smtpOptionRepo;
+		private readonly IEfEntityRepository<CargoOption> _cargoOptionRepo;
+		private readonly IEfEntityRepository<PaymentOption> _paymentOptionRepo;
+
+		public OptionService(
+			IEfEntityRepository<Option> optionRepo,
+			IEfEntityRepository<JwtOption> jwtOptionRepo,
+			IEfEntityRepository<SmtpOption> smtpOptionRepo,
+			IEfEntityRepository<CargoOption> cargoOptionRepo,
+			IEfEntityRepository<PaymentOption> paymentOptionRepo)
 		{
-			Cache = new(GetOption, CACHE_REFRESH_INTERVAL_MINS);
+			this._optionRepo = optionRepo;
+			this._jwtOptionRepo = jwtOptionRepo;
+			this._smtpOptionRepo = smtpOptionRepo;
+			this._cargoOptionRepo = cargoOptionRepo;
+			this._paymentOptionRepo = paymentOptionRepo;
+
+			OptionCache = new(GetOption, CACHE_REFRESH_INTERVAL_MINS);
+			JwtOptionCache = new(GetJwtOption, CACHE_REFRESH_INTERVAL_MINS);
+			CargoOptionCache = new(GetCargoOptions, CACHE_REFRESH_INTERVAL_MINS);
+			SmtpOptionCache = new(GetSmtpOptions, CACHE_REFRESH_INTERVAL_MINS);
+			PaymentOptionCache = new(GetPaymentOptions, CACHE_REFRESH_INTERVAL_MINS);
+
 		}
 
-		const byte CACHE_REFRESH_INTERVAL_MINS = 1;
-		private readonly EasCache<Option> Cache;
+
 
 		public Result UpdateOption(Option option)
 		{
-			using var ctx = new EComDbContext();
-			ctx.Options.Clear();
-			ctx.SaveChanges();
-			ctx.Add(option);
-			var res = ctx.SaveChanges();
-			if (res != 1) return Result.Error(1, ErrCode.DbErrorInternal);
-			Cache.Refresh();
+			var res = _optionRepo.Update(option);
+			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			OptionCache.Refresh();
 			return Result.Success(ErrCode.NotFound);
+		}
+		public Result UpdateJwtOption(JwtOption option)
+		{
+			var res = _jwtOptionRepo.Update(option);
+			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			OptionCache.Refresh();
+			return Result.Success(ErrCode.NotFound);
+		}
+		public Result UpdateCargoOption(CargoOption option)
+		{
+			var res = _cargoOptionRepo.Update(option);
+			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			OptionCache.Refresh();
+			return Result.Success(ErrCode.NotFound);
+		}
+		public Result UpdatePaymentOption(PaymentOption option)
+		{
+			var res = _paymentOptionRepo.Update(option);
+			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			OptionCache.Refresh();
+			return Result.Success(ErrCode.NotFound);
+		}
+		public Result UpdateSmtpOption(SmtpOption option)
+		{
+			var res = _smtpOptionRepo.Update(option);
+			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			OptionCache.Refresh();
+			return Result.Success(ErrCode.NotFound);
+		}
+
+
+		public FullOption GetFullOptionCache()
+		{
+			return new FullOption
+			{
+				CargoOptions = CargoOptionCache.Get(),
+				SmtpOptions = SmtpOptionCache.Get(),
+				JwtOption = JwtOptionCache.Get(),
+				Option = OptionCache.Get(),
+				PaymentOptions = PaymentOptionCache.Get(),
+			};
 		}
 		public Option GetOption()
 		{
 #if DEBUG
-			return GetSingle(x => x.IsRelease == false);
+			return _optionRepo.GetSingle(x => x.IsRelease == false);
 #else
-			return GetSingle(x => x.IsRelease == true);
+			return _optionRepo.GetSingle(x => x.IsRelease == true);
 #endif
 		}
-		public Option GetFromCache()
+
+
+		public JwtOption GetJwtOption()
 		{
-			return Cache.Get();
+#if DEBUG
+			return _jwtOptionRepo.GetSingle(x => x.IsRelease == false);
+#else
+			return _jwtOptionRepo.GetSingle(x => x.IsRelease == true);
+#endif
+		}
+
+		public List<CargoOption> GetCargoOptions()
+		{
+			return _cargoOptionRepo.GetList(x => x.IsValid == true);
+		}
+
+		public List<PaymentOption> GetPaymentOptions()
+		{
+			return _paymentOptionRepo.GetList(x => x.IsValid == true);
+		}
+		public List<SmtpOption> GetSmtpOptions()
+		{
+			return _smtpOptionRepo.GetList(x => x.IsValid == true);
+		}
+
+		public void RefreshCache()
+		{
+			OptionCache.Refresh();
+			PaymentOptionCache.Refresh();
+			SmtpOptionCache.Refresh();
+			JwtOptionCache.Refresh();
+			CargoOptionCache.Refresh();
+
 		}
 	}
 }

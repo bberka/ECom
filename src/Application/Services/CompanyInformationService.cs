@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ICompanyInformationService : IEfEntityRepository<CompanyInformation>
+	public interface ICompanyInformationService 
 	{
 		CompanyInformation GetCompanyInformation();
 		CompanyInformation GetFromCache();
@@ -15,20 +15,24 @@ namespace ECom.Application.Services
 
 	}
 
-	public class CompanyInformationService : EfEntityRepositoryBase<CompanyInformation, EComDbContext>, ICompanyInformationService
+	public class CompanyInformationService : ICompanyInformationService
 	{
-		public CompanyInformationService()
-		{
-			Cache = new(GetCompanyInformation, CACHE_REFRESH_INTERVAL_MINS);
-		}
 
 		const byte CACHE_REFRESH_INTERVAL_MINS = 1;
 		private readonly EasCache<CompanyInformation> Cache;
+		private readonly IEfEntityRepository<CompanyInformation> _companyInfoRepo;
+
+		public CompanyInformationService(IEfEntityRepository<CompanyInformation> companyInfoRepo)
+		{
+			Cache = new(GetCompanyInformation, CACHE_REFRESH_INTERVAL_MINS);
+			this._companyInfoRepo = companyInfoRepo;
+		}
+
 
 		public CompanyInformation GetCompanyInformation()
 		{
 #if DEBUG
-			return GetSingle(x => x.IsRelease == false);
+			return _companyInfoRepo.GetSingle(x => x.IsRelease == false);
 #else
 			return GetSingle(x => x.IsRelease == true);
 #endif
@@ -41,15 +45,15 @@ namespace ECom.Application.Services
 		public Result UpdateCompanyInformation(CompanyInformation info)
 		{
 			var isRelease = info.IsRelease;
-			var current = GetFirstOrDefault(x =>x.IsRelease == isRelease);
+			var current = _companyInfoRepo.GetFirstOrDefault(x =>x.IsRelease == isRelease);
 			if (current != null)
 			{
-				var res = Delete(current);
+				var res = _companyInfoRepo.Delete(current);
 				if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
 			}
 			else
 			{
-				var res = Add(info);
+				var res = _companyInfoRepo.Add(info);
 				if (!res) return Result.Error(2, ErrCode.DbErrorInternal);
 			}
 			Cache.Refresh();

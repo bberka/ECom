@@ -9,11 +9,20 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ICollectionService : IEfEntityRepository<Collection>
+	public interface ICollectionService 
 	{
 	}
-	public class CollectionService : EfEntityRepositoryBase<Collection, EComDbContext>, ICollectionService
+	public class CollectionService : ICollectionService
 	{
+		private readonly IEfEntityRepository<Collection> _collectionRepo;
+		private readonly IEfEntityRepository<CollectionProduct> _collectionProductRepo;
 
+		public CollectionService(
+			IEfEntityRepository<Collection> collectionRepo,
+			IEfEntityRepository<CollectionProduct> collectionProductRepo)
+		{
+			this._collectionRepo = collectionRepo;
+			this._collectionProductRepo = collectionProductRepo;
+		}
 	}
 }

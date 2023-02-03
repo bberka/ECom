@@ -14,7 +14,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [HttpGet]
         public IActionResult List()
         {
-            var res = _announcementService.GetList();
+            var res = _announcementService.GetAnnouncements();
 			logger.Info();
 			return Ok(res.ToJsonString());
             

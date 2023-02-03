@@ -12,14 +12,14 @@ namespace ECom.Application.Manager
 	public class UserJwtAuthenticator : IUserJwtAuthenticator
 	{
 		private readonly IUserService _userService;
-		private readonly IJwtOptionService _jwtOptionService;
+		private readonly IOptionService _optionService;
 		public readonly EasJWT _jwtManager;
 
-		public UserJwtAuthenticator(IUserService userService, IJwtOptionService jwtOptionService)
+		public UserJwtAuthenticator(IUserService userService, IOptionService optionService)
 		{
 			this._userService = userService;
-			this._jwtOptionService = jwtOptionService;
-			var option = _jwtOptionService.GetFromCache();
+			this._optionService = optionService;
+			var option = _optionService.GetFullOptionCache().JwtOption;
 			_jwtManager = new(option.Secret, option.Issuer, option.Audience);
 		}
 		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
@@ -44,7 +44,7 @@ namespace ECom.Application.Manager
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var userAsDic = loginResult.Data.AsDictionary();
 			userAsDic.Add("UserOnly", "");
-			var option = _jwtOptionService.GetFromCache();
+			var option = _optionService.GetFullOptionCache().JwtOption;
 			var expireMins = option.ExpireMinutesDefault;
 			if (model.RememberMe) expireMins = option.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);

@@ -9,11 +9,22 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ILanguageService : IEfEntityRepository<Language>
+	public interface ILanguageService 
 	{
+		public List<Language> GetLanguages();
 	}
-	public class LanguageService : EfEntityRepositoryBase<Language, EComDbContext>, ILanguageService
+	public class LanguageService : ILanguageService
 	{
+		private readonly IEfEntityRepository<Language> _languageRepo;
 
+		public LanguageService(
+			IEfEntityRepository<Language> languageRepo)
+		{
+			this._languageRepo = languageRepo;
+		}
+		public List<Language> GetLanguages()
+		{
+			return _languageRepo.GetList();
+		}
 	}
 }

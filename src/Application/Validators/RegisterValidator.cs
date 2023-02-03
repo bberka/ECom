@@ -8,11 +8,12 @@ namespace ECom.Application.Validators
 	{
 		private readonly IOptionService _optionService;
 		private readonly IUserService _userService;
-
+		private readonly Option _option;
 		public RegisterValidator(IOptionService optionService,IUserService userService)
 		{
 			this._optionService = optionService;
 			this._userService = userService;
+			_option = _optionService.GetFullOptionCache().Option;
 			RuleFor(x => x.Password)
 				.NotNull()
 				.NotEmpty();
@@ -59,8 +60,7 @@ namespace ECom.Application.Validators
 		}
 		private bool NotHasSpecialChar(string password)
 		{
-			var option = _optionService.GetFromCache();
-			if (!option.RequireSpecialCharacterInPassword)
+			if (!_option.RequireSpecialCharacterInPassword)
 			{
 				return true;
 			}
@@ -68,8 +68,7 @@ namespace ECom.Application.Validators
 		}
 		private bool NotHasNumber(string password)
 		{
-			var option = _optionService.GetFromCache();
-			if (!option.RequireNumberInPassword)
+			if (!_option.RequireNumberInPassword)
 			{
 				return true;
 			}
@@ -77,8 +76,7 @@ namespace ECom.Application.Validators
 		}
 		private bool NotHasLowerCase(string password)
 		{
-			var option = _optionService.GetFromCache();
-			if (!option.RequireLowerCaseInPassword)
+			if (!_option.RequireLowerCaseInPassword)
 			{
 				return true;
 			}
@@ -86,8 +84,7 @@ namespace ECom.Application.Validators
 		}
 		private bool NotHasUpperCase(string password)
 		{
-			var option = _optionService.GetFromCache();
-			if (!option.RequireUpperCaseInPassword)
+			if (!_option.RequireUpperCaseInPassword)
 			{
 				return true;
 			}

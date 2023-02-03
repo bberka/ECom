@@ -5,6 +5,8 @@
 
 
 
+using ECom.Domain.Entities;
+
 namespace ECom.Application.Services
 {
 	public interface IProductService
@@ -25,17 +27,48 @@ namespace ECom.Application.Services
 		List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model);
 	}
 
-	public class ProductService : EfEntityRepositoryBase<Product, EComDbContext>, IProductService
+	public class ProductService : IProductService
 	{
+		private readonly IEfEntityRepository<Product> _productRepo;
+		private readonly IEfEntityRepository<ProductDetail> _productDetailRepo;
+		private readonly IEfEntityRepository<ProductComment> _productCommentRepo;
+		private readonly IEfEntityRepository<ProductImageBind> _productImageBindRepo;
+		private readonly IEfEntityRepository<ProductCommentImageBind> _productCommentImageBindRepo;
+		private readonly IEfEntityRepository<ProductVariant> _productVariantRepo;
+		private readonly IEfEntityRepository<FavoriteProduct> _favoriteProductRepo;
+		private readonly IEfEntityRepository<SubCategory> _subCategoryRepo;
+		private readonly IEfEntityRepository<Category> _categoryRepo;
 		private readonly IOptionService _optionService;
+		private readonly ICategoryService _categoryService;
 
-		public ProductService(IOptionService optionService)
+		public ProductService(
+			IEfEntityRepository<Product> productRepo,
+			IEfEntityRepository<ProductDetail> productDetailRepo,
+			IEfEntityRepository<ProductComment> productCommentRepo,
+			IEfEntityRepository<ProductImageBind> productImageBindRepo,
+			IEfEntityRepository<ProductCommentImageBind> productCommentImageBindRepo,
+			IEfEntityRepository<ProductVariant> productVariantRepo,
+			IEfEntityRepository<FavoriteProduct> favoriteProductRepo,
+			IEfEntityRepository<SubCategory> subCategoryRepo,
+			IEfEntityRepository<Category> categoryRepo,
+			IOptionService optionService,
+			ICategoryService categoryService)
 		{
+			this._productRepo = productRepo;
+			this._productDetailRepo = productDetailRepo;
+			this._productCommentRepo = productCommentRepo;
+			this._productImageBindRepo = productImageBindRepo;
+			this._productCommentImageBindRepo = productCommentImageBindRepo;
+			this._productVariantRepo = productVariantRepo;
+			this._favoriteProductRepo = favoriteProductRepo;
+			this._subCategoryRepo = subCategoryRepo;
+			this._categoryRepo = categoryRepo;
 			this._optionService = optionService;
+			this._categoryService = categoryService;
 		}
 		public List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model)
 		{
-			var option = _optionService.GetFromCache();
+			var option = _optionService.GetFullOptionCache().Option;
 			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
 			var pageProductCount = option.PagingProductCount;
 			var products = EComDbContext.New().Products
@@ -51,12 +84,11 @@ namespace ECom.Application.Services
 		}
 		public List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
 		{
-			var option = _optionService.GetFromCache();
-			var subCategoryService = new SubCategoryService();
+			var option = _optionService.GetFullOptionCache().Option;
 			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
 			var pageProductCount = option.PagingProductCount;
 			var ctx = EComDbContext.New();
-			var subCategories = subCategoryService
+			var subCategories = _subCategoryRepo
 				.Get(x => x.CategoryId == model.CategoryId)
 				.Select(x => x.Id)
 				.ToArray();
@@ -81,7 +113,7 @@ namespace ECom.Application.Services
 
 		public List<ProductSimpleViewModel> ListProductsSimpleViewModel(ListProductsModel model)
 		{
-			var option = _optionService.GetFromCache();
+			var option = _optionService.GetFullOptionCache().Option;
 			var lastIdx = (int)(option.PagingProductCount * (model.Page - 1));
 			var pageProductCount = option.PagingProductCount;
 			var ctx = EComDbContext.New();
@@ -159,12 +191,12 @@ namespace ECom.Application.Services
 		}
 		public void CheckExists(int id)
 		{
-			var exist = Any(x => x.Id == id);
+			var exist = _productRepo.Any(x => x.Id == id);
 			if (!exist) throw new BaseException(ErrCode.NotFound);
 		}
 		public void CheckExists(uint id)
 		{
-			var exist = Any(x => x.Id == id);
+			var exist = _productRepo.Any(x => x.Id == id);
 			if (!exist) throw new BaseException(ErrCode.NotFound);
 		}
 	}

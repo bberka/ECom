@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace ECom.Application.Services
 {
-	public interface ICartService : IEfEntityRepository<Cart>
+	public interface ICartService
 	{
 		Result AddOrIncreaseProduct(uint userId, uint productId);
 		int GetBasketProductCount(uint userId);
@@ -17,12 +17,17 @@ namespace ECom.Application.Services
 		Result RemoveOrDecreaseProduct(uint userId, uint productId);
 	}
 
-	public class CartService : EfEntityRepositoryBase<Cart, EComDbContext>, ICartService
+	public class CartService : ICartService
 	{
+		private readonly IEfEntityRepository<Cart> _cartRepo;
 		private readonly IUserService _userService;
 		private readonly IProductService _productService;
-		public CartService(IUserService userService,IProductService productService)
+		public CartService(
+			IEfEntityRepository<Cart> cartRepo,
+			IUserService userService,
+			IProductService productService)
 		{
+			this._cartRepo = cartRepo;
 			this._userService = userService;
 			this._productService = productService;
 		}
@@ -30,12 +35,12 @@ namespace ECom.Application.Services
 		{
 			_userService.CheckExists(userId);
 			_productService.CheckExists(productId);
-			var existing = GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+			var existing = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			var isSuccess = false;
 			if (existing != null)
 			{
 				existing.Count++;
-				isSuccess = Update(existing);
+				isSuccess = _cartRepo.Update(existing);
 			}
 			else
 			{
@@ -47,7 +52,7 @@ namespace ECom.Application.Services
 					UserId = (int)userId,
 					LastNotFoundate = DateTime.Now,
 				};
-				isSuccess = Add(newBasket);
+				isSuccess = _cartRepo.Add(newBasket);
 			}
 			if (!isSuccess)
 			{
@@ -57,7 +62,7 @@ namespace ECom.Application.Services
 		}
 		public Result RemoveOrDecreaseProduct(uint userId, uint productId)
 		{
-			var exist = GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+			var exist = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
 			{
 				return Result.Error(1, ErrCode.NotFound ,"Product");
@@ -66,11 +71,11 @@ namespace ECom.Application.Services
 			if (exist.Count > 1)
 			{
 				exist.Count--;
-				isSuccess = Update(exist);
+				isSuccess = _cartRepo.Update(exist);
 			}
 			else
 			{
-				isSuccess = Delete(exist);
+				isSuccess = _cartRepo.Delete(exist);
 			}
 			if (!isSuccess)
 			{
@@ -80,12 +85,12 @@ namespace ECom.Application.Services
 		}
 		public int GetBasketProductCount(uint userId)
 		{
-			var count = Count(x => x.UserId == userId);
+			var count = _cartRepo.Count(x => x.UserId == userId);
 			return count;
 		}
 		public List<Cart> ListBasketProducts(uint userId)
 		{
-			var list = Get(x => x.UserId == userId).ToList();
+			var list = _cartRepo.Get(x => x.UserId == userId).ToList();
 			return list ?? new();
 		}
 

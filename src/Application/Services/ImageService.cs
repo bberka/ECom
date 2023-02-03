@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface IImageService : IEfEntityRepository<Image>
+	public interface IImageService 
 	{
 	}
-	public class ImageService : EfEntityRepositoryBase<Image, EComDbContext>, IImageService
+	public class ImageService : IImageService
 	{
 
 	}
