@@ -15,26 +15,21 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
 		private readonly IAdminService _adminService;
 		private readonly IJwtOptionService _jwtOptionService;
+		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
 
-		public AuthController(IAdminService adminService,IJwtOptionService jwtOptionService)
+		public AuthController(
+			IAdminService adminService,
+			IJwtOptionService jwtOptionService,
+			IAdminJwtAuthenticator adminJwtAuthenticator)
 		{
 			this._adminService = adminService;
 			this._jwtOptionService = jwtOptionService;
+			this._adminJwtAuthenticator = adminJwtAuthenticator;
 		}
 		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
-#if DEBUG
-			var jwt = new EasJWT(_jwtOptionService.GetFromCache().Secret);
-            var adm = new Admin();
-            var dic = adm.AsDictionary();
-            dic.Add("AdminOnly","");
-            var token = jwt.GenerateJwtToken(dic ,DateTime.Now.AddMinutes(10));
-#endif
-
-			HttpContext.Session.SetString("admin-token",token);
-			return Ok();
-			var res = AdminJwtAuthenticator.This.Authenticate(model);
+			var res = _adminJwtAuthenticator.Authenticate(model);
 			if (!res.IsSuccess)
 			{
 				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");

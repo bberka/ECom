@@ -16,7 +16,6 @@ AppDomain.CurrentDomain.AddUnexpectedExceptionHandling();
 builder.Services.AddControllers(x =>
 {
 	x.Filters.Add(new ExceptionHandleFilter());
-    x.Filters.Add(new ValidationFilter());
 });
 
 builder.Services.AddEndpointsApiExplorer();

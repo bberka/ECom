@@ -2,25 +2,32 @@
 
 namespace ECom.Application.Manager
 {
-	public class AdminJwtAuthenticator : IJwtAuthentication
+	public interface IAdminJwtAuthenticator : IJwtAuthentication
 	{
-		private AdminJwtAuthenticator() { }
-		public static AdminJwtAuthenticator This
+	
+	}
+
+	public class AdminJwtAuthenticator : IAdminJwtAuthenticator
+	{
+		private readonly IAdminService _adminService;
+		private readonly IJwtOptionService _jwtOptionService;
+		public readonly EasJWT _jwtManager;
+
+		public AdminJwtAuthenticator(IAdminService adminService,IJwtOptionService jwtOptionService)
 		{
-			get
-			{
-				Instance ??= new();
-				return Instance;
-			}
+			this._adminService = adminService;
+			this._jwtOptionService = jwtOptionService;
+			var option = _jwtOptionService.GetFromCache();
+			_jwtManager = new(option.Secret, option.Issuer, option.Audience);
 		}
-		private static AdminJwtAuthenticator? Instance;
+
 
 		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
 		{
 #if DEBUG
 			var debugDic = new User().AsDictionary();
 			debugDic.Add("AdminOnly", "");
-			var debugToken = JwtAuthenticator.This.Authenticator.GenerateJwtToken(debugDic, DateTime.Now.AddMinutes(720));
+			var debugToken = _jwtManager.GenerateJwtToken(debugDic, DateTime.Now.AddMinutes(720));
 			var debugRes = new JwtTokenModel
 			{
 				ExpireUnix = DateTime.Now.AddMinutes(720).ToUnixTime(),
@@ -29,29 +36,26 @@ namespace ECom.Application.Manager
 			};
 			return ResultData<JwtTokenModel>.Success(debugRes);
 #endif
-			var adminService = ServiceProviderProxy.This.GetService<IAdminService>();
-			var optionService = ServiceProviderProxy.This.GetService<IOptionService>();
-			var loginResult = adminService.Login(model);
+			var loginResult = _adminService.Login(model);
 			if (!loginResult.IsSuccess)
 			{
 				return ResultData<JwtTokenModel>.Error(loginResult.Rv, loginResult.ErrorCode);
 			}
 			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
 			var adminAsDic = loginResult.Data.AsDictionary();
-			adminAsDic.Add("AdminOnly","");
-			var option = optionService.GetFromCache();
-			var jwtOption = ServiceProviderProxy.This.GetService<IJwtOptionService>().GetFromCache();
-			var expireMins = jwtOption.ExpireMinutesDefault;
-			if (model.RememberMe) expireMins = jwtOption.ExpireMinutesLong;
+			adminAsDic.Add("AdminOnly", "");
+			var option = _jwtOptionService.GetFromCache();
+			var expireMins = option.ExpireMinutesDefault;
+			if (model.RememberMe) expireMins = option.ExpireMinutesLong;
 			var date = DateTime.Now.AddMinutes(expireMins);
-			var token = JwtAuthenticator.This.Authenticator.GenerateJwtToken(adminAsDic, date);
+			var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
 			var res = new JwtTokenModel
 			{
 				ExpireUnix = date.ToUnixTime(),
 				RefreshToken = null,
 				Token = token,
 			};
-			if (jwtOption.IsUseRefreshToken)
+			if (option.IsUseRefreshToken)
 			{
 				//TODO:
 				throw new NotImplementedException();

@@ -1,4 +1,5 @@
-﻿using ECom.Application.Validators;
+﻿using ECom.Application.Manager;
+using ECom.Application.Validators;
 using ECom.Infrastructure;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,6 +69,10 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IProductImageBindService, ProductImageBindService>();
 			services.AddScoped<IProductService, ProductService>();
 			services.AddScoped<IProductVariantService, ProductVariantService>();
+
+
+			services.AddSingleton<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
+			services.AddSingleton<IUserJwtAuthenticator, UserJwtAuthenticator>();
 
 
 

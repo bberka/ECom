@@ -12,15 +12,19 @@ namespace ECom.WebApi.Controllers.UserControllers
     {
 		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
 		private readonly IUserService _userService;
+		private readonly IUserJwtAuthenticator _userJwtAuthenticator;
 
-		public AuthController(IUserService userService)
+		public AuthController(
+			IUserService userService,
+			IUserJwtAuthenticator userJwtAuthenticator)
 		{
 			this._userService = userService;
+			this._userJwtAuthenticator = userJwtAuthenticator;
 		}
 		[HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
-			var res = UserJwtAuthenticator.This.Authenticate(model);
+			var res = _userJwtAuthenticator.Authenticate(model);
 			if (!res.IsSuccess)
 			{
 				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");

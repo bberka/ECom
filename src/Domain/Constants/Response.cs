@@ -17,7 +17,7 @@ namespace ECom.Domain.Constants
 		Error,
         Warning,
 		DbErrorInternal,
-
+		ValidationError,
 		NullReference,
 		Deleted,
 		Disabled,
