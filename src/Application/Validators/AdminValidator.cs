@@ -10,24 +10,24 @@
 				.NotNull()
 				.NotEmpty()
 				.EmailAddress()
-				.WithErrorCode("InvalidData");
+				.WithErrorCode(CustomValidationType.Invalid.ToString());
 
 			RuleFor(x => x.IsValid)
 				.Equal(x => false)
-				.WithErrorCode("Invalid");	
+				.WithErrorCode(CustomValidationType.InvalidAccount.ToString());	
 
 			RuleFor(x => x.IsTestAccount)
 				.Equal(x => true)
 				.Must(DebugModeOn)
-				.WithErrorCode("CanNotBeUsed");
+				.WithErrorCode(CustomValidationType.TestAccountCanNotBeUsed.ToString());
 
 			RuleFor(x => x.IsEmailVerified)
 				.Equal(x => false)
-				.WithErrorCode("NotVerified");
+				.WithErrorCode(CustomValidationType.NotVerified.ToString());
 
 			RuleFor(x => x.DeletedDate)
 				.NotEqual(x => null)
-				.WithErrorCode("Deleted");
+				.WithErrorCode(CustomValidationType.Deleted.ToString());
 		}
 		private bool DebugModeOn(bool isTesterAccount)
 		{

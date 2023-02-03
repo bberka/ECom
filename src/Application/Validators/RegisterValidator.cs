@@ -15,49 +15,45 @@ namespace ECom.Application.Validators
 			this._userService = userService;
 			RuleFor(x => x.Password)
 				.NotNull()
-				.NotEmpty()
-				.WithErrorCode("Required");
+				.NotEmpty();
 
 			RuleFor(x => x.Password)
-				.MinimumLength(ConstantMgr.PasswordMinLength)
-				.WithErrorCode("TooShort");
+				.MinimumLength(ConstantMgr.PasswordMinLength);
 
 			RuleFor(x => x.Password)
-				.MaximumLength(ConstantMgr.PasswordMaxLength)
-				.WithErrorCode("TooLong");
+				.MaximumLength(ConstantMgr.PasswordMaxLength);
 
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
 				.NotEmpty()
-				.EmailAddress()
-				.WithErrorCode("Invalid");
+				.EmailAddress();
 
 			RuleFor(x => x.Password)
 				.Must(NotHasSpace)
-				.WithErrorCode("CanNotContainSpace");
+				.WithErrorCode(CustomValidationType.CanNotContainSpace.ToString());
 
 			RuleFor(x => x.Password)
 				.Must(NotHasSpecialChar)
-				.WithErrorCode("MustContainSpecialCharacter");
+				.WithErrorCode(CustomValidationType.MustContainSpecialCharacter.ToString());
 
 			RuleFor(x => x.Password)
 				.Must(NotHasNumber)
-				.WithErrorCode("MustContainNumber");
+				.WithErrorCode(CustomValidationType.MustContainDigit.ToString());
 
 			RuleFor(x => x.Password)
 				.Must(NotHasLowerCase)
-				.WithErrorCode("MustContainLowerCase");
+				.WithErrorCode(CustomValidationType.MustContainLowerCase.ToString());
 
 			RuleFor(x => x.Password)
 				.Must(NotHasUpperCase)
-				.WithErrorCode("MustContainUpperCase");
+				.WithErrorCode(CustomValidationType.MustContainUpperCase.ToString());
 
 			RuleFor(x => x.EmailAddress)
-				.Must(NotExistEmail)
+				.Must(NotUsedEmail)
 				.WithErrorCode(ErrCode.AlreadyInUse.ToString());
 		}
 
-		private bool NotExistEmail(string email)
+		private bool NotUsedEmail(string email)
 		{
 			return !_userService.Any(x => x.EmailAddress == email);
 		}

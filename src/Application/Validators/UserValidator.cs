@@ -12,25 +12,24 @@ namespace ECom.Application.Validators
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
 				.NotEmpty()
-				.EmailAddress()
-				.WithErrorCode("InvalidData");
+				.EmailAddress();
 
 			RuleFor(x => x.IsValid)
 				.Equal(x => false)
-				.WithErrorCode("NotValid");	
+				.WithErrorCode(CustomValidationType.InvalidAccount.ToString());	
 
 			RuleFor(x => x.IsTestAccount)
 				.Equal(x => true)
 				.Must(DebugModeOn)
-				.WithErrorCode("CanNotBeUsed");
+				.WithErrorCode(CustomValidationType.TestAccountCanNotBeUsed.ToString());
 
 			RuleFor(x => x.IsEmailVerified)
 				.Equal(x => false)
-				.WithErrorCode("NotVerified");
+				.WithErrorCode(CustomValidationType.TestAccountCanNotBeUsed.ToString());
 
 			RuleFor(x => x.DeletedDate)
 				.NotEqual(x => null)
-				.WithErrorCode("Deleted");
+				.WithErrorCode(CustomValidationType.Deleted.ToString());
 		}
 		private bool DebugModeOn(bool isTesterAccount)
 		{
