@@ -31,15 +31,18 @@ namespace ECom.Application.Services
 		private readonly IEfEntityRepository<Admin> _adminRepo;
 		private readonly IEfEntityRepository<RoleBind> _roleBindRepo;
 		private readonly IOptionService _optionService;
+		private readonly IValidationDbService _validationDbService;
 
 		public AdminService(
 			IEfEntityRepository<Admin> adminRepo, 
 			IEfEntityRepository<RoleBind> roleBindRepo,
-			IOptionService optionService)
+			IOptionService optionService,
+			IValidationDbService validationDbService)
 		{
 			this._adminRepo = adminRepo;
 			this._roleBindRepo = roleBindRepo;
 			this._optionService = optionService;
+			this._validationDbService = validationDbService;
 		}
 		public bool HasPermission(int adminId, int permissionId)
 		{
@@ -61,7 +64,7 @@ namespace ECom.Application.Services
 				IncreaseFailedPasswordCount(admin);
 				return ResultData<Admin>.Error(3, ErrCode.NotFound);
 			}
-			var validator = new AdminValidator(_optionService);
+			var validator = new AdminValidator(_validationDbService);
 			var validateResult = validator.Validate(admin);
 			if (!validateResult.IsValid)
 			{

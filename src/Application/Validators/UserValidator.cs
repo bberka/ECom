@@ -5,10 +5,12 @@ namespace ECom.Application.Validators
 {
 	public class UserValidator : AbstractValidator<User>, IValidator<User>
 	{
-		private readonly IOptionService _optionService;
-		public UserValidator(IOptionService optionService)
+		private readonly IValidationDbService _validationDbService;
+
+		public UserValidator(IValidationDbService validationDbService)
 		{
-			_optionService = optionService;
+			this._validationDbService = validationDbService;
+
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
 				.NotEmpty()
@@ -20,7 +22,7 @@ namespace ECom.Application.Validators
 
 			RuleFor(x => x.IsTestAccount)
 				.Equal(x => true)
-				.Must(DebugModeOn)
+				.Must(_validationDbService.AllowTester)
 				.WithErrorCode(CustomValidationType.TestAccountCanNotBeUsed.ToString());
 
 			RuleFor(x => x.IsEmailVerified)
@@ -31,13 +33,7 @@ namespace ECom.Application.Validators
 				.NotEqual(x => null)
 				.WithErrorCode(CustomValidationType.Deleted.ToString());
 		}
-		private bool DebugModeOn(bool isTesterAccount)
-		{
-			if (!isTesterAccount) return false;
-			var option = _optionService.GetFullOptionCache().Option;
-			return !option.IsRelease;
-		}
-
+		
 		
 	}
 }

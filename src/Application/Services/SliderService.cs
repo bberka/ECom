@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ISliderService : IEfEntityRepository<Slider>
+	public interface ISliderService 
 	{
 	}
-	public class SliderService : EfEntityRepositoryBase<Slider, EComDbContext>, ISliderService
+	public class SliderService :  ISliderService
 	{
 
 		

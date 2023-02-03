@@ -8,10 +8,11 @@ using ECom.Domain.Extensions;
 
 namespace ECom.Application.Services
 {
-	public interface IUserService : IEfEntityRepository<User>
+	public interface IUserService
 	{
 		void CheckExists(int id);
 		void CheckExists(uint id);
+		bool Exists(string email);
 		User? GetUser(string email);
 		User GetUserSingle(string email);
 		bool IncreaseFailedPasswordCount(int userId);
@@ -21,18 +22,25 @@ namespace ECom.Application.Services
 		bool UpdateSuccessLogin(User user);
 	}
 
-	public class UserService : EfEntityRepositoryBase<User, EComDbContext>, IUserService
+	public class UserService : IUserService
 	{
+		private readonly IEfEntityRepository<User> _userRepo;
 		private readonly IOptionService optionService;
+		private readonly IValidationDbService _validationDbService;
 
-		public UserService(IOptionService optionService)
+		public UserService(
+			IEfEntityRepository<User> userRepo,
+			IOptionService optionService,
+			IValidationDbService validationDbService)
 		{
+			this._userRepo = userRepo;
 			this.optionService = optionService;
+			this._validationDbService = validationDbService;
 		}
 		public Result Register(RegisterModel model)
 		{
 			var user = model.ToUserEntity();
-			var res = Add(user);
+			var res = _userRepo.Add(user);
 			if (res == false) return Result.Error(2, ErrCode.DbErrorInternal);
 			return Result.Success();
 		}
@@ -49,7 +57,7 @@ namespace ECom.Application.Services
 				IncreaseFailedPasswordCount(user);
 				return ResultData<User>.Error(3, ErrCode.NotFound);
 			}
-			var validator = new UserValidator(optionService);
+			var validator = new UserValidator(_validationDbService);
 			var validateResult = validator.Validate(user);
 			if (!validateResult.IsValid)
 			{
@@ -82,28 +90,33 @@ namespace ECom.Application.Services
 		}
 		public bool IncreaseFailedPasswordCount(int userId)
 		{
-			var res = UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
+			var res = _userRepo.UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
 			return res;
 		}
 		public User? GetUser(string email)
 		{
-			var user = GetFirstOrDefault(x => x.EmailAddress == email);
+			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
 			return user;
 		}
 		public User GetUserSingle(string email)
 		{
-			var user = GetSingle(x => x.EmailAddress == email);
+			var user = _userRepo.GetSingle(x => x.EmailAddress == email);
 			return user;
 		}
 		public void CheckExists(int id)
 		{
-			var exist = Any(x => x.Id == id);
+			var exist = _userRepo.Any(x => x.Id == id);
 			if (!exist) throw new BaseException("NotExist:User");
 		}
 		public void CheckExists(uint id)
 		{
-			var exist = Any(x => x.Id == id);
+			var exist = _userRepo.Any(x => x.Id == id);
 			if (!exist) throw new BaseException("NotExist:User");
+		}
+
+		public bool Exists(string email)
+		{
+			return _userRepo.Any(x => x.EmailAddress == email);
 		}
 	}
 }

@@ -81,6 +81,8 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddTransient<IValidator<User>, UserValidator>();
 			services.AddTransient<IValidator<Admin>, AdminValidator>();
 
+			services.AddScoped<IValidationDbService, ValidationDbService>();
+
 			//DB
 			services.AddScoped<DbContext, EComDbContext>();
 			return services;

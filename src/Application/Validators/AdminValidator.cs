@@ -2,10 +2,10 @@
 {
 	public class AdminValidator : AbstractValidator<Admin>, IValidator<Admin>
 	{
-		private readonly IOptionService _optionService;
-		public AdminValidator(IOptionService optionService)
+		private readonly IValidationDbService _validationDbService;
+		public AdminValidator(IValidationDbService validationDbService)
 		{
-			this._optionService = optionService;
+			this._validationDbService = validationDbService;
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
 				.NotEmpty()
@@ -18,7 +18,7 @@
 
 			RuleFor(x => x.IsTestAccount)
 				.Equal(x => true)
-				.Must(DebugModeOn)
+				.Must(_validationDbService.AllowTester)
 				.WithErrorCode(CustomValidationType.TestAccountCanNotBeUsed.ToString());
 
 			RuleFor(x => x.IsEmailVerified)
@@ -29,13 +29,7 @@
 				.NotEqual(x => null)
 				.WithErrorCode(CustomValidationType.Deleted.ToString());
 		}
-		private bool DebugModeOn(bool isTesterAccount)
-		{
-			if (!isTesterAccount) return false;
-			var option = _optionService.GetFullOptionCache().Option;
-			return !option.IsRelease;
-		}
-
+	
 		
 	}
 }

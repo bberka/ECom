@@ -6,7 +6,6 @@ namespace ECom.Application.Validators
 	{
 		public LoginValidator()
 		{
-
 			RuleFor(x => x.EmailAddress)
 				.NotEmpty()
 				.NotNull()
