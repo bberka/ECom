@@ -40,7 +40,11 @@ namespace ECom.Application.Services
 
 		public Result UpdateCompanyInformation(CompanyInformation info)
 		{
-			var isRelease = info.IsRelease;
+#if DEBUG 
+			var isRelease = false;
+#else
+			var isRelease = true;
+#endif
 			var current = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == isRelease);
 			if (current != null)
 			{

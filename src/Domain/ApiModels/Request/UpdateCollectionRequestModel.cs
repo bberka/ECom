@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.ApiModels.Request
 {
-    public class UpdateCollectionRequestModel : AuthApiRequestModelBase
+    public class UpdateCollectionRequestModel : AuthRequestModelBase
     {
         public int CollectionId { get; set; }
         public string CollectionName { get; set; }

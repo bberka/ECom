@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.ApiModels
 {
-    public abstract class AuthApiRequestModelBase
+    public abstract class AuthRequestModelBase
     {
         [JsonIgnore]
         public int AuthenticatedUserId
@@ -18,9 +18,27 @@ namespace ECom.Domain.ApiModels
                 var context = new HttpContextAccessor().HttpContext;
                 if (context is not null)
                 {
-                    if (context.IsUserAuthorized())
+                    if (context.IsUserAuthenticated())
                     {
                         return context.GetUser().Id;
+                    }
+                }
+                return -1;
+            }
+
+        }
+
+        [JsonIgnore]
+        public int AuthenticatedAdminId
+        {
+            get
+            {
+                var context = new HttpContextAccessor().HttpContext;
+                if (context is not null)
+                {
+                    if (context.IsAdminAuthenticated())
+                    {
+                        return context.GetAdmin().Id;
                     }
                 }
                 return -1;

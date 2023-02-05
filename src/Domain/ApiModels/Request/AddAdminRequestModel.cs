@@ -24,7 +24,6 @@ namespace ECom.Domain.ApiModels.Request
                 EmailAddress = EmailAddress,
                 FailedPasswordCount = 0,
                 Password = Convert.ToBase64String(Password.MD5Hash()),
-                IsEmailVerified = false,
                 IsValid = true,
                 IsTestAccount = false,
                 TwoFactorType = 0,

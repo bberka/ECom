@@ -18,11 +18,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			return Ok(res);
 		}
 
-		[HttpPost]
-		public IActionResult Get([FromBody] int id)
-		{
-			var res = _languageService.GetLanguage(id);
-			return Ok(res);
-		}
+		
 	}
 }

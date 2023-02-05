@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.ApiModels.Request
 {
-    public class UpdateAdminAccountRequestModel
+    public class UpdateAdminAccountRequestModel : AuthRequestModelBase
     {
         public string EmailAddress { get; set; }
     }

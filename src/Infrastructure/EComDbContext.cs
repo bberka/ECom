@@ -25,7 +25,71 @@ namespace ECom.Infrastructure
 		public static EComDbContext New() => new EComDbContext();
         public static void EnsureCreated()
         {
-            new EComDbContext().Database.EnsureCreated();
+            var created = new EComDbContext().Database.EnsureCreated();
+            if (!created) return;
+            using var context = new EComDbContext();
+            context.Database.Migrate();
+            var role = new Role
+            {
+                IsValid = true,
+                Memo = "Initial",
+                Name = "Initial",
+            };
+            context.Add(role);
+            var perm = new Permission
+            {
+                IsValid = true,
+                Name = "Initial",
+                Memo = "Test",
+            };
+            context.Add(perm);
+            var roleBind = new RoleBind
+            {
+                PermissionId = 1,
+                RoleId = 1,
+            };
+            context.Add(roleBind);
+            var testUser = new User
+            {
+                CitizenShipNumber = 1,
+                DeletedDate = null,
+                EmailAddress = "qwe@qwe",
+                FailedPasswordCount = 0,
+                IsEmailVerified = true,
+                IsTestAccount = true,
+                IsValid = true,
+                LastLoginDate = DateTime.Now,
+                LastLoginIp = "127.0.0.1",
+                LastLoginUserAgent = "",
+                Name = "String",
+                Password = Convert.ToBase64String("qwe".MD5Hash()),
+                PhoneNumber = "5526667788",
+                PreferredLanguageId = 1,
+                RegisterDate = DateTime.Now,
+                Surname = "Str",
+                TotalLoginCount = 0,
+                PasswordLastUpdateDate = DateTime.Now,
+                TaxNumber = 0,
+            };
+            context.Add(testUser);
+            var testAdmin = new Admin
+            {
+                DeletedDate = null,
+                EmailAddress = "qwe@qwe",
+                FailedPasswordCount = 0,
+                IsTestAccount = true,
+                IsValid = true,
+                LastLoginDate = DateTime.Now,
+                LastLoginIp = "127.0.0.1",
+                LastLoginUserAgent = "",
+                Password = Convert.ToBase64String("qwe".MD5Hash()),
+                RegisterDate = DateTime.Now,
+                TotalLoginCount = 0,
+                PasswordLastUpdateDate = DateTime.Now,
+                RoleId =1,
+            };
+            context.Add(testAdmin);
+            context.SaveChanges();
         }
 		public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }

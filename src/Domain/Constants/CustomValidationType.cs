@@ -33,6 +33,7 @@ namespace ECom.Domain.Constants
 		InvalidAccount,
 		AccountCanNotBeUsed,
 		Null,
-
+		CanNotBeSame,
+		MustBeSame,
 	}
 }

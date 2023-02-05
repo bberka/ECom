@@ -30,9 +30,10 @@ namespace ECom.Application.Validators
 			AddTranslation("en", CustomValidationType.Wrong.ToString(), "'{PropertyName}' is wrong.");
 			AddTranslation("en", CustomValidationType.InvalidAccount.ToString(), "Account is invalid.");
 			AddTranslation("en", CustomValidationType.AccountCanNotBeUsed.ToString(), "This account can not be used.");
+            AddTranslation("en", CustomValidationType.MustBeSame.ToString(), "{PropertyName} must be same.");
+            AddTranslation("en", CustomValidationType.CanNotBeSame.ToString(), "{PropertyName} can not be same.");
 
-
-			AddTranslation("tr", CustomValidationType.TooShort.ToString(), "'{PropertyName}' çok kısa.");
+            AddTranslation("tr", CustomValidationType.TooShort.ToString(), "'{PropertyName}' çok kısa.");
 			AddTranslation("tr", CustomValidationType.TooLong.ToString(), "'{PropertyName}' çok uzun.");
 			AddTranslation("tr", CustomValidationType.Expired.ToString(), "'{PropertyName}' süresi doldu.");
 			AddTranslation("tr", CustomValidationType.AlreadyDeleted.ToString(), "'{PropertyName}' zaten silindi.");
@@ -49,8 +50,10 @@ namespace ECom.Application.Validators
 			AddTranslation("tr", CustomValidationType.MustContainLowerCase.ToString(), "'{PropertyName}' en az 1 adet küçük harf bulunmalı.");
 			AddTranslation("tr", CustomValidationType.MustContainUpperCase.ToString(), "'{PropertyName}' en az 1 adet büyük harf bulunmalı.");
 			AddTranslation("tr", CustomValidationType.Wrong.ToString(), "'{PropertyName}' yanlış.");
-			AddTranslation("en", CustomValidationType.InvalidAccount.ToString(), "Bu hesap geçersiz.");
-			AddTranslation("en", CustomValidationType.AccountCanNotBeUsed.ToString(), "Bu hesap kullanılamaz.");
+			AddTranslation("tr", CustomValidationType.InvalidAccount.ToString(), "Bu hesap geçersiz.");
+			AddTranslation("tr", CustomValidationType.AccountCanNotBeUsed.ToString(), "Bu hesap kullanılamaz.");
+			AddTranslation("tr", CustomValidationType.MustBeSame.ToString(), "{PropertyName} aynı olmalıdır.");
+			AddTranslation("tr", CustomValidationType.CanNotBeSame.ToString(), "{PropertyName} aynı olamaz.");
 		}
 	}
 }

@@ -22,11 +22,11 @@ namespace ECom.WebApi.Middlewares
             var fullUrl = context.Request.GetRequestQuery();
             User? user = null;
             Admin? admin = null;
-            if (context.IsUserAuthorized())
+            if (context.IsUserAuthenticated())
             {
                 user = context.GetUser();
             }
-            if (context.IsAdminAuthorized())
+            if (context.IsAdminAuthenticated())
             {
                 admin = context.GetAdmin();
             }

@@ -39,7 +39,7 @@ namespace ECom.Domain.Extensions
 			if (user is null) throw new NotAuthorizedException(AuthType.User);
 			return user;
 		}
-		public static bool IsUserAuthorized(this HttpContext context)
+		public static bool IsUserAuthenticated(this HttpContext context)
 		{
 			try
 			{
@@ -51,7 +51,7 @@ namespace ECom.Domain.Extensions
 				return false;
 			}
 		}
-		public static bool IsAdminAuthorized(this HttpContext context)
+		public static bool IsAdminAuthenticated(this HttpContext context)
 		{
 			try
 			{

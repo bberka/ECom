@@ -39,11 +39,13 @@ namespace ECom.Domain.Constants
 
 		CanNotBeUsed,
 		CanNotContainSpace,
+		CanNotBeSame, //2 param
 
         MustContainSpecialCharacter,
         MustContainDigit,
 		MustContainLowerCase,
 		MustContainUpperCase,
+		MustBeSame, //2 param
 
         WrongData,
 	}

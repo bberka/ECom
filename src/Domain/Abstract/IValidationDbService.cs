@@ -16,7 +16,6 @@ namespace ECom.Domain.Abstract
         bool HasUpperCase(string password);
         bool NotUsedEmail_Admin(string email);
         bool NotUsedEmail_User(string email);
-
         bool IsRelease();
 
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace ECom.Domain.Entities
 	public class CompanyInformation : IEfEntity
 	{
 		[Key]
+		[JsonIgnore]
 		public bool IsRelease { get; set; }
 
 		[MaxLength(128)]

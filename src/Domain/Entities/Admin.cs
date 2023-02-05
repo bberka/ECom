@@ -24,7 +24,6 @@ namespace ECom.Domain.Entities
         [MaxLength(255)]
         public string EmailAddress { get; set; }
 
-        public bool IsEmailVerified { get; set; } = false;
 
         [MaxLength(255)]
         public string? TwoFactorKey { get; set; }
@@ -51,9 +50,8 @@ namespace ECom.Domain.Entities
         public DateTime? DeletedDate { get; set; }
 
         [ForeignKey("RoleId")]
-        public int? RoleId { get; set; }
-        public virtual Role? Role { get; set; }
-        public List<Permission> Permissions { get; set; }
+        public int RoleId { get; set; }
+        public virtual Role Role { get; set; }
 
     }
 }

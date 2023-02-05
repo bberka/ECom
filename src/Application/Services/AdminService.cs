@@ -30,13 +30,8 @@ namespace ECom.Application.Services
 			this._optionService = optionService;
 			this._validationDbService = validationDbService;
 		}
-		public bool HasPermission(int adminId, int permissionId)
-		{
-			var ctx = new EComDbContext();
-			var admin = _adminRepo.GetSingle(x => x.Id == adminId && x.IsValid == true && x.IsEmailVerified == true && x.DeletedDate != null);
-			if (admin.RoleId is null) throw new DbInternalException("InvalidForeignKey");
-			return _roleBindRepo.Any(x => x.PermissionId == permissionId && x.RoleId == admin.RoleId && x.IsValid == true);
-		}
+		
+
 		public ResultData<Admin> Login(LoginRequestModel model)
 		{
 			var admin = GetAdmin(model.EmailAddress);
@@ -57,7 +52,9 @@ namespace ECom.Application.Services
 			{
 				//TODO
 			}
+
 			UpdateSuccessLogin(admin);
+
 			return ResultData<Admin>.Success(admin);
 		}
 		public bool UpdateSuccessLogin(Admin admin)
@@ -87,12 +84,34 @@ namespace ECom.Application.Services
 			return _adminRepo.Find(id);
 		}
 
-		public Admin GetAdminSingle(int id)
+		public Admin GetAdminOrThrow(int id)
 		{
-			return _adminRepo.GetSingle(x => x.Id == id);
+			var admin = GetAdmin(id);
+			if (admin is null) throw new NotFoundException(nameof(Admin));
+			return admin;
 		}
+        public Admin GetValidAdminOrThrow(int id)
+        {
+			var isTestAccount = false;
+#if DEBUG
+			isTestAccount =  true;
+#endif
+			var admin = _adminRepo.GetFirstOrDefault(x => x.Id == id && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue);
+            if (admin is null) throw new NotFoundException(nameof(Admin));
+            return admin;
+        }
 
-		public bool Exists(int id)
+        public void CheckValidAdminOrThrow(int id)
+        {
+            var isTestAccount = false;
+#if DEBUG
+            isTestAccount = true;
+#endif
+            var admin = _adminRepo.Any(x => x.Id == id && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue);
+            if (!admin) throw new NotFoundException(nameof(Admin));
+        }
+
+        public bool Exists(int id)
 		{
 			return _adminRepo.Any(x => x.Id == id);
 		}
@@ -113,5 +132,16 @@ namespace ECom.Application.Services
 			if (!res) throw new DbInternalException(nameof(AddAdmin));
 			return Result.Success("Updated");
 		}
-	}
+
+        public int GetAdminRoleId(int adminId)
+		{
+			return _adminRepo.Get(x => x.Id == adminId).Select(x => x.RoleId).FirstOrDefault();
+        }
+
+        public Role GetAdminRole(int adminId)
+        {
+            return _adminRepo.Get(x => x.Id == adminId).Include(x => x.Role).Select(x => x.Role).FirstOrDefault(); //TODO check maybe throw ?
+
+        }
+    }
 }

@@ -129,7 +129,6 @@ app.UseMiddleware<MaintenanceCheckMiddleware>();
 
 if (ConstantMgr.isUseJwtAuth)
 {
-	app.UseMiddleware<AuthMiddleware>();
 	app.UseAuthentication();
 	app.UseAuthorization();
 }
@@ -138,5 +137,7 @@ if (ConstantMgr.isUseJwtAuth)
 
 app.MapControllers();
 
+EComDbContext.EnsureCreated();
 app.Run();
 
+EasLogFactory.StaticLogger.Info("Exiting...");

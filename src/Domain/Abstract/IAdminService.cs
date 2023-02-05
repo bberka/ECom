@@ -11,14 +11,18 @@ namespace ECom.Domain.Abstract
     {
         List<Admin> GetAdmins();
         Admin? GetAdmin(int id);
-        Admin GetAdminSingle(int id);
+        Admin GetAdminOrThrow(int id);
+        Admin GetValidAdminOrThrow(int id);
+        void CheckValidAdminOrThrow(int id);
         bool Exists(int id);
         bool Exists(string email);
         Admin? GetAdmin(string email);
-        bool HasPermission(int adminId, int permissionId);
         bool IncreaseFailedPasswordCount(Admin admin);
         ResultData<Admin> Login(LoginRequestModel model);
         bool UpdateSuccessLogin(Admin admin);
         Result AddAdmin(AddAdminRequestModel admin);
+
+        int GetAdminRoleId(int adminId);
+        Role GetAdminRole(int adminId);
     }
 }

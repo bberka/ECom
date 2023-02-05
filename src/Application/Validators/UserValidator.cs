@@ -7,11 +7,8 @@ namespace ECom.Application.Validators
 {
 	public class UserValidator : AbstractValidator<User>, IValidator<User>
 	{
-		private readonly IValidationDbService _validationDbService;
-
 		public UserValidator(IValidationDbService validationDbService)
 		{
-			this._validationDbService = validationDbService;
 
 			RuleFor(x => x.EmailAddress)
 				.NotNull()
@@ -22,7 +19,7 @@ namespace ECom.Application.Validators
 				.Equal(x => true)
 				.WithErrorCode(CustomValidationType.InvalidAccount.ToString());
 
-			if (_validationDbService.IsRelease())
+			if (validationDbService.IsRelease())
 			{
 				RuleFor(x => x.IsTestAccount)
 				.Equal(x => false)

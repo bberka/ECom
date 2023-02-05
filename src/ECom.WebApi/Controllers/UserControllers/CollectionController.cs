@@ -1,10 +1,13 @@
 ﻿using ECom.Domain.Abstract;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Entities;
+using ECom.WebApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
+
+    [UserAuthFilter]
     public class CollectionController : BaseUserController
     {
         private readonly ICollectionService _collectionService;
@@ -23,7 +26,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         {
             return Ok();
         }
-        [HttpGet]
+        [HttpPost]
         public IActionResult CreateCollection(CreateCollectionRequestModel model)
         {
             var res = _collectionService.CreateCollection(model);

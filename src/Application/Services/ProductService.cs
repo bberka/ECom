@@ -1,12 +1,4 @@
 ﻿
-
-
-
-
-
-
-
-
 namespace ECom.Application.Services
 {
 

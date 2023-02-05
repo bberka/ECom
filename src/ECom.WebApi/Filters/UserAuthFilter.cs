@@ -6,7 +6,7 @@ namespace ECom.WebApi.Filters
 	{
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
-			var authorized = context.HttpContext.IsUserAuthorized();
+			var authorized = context.HttpContext.IsUserAuthenticated();
 			if(!authorized)
 			{
 				context.Result = new UnauthorizedObjectResult(Result.Error(401,ErrCode.NotAuthorized));

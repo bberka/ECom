@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.ApiModels.Request
 {
-    public class CreateCollectionRequestModel : AuthApiRequestModelBase
+    public class CreateCollectionRequestModel : AuthRequestModelBase
     {
         [MinLength(3)]
         public string Name { get; set; }

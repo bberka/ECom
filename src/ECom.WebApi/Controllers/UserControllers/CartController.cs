@@ -17,7 +17,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public IActionResult AddOrIncreaseProduct(int productId)
 		{
-			if (HttpContext.IsUserAuthorized())
+			if (HttpContext.IsUserAuthenticated())
 			{
 				var user = HttpContext.GetUser();
 				var res = _cartService.AddOrIncreaseProduct(user.Id, productId);
@@ -35,7 +35,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult RemoveOrDecreaseProduct(int productId)
 		{
 
-			if (HttpContext.IsUserAuthorized())
+			if (HttpContext.IsUserAuthenticated())
 			{
 				var user = HttpContext.GetUser();
 				var res = _cartService.RemoveOrDecreaseProduct(user.Id, productId);
@@ -54,7 +54,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpGet]
 		public IActionResult ProductCount()
 		{
-			if (HttpContext.IsUserAuthorized())
+			if (HttpContext.IsUserAuthenticated())
 			{
 				var user = HttpContext.GetUser();
 				var res = _cartService.GetBasketProductCount(user.Id);
@@ -69,7 +69,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpGet]
 		public IActionResult List()
 		{
-			if (HttpContext.IsUserAuthorized())
+			if (HttpContext.IsUserAuthenticated())
 			{
 				var user = HttpContext.GetUser();
 				var res = _cartService.ListBasketProducts(user.Id);
@@ -86,7 +86,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult Clear()
 		{
 
-			if (HttpContext.IsUserAuthorized())
+			if (HttpContext.IsUserAuthenticated())
 			{
 				var user = HttpContext.GetUser();
 				var res = _cartService.Clear(user.Id);

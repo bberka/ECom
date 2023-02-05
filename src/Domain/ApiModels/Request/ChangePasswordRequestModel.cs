@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.ApiModels.Request
 {
-    public class ChangePasswordRequestModel 
+    public class ChangePasswordRequestModel : AuthRequestModelBase
     {
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
