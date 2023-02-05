@@ -6,26 +6,12 @@
 
 using EasMe.Helpers;
 using ECom.Application.Validators;
+using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Extensions;
 using ECom.Domain.Lib;
 
 namespace ECom.Application.Services
 {
-	public interface IAdminService 
-	{
-		List<Admin> GetAdmins();
-		Admin? GetAdmin(int id);
-		Admin GetAdminSingle(int id);
-		bool Exists(int id);
-		bool Exists(string email);
-		Admin? GetAdmin(string email);
-		bool HasPermission(int adminId, int permissionId);
-		bool IncreaseFailedPasswordCount(Admin admin);
-		ResultData<Admin> Login(LoginModel model);
-		bool UpdateSuccessLogin(Admin admin);
-		Result AddAdmin(AdminAddModel admin);
-	}
-
 	public class AdminService : IAdminService
 	{
 		private readonly IEfEntityRepository<Admin> _adminRepo;
@@ -48,21 +34,18 @@ namespace ECom.Application.Services
 		{
 			var ctx = new EComDbContext();
 			var admin = _adminRepo.GetSingle(x => x.Id == adminId && x.IsValid == true && x.IsEmailVerified == true && x.DeletedDate != null);
-			if (admin.RoleId is null) throw new BaseException("DbErrorInternal:ForeignKey");
+			if (admin.RoleId is null) throw new DbInternalException("InvalidForeignKey");
 			return _roleBindRepo.Any(x => x.PermissionId == permissionId && x.RoleId == admin.RoleId && x.IsValid == true);
 		}
-		public ResultData<Admin> Login(LoginModel model)
+		public ResultData<Admin> Login(LoginRequestModel model)
 		{
 			var admin = GetAdmin(model.EmailAddress);
-			if (admin is null)
-			{
-				return ResultData<Admin>.Error(1, ErrCode.NotFound, nameof(Admin));
-			}
+			if (admin is null) throw new NotFoundException(nameof(Admin));
 			var hashed = Convert.ToBase64String(model.Password.MD5Hash());
 			if (admin.Password != hashed)
 			{
 				IncreaseFailedPasswordCount(admin);
-				return ResultData<Admin>.Error(2, ErrCode.NotFound,nameof(Admin));
+				throw new NotFoundException(nameof(Admin));
 			}
 			var validator = new AdminValidator(_validationDbService);
 			var validateResult = validator.Validate(admin);
@@ -91,10 +74,8 @@ namespace ECom.Application.Services
 		}
 		public bool IncreaseFailedPasswordCount(Admin admin)
 		{
-			var ctx = new EComDbContext();
 			admin.FailedPasswordCount++;
-			ctx.Update(admin);
-			return ctx.SaveChanges() == 1;
+			return _adminRepo.Update(admin);
 		}
 		public Admin? GetAdmin(string email)
 		{
@@ -126,11 +107,10 @@ namespace ECom.Application.Services
 			return _adminRepo.GetList();
 		}
 
-		public Result AddAdmin(AdminAddModel admin)
+		public Result AddAdmin(AddAdminRequestModel admin)
 		{
-
 			var res = _adminRepo.Add(admin.ToAdminEntity());
-			if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+			if (!res) throw new DbInternalException(nameof(AddAdmin));
 			return Result.Success("Updated");
 		}
 	}

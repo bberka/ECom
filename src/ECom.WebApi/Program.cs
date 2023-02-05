@@ -31,6 +31,8 @@ builder.Services.AddSession(options =>
 	options.Cookie.HttpOnly = true;
 	// Make the session cookie essential
 	options.Cookie.IsEssential = true;
+	options.Cookie.Name = ".Session.ECom";	
+
 });
 builder.Services.AddMemoryCache();
 builder.Services.AddDataProtection();
@@ -49,6 +51,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
+	
 });
 
 if (ConstantMgr.isUseJwtAuth)
@@ -111,7 +114,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-	app.UseSession();
+app.UseSession();
 app.UseCookiePolicy();
 app.UseRouting();
 

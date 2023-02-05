@@ -22,7 +22,6 @@ namespace ECom.Domain.Entities
 
 		public bool IsTestAccount { get; set; } = false;
 
-
 		
 		[MaxLength(ConstantMgr.PasswordMaxLength)]
 		[JsonIgnore]

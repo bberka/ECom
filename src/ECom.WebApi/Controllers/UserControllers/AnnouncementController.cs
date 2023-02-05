@@ -15,9 +15,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         public IActionResult List()
         {
             var res = _announcementService.GetAnnouncements();
-			logger.Info();
 			return Ok(res.ToJsonString());
-            
         }
 
 

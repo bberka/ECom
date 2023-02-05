@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Exceptions
 {
-	public class UnderMaintenanceException : Exception
+	public class UnderMaintenanceException : CustomException
 	{
-		public UnderMaintenanceException() : base()
+		public UnderMaintenanceException() : base(ErrCode.UnderMaintenance.ToString())
 		{
 
 		}

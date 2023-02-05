@@ -1,6 +1,6 @@
-﻿namespace ECom.Infrastructure.DTOs
+﻿namespace ECom.Domain.ApiModels.Response
 {
-    public class ProductSimpleViewModel
+    public class ProductSimpleResponseModel
     {
         public Product Product { get; set; }
         public ProductDetail Details { get; set; }

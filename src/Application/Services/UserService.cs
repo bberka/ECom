@@ -4,24 +4,13 @@
 
 
 using ECom.Application.Validators;
+using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Extensions;
+using System.Collections.Specialized;
 
 namespace ECom.Application.Services
 {
-	public interface IUserService
-	{
-		void CheckExistsOrThrow(int id);
-		void CheckExistsOrThrow(uint id);
-		bool Exists(string email);
-		User? GetUser(string email);
-		User? GetUser(int id);
-		User GetUserSingle(string email);
-		bool IncreaseFailedPasswordCount(int userId);
-		bool IncreaseFailedPasswordCount(User user);
-		ResultData<User> Login(LoginModel model);
-		Result Register(RegisterModel model);
-		bool UpdateSuccessLogin(User user);
-	}
+
 
 	public class UserService : IUserService
 	{
@@ -38,30 +27,28 @@ namespace ECom.Application.Services
 			this._optionService = optionService;
 			this._validationDbService = validationDbService;
 		}
-		public Result Register(RegisterModel model)
+		public Result Register(RegisterRequestModel model)
 		{
 			var user = model.ToUserEntity();
 			var res = _userRepo.Add(user);
-			if (res == false) return Result.Error(2, ErrCode.DbErrorInternal);
+			if (res == false) throw new DbInternalException(nameof(Register));
 			return Result.Success();
 		}
-		public ResultData<User> Login(LoginModel model)
+		public ResultData<User> Login(LoginRequestModel model)
 		{
 			var user = GetUser(model.EmailAddress);
-			if (user is null)
-			{
-				return ResultData<User>.Error(1, ErrCode.NotFound, nameof(User));
-			}
+			if (user is null) throw new NotFoundException(nameof(User));
 			var hashed = Convert.ToBase64String(model.Password.MD5Hash());
 			if (user.Password != hashed)
 			{
 				IncreaseFailedPasswordCount(user);
-				return ResultData<User>.Error(2, ErrCode.NotFound, nameof(User));
+				throw new NotFoundException(nameof(User));
 			}
 			var validator = new UserValidator(_validationDbService);
 			var validateResult = validator.Validate(user);
 			if (!validateResult.IsValid)
 			{
+				//throw new ValidationErrorException();	
 				return ResultData<User>.Error(
 					3,
 					ErrCode.ValidationError ,
@@ -81,43 +68,38 @@ namespace ECom.Application.Services
 			user.LastLoginDate = DateTime.Now;
 			user.LastLoginIp = req.IpAddress;
 			user.LastLoginUserAgent = req.UserAgent;
-			var ctx = new EComDbContext();
-			ctx.Update(user);
-			return ctx.SaveChanges() == 1;
+			return _userRepo.Update(user);
 		}
 		public bool IncreaseFailedPasswordCount(User user)
 		{
-			var ctx = new EComDbContext();
 			user.FailedPasswordCount++;
-			ctx.Update(user);
-			return ctx.SaveChanges() == 1;
+			return _userRepo.Update(user);
 		}
 		public bool IncreaseFailedPasswordCount(int userId)
 		{
-			var res = _userRepo.UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
-			return res;
+			return _userRepo.UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
 		}
 		public User? GetUser(string email)
 		{
-			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
-			return user;
+			return _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
 		}
-		public User GetUserSingle(string email)
+		public User GetUserOrThrow(string email)
 		{
-			var user = _userRepo.GetSingle(x => x.EmailAddress == email);
-			return user;
+			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
+			throw new NotFoundException(nameof(User));
 		}
 		public void CheckExistsOrThrow(int id)
 		{
-			if(id < 1) throw new BaseException("NotValid:UserId");
+			if(id < 1) throw new NotValidException("UserId");
 			var exist = _userRepo.Any(x => x.Id == id);
-			if (!exist) throw new BaseException("NotExist:User");
+			if (!exist) throw new NotFoundException("User");
 		}
 		public void CheckExistsOrThrow(uint id)
 		{
-			var exist = _userRepo.Any(x => x.Id == id);
-			if (!exist) throw new BaseException("NotExist:User");
-		}
+            if (id < 1) throw new NotValidException("UserId");
+            var exist = _userRepo.Any(x => x.Id == id);
+            if (!exist) throw new NotFoundException("User");
+        }
 
 		public bool Exists(string email)
 		{
@@ -128,5 +110,12 @@ namespace ECom.Application.Services
 		{
 			return _userRepo.Find(id);
 		}
-	}
+
+        public User GetUserOrThrow(int id)
+        {
+            var user = _userRepo.Find(id);
+			if (user is null) throw new NotFoundException(nameof(User));
+			return user;
+        }
+    }
 }

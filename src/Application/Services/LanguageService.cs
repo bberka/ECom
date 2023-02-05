@@ -12,8 +12,7 @@ namespace ECom.Application.Services
 	public interface ILanguageService 
 	{
 		public List<Language> GetLanguages();
-		public ResultData<Language> GetLanguageById(int id);
-
+		public Language GetLanguage(int id);
 		public Result EnableOrDisable(int id);
 
 		
@@ -30,23 +29,19 @@ namespace ECom.Application.Services
 		{
 			return _languageRepo.GetList();
 		}
-		public ResultData<Language> GetLanguageById(int id)
+		public Language GetLanguage(int id)
 		{
 			var lang  = _languageRepo.Find(id);
-			if(lang is null)
-			{
-				return ResultData<Language>.Error(1, ErrCode.NotFound, "Language");
-			}
-			return ResultData<Language>.Success(lang);
+			if (lang is null) throw new NotFoundException(nameof(Language));
+			return lang;
 		}
 
 		public Result EnableOrDisable(int id)
 		{
-			var language = _languageRepo.Find(id);
-			if (language is null) return Result.Error(1, ErrCode.NotFound,"Language");
+			var language = GetLanguage(id);
 			language.IsValid = !language.IsValid;
 			var res = _languageRepo.Update(language);
-			if(!res) return Result.Error(1,ErrCode.DbErrorInternal,"Language","EnableOrDisable");
+			if (!res) throw new DbInternalException(nameof(EnableOrDisable));
 			return Result.Success("Updated");
 		}
 	}

@@ -31,11 +31,14 @@ namespace ECom.Application.Services
 
 		public CompanyInformation GetCompanyInformation()
 		{
+			var companyInformation = new CompanyInformation();
 #if DEBUG
-			return _companyInfoRepo.GetSingle(x => x.IsRelease == false);
+            companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == false);
 #else
 			return GetSingle(x => x.IsRelease == true);
 #endif
+			if (companyInformation is null) throw new NotFoundException(nameof(CompanyInformation));
+			return companyInformation;
 		}
 		public CompanyInformation GetFromCache()
 		{
@@ -45,19 +48,16 @@ namespace ECom.Application.Services
 		public Result UpdateCompanyInformation(CompanyInformation info)
 		{
 			var isRelease = info.IsRelease;
-			var current = _companyInfoRepo.GetFirstOrDefault(x =>x.IsRelease == isRelease);
+			var current = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == isRelease);
 			if (current != null)
 			{
-				var res = _companyInfoRepo.Delete(current);
-				if (!res) return Result.Error(1, ErrCode.DbErrorInternal);
+				var deleteResult = _companyInfoRepo.Delete(current);
+				if (!deleteResult) throw new DbInternalException(nameof(UpdateCompanyInformation));
 			}
-			else
-			{
-				var res = _companyInfoRepo.Add(info);
-				if (!res) return Result.Error(2, ErrCode.DbErrorInternal);
-			}
-			Cache.Refresh();
-			return Result.Success(ErrCode.NotFound);
+            var res = _companyInfoRepo.Add(info);
+            if (!res) throw new DbInternalException(nameof(UpdateCompanyInformation));
+            Cache.Refresh();
+			return Result.Success("Updated");
 		}
 	}
 

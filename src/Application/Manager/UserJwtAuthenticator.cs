@@ -1,11 +1,12 @@
 ﻿
+using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Entities;
-using ECom.Infrastructure.Interfaces;
+using ECom.Domain.Interfaces;
 
 
 namespace ECom.Application.Manager
 {
-	public interface IUserJwtAuthenticator : IJwtAuthenticator
+    public interface IUserJwtAuthenticator : IJwtAuthenticator
 	{
 
 	}
@@ -24,7 +25,7 @@ namespace ECom.Application.Manager
 			_jwtOption = _optionService.GetJwtOption();
 			_jwtManager = new(_jwtOption.Secret, _jwtOption.Issuer, _jwtOption.Audience);
 		}
-		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
+		public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model)
 		{
 #if DEBUG
 			var debugDic = new User().AsDictionary();

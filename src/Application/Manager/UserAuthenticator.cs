@@ -1,11 +1,12 @@
 ﻿
+using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Entities;
-using ECom.Infrastructure.Interfaces;
+using ECom.Domain.Interfaces;
 
 
 namespace ECom.Application.Manager
 {
-	public class UserAuthenticator : IAuthenticator<User>
+    public class UserAuthenticator : IAuthenticator<User>
 	{
 		private readonly IUserService _userService;
 
@@ -14,7 +15,7 @@ namespace ECom.Application.Manager
 			this._userService = userService;
 		}
 
-		public ResultData<User> Authenticate(LoginModel model)
+		public ResultData<User> Authenticate(LoginRequestModel model)
 		{
 			return _userService.Login(model);
 		}

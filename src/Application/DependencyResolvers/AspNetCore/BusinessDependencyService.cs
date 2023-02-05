@@ -1,14 +1,15 @@
 ﻿using ECom.Application.Manager;
 using ECom.Application.Validators;
+using ECom.Domain.ApiModels.Request;
+using ECom.Domain.Interfaces;
 using ECom.Infrastructure;
 using ECom.Infrastructure.Concrete;
-using ECom.Infrastructure.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECom.Application.DependencyResolvers.AspNetCore
 {
-	public static class BusinessDependencyService
+    public static class BusinessDependencyService
 	{
 		public static IServiceCollection AddBusinessDependencies(this IServiceCollection services)
 		{
@@ -82,8 +83,8 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IAuthenticator<User>, UserAuthenticator>();
 
 			//Validator
-			services.AddTransient<IValidator<LoginModel>, LoginValidator>();
-			services.AddTransient<IValidator<RegisterModel>, RegisterValidator>();
+			services.AddTransient<IValidator<LoginRequestModel>, LoginValidator>();
+			services.AddTransient<IValidator<RegisterRequestModel>, RegisterValidator>();
 			services.AddTransient<IValidator<User>, UserValidator>();
 			services.AddTransient<IValidator<Admin>, AdminValidator>();
 

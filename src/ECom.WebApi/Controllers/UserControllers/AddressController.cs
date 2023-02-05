@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Entities;
+﻿using ECom.Domain.Abstract;
+using ECom.Domain.Entities;
 using ECom.Domain.Extensions;
 using ECom.WebApi.Filters;
 using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -20,7 +21,6 @@ namespace ECom.WebApi.Controllers.UserControllers
 		{
 			var user = HttpContext.GetUser();
 			var res = _service.GetUserAddresses(user.Id);
-			logger.Info(user.Id);
 			return Ok(res);
 		}
 

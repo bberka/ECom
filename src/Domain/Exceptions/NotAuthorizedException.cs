@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Exceptions
 {
-	public class NotAuthorizedException : Exception
-	{
-		public NotAuthorizedException() :base()
-		{ 
-		} 
-	}
+    public class NotAuthorizedException : CustomException
+    {
+        public NotAuthorizedException(AuthType requiredAuthenticationType) : base(requiredAuthenticationType)
+        {
+
+        }
+    }
 }

@@ -2,7 +2,8 @@
 using EasMe.Extensions;
 using ECom.Application.Manager;
 using ECom.Application.Services;
-using ECom.Infrastructure.Interfaces;
+using ECom.Domain.ApiModels.Request;
+using ECom.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -26,7 +27,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			this._authenticator = authenticator;
 		}
 		[HttpPost]
-		public IActionResult Login([FromBody] LoginModel model)
+		public IActionResult Login([FromBody] LoginRequestModel model)
 		{
 			HttpContext.Session.Clear();
 			if (ConstantMgr.isUseJwtAuth)
@@ -54,7 +55,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			}
 		}
 		[HttpPost]
-		public IActionResult Register([FromBody] RegisterModel model)
+		public IActionResult Register([FromBody] RegisterRequestModel model)
 		{
 			var res = _userService.Register(model);
 			if (!res.IsSuccess)

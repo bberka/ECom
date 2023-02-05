@@ -9,15 +9,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace ECom.Application.Services
 {
-	public interface ICartService
-	{
-		Result AddOrIncreaseProduct(int userId, int productId);
-		int GetBasketProductCount(int userId);
-		List<Cart> ListBasketProducts(int userId);
-		Result RemoveOrDecreaseProduct(int userId, int productId);
-		Result Clear(int userId);
-	}
-
 	public class CartService : ICartService
 	{
 		private readonly IEfEntityRepository<Cart> _cartRepo;
@@ -57,7 +48,7 @@ namespace ECom.Application.Services
 			}
 			if (!isSuccess)
 			{
-				return Result.Error(1, ErrCode.DbErrorInternal);
+				return Result.Error(1, ErrCode.DbInternal);
 			}
 			return Result.Success(ErrCode.Success,nameof(AddOrIncreaseProduct));
 		}
@@ -66,7 +57,7 @@ namespace ECom.Application.Services
 			var exist = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
 			{
-				return Result.Error(1, ErrCode.NotFound ,"Product");
+				throw new NotFoundException(nameof(Product));
 			}
 			var isSuccess = false;
 			if (exist.Count > 1)
@@ -78,10 +69,7 @@ namespace ECom.Application.Services
 			{
 				isSuccess = _cartRepo.Delete(exist);
 			}
-			if (!isSuccess)
-			{
-				return Result.Error(2, ErrCode.DbErrorInternal);
-			}
+			if (!isSuccess) throw new DbInternalException(nameof(RemoveOrDecreaseProduct));
 			return Result.Success(nameof(RemoveOrDecreaseProduct));
 		}
 		public int GetBasketProductCount(int userId)
@@ -98,7 +86,7 @@ namespace ECom.Application.Services
 		public Result Clear(int userId)
 		{
 			var res = _cartRepo.DeleteWhere(x => x.UserId == userId);
-			if (res == 0) return Result.Error(1, ErrCode.DbErrorInternal);
+            if (res == 0) throw new DbInternalException(nameof(Clear));
 			return Result.Success("Deleted");
 		}
 	}

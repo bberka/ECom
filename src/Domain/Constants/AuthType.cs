@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Infrastructure.Interfaces
+namespace ECom.Domain.Constants
 {
-    public interface ILocalization
+    public enum AuthType
     {
-        public string Get(string key);
+        None,
+        User,
+        Admin,
+        Both,
     }
 }

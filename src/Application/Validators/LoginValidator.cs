@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using ECom.Domain.ApiModels.Request;
+using FluentValidation;
 
 namespace ECom.Application.Validators
 {
-	public class LoginValidator : AbstractValidator<LoginModel>, IValidator<LoginModel>
+    public class LoginValidator : AbstractValidator<LoginRequestModel>, IValidator<LoginRequestModel>
 	{
 		public LoginValidator()
 		{

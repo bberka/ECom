@@ -1,8 +1,10 @@
-﻿using ECom.Infrastructure.Interfaces;
+﻿using ECom.Domain.ApiModels.Request;
+using ECom.Domain.Interfaces;
+
 
 namespace ECom.Application.Manager
 {
-	public interface IAdminJwtAuthenticator : IJwtAuthenticator
+    public interface IAdminJwtAuthenticator : IJwtAuthenticator
 	{
 	
 	}
@@ -22,7 +24,7 @@ namespace ECom.Application.Manager
 		}
 
 
-		public ResultData<JwtTokenModel> Authenticate(LoginModel model)
+		public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model)
 		{
 #if DEBUG
 			var debugDic = new User().AsDictionary();

@@ -1,8 +1,6 @@
-﻿
-
-namespace ECom.Infrastructure.DTOs
+﻿namespace ECom.Domain.ApiModels.Response
 {
-    public class ProductCommentViewModel
+    public class ProductCommentResponseModel
     {
         public int ProductId { get; set; }
         public ProductComment Comment { get; set; }

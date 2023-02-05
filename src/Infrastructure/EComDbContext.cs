@@ -11,8 +11,6 @@ namespace ECom.Infrastructure
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["EComDB"].ConnectionString);
-
-
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

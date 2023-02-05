@@ -1,8 +1,9 @@
-﻿using ECom.Infrastructure.Interfaces;
+﻿using ECom.Domain.ApiModels.Request;
+using ECom.Domain.Interfaces;
 
 namespace ECom.Application.Manager
 {
-	public class AdminAuthenticator : IAuthenticator<Admin>
+    public class AdminAuthenticator : IAuthenticator<Admin>
 	{
 		private readonly IAdminService _adminService;
 
@@ -11,7 +12,7 @@ namespace ECom.Application.Manager
 			this._adminService = adminService;
 		}
 
-		public ResultData<Admin> Authenticate(LoginModel model)
+		public ResultData<Admin> Authenticate(LoginRequestModel model)
 		{
 			return _adminService.Login(model);
 		}

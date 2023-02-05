@@ -11,7 +11,8 @@ namespace ECom.WebApi.Filters
 			{
 				context.Result = new UnauthorizedObjectResult(Result.Error(401,ErrCode.NotAuthorized));
 			}
+			
 		}
-
-	}
+     
+    }
 }

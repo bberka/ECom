@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.Models
+namespace ECom.Domain.ApiModels
 {
-	public class UpdateCompanyDetailsModel
-	{
-	}
+    public abstract class ApiResponseModelBase : Result
+    {
+
+    }
 }

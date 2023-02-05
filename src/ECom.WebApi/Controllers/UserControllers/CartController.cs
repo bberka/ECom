@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Entities;
+﻿
+using ECom.Domain.Entities;
 using ECom.Domain.Extensions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 				if (!res.IsSuccess)
 				{
 					logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId.ToJsonString());
-					return BadRequest(res.ToJsonString());
+					return BadRequest(res);
 				}
 				logger.Info(productId.ToJsonString());
 				return Ok(res);

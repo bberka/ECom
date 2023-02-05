@@ -5,8 +5,8 @@
 
 
 using ECom.Application.Services;
-using ECom.Infrastructure.Interfaces;
-
+using ECom.Domain.ApiModels.Request;
+using ECom.Domain.Interfaces;
 namespace ECom.WebApi.Controllers.AdminControllers
 {
     [ApiController]
@@ -31,7 +31,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			this._authenticator = authenticator;
 		}
 		[HttpPost]
-        public IActionResult Login([FromBody] LoginModel model)
+        public IActionResult Login([FromBody] LoginRequestModel model)
         {
 			HttpContext.Session.Clear();
 			if (ConstantMgr.isUseJwtAuth)
@@ -60,7 +60,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
         }
 
 		[HttpPost]
-		public IActionResult Add([FromBody] AdminAddModel model)
+		public IActionResult Add([FromBody] AddAdminRequestModel model)
 		{
 #if !DEBUG
             return NotFound();

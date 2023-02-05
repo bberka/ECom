@@ -18,14 +18,14 @@ namespace ECom.Domain.Extensions
 			var userIdString = principal.FindFirst("Id")?.Value;
 			var userId = userIdString.StringConversion<int>();
 #if DEBUG
-			if (userId == 0) throw new NotAuthorizedException();
+			if (userId == 0) throw new NotAuthorizedException(AuthType.User);
 #endif
 			return userId;
 		}
 		public static User GetUser(this HttpContext context)
 		{
 			var user = context.Session.GetString("user")?.FromJsonString<User>();
-			if (user is null) throw new NotAuthorizedException();
+			if (user is null) throw new NotAuthorizedException(AuthType.User);
 			return user;
 		}
 		public static void SetUser(this HttpContext context,User user)
@@ -36,7 +36,7 @@ namespace ECom.Domain.Extensions
 		public static Admin GetAdmin(this HttpContext context)
 		{
 			var user = context.Session.GetString("admin")?.FromJsonString<Admin>();
-			if (user is null) throw new NotAuthorizedException();
+			if (user is null) throw new NotAuthorizedException(AuthType.User);
 			return user;
 		}
 		public static bool IsUserAuthorized(this HttpContext context)

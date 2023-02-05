@@ -16,7 +16,7 @@ namespace ECom.Domain.Constants
         Fatal,
 		Error,
         Warning,
-		DbErrorInternal,
+		DbInternal,
 		ValidationError,
 		NullReference,
 		Deleted,
@@ -25,7 +25,7 @@ namespace ECom.Domain.Constants
         TooShort,
         TooLong,
         Expired,
-		Invalid,
+		UnderMaintenance,
 
 		AlreadyExists,
 		AlreadyInUse,

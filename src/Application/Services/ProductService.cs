@@ -5,27 +5,11 @@
 
 
 
-using ECom.Domain.Entities;
+
 
 namespace ECom.Application.Services
 {
-	public interface IProductService
-	{
-		void CheckExists(int id);
-		void CheckExists(uint id);
-		Product? GetProduct(long productNo);
-		List<ProductDetail>? GetProductDetails(long productNo);
-		ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
-		ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
-		Product? GetProductSingle(long productNo);
-		ProductVariant? GetVariant(int id);
-		List<Product> GetVariantProducts(int variantId);
-		List<ProductVariant> GetVariants();
-		ProductVariant GetVariantSingle(int id);
-		List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model);
-		List<ProductSimpleViewModel> ListProductsSimpleViewModel(ListProductsModel model);
-		List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model);
-	}
+
 
 	public class ProductService : IProductService
 	{
@@ -69,7 +53,7 @@ namespace ECom.Application.Services
 
 			_option = _optionService.GetOptionFromCache();
 		}
-		public List<Product> ListProductsBaseByCategory(ListProductsByCategoryModel model)
+		public List<Product> ListProductsBaseByCategory(ListProductsByCategoryRequestModel model)
 		{
 			var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
 			var pageProductCount = _option.PagingProductCount;
@@ -84,7 +68,7 @@ namespace ECom.Application.Services
 				.ToList();
 			return products;
 		}
-		public List<ProductSimpleViewModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryModel model)
+		public List<ProductSimpleResponseModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryRequestModel model)
 		{
 			var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
 			var pageProductCount = _option.PagingProductCount;
@@ -103,7 +87,7 @@ namespace ECom.Application.Services
 				x => x.Id,
 				x => x.ProductId,
 				(p, d) =>
-				new ProductSimpleViewModel
+				new ProductSimpleResponseModel
 				{
 					Product = p,
 					Details = d
@@ -112,7 +96,7 @@ namespace ECom.Application.Services
 			return products;
 		}
 
-		public List<ProductSimpleViewModel> ListProductsSimpleViewModel(ListProductsModel model)
+		public List<ProductSimpleResponseModel> ListProductsSimpleViewModel(ListProductsRequestModel model)
 		{
 			var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
 			var pageProductCount = _option.PagingProductCount;
@@ -126,7 +110,7 @@ namespace ECom.Application.Services
 				x => x.Id,
 				x => x.ProductId,
 				(p, d) =>
-				new ProductSimpleViewModel
+				new ProductSimpleResponseModel
 				{
 					Product = p,
 					Details = d
@@ -192,12 +176,12 @@ namespace ECom.Application.Services
 		public void CheckExists(int id)
 		{
 			var exist = _productRepo.Any(x => x.Id == id);
-			if (!exist) throw new BaseException(ErrCode.NotFound);
+			if (!exist) throw new CustomException(ErrCode.NotFound);
 		}
 		public void CheckExists(uint id)
 		{
 			var exist = _productRepo.Any(x => x.Id == id);
-			if (!exist) throw new BaseException(ErrCode.NotFound);
+			if (!exist) throw new CustomException(ErrCode.NotFound);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Entities;
+﻿using ECom.Domain.ApiModels.Request;
+using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.AdminControllers
@@ -13,7 +14,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPost]
-        public IActionResult Update([FromBody] CategoryUpdateModel category) 
+        public IActionResult Update([FromBody] CategoryUpdateRequestModel category) 
         {
 			var res = _categoryService.UpdateCategory(category);
 			if (!res.IsSuccess)

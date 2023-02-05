@@ -14,11 +14,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		public IActionResult EnableOrDisable([FromBody] int id)
 		{
 			var res = _languageService.EnableOrDisable(id);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(res.Rv, res.ErrorCode, res.Parameters);
-				return BadRequest(res);
-			}
 			logger.Info("Language EnabledOrDisabled: " + id);
 			return Ok(res);
 		}
@@ -26,13 +21,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPost]
 		public IActionResult Get([FromBody] int id)
 		{
-			var res = _languageService.GetLanguageById(id);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(res.Rv, res.ErrorCode, res.Parameters);
-				return BadRequest(res);
-			}
-			logger.Info(res.Data.ToJsonString());
+			var res = _languageService.GetLanguage(id);
 			return Ok(res);
 		}
 	}

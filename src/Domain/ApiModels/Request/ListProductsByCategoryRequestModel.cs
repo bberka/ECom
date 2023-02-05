@@ -1,6 +1,6 @@
-﻿namespace ECom.Domain.Models
+﻿namespace ECom.Domain.ApiModels.Request
 {
-    public class ListProductsByCategoryModel
+    public class ListProductsByCategoryRequestModel
     {
         public int CategoryId { get; set; }
         public int Page { get; set; }
