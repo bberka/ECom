@@ -36,6 +36,7 @@ namespace ECom.WebApi.Filters
                     var paramArray = context.Exception.Message.Split(':').ToArray();
                     var body = Result.Error(100, errCode, paramArray);
                     context.Result = new BadRequestObjectResult(body);
+                    logger.Warn(query, body.ErrorCode,body.Parameters);
                 }
             }
            

@@ -21,8 +21,12 @@ namespace ECom.Infrastructure
 				u.ImageId
 			});
 		}
-		public static EComDbContext New() => new EComDbContext();
 
+		public static EComDbContext New() => new EComDbContext();
+        public static void EnsureCreated()
+        {
+            new EComDbContext().Database.EnsureCreated();
+        }
 		public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }

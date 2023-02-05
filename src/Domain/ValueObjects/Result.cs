@@ -9,16 +9,10 @@ namespace ECom.Domain.ValueObjects
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		[JsonIgnore]
 		public ushort Rv { get; set; }
-
 		public bool IsSuccess { get => Rv == 0; }
-
 		public string ErrorCode { get; set; } = Constants.ErrCode.None.ToString();
 		public string[] Parameters { get; set; }
-
-		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-		public object? Data { get; set; } = null;
 		public static Result Success(ErrCode err = ErrCode.Success, params string[] parameters) => new() { Rv = 0, ErrorCode = err.ToString(), Parameters = parameters };
-		public static Result Success(object data,ErrCode err = ErrCode.Success, params string[] parameters) => new() { Rv = 0, Data = data ,ErrorCode = err.ToString(), Parameters = parameters };
 		public static Result Success(params string[] parameters) => new() { Rv = 0,  ErrorCode = ErrCode.Success.ToString() ,Parameters = parameters };
 		public static Result Error(ushort rv, ErrCode err = ErrCode.Error) => new() { Rv = rv, ErrorCode = err.ToString() };
 		public static Result Error(ushort rv, ErrCode err, params string[] parameters) => new() { Rv = rv, ErrorCode = err.ToString(), Parameters = parameters };

@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface IPermissionService 
-	{
-	}
+
 	public class PermissionService :  IPermissionService
 	{
 

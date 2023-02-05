@@ -9,10 +9,10 @@ namespace ECom.WebApi.Controllers.UserControllers
 {
     public class CartController : BaseUserController
     {
-		private readonly ICartService _service;
-		public CartController(ICartService service)
+		private readonly ICartService _cartService;
+		public CartController(ICartService cartService)
 		{
-			_service = service;
+			_cartService = cartService;
 		}
 		[HttpPost]
 		public IActionResult AddOrIncreaseProduct(int productId)
@@ -20,12 +20,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			if (HttpContext.IsUserAuthorized())
 			{
 				var user = HttpContext.GetUser();
-				var res = _service.AddOrIncreaseProduct(user.Id, productId);
-				if (!res.IsSuccess)
-				{
-					logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId.ToJsonString());
-					return BadRequest(res);
-				}
+				var res = _cartService.AddOrIncreaseProduct(user.Id, productId);
 				logger.Info(productId.ToJsonString());
 				return Ok(res);
 			}
@@ -43,12 +38,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			if (HttpContext.IsUserAuthorized())
 			{
 				var user = HttpContext.GetUser();
-				var res = _service.RemoveOrDecreaseProduct(user.Id, productId);
-				if (!res.IsSuccess)
-				{
-					logger.Warn(res.Rv, res.ErrorCode, res.Parameters, productId);
-					return BadRequest(res.ToJsonString());
-				}
+				var res = _cartService.RemoveOrDecreaseProduct(user.Id, productId);
 				logger.Info(productId);
 				return Ok(res);
 
@@ -67,7 +57,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			if (HttpContext.IsUserAuthorized())
 			{
 				var user = HttpContext.GetUser();
-				var res = _service.GetBasketProductCount(user.Id);
+				var res = _cartService.GetBasketProductCount(user.Id);
 				return Ok(res);
 			}
 			else
@@ -82,7 +72,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			if (HttpContext.IsUserAuthorized())
 			{
 				var user = HttpContext.GetUser();
-				var res = _service.ListBasketProducts(user.Id);
+				var res = _cartService.ListBasketProducts(user.Id);
 				return Ok(res);
 			}
 			else
@@ -99,12 +89,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			if (HttpContext.IsUserAuthorized())
 			{
 				var user = HttpContext.GetUser();
-				var res = _service.Clear(user.Id);
-				if (!res.IsSuccess)
-				{
-					logger.Warn(res.Rv, res.ErrorCode, res.Parameters);
-					return BadRequest(res.ToJsonString());
-				}
+				var res = _cartService.Clear(user.Id);
 				logger.Info();
 				return Ok(res);
 

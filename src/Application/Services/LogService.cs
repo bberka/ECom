@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ILogService 
-	{
-	}
+
 	public class LogService : ILogService
 	{
 		private readonly IEfEntityRepository<UserLog> _userLogRepo;

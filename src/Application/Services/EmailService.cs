@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface IEmailService
-	{
-	}
+
 	public class EmailService : IEmailService
 	{
 		private readonly IEfEntityRepository<EmailVerifyToken> _emailVerifyTokenRepo;

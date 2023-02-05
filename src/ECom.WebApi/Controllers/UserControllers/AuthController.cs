@@ -33,22 +33,12 @@ namespace ECom.WebApi.Controllers.UserControllers
 			if (ConstantMgr.isUseJwtAuth)
 			{
 				var res = _userJwtAuthenticator.Authenticate(model);
-				if (!res.IsSuccess)
-				{
-					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-					return BadRequest(res);
-				}
 				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 				return Ok(res);
 			}
 			else
 			{
 				var res = _authenticator.Authenticate(model);
-				if (!res.IsSuccess)
-				{
-					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-					return BadRequest(res);
-				}
 				HttpContext.SetUser(res.Data);
 				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 				return Ok(res);
@@ -58,11 +48,6 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult Register([FromBody] RegisterRequestModel model)
 		{
 			var res = _userService.Register(model);
-			if (!res.IsSuccess)
-			{
-				logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-				return BadRequest(res);
-			}
 			logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 			return Ok(res);
 		}

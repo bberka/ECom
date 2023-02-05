@@ -9,14 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ILanguageService 
-	{
-		public List<Language> GetLanguages();
-		public Language GetLanguage(int id);
-		public Result EnableOrDisable(int id);
-
-		
-	}
+	
 	public class LanguageService : ILanguageService
 	{
 		private readonly IEfEntityRepository<Language> _languageRepo;

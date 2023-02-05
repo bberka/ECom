@@ -15,11 +15,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public IActionResult Update([FromBody] Announcement data) 
         {
 			var res = _announcementService.UpdateAnnouncement(data);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(res.Rv, res.ErrorCode,res.Parameters, data.ToJsonString());
-				return BadRequest(res.ToJsonString());
-			}
 			logger.Info(data.ToJsonString());
 			return Ok(res);
 		}
@@ -28,11 +23,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		public IActionResult Delete([FromBody] uint id)
 		{
 			var res = _announcementService.DeleteAnnouncement(id);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, id);
-				return BadRequest(res.ToJsonString());
-			}
 			logger.Info(id);
 			return Ok(res);
 		}
@@ -40,11 +30,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		public IActionResult EnableOrDisable([FromBody] uint id)
 		{
 			var res = _announcementService.EnableOrDisable(id);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(res.Rv, res.ErrorCode, res.Parameters, id);
-				return BadRequest(res.ToJsonString());
-			}
 			logger.Info(id);
 			return Ok(res);
 		}

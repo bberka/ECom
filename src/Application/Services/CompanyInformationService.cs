@@ -7,14 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface ICompanyInformationService 
-	{
-		CompanyInformation GetCompanyInformation();
-		CompanyInformation GetFromCache();
-		Result UpdateCompanyInformation(CompanyInformation info);
-
-	}
-
+	
 	public class CompanyInformationService : ICompanyInformationService
 	{
 

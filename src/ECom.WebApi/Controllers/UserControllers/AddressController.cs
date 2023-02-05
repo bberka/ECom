@@ -29,11 +29,6 @@ namespace ECom.WebApi.Controllers.UserControllers
 		{
 			var user = HttpContext.GetUser();
 			var res = _service.AddAddress(address);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(user.Id, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
-				return BadRequest(res.ToJsonString());
-			}
 			logger.Info(user.Id, address.ToJsonString());
 			return Ok(res);
 
@@ -42,13 +37,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult Update([FromBody] Address address)
 		{
 			var user = HttpContext.GetUser();
-
 			var res = _service.UpdateAddress(address);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(user.Id, res.Rv, res.ErrorCode, res.Parameters, address.ToJsonString());
-				return BadRequest(res.ToJsonString());
-			}
 			logger.Info(user.Id,address.ToJsonString());
 			return Ok(res);
 		}
@@ -57,13 +46,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public IActionResult Delete([FromBody] int id)
 		{
 			var user = HttpContext.GetUser();
-
 			var res = _service.DeleteAddress(user.Id, id);
-			if (!res.IsSuccess)
-			{
-				logger.Warn(user.Id, res.Rv, res.ErrorCode, res.Parameters, id);
-				return BadRequest(res.ToJsonString());
-			}
 			logger.Info(user.Id, id);
 			return Ok(res);
 		}

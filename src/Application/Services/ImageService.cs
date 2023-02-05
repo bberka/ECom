@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface IImageService 
-	{
-	}
 	public class ImageService : IImageService
 	{
 

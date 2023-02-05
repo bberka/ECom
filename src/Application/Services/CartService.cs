@@ -48,9 +48,9 @@ namespace ECom.Application.Services
 			}
 			if (!isSuccess)
 			{
-				return Result.Error(1, ErrCode.DbInternal);
+				throw new DbInternalException(nameof(AddOrIncreaseProduct));
 			}
-			return Result.Success(ErrCode.Success,nameof(AddOrIncreaseProduct));
+			return Result.Success(nameof(AddOrIncreaseProduct));
 		}
 		public Result RemoveOrDecreaseProduct(int userId, int productId)
 		{

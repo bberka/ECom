@@ -27,11 +27,6 @@ namespace ECom.WebApi.Controllers.UserControllers
         public IActionResult CreateCollection(CreateCollectionRequestModel model)
         {
             var res = _collectionService.CreateCollection(model);
-            if (!res.IsSuccess)
-            {
-                logger.Warn(res.Rv, res.ErrorCode, res.Parameters, model.ToJsonString());
-                return BadRequest(res);
-            }
             logger.Info(res.Rv, res.ErrorCode, res.Parameters, model.ToJsonString());
             return Ok();
         }

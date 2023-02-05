@@ -37,22 +37,12 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			if (ConstantMgr.isUseJwtAuth)
 			{
 				var res = _adminJwtAuthenticator.Authenticate(model);
-				if (!res.IsSuccess)
-				{
-					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-					return BadRequest(res);
-				}
 				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 				return Ok(res);
 			}
 			else
 			{
 				var res = _authenticator.Authenticate(model);
-				if (!res.IsSuccess)
-				{
-					logger.Warn($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-					return BadRequest(res);
-				}
 				HttpContext.SetAdmin(res.Data);
 				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
 				return Ok(res);

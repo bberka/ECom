@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Application.Services
 {
-	public interface IDiscountService 
-	{
-	}
+
 	public class DiscountService : IDiscountService
 	{
 		private readonly IEfEntityRepository<CategoryDiscount> _categoryDiscountRepo;
