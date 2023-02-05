@@ -4,9 +4,6 @@ namespace ECom.WebApi.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-#if !DEBUG
-    [Authorize(Policy = "UserOnly")]
-#endif
 	public class StatusController : Controller
     {
         [HttpGet]

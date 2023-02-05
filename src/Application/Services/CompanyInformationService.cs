@@ -28,9 +28,10 @@ namespace ECom.Application.Services
 #if DEBUG
             companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == false);
 #else
-			return GetSingle(x => x.IsRelease == true);
+            companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == true);
+
 #endif
-			if (companyInformation is null) throw new NotFoundException(nameof(CompanyInformation));
+            if (companyInformation is null) throw new NotFoundException(nameof(CompanyInformation));
 			return companyInformation;
 		}
 		public CompanyInformation GetFromCache()

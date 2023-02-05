@@ -21,8 +21,8 @@ namespace ECom.WebApi.Controllers.UserControllers
         {
             return Ok();
         }
-        [HttpGet]
-        public IActionResult GetCollectionProducts(int id)
+        [HttpPost]
+        public IActionResult GetCollectionProducts([FromBody] int id)
         {
             return Ok();
         }
