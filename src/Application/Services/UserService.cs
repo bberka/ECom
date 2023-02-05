@@ -34,7 +34,7 @@ namespace ECom.Application.Services
 			if (res == false) throw new DbInternalException(nameof(Register));
 			return Result.Success();
 		}
-		public ResultData<User> Login(LoginRequestModel model)
+		public User Login(LoginRequestModel model)
 		{
 			var user = GetUser(model.EmailAddress);
 			if (user is null) throw new NotFoundException(nameof(User));
@@ -46,20 +46,17 @@ namespace ECom.Application.Services
 			}
 			var validator = new UserValidator(_validationDbService);
 			var validateResult = validator.Validate(user);
-			if (!validateResult.IsValid)
-			{
-				//throw new ValidationErrorException();	
-				return ResultData<User>.Error(
-					3,
-					ErrCode.ValidationError ,
-					validateResult.Errors.Select(x => $"{x.ErrorCode}:{x.PropertyName}").ToArray());
-			}
-			if (user.TwoFactorType != 0)
+            if (!validateResult.IsValid)
+            {
+                var first = validateResult.Errors.First();
+                throw new ValidationErrorException(first.PropertyName, first.ErrorCode);
+            }
+            if (user.TwoFactorType != 0)
 			{
 				//TODO
 			}
 			UpdateSuccessLogin(user);
-			return ResultData<User>.Success(user);
+			return user;
 		}
 		public bool UpdateSuccessLogin(User user)
 		{

@@ -28,7 +28,22 @@ namespace ECom.Infrastructure
             var created = new EComDbContext().Database.EnsureCreated();
             if (!created) return;
             using var context = new EComDbContext();
-            context.Database.Migrate();
+            var option = new Option();
+            context.Add(option);
+            context.SaveChanges();
+            var lang = new Language
+            {
+                Culture = "EN",
+                IsValid = true,
+            };
+            var lang2 = new Language
+            {
+                Culture = "EN",
+                IsValid = true,
+            };
+            context.Add(lang);
+            context.Add(lang2);
+            context.SaveChanges();
             var role = new Role
             {
                 IsValid = true,
@@ -43,12 +58,15 @@ namespace ECom.Infrastructure
                 Memo = "Test",
             };
             context.Add(perm);
+            context.SaveChanges();
+
             var roleBind = new RoleBind
             {
                 PermissionId = 1,
                 RoleId = 1,
             };
             context.Add(roleBind);
+            context.SaveChanges();
             var testUser = new User
             {
                 CitizenShipNumber = 1,
@@ -72,6 +90,8 @@ namespace ECom.Infrastructure
                 TaxNumber = 0,
             };
             context.Add(testUser);
+            context.SaveChanges();
+
             var testAdmin = new Admin
             {
                 DeletedDate = null,
@@ -90,8 +110,11 @@ namespace ECom.Infrastructure
             };
             context.Add(testAdmin);
             context.SaveChanges();
+
+          
+
         }
-		public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -126,7 +149,6 @@ namespace ECom.Infrastructure
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<JwtOption> JwtOptions { get; set; }
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
     }
 }

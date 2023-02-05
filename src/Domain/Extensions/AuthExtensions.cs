@@ -30,7 +30,7 @@ namespace ECom.Domain.Extensions
 		}
 		public static void SetUser(this HttpContext context,User user)
 		{
-			if(user is null) throw new InvalidDataException();
+			if(user is null) throw new NullException(nameof(User));
 			context.Session.SetString("user",user.ToJsonString());
 		}
 		public static Admin GetAdmin(this HttpContext context)

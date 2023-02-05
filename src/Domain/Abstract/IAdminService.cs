@@ -18,7 +18,7 @@ namespace ECom.Domain.Abstract
         bool Exists(string email);
         Admin? GetAdmin(string email);
         bool IncreaseFailedPasswordCount(Admin admin);
-        ResultData<Admin> Login(LoginRequestModel model);
+        Admin Login(LoginRequestModel model);
         bool UpdateSuccessLogin(Admin admin);
         Result AddAdmin(AddAdminRequestModel admin);
 

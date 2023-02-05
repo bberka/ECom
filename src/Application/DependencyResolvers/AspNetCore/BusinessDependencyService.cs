@@ -30,7 +30,6 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<EmailVerifyToken>, EmailVerifyTokenDAL>();
 			services.AddScoped<IEfEntityRepository<FavoriteProduct>, FavoriteProductDAL>();
 			services.AddScoped<IEfEntityRepository<Image>, ImageDAL>();
-			services.AddScoped<IEfEntityRepository<JwtOption>, JwtOptionDAL>();
 			services.AddScoped<IEfEntityRepository<Language>, LanguageDAL>();
 			services.AddScoped<IEfEntityRepository<Option>, OptionDAL>();
 			services.AddScoped<IEfEntityRepository<Order>, OrderDAL>();
@@ -78,8 +77,6 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();
 
 			//AUTH
-			services.AddScoped<IAuthenticator<Admin>, AdminAuthenticator>();
-			services.AddScoped<IAuthenticator<User>, UserAuthenticator>();
 
 			//Validator
 			services.AddTransient<IValidator<LoginRequestModel>, LoginValidator>();

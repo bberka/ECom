@@ -11,29 +11,29 @@ namespace ECom.Domain.Entities
     public class Option : IEfEntity
 	{
         [Key]
-		public bool IsRelease { get; set; }
-        public bool IsOpen { get; set; }
-        public bool IsAdminOpen { get; set; }
-        public byte PagingProductCount { get; set; }
-        public byte UsernameMinLength { get; set; }
-        public byte PasswordMinLength { get; set; }
-        public bool RequireUpperCaseInPassword { get; set; }
-        public bool RequireLowerCaseInPassword { get; set; }
-        public bool RequireSpecialCharacterInPassword { get; set; }
-        public bool RequireNumberInPassword { get; set; }
-        
+        public bool IsRelease { get; set; } = true;
+        public bool IsOpen { get; set; } = true;
+        public bool IsAdminOpen { get; set; } = true;
+        public byte PagingProductCount { get; set; } = 20;
+        public byte UsernameMinLength { get; set; } = 3;
+        public byte PasswordMinLength { get; set; } = 3;
+        public bool RequireUpperCaseInPassword { get; set; } = false;
+        public bool RequireLowerCaseInPassword { get; set; } = false;
+        public bool RequireSpecialCharacterInPassword { get; set; } = false;
+        public bool RequireNumberInPassword { get; set; } = false;
+
         [Range(15, 43200)]
-        public int EmailVerificationTimeoutMinutes { get; set; }
+        public int EmailVerificationTimeoutMinutes { get; set; } = 30;
 
 		[Range(15, 43200)]
-		public int PasswordResetTimeoutMinutes { get; set; }
+		public int PasswordResetTimeoutMinutes { get; set; } = 30;
 
-		[MaxLength(16)]
-        public string SelectedCurrency { get; set; }
+        [MaxLength(16)]
+        public string SelectedCurrency { get; set; } = "TL";
 
-        public bool ShowStock { get; set; }
-        public byte ProductImageLimit { get; set; }
-        public byte ProductCommentImageLimit { get; set; }
+        public bool ShowStock { get; set; } = false;
+        public byte ProductImageLimit { get; set; } = 10;
+        public byte ProductCommentImageLimit { get; set; } = 5;
 
 
 

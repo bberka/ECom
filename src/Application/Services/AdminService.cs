@@ -32,7 +32,7 @@ namespace ECom.Application.Services
 		}
 		
 
-		public ResultData<Admin> Login(LoginRequestModel model)
+		public Admin Login(LoginRequestModel model)
 		{
 			var admin = GetAdmin(model.EmailAddress);
 			if (admin is null) throw new NotFoundException(nameof(Admin));
@@ -46,7 +46,8 @@ namespace ECom.Application.Services
 			var validateResult = validator.Validate(admin);
 			if (!validateResult.IsValid)
 			{
-				return ResultData<Admin>.Error(3, validateResult.Errors.First().ErrorCode);
+				var first = validateResult.Errors.First();
+				throw new ValidationErrorException(first.PropertyName, first.ErrorCode);
 			}
 			if (admin.TwoFactorType != 0)
 			{
@@ -54,8 +55,7 @@ namespace ECom.Application.Services
 			}
 
 			UpdateSuccessLogin(admin);
-
-			return ResultData<Admin>.Success(admin);
+			return admin;
 		}
 		public bool UpdateSuccessLogin(Admin admin)
 		{

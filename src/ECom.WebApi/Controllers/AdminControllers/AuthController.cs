@@ -17,36 +17,24 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		private readonly IAdminService _adminService;
 		private readonly IOptionService _optionService;
 		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
-		private readonly IAuthenticator<Admin> _authenticator;
 
 		public AuthController(
 			IAdminService adminService,
 			IOptionService optionService,
-			IAdminJwtAuthenticator adminJwtAuthenticator,
-			IAuthenticator<Admin> authenticator)
+			IAdminJwtAuthenticator adminJwtAuthenticator)
 		{
 			this._adminService = adminService;
 			this._optionService = optionService;
 			this._adminJwtAuthenticator = adminJwtAuthenticator;
-			this._authenticator = authenticator;
 		}
 		[HttpPost]
         public IActionResult Login([FromBody] LoginRequestModel model)
         {
 			HttpContext.Session.Clear();
-			if (ConstantMgr.isUseJwtAuth)
-			{
-				var res = _adminJwtAuthenticator.Authenticate(model);
-				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-				return Ok(res);
-			}
-			else
-			{
-				var res = _authenticator.Authenticate(model);
-				HttpContext.SetAdmin(res.Data);
-				logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-				return Ok(res);
-			}
+            var res = _adminJwtAuthenticator.Authenticate(model);
+            logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+            return Ok(res);
+           
         }
 
 		[HttpPost]

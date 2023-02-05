@@ -44,7 +44,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors();
 
 #region Authentication
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -54,40 +54,36 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 	
 });
 
-if (ConstantMgr.isUseJwtAuth)
+builder.Services
+.AddAuthentication(op =>
 {
-	builder.Services
-	.AddAuthentication(op =>
-	{
-		op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-		op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-	})
-	.AddJwtBearer("Bearer", token =>
-	{
+    op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer("Bearer", token =>
+{
 #if DEBUG
-		token.RequireHttpsMetadata = false;
+    token.RequireHttpsMetadata = false;
 #endif
-		token.SaveToken = true;
-		token.TokenValidationParameters = new TokenValidationParameters
-		{
-			ValidateIssuerSigningKey = true,
-			IssuerSigningKey = new SymmetricSecurityKey("vztgffzaoyszvahsacfqxxjvtvbbrnbdtrxwarveycuwpyhkrtuhgkimowfuoiitubvvfedfuqkeztjbbkaapbgsuxcvcjrwxgegdedonqvguuputqqjcmznmqojbjvv".ConvertToByteArray()),
-			ValidateIssuer = false,
-			ValidateAudience = false,
-			RequireExpirationTime = true,
-			ValidateLifetime = true,
-			ClockSkew = TimeSpan.Zero,
-		};
-	});
+    token.SaveToken = true;
+    token.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey("vztgffzaoyszvahsacfqxxjvtvbbrnbdtrxwarveycuwpyhkrtuhgkimowfuoiitubvvfedfuqkeztjbbkaapbgsuxcvcjrwxgegdedonqvguuputqqjcmznmqojbjvv".ConvertToByteArray()),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        RequireExpirationTime = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+    };
+});
 
-	builder.Services.AddAuthorization(options =>
-	{
-		options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
-		options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
-	});
-}
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
+    options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
+});
 
 
 #endregion
@@ -122,17 +118,20 @@ app.UseRouting();
 
 #region Custom Middlewares
 
+app.UseCors(x => x
+       .AllowAnyMethod()
+       .AllowAnyHeader()
+       .AllowCredentials()
+       //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins seperated with comma
+       .SetIsOriginAllowed(origin => true));// Allow any origin  
+
 app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<MaintenanceCheckMiddleware>();
 
 #endregion
 
-if (ConstantMgr.isUseJwtAuth)
-{
-	app.UseAuthentication();
-	app.UseAuthorization();
-}
-
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 app.MapControllers();

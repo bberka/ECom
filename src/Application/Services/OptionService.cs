@@ -1,47 +1,35 @@
-﻿
-
-
-
-using ECom.Domain.Entities;
+﻿using ECom.Domain.Entities;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace ECom.Application.Services
 {
-	
-
 	public class OptionService : IOptionService
 	{
 		const byte CACHE_REFRESH_INTERVAL_MINS = 1;
 
 		private readonly EasCache<Option> OptionCache;
-		private readonly EasCache<JwtOption> JwtOptionCache;
 		private readonly EasCache<List<CargoOption>> CargoOptionCache;
 		private readonly EasCache<List<SmtpOption>> SmtpOptionCache;
 		private readonly EasCache<List<PaymentOption>> PaymentOptionCache;
 
-
 		private readonly IEfEntityRepository<Option> _optionRepo;
-		private readonly IEfEntityRepository<JwtOption> _jwtOptionRepo;
 		private readonly IEfEntityRepository<SmtpOption> _smtpOptionRepo;
 		private readonly IEfEntityRepository<CargoOption> _cargoOptionRepo;
 		private readonly IEfEntityRepository<PaymentOption> _paymentOptionRepo;
 
 		public OptionService(
 			IEfEntityRepository<Option> optionRepo,
-			IEfEntityRepository<JwtOption> jwtOptionRepo,
 			IEfEntityRepository<SmtpOption> smtpOptionRepo,
 			IEfEntityRepository<CargoOption> cargoOptionRepo,
 			IEfEntityRepository<PaymentOption> paymentOptionRepo)
 		{
 			this._optionRepo = optionRepo;
-			this._jwtOptionRepo = jwtOptionRepo;
 			this._smtpOptionRepo = smtpOptionRepo;
 			this._cargoOptionRepo = cargoOptionRepo;
 			this._paymentOptionRepo = paymentOptionRepo;
 
 			OptionCache = new(GetOption, CACHE_REFRESH_INTERVAL_MINS);
-			JwtOptionCache = new(GetJwtOption, CACHE_REFRESH_INTERVAL_MINS);
 			CargoOptionCache = new(GetCargoOptions, CACHE_REFRESH_INTERVAL_MINS);
 			SmtpOptionCache = new(GetSmtpOptions, CACHE_REFRESH_INTERVAL_MINS);
 			PaymentOptionCache = new(GetPaymentOptions, CACHE_REFRESH_INTERVAL_MINS);
@@ -58,14 +46,7 @@ namespace ECom.Application.Services
             return Result.Success("Updated");
 
         }
-        public Result UpdateJwtOption(JwtOption option)
-		{
-			var res = _jwtOptionRepo.Update(option);
-            if (!res) throw new DbInternalException(nameof(UpdateJwtOption));
-			JwtOptionCache.Refresh();
-            return Result.Success("Updated");
-
-        }
+       
         public Result UpdateCargoOption(CargoOption option)
 		{
 			var res = _cargoOptionRepo.Update(option);
@@ -105,19 +86,6 @@ namespace ECom.Application.Services
         }
 
 
-        public JwtOption GetJwtOption()
-		{
-            var option = new JwtOption();
-
-#if DEBUG
-            option = _jwtOptionRepo.GetFirstOrDefault(x => x.IsRelease == false);
-#else
-			return _jwtOptionRepo.GetSingle(x => x.IsRelease == true);
-#endif
-            if (option is null) throw new NotFoundException(nameof(JwtOption));
-			return option;
-        }
-
         public List<CargoOption> GetCargoOptions()
 		{
 			return _cargoOptionRepo.GetList(x => x.IsValid == true);
@@ -137,15 +105,10 @@ namespace ECom.Application.Services
 			OptionCache.Refresh();
 			PaymentOptionCache.Refresh();
 			SmtpOptionCache.Refresh();
-			JwtOptionCache.Refresh();
 			CargoOptionCache.Refresh();
 
 		}
 
-		public JwtOption GetJwtOptionFromCache()
-		{
-			return JwtOptionCache.Get();
-		}
 
 		public Option GetOptionFromCache()
 		{

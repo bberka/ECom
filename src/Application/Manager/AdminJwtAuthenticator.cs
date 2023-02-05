@@ -4,50 +4,24 @@ using ECom.Domain.Interfaces;
 
 namespace ECom.Application.Manager
 {
-    public interface IAdminJwtAuthenticator : IJwtAuthenticator
-	{
-	
-	}
 
 	public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 	{
 		private readonly IAdminService _adminService;
-		private readonly IOptionService _optionService;
 		private readonly EasJWT _jwtManager;
-		private readonly JwtOption _jwtOption;
-		public AdminJwtAuthenticator(IAdminService adminService,IOptionService optionService)
+		public AdminJwtAuthenticator(IAdminService adminService)
 		{
 			this._adminService = adminService;
-			this._optionService = optionService;
-			_jwtOption = _optionService.GetJwtOption();
-			_jwtManager = new(_jwtOption.Secret, _jwtOption.Issuer, _jwtOption.Audience);
+			_jwtManager = new(JwtOption.This.Secret, JwtOption.This.Issuer, JwtOption.This.Audience);
 		}
 
-
-		public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model)
+		public JwtTokenModel Authenticate(LoginRequestModel model)
 		{
-#if DEBUG
-			var debugDic = new User().AsDictionary();
-			debugDic.Add("AdminOnly", "");
-			var debugToken = _jwtManager.GenerateJwtToken(debugDic, DateTime.Now.AddMinutes(720));
-			var debugRes = new JwtTokenModel
-			{
-				ExpireUnix = DateTime.Now.AddMinutes(720).ToUnixTime(),
-				RefreshToken = "",
-				Token = debugToken,
-			};
-			return ResultData<JwtTokenModel>.Success(debugRes);
-#endif
 			var loginResult = _adminService.Login(model);
-			if (!loginResult.IsSuccess)
-			{
-				return ResultData<JwtTokenModel>.Error(loginResult.Rv, loginResult.ErrorCode);
-			}
-			if (loginResult.Data is null) throw new InvalidDataException("LoginResult.Data can not be null");
-			var adminAsDic = loginResult.Data.AsDictionary();
+			var adminAsDic = loginResult.AsDictionary();
 			adminAsDic.Add("AdminOnly", "");
-			var expireMins = _jwtOption.ExpireMinutesDefault;
-			if (model.RememberMe) expireMins = _jwtOption.ExpireMinutesLong;
+			var expireMins = JwtOption.This.TokenExpireDefaultMinutes;
+			if (model.RememberMe) expireMins = JwtOption.This.TokenExpireLongMinutes;
 			var date = DateTime.Now.AddMinutes(expireMins);
 			var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
 			var res = new JwtTokenModel
@@ -56,17 +30,14 @@ namespace ECom.Application.Manager
 				RefreshToken = null,
 				Token = token,
 			};
-			if (_jwtOption.IsUseRefreshToken)
-			{
-				//TODO:
-				throw new NotImplementedException();
-			}
-			return ResultData<JwtTokenModel>.Success(res);
+			return res;
 		}
 
-		public ResultData<string> Refresh(string token)
+		public string Refresh(string token)
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        
+    }
 }

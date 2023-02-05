@@ -12,7 +12,13 @@ namespace ECom.Application.Services
 
 	public class SliderService :  ISliderService
 	{
+        private readonly IEfEntityRepository<Slider> _sliderRepo;
 
+        public SliderService(
+			IEfEntityRepository<Slider> sliderRepo)
+		{
+            this._sliderRepo = sliderRepo;
+        }
 		
 	}
 }

@@ -19,12 +19,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			var option = _optionService.GetOption();
 			return Ok(option);
 		}
-		[HttpGet]
-		public IActionResult GetCurrentJwtOption()
-		{
-			var option = _optionService.GetJwtOption();
-			return Ok(option);
-		}
+		
 		[HttpGet]
 		public IActionResult ListCargoOptions()
 		{
@@ -51,13 +46,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			return Ok(res);
 		}
 
-		[HttpPost]
-		public IActionResult UpdateJwtOption([FromBody] JwtOption option)
-		{
-			var res = _optionService.UpdateJwtOption(option);
-			logger.Info($"Option({option.ToJsonString()})");
-			return Ok(res);
-		}
+		
 		[HttpPost]
 		public IActionResult UpdateCargoOption([FromBody] CargoOption option)
 		{
