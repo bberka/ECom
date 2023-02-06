@@ -10,8 +10,7 @@ namespace ECom.Domain.Abstract
 {
     public interface IProductService
     {
-        void CheckExists(int id);
-        void CheckExists(uint id);
+        bool Exists(int id);
         Product? GetProduct(long productNo);
         //List<ProductDetail>? GetProductDetails(long productNo);
         //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);

@@ -16,7 +16,6 @@ namespace ECom.Domain.Entities
 		public bool IsValid { get; set; }
 		public DateTime RegisterDate { get; set; }
 		public DateTime? DeleteDate { get; set; }
-		public bool IsLimited { get; set; }
 		public decimal DiscountedPriceIncludingTax { get; set; }
         public decimal OriginalPriceIncludingTax { get; set; }
         public decimal Tax { get; set; }
@@ -24,7 +23,6 @@ namespace ECom.Domain.Entities
         [ForeignKey("ProductVariantId")]
         public int? ProductVariantId { get; set; }
         public virtual ProductVariant? Variant { get; set; }
-
 
 	}
 }

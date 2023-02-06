@@ -1,8 +1,8 @@
 ﻿namespace ECom.Domain.ApiModels.Response
 {
-    public class ProductSimpleResponseModel
+    public class ProductDTO
     {
         public Product Product { get; set; }
-        public ProductDetail Details { get; set; }
+        public List<ProductDetail> Details { get; set; }
     }
 }

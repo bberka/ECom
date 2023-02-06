@@ -137,5 +137,10 @@ namespace ECom.Application.Services
 			}
 			return Result.Success();
         }
+
+        public bool Exists(int id)
+        {
+			return _userRepo.Any(x => x.Id == id);
+        }
     }
 }

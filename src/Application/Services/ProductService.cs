@@ -129,6 +129,12 @@ namespace ECom.Application.Services
             var exist = _productRepo.Any(x => x.Id == id);
             if (!exist) throw new CustomException(ErrorCode.NotFound);
         }
+
+        public bool Exists(int id)
+        {
+            return _productRepo.Any(x => x.Id == id);
+        }
+
         public Product? GetProduct(long productNo)
         {
             return _productRepo.Get(x => x.Id == productNo && x.IsValid == true && !x.DeleteDate.HasValue).FirstOrDefault();

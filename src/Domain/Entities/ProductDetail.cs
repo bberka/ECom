@@ -19,13 +19,16 @@ namespace ECom.Domain.Entities
 
         
         [MaxLength(512)]
-        public string Description { get; set; }
+        [MinLength(8)]
+        public string ShortDescription { get; set; }
 
         
-        [MaxLength(5000)]
+        [MaxLength(10000)]
+        [MinLength(64)]
         public string DescriptionHTML { get; set; }
 
-        [MaxLength(5000)]
+        [MaxLength(10000)]
+        [MinLength(64)]
         public string? TechnicalInformationHTML { get; set; }
 
         [ForeignKey("ProductId")]

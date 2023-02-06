@@ -25,8 +25,16 @@ namespace ECom.Application.Services
 		}
 		public Result AddOrIncreaseProduct(int userId, int productId)
 		{
-			_userService.CheckExistsOrThrow(userId);
-			_productService.CheckExists(productId);
+			var userExist = _userService.Exists(userId);
+            if (!userExist)
+            {
+                return Result.Warn(1, ErrorCode.NotFound, nameof(User));
+            }
+            var productExist = _productService.Exists(productId);
+			if (!productExist)
+			{
+				return Result.Warn(2, ErrorCode.NotFound, nameof(Product));
+			}
 			var existing = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			var isSuccess = false;
 			if (existing != null)
@@ -48,7 +56,7 @@ namespace ECom.Application.Services
 			}
 			if (!isSuccess)
 			{
-				return Result.DbInternal(1);
+				return Result.DbInternal(3);
 			}
 			return Result.Success();
 		}

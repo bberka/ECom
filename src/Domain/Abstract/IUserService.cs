@@ -13,6 +13,7 @@ namespace ECom.Domain.Abstract
         void CheckExistsOrThrow(int id);
         void CheckExistsOrThrow(uint id);
         bool Exists(string email);
+        bool Exists(int id);
         User? GetUser(string email);
         User? GetUser(int id);
         User GetUserOrThrow(string email);
