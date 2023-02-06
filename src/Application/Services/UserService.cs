@@ -125,7 +125,7 @@ namespace ECom.Application.Services
         public Result ChangePassword(ChangePasswordRequestModel model)
         {
 			var user = GetUserOrThrow(model.AuthenticatedUserId);
-			if(user.Password == model.EncryptedOldPassword)
+			if(user.Password != model.EncryptedOldPassword)
 			{
                 return Result.Warn(1, ErrorCode.NotMatch, "RealPassword","OldPassword");
 			}

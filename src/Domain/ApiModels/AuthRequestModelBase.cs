@@ -21,7 +21,7 @@ namespace ECom.Domain.ApiModels
                 {
                     if (context.IsUserAuthenticated())
                     {
-                        return context.GetUser().Id;
+                        return context.GetUserId();
                     }
                 }
                 return -1;
@@ -40,7 +40,7 @@ namespace ECom.Domain.ApiModels
                 {
                     if (context.IsAdminAuthenticated())
                     {
-                        return context.GetAdmin().Id;
+                        return context.GetAdminId();
                     }
                 }
                 return -1;

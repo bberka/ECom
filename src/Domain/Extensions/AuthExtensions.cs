@@ -62,8 +62,10 @@ namespace ECom.Domain.Extensions
         {
 			try
 			{
-                var admin = context.User.ToModel<Admin>();
-				return admin;
+                var claims = context.User.Identities.FirstOrDefault()?.Claims.AsDictionary();
+                var admin = claims?.ToObject<Admin>();
+                if (admin is null) throw new NotAuthorizedException(AuthType.Admin);
+                return admin;
             }
             catch (Exception ex)
 			{
@@ -75,7 +77,9 @@ namespace ECom.Domain.Extensions
         {
             try
             {
-                var user = context.User.ToModel<User>();
+                var claims = context.User.Identities.FirstOrDefault()?.Claims.AsDictionary();
+				var user = claims?.ToObject<User>();
+				if(user is null) throw new NotAuthorizedException(AuthType.User);
                 return user;
             }
             catch (Exception ex)

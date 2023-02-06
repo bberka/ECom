@@ -34,7 +34,7 @@ namespace ECom.Application.Manager
             userAsDic.Add("UserOnly", "true");
             userAsDic.Add(ClaimTypes.Role, "User");
             var expireMins = JwtOption.This.TokenExpireMinutes;
-            var date = DateTime.Now.AddMinutes(expireMins);
+            var date = DateTime.UtcNow.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(userAsDic, date);
             var jwtTokenModel = new JwtTokenModel
             {

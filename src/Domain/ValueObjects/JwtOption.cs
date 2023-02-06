@@ -28,9 +28,9 @@ namespace ECom.Domain.ValueObjects
 
 		public string Secret { get; set; }
 		public string? Issuer { get; set; }
-		public bool ValidateIssuer { get => Issuer.IsNullOrEmpty(); }
+		public bool ValidateIssuer { get => !Issuer.IsNullOrEmpty(); }
 		public string? Audience { get; set; }
-        public bool ValidateAudience { get => Audience.IsNullOrEmpty(); }
+        public bool ValidateAudience { get => !Audience.IsNullOrEmpty(); }
 		public int TokenExpireMinutes { get; set; } = 720;
 	}
 }

@@ -20,25 +20,24 @@ namespace ECom.WebApi.Middlewares
             timer.Stop();
             var responseStatus = context.Response.StatusCode;
             var fullUrl = context.Request.GetRequestQuery();
-            User? user = null;
-            Admin? admin = null;
+            var authLogString = "No-Auth";
             if (context.IsUserAuthenticated())
             {
-                user = context.GetUser();
+                authLogString = $"User({context.GetUserId()})";
             }
             if (context.IsAdminAuthenticated())
             {
-                admin = context.GetAdmin();
+                
+                authLogString = $"Admin({context.GetAdminId()})";
             }
-            var authLogString = $"User({user?.Id}):Admin({admin?.Id})";
 
             if (responseStatus == 200)
             {
-                logger.Info(responseStatus, fullUrl, authLogString, "Time elapsed: " + timer.ElapsedMilliseconds + " ms");
+                logger.Info(responseStatus, fullUrl, authLogString, $"TimeElapsed({timer.ElapsedMilliseconds}ms)");
             }
             else
             {
-                logger.Error(responseStatus, fullUrl, authLogString, "Time elapsed: " + timer.ElapsedMilliseconds + " ms");
+                logger.Error(responseStatus, fullUrl, authLogString, $"TimeElapsed({timer.ElapsedMilliseconds}ms)");
             }
         }
     }

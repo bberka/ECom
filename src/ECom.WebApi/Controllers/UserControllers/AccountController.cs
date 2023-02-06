@@ -18,7 +18,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             return HttpContext.GetUser();
         }
         [HttpPost]
-        public ActionResult<Result> ChangePassword(ChangePasswordRequestModel model)
+        public ActionResult<Result> ChangePassword([FromBody] ChangePasswordRequestModel model)
         {
             return _userService.ChangePassword(model);
         }

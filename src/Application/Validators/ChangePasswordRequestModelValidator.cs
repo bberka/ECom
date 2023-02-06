@@ -11,19 +11,13 @@ namespace ECom.Application.Validators
         public ChangePasswordRequestModelValidator()
         {
             RuleFor(x => x.OldPassword)
-                .NotEmpty()
-                .NotNull()
                 .MinimumLength(ConstantMgr.StringMinLength);
 
             RuleFor(x => x.NewPassword)
-                .NotNull()
-                .NotEmpty()
                 .MinimumLength(ConstantMgr.StringMinLength)
                 .MaximumLength(ConstantMgr.PasswordMaxLength);
 
             RuleFor(x => x.NewPasswordConfirm)
-                .NotNull()
-                .NotEmpty()
                 .MinimumLength(ConstantMgr.StringMinLength)
                 .MaximumLength(ConstantMgr.PasswordMaxLength);
 

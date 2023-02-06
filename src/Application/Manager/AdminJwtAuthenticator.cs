@@ -29,13 +29,9 @@ namespace ECom.Application.Manager
             adminAsDic.Add(ClaimTypes.Role, "Admin");
 
             var expireMins = JwtOption.This.TokenExpireMinutes;
-            var date = DateTime.Now.AddMinutes(expireMins);
+            var date = DateTime.UtcNow.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
-            var res = new JwtTokenModel
-            {
-                ExpireUnix = date.ToUnixTime(),
-                Token = token,
-            };
+    
             var jwtTokenModel = new JwtTokenModel
             {
                 ExpireUnix = date.ToUnixTime(),

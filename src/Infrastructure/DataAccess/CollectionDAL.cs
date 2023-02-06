@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using EasMe.EFCore;
+namespace ECom.Infrastructure.DataAccess
+{
+	public class CollectionDAL : EfEntityRepositoryBase<Collection, EComDbContext>, IEfEntityRepository<Collection>
+	{
+	}
+}

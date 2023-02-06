@@ -3,7 +3,7 @@ using ECom.Application.Validators;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Interfaces;
 using ECom.Infrastructure;
-using ECom.Infrastructure.Concrete;
+using ECom.Infrastructure.DataAccess;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -50,6 +50,8 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<SubCategory>, SubCategoryDAL>();
 			services.AddScoped<IEfEntityRepository<User>, UserDAL>();
 			services.AddScoped<IEfEntityRepository<UserLog>, UserLogDAL>();
+			services.AddScoped<IEfEntityRepository<ProductSubCategory>, ProductSubCategoryDAL>();
+			services.AddScoped<IEfEntityRepository<ImageLanguage>, ImageLanguageDAL>();
 
 
 			//Business Logic
