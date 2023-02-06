@@ -3,13 +3,13 @@
     public class AddSubCategoryRequestModel
     {
 
-        public int Category { get; set; }
+        public int CategoryId { get; set; }
 
-        [MinLength(3)]
+        [MinLength(4)]
         [MaxLength(32)]
         public string Name { get; set; }
 
-        [MinLength(1)]
+        [MinLength(2)]
         [MaxLength(6)]
         public string Culture { get; set; }
     }

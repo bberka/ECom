@@ -99,7 +99,7 @@ namespace ECom.Application.Services
 			{
                 return Result.DbInternal(2);
             }
-			return Result.Success("Updated");
+			return Result.Success();
 		}
 		public Result DeleteSubCategory(uint id)
 		{
@@ -113,7 +113,7 @@ namespace ECom.Application.Services
 			{
                 return Result.DbInternal(2);
             }
-			return Result.Success("Deleted");
+			return Result.Success();
 		}
 
         public Result AddCategory(AddCategoryRequestModel model)
@@ -132,9 +132,29 @@ namespace ECom.Application.Services
 			return Result.Success();
 		}
 
-        public Result AddSubCategory(AddCategoryRequestModel model)
+        public Result AddSubCategory(AddSubCategoryRequestModel model)
         {
-            throw new NotImplementedException();
+			var categoryExists = CategoryExists(model.CategoryId);
+			if (!categoryExists)
+			{
+				return Result.Warn(1, ErrorCode.NotFound, nameof(Category));
+			}
+			var subCategory = new SubCategory
+			{
+				Name = model.Name,
+				IsValid = true,
+				CategoryId = model.CategoryId,
+			};
+			var res = _subCategoryRepo.Add(subCategory);
+			if(!res) { 
+				return Result.DbInternal(2);
+			}
+			return Result.Success();
+        }
+
+        public bool CategoryExists(int categoryId)
+        {
+			return _categoryRepo.Any(x => x.Id == categoryId);
         }
     }
 }

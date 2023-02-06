@@ -14,12 +14,19 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPost]
-		public ActionResult<Result> Add([FromBody] AddCategoryRequestModel model)
+		public ActionResult<Result> AddCategory([FromBody] AddCategoryRequestModel model)
 		{
 			var res = _categoryService.AddCategory(model);
 			return res;
 		}
-		[HttpPost]
+        [HttpPost]
+        public ActionResult<Result> AddSubCategory([FromBody] AddSubCategoryRequestModel model)
+        {
+            var res = _categoryService.AddSubCategory(model);
+            return res;
+        }
+
+        [HttpPost]
         public ActionResult<Result> Update([FromBody] CategoryUpdateRequestModel model) 
         {
 			var res = _categoryService.UpdateCategory(model);

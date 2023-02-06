@@ -9,6 +9,7 @@ namespace ECom.Domain.Abstract
 {
     public interface ICategoryService
     {
+        bool CategoryExists(int categoryId);
         Result DeleteCategory(uint id);
         Result DeleteSubCategory(uint id);
         Result EnableOrDisableCategory(uint id);
@@ -17,6 +18,6 @@ namespace ECom.Domain.Abstract
         Result UpdateCategory(CategoryUpdateRequestModel model);
         Result UpdateSubCategory(SubCategory? data);
         Result AddCategory(AddCategoryRequestModel model);
-        Result AddSubCategory(AddCategoryRequestModel model);
+        Result AddSubCategory(AddSubCategoryRequestModel model);
     }
 }

@@ -139,5 +139,21 @@ namespace ECom.Application.Services
         {
             return _productRepo.Get(x => x.Id == productNo && x.IsValid == true && !x.DeleteDate.HasValue).FirstOrDefault();
         }
+
+        
+        public List<ProductDTO> GetProductDTOs(List<int> productIds)
+        {
+            var result = new List<ProductDTO>();
+            var ctx = new EComDbContext();
+            var productDTOs = _productRepo
+                .Get(x => productIds.Contains(x.Id))
+                .Join(ctx.ProductDetails, x => x.Id, x => x.ProductId, (a, b) => new ProductDTO
+                {
+                    Product = a,
+                    Details = b
+                })
+                .ToList();
+            return productDTOs;
+        }
     }
 }

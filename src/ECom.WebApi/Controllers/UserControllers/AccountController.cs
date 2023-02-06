@@ -22,12 +22,6 @@ namespace ECom.WebApi.Controllers.UserControllers
         {
             return _userService.ChangePassword(model);
         }
-        //[HttpPost]
-        //public ActionResult<Result> Update(UpdateAdminAccountRequestModel model)
-        //{
-        //    var admin = HttpContext.GetAdmin();
-        //    return Ok(admin);
-        //}
 
     }
 }

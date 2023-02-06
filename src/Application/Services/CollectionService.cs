@@ -69,17 +69,22 @@ namespace ECom.Application.Services
 			return res;
         }
 
-        public List<ListCollectionProductsResponseModel> GetCollectionProducts(int userId,int id)
+        public ListCollectionProductsResponseModel GetCollectionProducts(int userId,int id)
         {
-			_userService.CheckExistsOrThrow(userId);
-			var collection = GetCollectionOrThrow(id);
-			var collectionProducts = _collectionProductRepo.GetList(x => x.CollectionId == id);
-			//var result = new ListCollectionProductsResponseModel
-			//{
-			//	Collection = collection,
-			//	Products = products,
-			//};
-			throw new NotImplementedException();
+			_userService.Exists(userId);
+			var collection = GetCollection(id);
+			if (collection is null) return new();
+			var collectionProductIds = _collectionProductRepo
+				.Get(x => x.CollectionId == id)
+				.Select(x => x.ProductId)
+				.ToList();
+			var productDTOs = _productService.GetProductDTOs(collectionProductIds);
+			var result = new ListCollectionProductsResponseModel
+			{
+				Collection = collection,
+				Products = productDTOs,
+			};
+			return result;
         }
 
         public List<Collection> GetCollections(int userId)

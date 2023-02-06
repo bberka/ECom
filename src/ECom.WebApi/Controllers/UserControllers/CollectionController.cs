@@ -1,5 +1,6 @@
 ﻿using ECom.Domain.Abstract;
 using ECom.Domain.ApiModels.Request;
+using ECom.Domain.ApiModels.Response;
 using ECom.Domain.Entities;
 using ECom.WebApi.Filters;
 using Microsoft.AspNetCore.Authorization;
@@ -22,11 +23,12 @@ namespace ECom.WebApi.Controllers.UserControllers
             var userId = HttpContext.GetUserId();
             return _collectionService.GetCollections(userId);
         }
-        //[HttpPost]
-        //public IActionResult GetCollectionProducts([FromBody] int id)
-        //{
-        //    return Ok();
-        //}
+        [HttpPost]
+        public ActionResult<ListCollectionProductsResponseModel> GetCollectionProducts([FromBody] int id)
+        {
+            var userId = HttpContext.GetUserId();
+            return _collectionService.GetCollectionProducts(userId,id);
+        }
         [HttpPost]
         public ActionResult<Result> CreateCollection(CreateCollectionRequestModel model)
         {
