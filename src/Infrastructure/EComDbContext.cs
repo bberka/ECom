@@ -219,5 +219,7 @@ namespace ECom.Infrastructure
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
         public DbSet<ImageLanguage> ImageLanguages { get; set; }
         public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<StockChange> StockChanges { get; set; }
     }
 }

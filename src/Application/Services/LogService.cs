@@ -43,8 +43,8 @@ namespace ECom.Application.Services
                     Severity = (int)severity,
                     CFConnecting_IpAddress = context?.CFConnectingIpAddress,
                     RemoteIpAddress = context?.RemoteIpAddress ?? "-",
-                    XReal_IpAddress = context.XRealIpAddress,
-                    UserAgent = context.UserAgent ?? "-",
+                    XReal_IpAddress = context?.XRealIpAddress ?? "-",
+                    UserAgent = context?.UserAgent ?? "-",
                 };
                 _adminLogRepo.Add(log);
             });
@@ -62,11 +62,11 @@ namespace ECom.Application.Services
                     RegisterDate = DateTime.Now,
                     CFConnecting_IpAddress = data?.CFConnectingIpAddress,
                     RemoteIpAddress = data?.RemoteIpAddress ?? "-",
-                    XReal_IpAddress = data.XRealIpAddress,
-                    UserAgent = data.UserAgent ?? "-",
-                    HttpStatusCodeResponse = context.Response.StatusCode,
-                    QueryString = context.Request.QueryString.ToString(),
-                    RequestUrl = context.Request.GetDisplayUrl()
+                    XReal_IpAddress = data?.XRealIpAddress,
+                    UserAgent = data?.UserAgent ?? "-",
+                    HttpStatusCodeResponse = context?.Response.StatusCode ?? -1,
+                    QueryString = context?.Request.QueryString.ToString() ?? "-",
+                    RequestUrl = context?.Request.GetDisplayUrl() ?? "-",
                 };
                 _securityLogRepo.Add(log);
             });
@@ -87,8 +87,8 @@ namespace ECom.Application.Services
                     Severity = (int)severity,
                     CFConnecting_IpAddress = context?.CFConnectingIpAddress,
                     RemoteIpAddress = context?.RemoteIpAddress ?? "-",
-                    XReal_IpAddress = context.XRealIpAddress,
-                    UserAgent = context.UserAgent ?? "-",
+                    XReal_IpAddress = context?.XRealIpAddress,
+                    UserAgent = context?.UserAgent ?? "-",
                 };
                 _userLogRepo.Add(log);
             });

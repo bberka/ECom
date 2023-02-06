@@ -25,12 +25,7 @@ namespace ECom.Application.Services
 		public CompanyInformation GetCompanyInformation()
 		{
 			var companyInformation = new CompanyInformation();
-#if DEBUG
-            companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == false);
-#else
-            companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == true);
-
-#endif
+            companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDebug());
             if (companyInformation is null) throw new NotFoundException(nameof(CompanyInformation));
 			return companyInformation;
 		}
