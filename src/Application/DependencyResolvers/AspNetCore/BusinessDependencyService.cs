@@ -55,6 +55,7 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<StockChange>, StockChangeDAL>();
 			services.AddScoped<IEfEntityRepository<Supplier>, SupplierDAL>();
 			services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDAL>();
+			services.AddScoped<IEfEntityRepository<ShowCaseImage>, ShowCaseImageDAL>();
 
 
 			//Business Logic
