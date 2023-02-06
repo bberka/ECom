@@ -14,17 +14,16 @@ namespace ECom.WebApi.Controllers.UserControllers
             this._imageService = imageService;
         }
         [HttpGet]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 120, VaryByQueryKeys = new string[]{ "id" })]
         public ActionResult<string> Get(int id)
         {
             return _imageService.GetImageBase64String(id);
         }
         [HttpGet]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 120, VaryByQueryKeys = new string[] { "id" })]
         public ActionResult<Image?> GetImage(int id)
         {
             return _imageService.GetImage(id);
         }
-
     }
 }

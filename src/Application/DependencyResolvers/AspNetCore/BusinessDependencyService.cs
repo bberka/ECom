@@ -54,6 +54,7 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<ImageLanguage>, ImageLanguageDAL>();
 			services.AddScoped<IEfEntityRepository<StockChange>, StockChangeDAL>();
 			services.AddScoped<IEfEntityRepository<Supplier>, SupplierDAL>();
+			services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDAL>();
 
 
 			//Business Logic
@@ -74,6 +75,7 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<ICollectionService, CollectionService>();
 			services.AddScoped<ICartService, CartService>();
 			services.AddScoped<IProductService, ProductService>();
+			services.AddScoped<IFavoriteProductService, FavoriteProductService>();
 
 			//JWT AUTH
 			services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();

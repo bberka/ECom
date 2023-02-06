@@ -222,5 +222,6 @@ namespace ECom.Infrastructure
         public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<StockChange> StockChanges { get; set; }
+        public DbSet<ProductShowCase> ProductShowCases { get; set; }
     }
 }
