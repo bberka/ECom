@@ -16,8 +16,5 @@ namespace ECom.Domain.Entities
         [MaxLength(32)]
 		public string Name { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public int? CategoryId { get; set; }
-			
     }
 }

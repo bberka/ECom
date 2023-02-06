@@ -6,6 +6,7 @@
 
 using ECom.Application.Services;
 using ECom.Domain.ApiModels.Request;
+using ECom.Domain.ApiModels.Response;
 using ECom.Domain.Interfaces;
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -28,7 +29,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			this._adminJwtAuthenticator = adminJwtAuthenticator;
 		}
 		[HttpPost]
-        public ActionResult<ResultData<JwtTokenModel>> Login([FromBody] LoginRequestModel model)
+        public ActionResult<ResultData<AdminLoginResponseModel>> Login([FromBody] LoginRequestModel model)
         {
 			HttpContext.Session.Clear();
             var res = _adminJwtAuthenticator.Authenticate(model);

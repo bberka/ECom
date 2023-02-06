@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20230201182324_init-10")]
-    partial class init10
+    [Migration("20230206132940_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,13 +38,13 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Details")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
-
-                    b.Property<bool>("IsPreferred")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,8 +53,8 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Provience")
                         .IsRequired()
@@ -70,15 +70,15 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Town")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -99,16 +99,13 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<byte>("FailedPasswordCount")
                         .HasColumnType("tinyint");
-
-                    b.Property<bool>("IsEmailVerified")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsTestAccount")
                         .HasColumnType("bit");
@@ -127,18 +124,18 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordNotFoundate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
+                    b.Property<DateTime?>("PasswordLastUpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RoleId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalLoginCount")
@@ -150,11 +147,6 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<byte>("TwoFactorType")
                         .HasColumnType("tinyint");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
 
@@ -171,7 +163,7 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int?>("AdminId")
+                    b.Property<int>("AdminId")
                         .HasColumnType("int");
 
                     b.Property<string>("CFConnecting_IpAddress")
@@ -239,38 +231,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Announcements");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.BasketProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastNotFoundate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BasketProducts");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
                 {
                     b.Property<int>("Id")
@@ -282,13 +242,17 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int>("FreeShippingMinCost")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LanguageId")
+                    b.Property<string>("LanguageCulture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<int>("LanguageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -299,9 +263,33 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageCulture");
 
                     b.ToTable("CargoOptions");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
@@ -312,14 +300,12 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("Culture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -328,9 +314,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
-
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("Culture");
 
                     b.ToTable("Categories");
                 });
@@ -378,7 +362,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -390,33 +374,85 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.CollectionProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("CollectionId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CollectionId");
+                    b.HasKey("CollectionId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("CollectionProducts");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.CompanyInformation", b =>
+                {
+                    b.Property<bool>("IsRelease")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CompanyAddress")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("DomainUrl")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("FacebookLink")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("FavIcoImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InstagramLink")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("LogoImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebApiUrl")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int?>("WhatsApp")
+                        .HasColumnType("int");
+
+                    b.Property<string>("YoutubeLink")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("IsRelease");
+
+                    b.ToTable("CompanyInformations");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
@@ -427,7 +463,7 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DiscountCategoryId")
+                    b.Property<int>("DiscountCategoryId")
                         .HasColumnType("int");
 
                     b.Property<byte>("DiscountPercent")
@@ -448,23 +484,15 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountNotify", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "ProductId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("DiscountNotifies");
                 });
@@ -489,7 +517,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Token");
@@ -501,26 +529,18 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.FavoriteProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "ProductId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("FavoriteProducts");
                 });
@@ -533,142 +553,60 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DefaultPath")
+                    b.Property<byte[]>("Data")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EN_Path")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TR_Path")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductCommentId");
 
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Language", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ImageLanguage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Culture")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Culture")
+                    b.Property<string>("LanguageCulture")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(6)");
 
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
+                    b.HasKey("Culture", "ImageId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageCulture");
+
+                    b.ToTable("ImageLanguages");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.Language", b =>
+                {
+                    b.Property<string>("Culture")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.HasKey("Culture");
 
                     b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
                 {
-                    b.Property<bool>("IsOpen")
+                    b.Property<bool>("IsRelease")
                         .HasColumnType("bit");
-
-                    b.Property<string>("AllowedSpecialCharactersInPassword")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("AllowedSpecialCharactersInUsername")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("CompanyAddress")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("ContactEmail")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<int?>("DefaultLanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("DomainUrl")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("EmailVerificationTimeoutMinutes")
                         .HasColumnType("int");
 
-                    b.Property<string>("FacebookLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int?>("FavIcoImageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InstagramLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsDebug")
+                    b.Property<bool>("IsAdminOpen")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsMaintenance")
+                    b.Property<bool>("IsOpen")
                         .HasColumnType("bit");
-
-                    b.Property<bool>("IsUseRefreshToken")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("JwtAudience")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("JwtExpireMinutesDefault")
-                        .HasColumnType("int");
-
-                    b.Property<int>("JwtExpireMinutesLong")
-                        .HasColumnType("int");
-
-                    b.Property<string>("JwtIssuer")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("JwtSecret")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<bool>("JwtValidateAudience")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("JwtValidateIssuer")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("LogoImageId")
-                        .HasColumnType("int");
 
                     b.Property<byte>("PagingProductCount")
                         .HasColumnType("tinyint");
@@ -676,7 +614,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<byte>("PasswordMinLength")
                         .HasColumnType("tinyint");
 
-                    b.Property<int?>("PhoneNumber")
+                    b.Property<int>("PasswordResetTimeoutMinutes")
                         .HasColumnType("int");
 
                     b.Property<byte>("ProductCommentImageLimit")
@@ -697,31 +635,18 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<bool>("RequireUpperCaseInPassword")
                         .HasColumnType("bit");
 
+                    b.Property<string>("SelectedCurrency")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
                     b.Property<bool>("ShowStock")
                         .HasColumnType("bit");
 
                     b.Property<byte>("UsernameMinLength")
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("WebApiUrl")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int?>("WhatsApp")
-                        .HasColumnType("int");
-
-                    b.Property<string>("YoutubeLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("IsOpen");
-
-                    b.HasIndex("DefaultLanguageId");
-
-                    b.HasIndex("FavIcoImageId");
-
-                    b.HasIndex("LogoImageId");
+                    b.HasKey("IsRelease");
 
                     b.ToTable("Options");
                 });
@@ -734,7 +659,7 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DiscountCouponId")
+                    b.Property<int>("DiscountCouponId")
                         .HasColumnType("int");
 
                     b.Property<double?>("DiscountedPrice")
@@ -747,13 +672,13 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<double>("OriginalPrice")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -782,7 +707,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Token");
@@ -808,11 +733,15 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
+                    b.Property<string>("Culture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -844,7 +773,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageCulture");
 
                     b.ToTable("PaymentOptions");
                 });
@@ -887,23 +816,17 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("DiscountedPriceIncludingTax")
-                        .HasColumnType("float");
+                    b.Property<decimal>("DiscountedPriceIncludingTax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsLimited")
                         .HasColumnType("bit");
 
-                    b.Property<double>("OriginalPriceIncludingTax")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("OriginalPriceIncludingTax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("ProductVariantId")
                         .HasColumnType("int");
@@ -911,23 +834,10 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SoldCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StockCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("StockEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Tax")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProductVariantId");
 
@@ -942,7 +852,7 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AuthorUserId")
+                    b.Property<int>("AuthorUserId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
@@ -953,7 +863,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisterDate")
@@ -976,36 +886,31 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductComments");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImageBind", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImage", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CommentId")
+                    b.Property<int>("CommentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("ImageId", "CommentId");
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("ProductCommentImageBinds");
+                    b.ToTable("ProductCommentImages");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductDetails", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Culture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1017,8 +922,8 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1034,14 +939,14 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageCulture");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductDetails");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductImageBind", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -1053,7 +958,22 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("ProductImageBinds");
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.ProductSubCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "SubCategoryId");
+
+                    b.HasIndex("SubCategoryId");
+
+                    b.ToTable("ProductSubCategories");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductVariant", b =>
@@ -1100,33 +1020,28 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.RoleBind", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.RolePermission", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("PermissionId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasIndex("PermissionId");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.HasKey("PermissionId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleBinds");
+                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SecurityLog", b =>
@@ -1190,11 +1105,14 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Culture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<int>("Order")
                         .HasMaxLength(50)
@@ -1209,7 +1127,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageCulture");
 
                     b.ToTable("Sliders");
                 });
@@ -1235,23 +1153,18 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Port")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Sifre")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Port")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Ssl")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
 
                     b.ToTable("SmtpOptions");
                 });
@@ -1264,11 +1177,11 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("MainCategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1277,7 +1190,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MainCategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
                 });
@@ -1293,16 +1206,21 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int?>("CitizenShipNumber")
                         .HasColumnType("int");
 
+                    b.Property<string>("Culture")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<byte>("FailedPasswordCount")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("FailedPasswordCount")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsEmailVerified")
                         .HasColumnType("bit");
@@ -1324,8 +1242,10 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("LastPasswordNotFoundate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("OAuthKey")
                         .HasMaxLength(512)
@@ -1336,19 +1256,24 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<int?>("PreferredLanguageId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("PasswordLastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("TaxNumber")
                         .HasColumnType("int");
@@ -1363,14 +1288,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<byte>("TwoFactorType")
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PreferredLanguageId");
 
                     b.ToTable("Users");
                 });
@@ -1410,7 +1328,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("XReal_IpAddress")
@@ -1428,7 +1346,9 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1437,7 +1357,9 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });
@@ -1446,52 +1368,58 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Admin", "Admin")
                         .WithMany()
-                        .HasForeignKey("AdminId");
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Admin");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.BasketProduct", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId");
+                        .HasForeignKey("LanguageCulture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Image");
 
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId");
-
-                    b.Navigation("Image");
+                        .HasForeignKey("Culture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Language");
                 });
@@ -1509,7 +1437,9 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1518,28 +1448,28 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Collection", "Collection")
                         .WithMany()
-                        .HasForeignKey("CollectionId");
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Collection");
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Category", "DiscountCategory")
                         .WithMany()
-                        .HasForeignKey("DiscountCategoryId");
+                        .HasForeignKey("DiscountCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DiscountCategory");
                 });
@@ -1548,11 +1478,15 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 
@@ -1563,7 +1497,9 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1572,58 +1508,59 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Image", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ImageLanguage", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.ProductComment", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductCommentId");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Language", "DefaultLanguage")
+                    b.HasOne("ECom.Domain.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("DefaultLanguageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Image", "FavIcoImage")
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("FavIcoImageId");
+                        .HasForeignKey("LanguageCulture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Image", "LogoImage")
-                        .WithMany()
-                        .HasForeignKey("LogoImageId");
+                    b.Navigation("Image");
 
-                    b.Navigation("DefaultLanguage");
-
-                    b.Navigation("FavIcoImage");
-
-                    b.Navigation("LogoImage");
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.DiscountCoupon", "DiscountCoupon")
                         .WithMany()
-                        .HasForeignKey("DiscountCouponId");
+                        .HasForeignKey("DiscountCouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DiscountCoupon");
 
@@ -1636,7 +1573,9 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1645,7 +1584,7 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId");
+                        .HasForeignKey("LanguageCulture");
 
                     b.Navigation("Language");
                 });
@@ -1659,19 +1598,9 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("ECom.Domain.Entities.Product", null)
-                        .WithMany("Variants")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("ECom.Domain.Entities.ProductVariant", "Variant")
                         .WithMany()
                         .HasForeignKey("ProductVariantId");
-
-                    b.Navigation("Category");
 
                     b.Navigation("Variant");
                 });
@@ -1680,40 +1609,48 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.User", "AuthorUser")
                         .WithMany()
-                        .HasForeignKey("AuthorUserId");
+                        .HasForeignKey("AuthorUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
-                        .WithMany("Comments")
-                        .HasForeignKey("ProductId");
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AuthorUser");
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImageBind", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImage", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.ProductComment", "Comment")
                         .WithMany()
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Comment");
 
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductDetails", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId");
+                        .HasForeignKey("LanguageCulture");
 
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
-                        .WithMany("Details")
+                        .WithMany()
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Language");
@@ -1721,7 +1658,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductImageBind", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Image", "Image")
                         .WithMany()
@@ -1740,15 +1677,38 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.RoleBind", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductSubCategory", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.SubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Permission", "Permission")
                         .WithMany()
-                        .HasForeignKey("PermissionId");
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Permission");
 
@@ -1763,45 +1723,27 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasOne("ECom.Domain.Entities.Language", "Language")
                         .WithMany()
-                        .HasForeignKey("LanguageId");
+                        .HasForeignKey("LanguageCulture");
 
                     b.Navigation("Image");
 
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.SmtpOption", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId");
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.SubCategory", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Category", "MainCategory")
-                        .WithMany()
-                        .HasForeignKey("MainCategoryId");
-
-                    b.Navigation("MainCategory");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.User", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Category", "PreferredLanguage")
-                        .WithMany()
-                        .HasForeignKey("PreferredLanguageId");
-
-                    b.Navigation("PreferredLanguage");
+                    b.HasOne("ECom.Domain.Entities.Category", null)
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1811,18 +1753,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Permissions");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
                 {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Details");
-
-                    b.Navigation("Variants");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
-                {
-                    b.Navigation("Images");
+                    b.Navigation("SubCategories");
                 });
 #pragma warning restore 612, 618
         }

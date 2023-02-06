@@ -15,11 +15,11 @@ namespace ECom.Domain.Entities
 		[MaxLength(32)]
 		public string Name { get; set; }
 
-        [ForeignKey("LanguageId")]
-        public int? LanguageId { get; set; }
-        public virtual Language? Language { get; set; }
+        [ForeignKey("Language")]
+        public string Culture { get; set; }
+        public virtual Language Language { get; set; }
 
-		public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
+		public virtual List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 	}
 
 }

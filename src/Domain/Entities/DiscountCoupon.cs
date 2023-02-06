@@ -25,7 +25,7 @@ namespace ECom.Domain.Entities
 		public byte DiscountPercent { get; set; }
 
         [ForeignKey("DiscountCategoryId")]
-        public int? DiscountCategoryId { get; set; }
+        public int DiscountCategoryId { get; set; }
         public virtual Category DiscountCategory { get; set; }
 
     }

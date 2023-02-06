@@ -78,9 +78,8 @@ namespace ECom.Domain.Entities
 		public DateTime? PasswordLastUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
 
-        [ForeignKey("PreferredLanguageId")]
-        public int? PreferredLanguageId { get; set; }
-        public virtual Language PreferredLanguage { get; set; }
+		[MaxLength(6)]
+		public string Culture { get; set; } = "en";
 
     }
 }

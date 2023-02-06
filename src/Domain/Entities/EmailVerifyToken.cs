@@ -18,16 +18,13 @@ namespace ECom.Domain.Entities
         [MaxLength(512)]
         public string Email { get; set; }
 
-        
         public bool IsUsed { get; set; }
 
-        
         public DateTime RegisterDate { get; set; }
-        
         public DateTime ExpireDate { get; set; }
 
         [ForeignKey("UserId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public virtual User User { get; set; }
 
     }

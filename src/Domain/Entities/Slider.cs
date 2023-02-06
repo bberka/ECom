@@ -31,8 +31,8 @@ namespace ECom.Domain.Entities
         public virtual Image Image { get; set; }
 
 
-        [ForeignKey("LanguageId")]
-        public int? LanguageId { get; set; }
+        [ForeignKey("Culture")]
+        public string? Culture { get; set; }
         public virtual Language Language { get; set; }
 
     }

@@ -32,15 +32,12 @@ namespace ECom.Domain.Entities
 
 
         [ForeignKey("AuthorUserId")]
-        public int? AuthorUserId { get; set; }
+        public int AuthorUserId { get; set; }
         public virtual User AuthorUser { get; set; }
 
         [ForeignKey("ProductId")]
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public virtual Product Product { get; set; }
-
-        public List<Image> Images { get; set; }
-
 
 
     }

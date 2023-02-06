@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class ProductImageBind : IEfEntity
+    public class ProductImage : IEfEntity
 	{
         
 		[ForeignKey("ImageId")]

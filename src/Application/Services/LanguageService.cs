@@ -29,13 +29,5 @@ namespace ECom.Application.Services
 			return lang;
 		}
 
-		public Result EnableOrDisable(int id)
-		{
-			var language = GetLanguage(id);
-			language.IsValid = !language.IsValid;
-			var res = _languageRepo.Update(language);
-			if (!res) return Result.DbInternal(1);
-			return Result.Success();
-		}
 	}
 }

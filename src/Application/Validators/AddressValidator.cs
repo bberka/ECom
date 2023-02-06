@@ -13,9 +13,9 @@ namespace ECom.Application.Validators
 				.Equal(x => null)
 				.WithErrorCode(CustomValidationType.Deleted.ToString());
 
-			RuleFor(x => x.UserId)
-				.NotEqual(x => null)
-				.WithErrorCode(CustomValidationType.Null.ToString());
+			//RuleFor(x => x.UserId)
+			//	.NotEqual(x => null)
+			//	.WithErrorCode(CustomValidationType.Null.ToString());
 
 		}
 

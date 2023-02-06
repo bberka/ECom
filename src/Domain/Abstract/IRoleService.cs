@@ -10,8 +10,8 @@ namespace ECom.Domain.Abstract
     {
         bool HasPermission(int adminId, int permissionId);
         bool HasPermission(int adminId, string permissionName);
-        List<RoleBind> GetRoleBinds();
-        List<RoleBind> GetAdminRoleBinds(int adminId);
+        List<RolePermission> GetRoleBinds();
+        List<RolePermission> GetAdminRoleBinds(int adminId);
         List<Permission> GetValidPermissionsList();
         List<Permission> GetAdminPermissions(int adminId);
         List<Permission> GetRolePermissions(int roleId);

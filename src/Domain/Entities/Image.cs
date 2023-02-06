@@ -13,10 +13,6 @@ namespace ECom.Domain.Entities
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-
-		
-		public string DefaultPath { get; set; }
-        public string? EN_Path { get; set; }
-        public string? TR_Path { get; set; }
+		public byte[] Data { get; set; }
     }
 }

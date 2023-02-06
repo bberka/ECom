@@ -13,18 +13,18 @@ namespace ECom.Application.Services
     public class RoleService : IRoleService
     {
         private readonly IEfEntityRepository<Role> _roleRepo;
-        private readonly IEfEntityRepository<RoleBind> _roleBindRepo;
+        private readonly IEfEntityRepository<RolePermission> _rolePermissionRepo;
         private readonly IEfEntityRepository<Permission> _permissionRepo;
         private readonly IAdminService _adminService;
 
         public RoleService(
             IEfEntityRepository<Role> roleRepo,
-            IEfEntityRepository<RoleBind> roleBindRepo,
+            IEfEntityRepository<RolePermission> rolePermissionRepo,
             IEfEntityRepository<Permission> permissionRepo,
             IAdminService adminService)
         {
             this._roleRepo = roleRepo;
-            this._roleBindRepo = roleBindRepo;
+            this._rolePermissionRepo = rolePermissionRepo;
             this._permissionRepo = permissionRepo;
             this._adminService = adminService;
         }
@@ -32,7 +32,7 @@ namespace ECom.Application.Services
         public List<Permission> GetAdminPermissions(int adminId)
         {
             var admin = _adminService.GetValidAdminOrThrow(adminId);
-            var roleBinds = _roleBindRepo
+            var roleBinds = _rolePermissionRepo
                 .GetList(x => x.RoleId == admin.RoleId)
                 .Select(x => x.PermissionId);
             var permissions = _permissionRepo
@@ -47,7 +47,7 @@ namespace ECom.Application.Services
 
         public List<Permission> GetRolePermissions(int roleId)
         {
-            var perms = _roleBindRepo
+            var perms = _rolePermissionRepo
                 .GetList(x => x.RoleId == roleId)
                 .Select(x => x.PermissionId);
             return _permissionRepo.GetList(x => x.IsValid == true && perms.Contains(x.Id));
@@ -56,7 +56,7 @@ namespace ECom.Application.Services
         public bool HasPermission(int adminId, int permissionId)
         {
             var admin = _adminService.GetValidAdminOrThrow(adminId);
-            return _roleBindRepo.Any(x => x.PermissionId == permissionId && x.RoleId == admin.RoleId);
+            return _rolePermissionRepo.Any(x => x.PermissionId == permissionId && x.RoleId == admin.RoleId);
         }
 
         public bool HasPermission(int adminId, string permissionName)
@@ -64,18 +64,18 @@ namespace ECom.Application.Services
             var admin = _adminService.GetValidAdminOrThrow(adminId);
             var perm = _permissionRepo.GetFirstOrDefault(x => x.Name == permissionName);
             if (perm is null) return false;
-            return _roleBindRepo.Any(x => x.RoleId == admin.RoleId && x.PermissionId == perm.Id);
+            return _rolePermissionRepo.Any(x => x.RoleId == admin.RoleId && x.PermissionId == perm.Id);
         }
 
-        public List<RoleBind> GetRoleBinds()
+        public List<RolePermission> GetRoleBinds()
         {
-            return _roleBindRepo.GetList();
+            return _rolePermissionRepo.GetList();
         }
 
-        public List<RoleBind> GetAdminRoleBinds(int adminId)
+        public List<RolePermission> GetAdminRoleBinds(int adminId)
         {
             var roleId = _adminService.GetAdminRoleId(adminId);  
-            return _roleBindRepo.GetList(x => x.RoleId == roleId);
+            return _rolePermissionRepo.GetList(x => x.RoleId == roleId);
 
         }
 

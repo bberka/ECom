@@ -49,9 +49,11 @@ namespace ECom.Domain.Entities
         public DateTime? PasswordLastUpdateDate { get; set; }
         public DateTime? DeletedDate { get; set; }
 
+
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
 
+        public virtual List<Permission> Permissions { get; set; } = new();
     }
 }

@@ -2,10 +2,13 @@
 using EasMe.Extensions;
 using ECom.Application.Manager;
 using ECom.Application.Services;
+using ECom.Application.Validators;
 using ECom.Domain.ApiModels.Request;
+using ECom.Domain.ApiModels.Response;
 using ECom.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
@@ -25,7 +28,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		}
 
 		[HttpPost]
-		public ActionResult<ResultData<JwtTokenModel>> Login([FromBody] LoginRequestModel model)
+		public ActionResult<ResultData<UserLoginResponseModel>> Login([FromBody] LoginRequestModel model)
 		{
 			HttpContext.Session.Clear();
             var res = _userJwtAuthenticator.Authenticate(model);

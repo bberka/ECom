@@ -37,7 +37,7 @@ namespace ECom.Domain.Entities
         public string? Params { get; set; }
 
         [ForeignKey("UserId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public virtual User User { get; set; }
 
     }

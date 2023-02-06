@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Concrete
 {
-	public class ProductImageBindDAL : EfEntityRepositoryBase<ProductImageBind, EComDbContext>, IEfEntityRepository<ProductImageBind>
+	public class ProductImageDAL : EfEntityRepositoryBase<ProductImage, EComDbContext>, IEfEntityRepository<ProductImage>
 	{
 
 	}

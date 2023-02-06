@@ -39,7 +39,7 @@ namespace ECom.Domain.ApiModels.Request
                 TaxNumber = TaxNumber,
                 TwoFactorType = 0,
                 TotalLoginCount = 0,
-                PreferredLanguageId = 1,
+                Culture = "en",
                 Name = Name,
                 Surname = Surname,
 

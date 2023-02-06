@@ -17,12 +17,12 @@ namespace ECom.Application.Manager
 
 	
 
-        public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model)
+        public ResultData<AdminLoginResponseModel> Authenticate(LoginRequestModel model)
         {
             var loginResult = _adminService.Login(model);
             if (!loginResult.IsSuccess)
             {
-                return ResultData<JwtTokenModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
+                return ResultData<AdminLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
             }
             var adminAsDic = loginResult.AsDictionary();
             adminAsDic.Add("AdminOnly", "");
@@ -34,7 +34,16 @@ namespace ECom.Application.Manager
                 ExpireUnix = date.ToUnixTime(),
                 Token = token,
             };
-            return res;
+            var jwtTokenModel = new JwtTokenModel
+            {
+                ExpireUnix = date.ToUnixTime(),
+                Token = token,
+            };
+            return new AdminLoginResponseModel
+            {
+                Admin = loginResult.Data,
+                Token = jwtTokenModel
+            };
         }
     }
 }

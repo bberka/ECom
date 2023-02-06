@@ -32,8 +32,8 @@ namespace ECom.Domain.Entities
         public int? ProductId { get; set; }
         public virtual Product? Product { get; set; }
 
-        [ForeignKey("LanguageId")]
-        public int? LanguageId { get; set; }
+        [ForeignKey("Culture")]
+        public string? Culture { get; set; }
         public virtual Language? Language { get; set; }
 
 

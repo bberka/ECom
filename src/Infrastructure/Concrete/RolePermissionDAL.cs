@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.Concrete
 {
-	public class ProductCommentImageBindDAL : EfEntityRepositoryBase<ProductCommentImageBind, EComDbContext>, IEfEntityRepository<ProductCommentImageBind>
+	public class RolePermissionDAL : EfEntityRepositoryBase<RolePermission, EComDbContext>, IEfEntityRepository<RolePermission>
 	{
 
 	}

@@ -24,7 +24,6 @@ namespace ECom.Application.Services
 		{
 			return _categoryRepo.Get(x => x.IsValid == true)
 				.Include(x => x.SubCategories)
-				.Include(x => x.Language)
 				.ToList();
 		}
 		public Result EnableOrDisableCategory(uint id)
@@ -42,7 +41,7 @@ namespace ECom.Application.Services
 			{
 				return Result.Warn(1, ErrorCode.NotFound, nameof(Category));
             }
-            if (!_languageRepo.Any(x => x.Id == model.LanguageId))
+            if (!_languageRepo.Any(x => x.Culture == model.Culture))
             {
                 return Result.Warn(1, ErrorCode.NotFound, nameof(Language));
             }
@@ -50,7 +49,7 @@ namespace ECom.Application.Services
 			{
 				x.IsValid = model.IsValid;
 				x.Name = model.Name;
-				x.LanguageId = model.LanguageId;
+				x.Culture = model.Culture;
 			});
             if (!res) 
 			{

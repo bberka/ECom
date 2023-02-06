@@ -23,6 +23,5 @@ namespace ECom.Domain.Abstract
         Result AddAdmin(AddAdminRequestModel admin);
         Result ChangePassword(ChangePasswordRequestModel model);
         int GetAdminRoleId(int adminId);
-        Role GetAdminRole(int adminId);
     }
 }

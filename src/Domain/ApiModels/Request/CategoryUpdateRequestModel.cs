@@ -10,7 +10,7 @@ namespace ECom.Domain.ApiModels.Request
     {
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        public int LanguageId { get; set; }
+        public string Culture { get; set; }
         public bool IsValid { get; set; }
     }
 }

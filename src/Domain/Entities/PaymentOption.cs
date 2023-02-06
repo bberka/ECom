@@ -61,8 +61,8 @@ namespace ECom.Domain.Entities
         [MaxLength(512)]
         public string? Password { get; set; }
 
-        [ForeignKey("LanguageId")]
-        public int? LanguageId { get; set; }
+        [ForeignKey("Culture")]
+        public string Culture { get; set; }
         public virtual Language Language { get; set; }
 
 

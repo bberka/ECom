@@ -24,15 +24,15 @@ namespace ECom.Domain.Entities
 		public string? Ip { get; set; }
 
         [ForeignKey("UserId")]
-        public int? UserId { get; set; }
-        public virtual User? User { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
 
         [ForeignKey("DiscountCouponId")]
-        public int? DiscountCouponId { get; set; }
-        public virtual DiscountCoupon? DiscountCoupon { get; set; }
+        public int DiscountCouponId { get; set; }
+        public virtual DiscountCoupon DiscountCoupon { get; set; }
 
         [ForeignKey("ProductId")]
-        public int? ProductId { get; set; }
-        public virtual Product? Product { get; set; }
+        public int ProductId { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

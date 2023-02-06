@@ -10,18 +10,14 @@ namespace ECom.Domain.Entities
 {
     public class CollectionProduct : IEfEntity
 	{
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         public DateTime RegisterDate { get; set; }
 
         [ForeignKey("ProductId")]
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public virtual Product Product { get; set; }
 
         [ForeignKey("CollectionId")]
-        public int? CollectionId { get; set; }
+        public int CollectionId { get; set; }
         public virtual Collection Collection { get; set; }
     }
 }

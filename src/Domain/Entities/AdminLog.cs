@@ -35,8 +35,8 @@ namespace ECom.Domain.Entities
         public string? Params { get; set; }
 
         [ForeignKey("AdminId")]
-        public int? AdminId { get; set; }
-        public virtual Admin? Admin { get; set; }
+        public int AdminId { get; set; }
+        public virtual Admin Admin { get; set; }
 
     }
 }

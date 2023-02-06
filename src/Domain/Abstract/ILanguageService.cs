@@ -10,7 +10,6 @@ namespace ECom.Domain.Abstract
     {
         public List<Language> GetLanguages();
         public Language GetLanguage(int id);
-        public Result EnableOrDisable(int id);
 
 
     }

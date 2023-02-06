@@ -13,16 +13,16 @@ namespace ECom.Domain.Abstract
         void CheckExists(int id);
         void CheckExists(uint id);
         Product? GetProduct(long productNo);
-        List<ProductDetail>? GetProductDetails(long productNo);
-        ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
-        ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
-        Product? GetProductSingle(long productNo);
-        ProductVariant? GetVariant(int id);
-        List<Product> GetVariantProducts(int variantId);
-        List<ProductVariant> GetVariants();
-        ProductVariant GetVariantSingle(int id);
-        List<Product> ListProductsBaseByCategory(ListProductsByCategoryRequestModel model);
-        List<ProductSimpleResponseModel> ListProductsSimpleViewModel(ListProductsRequestModel model);
-        List<ProductSimpleResponseModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryRequestModel model);
+        //List<ProductDetail>? GetProductDetails(long productNo);
+        //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
+        //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
+        //Product? GetProductSingle(long productNo);
+        //ProductVariant? GetVariant(int id);
+        //List<Product> GetVariantProducts(int variantId);
+        //List<ProductVariant> GetVariants();
+        //ProductVariant GetVariantSingle(int id);
+        //List<Product> ListProductsBaseByCategory(ListProductsByCategoryRequestModel model);
+        //List<ProductSimpleResponseModel> ListProductsSimpleViewModel(ListProductsRequestModel model);
+        //List<ProductSimpleResponseModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryRequestModel model);
     }
 }

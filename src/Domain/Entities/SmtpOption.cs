@@ -27,7 +27,7 @@ namespace ECom.Domain.Entities
 
         [MaxLength(255)]
         
-        public string Sifre { get; set; }
+        public string Password { get; set; }
 
         
         public bool Ssl { get; set; }
@@ -36,8 +36,5 @@ namespace ECom.Domain.Entities
         [Range(0,65535)]
         public int Port { get; set; }
 
-        [ForeignKey("LanguageId")]
-        public int? LanguageId { get; set; }
-        public virtual Language Language { get; set; }
     }
 }

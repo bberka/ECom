@@ -11,15 +11,8 @@ namespace ECom.Domain.Entities
     public class Language : IEfEntity
 	{
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        
+        [MaxLength(6)]
         public string Culture { get; set; }
-
-        
-        public bool IsValid { get; set; }
-
 
     }
 }

@@ -25,12 +25,12 @@ namespace ECom.Domain.Entities
 
 
         [ForeignKey("LanguageId")]
-        public int? LanguageId { get; set; }
+        public int LanguageId { get; set; }
         public virtual Language Language { get; set; }
 
 
         [ForeignKey("ImageId")]
-        public int? ImageId { get; set; }
+        public int ImageId { get; set; }
         public virtual Image Image { get; set; }
     }
 }

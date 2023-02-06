@@ -19,27 +19,32 @@ namespace ECom.Application.Manager
 			this._optionService = optionService;
 			_jwtManager = new(JwtOption.This.Secret, JwtOption.This.Issuer, JwtOption.This.Audience);
 		}
-		public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model)
-		{
-			var loginResult = _userService.Login(model);
+
+
+        public ResultData<UserLoginResponseModel> Authenticate(LoginRequestModel model)
+        {
+            var loginResult = _userService.Login(model);
             if (!loginResult.IsSuccess)
             {
-                return ResultData<JwtTokenModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
+                var parse = Enum.TryParse(typeof(ErrorCode), loginResult.ErrorString, out var error);
+                if (!parse) error = ErrorCode.Error;
+                return ResultData<UserLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)error, loginResult.Parameters);
             }
             var userAsDic = loginResult.AsDictionary();
-			userAsDic.Add("UserOnly", "");
-			var expireMins = JwtOption.This.TokenExpireMinutes;
-			var date = DateTime.Now.AddMinutes(expireMins);
-			var token = _jwtManager.GenerateJwtToken(userAsDic, date);
-			var res = new JwtTokenModel
-			{
-				ExpireUnix = date.ToUnixTime(),
-				Token = token,
-			};
-			return res;
-		}
-
-
-      
+            userAsDic.Add("UserOnly", "");
+            var expireMins = JwtOption.This.TokenExpireMinutes;
+            var date = DateTime.Now.AddMinutes(expireMins);
+            var token = _jwtManager.GenerateJwtToken(userAsDic, date);
+            var jwtTokenModel = new JwtTokenModel
+            {
+                ExpireUnix = date.ToUnixTime(),
+                Token = token,
+            };
+            return new UserLoginResponseModel
+            {
+                User = loginResult.Data,
+                Token = jwtTokenModel
+            };
+        }
     }
 }

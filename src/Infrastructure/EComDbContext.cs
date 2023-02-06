@@ -14,13 +14,61 @@ namespace ECom.Infrastructure
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<ProductImageBind>()
+			modelBuilder.Entity<ProductImage>()
                 .HasKey(u => new
 			{
 				u.ProductId,
 				u.ImageId
 			});
-		}
+            modelBuilder.Entity<ImageLanguage>()
+                .HasKey(u => new
+                {
+                    u.Culture,
+                    u.ImageId
+                });
+            modelBuilder.Entity<Cart>()
+                .HasKey(u => new
+                {
+                    u.UserId,
+                    u.ProductId
+                });
+            modelBuilder.Entity<CollectionProduct>()
+                .HasKey(u => new
+                {
+                    u.CollectionId,
+                    u.ProductId
+                });
+            modelBuilder.Entity<DiscountNotify>()
+                .HasKey(u => new
+                {
+                    u.UserId,
+                    u.ProductId
+                });
+            modelBuilder.Entity<FavoriteProduct>()
+                .HasKey(u => new
+                {
+                    u.UserId,
+                    u.ProductId
+                });
+            modelBuilder.Entity<ProductCommentImage>()
+                .HasKey(u => new
+                {
+                    u.ImageId,
+                    u.CommentId
+                });
+            modelBuilder.Entity<RolePermission>()
+                .HasKey(u => new
+                {
+                    u.PermissionId,
+                    u.RoleId
+                });
+            modelBuilder.Entity<ProductSubCategory>()
+                .HasKey(u => new
+                {
+                    u.ProductId,
+                    u.SubCategoryId
+                });
+        }
 
 		public static EComDbContext New() => new EComDbContext();
         public static void EnsureCreated()
@@ -34,12 +82,10 @@ namespace ECom.Infrastructure
             var lang = new Language
             {
                 Culture = "EN",
-                IsValid = true,
             };
             var lang2 = new Language
             {
-                Culture = "EN",
-                IsValid = true,
+                Culture = "TR",
             };
             context.Add(lang);
             context.Add(lang2);
@@ -60,7 +106,7 @@ namespace ECom.Infrastructure
             context.Add(perm);
             context.SaveChanges();
 
-            var roleBind = new RoleBind
+            var roleBind = new RolePermission
             {
                 PermissionId = 1,
                 RoleId = 1,
@@ -82,7 +128,7 @@ namespace ECom.Infrastructure
                 Name = "String",
                 Password = Convert.ToBase64String("qwe".MD5Hash()),
                 PhoneNumber = "5526667788",
-                PreferredLanguageId = 1,
+                Culture = "en",
                 RegisterDate = DateTime.Now,
                 Surname = "Str",
                 TotalLoginCount = 0,
@@ -133,10 +179,10 @@ namespace ECom.Infrastructure
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<DiscountNotify> DiscountNotifies { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
-        public DbSet<ProductImageBind> ProductImageBinds { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
-        public DbSet<ProductCommentImageBind> ProductCommentImageBinds { get; set; }
+        public DbSet<ProductCommentImage> ProductCommentImages { get; set; }
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
@@ -144,11 +190,13 @@ namespace ECom.Infrastructure
         public DbSet<SecurityLog> SecurityLogs { get; set; }
         public DbSet<CargoOption> CargoOptions { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-        public DbSet<RoleBind> RoleBinds { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
+        public DbSet<ImageLanguage> ImageLanguages { get; set; }
+        public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
     }
 }

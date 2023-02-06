@@ -15,13 +15,13 @@ namespace ECom.Application.Services
     public class AdminService : IAdminService
     {
         private readonly IEfEntityRepository<Admin> _adminRepo;
-        private readonly IEfEntityRepository<RoleBind> _roleBindRepo;
+        private readonly IEfEntityRepository<RolePermission> _roleBindRepo;
         private readonly IOptionService _optionService;
         private readonly IValidationDbService _validationDbService;
 
         public AdminService(
             IEfEntityRepository<Admin> adminRepo,
-            IEfEntityRepository<RoleBind> roleBindRepo,
+            IEfEntityRepository<RolePermission> roleBindRepo,
             IOptionService optionService,
             IValidationDbService validationDbService)
         {
@@ -113,11 +113,7 @@ namespace ECom.Application.Services
             return _adminRepo.Get(x => x.Id == adminId).Select(x => x.RoleId).FirstOrDefault();
         }
 
-        public Role GetAdminRole(int adminId)
-        {
-            return _adminRepo.Get(x => x.Id == adminId).Include(x => x.Role).Select(x => x.Role).FirstOrDefault(); //TODO check maybe throw ?
-
-        }
+    
 
         public Result ChangePassword(ChangePasswordRequestModel model)
         {

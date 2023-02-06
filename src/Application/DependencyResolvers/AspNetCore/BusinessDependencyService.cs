@@ -38,12 +38,12 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<Permission>, PermissionDAL>();
 			services.AddScoped<IEfEntityRepository<Product>, ProductDAL>();
 			services.AddScoped<IEfEntityRepository<ProductComment>, ProductCommentDAL>();
-			services.AddScoped<IEfEntityRepository<ProductCommentImageBind>, ProductCommentImageBindDAL>();
+			services.AddScoped<IEfEntityRepository<ProductCommentImage>, ProductCommentImageDAL>();
 			services.AddScoped<IEfEntityRepository<ProductDetail>, ProductDetailDAL>();
-			services.AddScoped<IEfEntityRepository<ProductImageBind>, ProductImageBindDAL>();
+			services.AddScoped<IEfEntityRepository<ProductImage>, ProductImageDAL>();
 			services.AddScoped<IEfEntityRepository<ProductVariant>, ProductVariantDAL>();
 			services.AddScoped<IEfEntityRepository<Role>, RoleDAL>();
-			services.AddScoped<IEfEntityRepository<RoleBind>, RoleBindDAL>();
+			services.AddScoped<IEfEntityRepository<RolePermission>, RolePermissionDAL>();
 			services.AddScoped<IEfEntityRepository<SecurityLog>, SecurityLogDAL>();
 			services.AddScoped<IEfEntityRepository<Slider>, SliderDAL>();
 			services.AddScoped<IEfEntityRepository<SmtpOption>, SmtpOptionDAL>();

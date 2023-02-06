@@ -40,13 +40,12 @@ namespace ECom.Domain.Entities
 		[MaxLength(255)]
 		public string? YoutubeLink { get; set; }
 
-		[ForeignKey("DefaultLanguageId")]
-		public int? DefaultLanguageId { get; set; }
 
 		[ForeignKey("LogoImageId")]
 		public int? LogoImageId { get; set; }
 
 		[ForeignKey("FavIcoImageId")]
 		public int? FavIcoImageId { get; set; }
-	}
+
+    }
 }
