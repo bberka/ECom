@@ -16,9 +16,8 @@ namespace ECom.Domain.Entities
 
         public DateTime RegisterDate { get; set; }
         
-        public int LogType { get; set; }
-        
-        public int OperationType { get; set; }
+        public int Severity { get; set; }
+        public string OperationName { get; set; }
   
         [MaxLength(32)]
         public string RemoteIpAddress { get; set; }

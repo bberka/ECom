@@ -17,7 +17,6 @@ namespace ECom.Domain.Entities
         public DateTime RegisterDate { get; set; }
 
         public int HttpStatusCodeResponse { get; set; }
-
         public string RequestUrl { get; set; }
         public string QueryString { get; set; }
 
