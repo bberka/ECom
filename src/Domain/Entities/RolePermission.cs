@@ -10,16 +10,13 @@ namespace ECom.Domain.Entities
 {
     public class RolePermission : IEfEntity
 	{
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
 
         [ForeignKey("RoleId")]
-        public int? RoleId { get; set; }
+        public int RoleId { get; set; }
         public virtual Role Role { get; set; }
 
         [ForeignKey("PermissionId")]
-        public int? PermissionId { get; set; }
+        public int PermissionId { get; set; }
         public virtual Permission Permission { get; set; }
 
     }

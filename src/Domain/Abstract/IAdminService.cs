@@ -12,9 +12,9 @@ namespace ECom.Domain.Abstract
         List<Admin> GetAdmins();
         Admin? GetAdmin(int id);
         Admin? GetAdmin(string email);
-        void CheckValidAdminOrThrow(int id);
         bool Exists(int id);
         bool Exists(string email);
+        bool IsValidAdminAccount(int id);
         bool IncreaseFailedPasswordCount(Admin admin);
         ResultData<Admin> Login(LoginRequestModel model);
         bool UpdateSuccessLogin(Admin admin);
@@ -24,6 +24,7 @@ namespace ECom.Domain.Abstract
         bool HasPermission(int adminId, int permissionId);
         List<Permission> GetValidPermissions();
         List<Permission> GetInvalidPermissions();
+        List<Permission> GetPermissions(int adminId);
 
         bool IsValidPermission(int permissionId);
     }

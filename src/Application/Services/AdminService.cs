@@ -11,6 +11,7 @@ using ECom.Domain.Abstract;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Extensions;
 using ECom.Domain.Lib;
+using System.Linq;
 
 namespace ECom.Application.Services
 {
@@ -54,13 +55,9 @@ namespace ECom.Application.Services
         }
         public Admin? GetAdmin(string email)
         {
-            var isTestAccount = false;
-#if DEBUG
-            isTestAccount = true;
-#endif
-
+            
             var admin = _adminRepo
-                .Get(x => x.EmailAddress == email && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue)
+                .Get(x => x.EmailAddress == email && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .FirstOrDefault();
             if (admin is null) return null;
@@ -75,12 +72,9 @@ namespace ECom.Application.Services
         {
             var isValid = IsValidPermission(permissionId);
             if(!isValid) return false;
-            var isTestAccount = false;
-#if DEBUG
-            isTestAccount = true;
-#endif
+           
             var roleId = _adminRepo
-                .Get(x => x.Id == adminId && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue)
+                .Get(x => x.Id == adminId && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .Select(x => x.RoleId)
                 .FirstOrDefault(0);
@@ -90,13 +84,9 @@ namespace ECom.Application.Services
 
         public Admin? GetAdmin(int id)
         {
-            var isTestAccount = false;
-#if DEBUG
-            isTestAccount = true;
-#endif
-
+      
             var admin = _adminRepo
-                .Get(x => x.Id == id && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue)
+                .Get(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .FirstOrDefault();
             if (admin is null) return null;
@@ -108,14 +98,9 @@ namespace ECom.Application.Services
             return admin;
         }
 
-        public void CheckValidAdminOrThrow(int id)
+        public bool IsValidAdminAccount(int id)
         {
-            var isTestAccount = false;
-#if DEBUG
-            isTestAccount = true;
-#endif
-            var admin = _adminRepo.Any(x => x.Id == id && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue);
-            if (!admin) throw new NotFoundException(nameof(Admin));
+            return _adminRepo.Any(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true);
         }
 
         public bool Exists(int id)
@@ -136,13 +121,18 @@ namespace ECom.Application.Services
         public Result AddAdmin(AddAdminRequestModel admin)
         {
             var res = _adminRepo.Add(admin.ToAdminEntity());
-            if (!res) return Result.DbInternal(1);
+            if (!res) {
+                return Result.DbInternal(1);
+            }
             return Result.Success(nameof(Admin));
         }
 
         public int GetAdminRoleId(int adminId)
         {
-            return _adminRepo.Get(x => x.Id == adminId).Select(x => x.RoleId).FirstOrDefault();
+            return _adminRepo
+                .Get(x => x.Id == adminId && x.IsValid == true && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue)
+                .Select(x => x.RoleId)
+                .FirstOrDefault(0);
         }
 
     
@@ -150,11 +140,20 @@ namespace ECom.Application.Services
         public Result ChangePassword(ChangePasswordRequestModel model)
         {
             var admin = _adminRepo.Find(model.AuthenticatedAdminId);
-            if(admin is null) return Result.DbInternal(1);
-            if (admin.Password != model.EncryptedOldPassword) return Result.Warn(2, ErrorCode.NotMatch, "RealPassword","OldPassword");
+            if(admin is null)
+            {
+                return Result.Error(1, ErrorCode.NotFound, nameof(Admin));
+            }
+            if (admin.Password != model.EncryptedOldPassword)
+            {
+                return Result.Warn(2, ErrorCode.NotMatch, "RealPassword", "OldPassword");
+            }
             admin.Password = model.EncryptedNewPassword;
             var res = _adminRepo.Update(admin);
-            if (!res) return Result.DbInternal(3);
+            if (!res)
+            {
+                return Result.DbInternal(3);
+            }
             return Result.Success();
         }
 
@@ -197,6 +196,18 @@ namespace ECom.Application.Services
         public bool IsValidPermission(int permissionId)
         {
             return _permissionRepo.Any(x => x.IsValid == true && x.Id == permissionId);
+        }
+
+        public List<Permission> GetPermissions(int adminId)
+        {
+            var roleId = GetAdminRoleId(adminId);
+            if (roleId < 1) return new();
+            var invalidPerms = GetInvalidPermissions().Select(x => x.Id).ToList();
+            return _rolePermissionRepo
+                .Get(x => x.RoleId == roleId && !invalidPerms.Contains(x.PermissionId))
+                .Include(x => x.Permission)
+                .Select(x => x.Permission)
+                .ToList();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Interfaces;
-
+using System.Security.Claims;
 
 namespace ECom.Application.Manager
 {
@@ -24,8 +24,10 @@ namespace ECom.Application.Manager
             {
                 return ResultData<AdminLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
             }
-            var adminAsDic = loginResult.AsDictionary();
-            adminAsDic.Add("AdminOnly", "");
+            var adminAsDic = loginResult.Data.AsDictionary();
+            adminAsDic.Add("AdminOnly", "true");
+            adminAsDic.Add(ClaimTypes.Role, "Admin");
+
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.Now.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(adminAsDic, date);

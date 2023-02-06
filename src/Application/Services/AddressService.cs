@@ -61,12 +61,12 @@ namespace ECom.Application.Services
             }
             if (data.DeleteDate.HasValue)
 			{
-                return Result.Error(2, ErrorCode.Deleted);
+                return Result.Error(3, ErrorCode.Deleted);
             }
             var res = _addressRepo.Update(data);
             if (!res) 
 			{
-                return Result.DbInternal(3);
+                return Result.DbInternal(4);
             }
             return Result.Success();
 		}

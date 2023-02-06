@@ -2,7 +2,7 @@
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Entities;
 using ECom.Domain.Interfaces;
-
+using System.Security.Claims;
 
 namespace ECom.Application.Manager
 {
@@ -30,8 +30,9 @@ namespace ECom.Application.Manager
                 if (!parse) error = ErrorCode.Error;
                 return ResultData<UserLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)error, loginResult.Parameters);
             }
-            var userAsDic = loginResult.AsDictionary();
-            userAsDic.Add("UserOnly", "");
+            var userAsDic = loginResult.Data.AsDictionary();
+            userAsDic.Add("UserOnly", "true");
+            userAsDic.Add(ClaimTypes.Role, "User");
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.Now.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(userAsDic, date);

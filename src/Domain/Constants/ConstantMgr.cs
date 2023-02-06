@@ -9,7 +9,7 @@ using EasMe.Extensions;
 
 namespace ECom.Domain.Constants
 {
-	public class ConstantMgr
+	public static class ConstantMgr
 	{
 		public const byte StringMinLength = 3;
 
@@ -21,5 +21,12 @@ namespace ECom.Domain.Constants
 
 		public const string VERSION = "v0.0.1";
 
-	}
+		public static bool IsDebug()
+		{
+#if DEBUG
+            return true;
+#endif
+			return false;
+        }
+    }
 }

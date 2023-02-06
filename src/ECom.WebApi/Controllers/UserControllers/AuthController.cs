@@ -8,6 +8,7 @@ using ECom.Domain.ApiModels.Response;
 using ECom.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace ECom.WebApi.Controllers.UserControllers
@@ -30,7 +31,6 @@ namespace ECom.WebApi.Controllers.UserControllers
 		[HttpPost]
 		public ActionResult<ResultData<UserLoginResponseModel>> Login([FromBody] LoginRequestModel model)
 		{
-			HttpContext.Session.Clear();
             var res = _userJwtAuthenticator.Authenticate(model);
             logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
             return res;

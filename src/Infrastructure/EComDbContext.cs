@@ -93,17 +93,38 @@ namespace ECom.Infrastructure
             var role = new Role
             {
                 IsValid = true,
-                Memo = "Initial",
-                Name = "Initial",
+                Memo = "Initial-Create-Owner",
+                Name = "Owner",
             };
             context.Add(role);
-            var perm = new Permission
+            var perms = new List<Permission>
+            {
+                new Permission
             {
                 IsValid = true,
-                Name = "Initial",
-                Memo = "Test",
+                Name = "Get",
+                Memo = "Initial-Create",
+            },
+                new Permission
+            {
+                IsValid = true,
+                Name = "Create",
+                Memo = "Initial-Create",
+            },
+                new Permission
+            {
+                IsValid = true,
+                Name = "Update",
+                Memo = "Initial-Create",
+            },
+                new Permission
+            {
+                IsValid = true,
+                Name = "Delete",
+                Memo = "Initial-Create",
+            }
             };
-            context.Add(perm);
+            context.AddRange(perms);
             context.SaveChanges();
 
             var roleBind = new RolePermission

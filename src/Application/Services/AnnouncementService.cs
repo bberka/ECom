@@ -24,7 +24,7 @@
         public Result DeleteAnnouncement(uint id)
         {
             if (!_announcementRepo.Any(x => x.Id == id))
-                {
+            {
                 return Result.Error(1, ErrorCode.NotFound, nameof(Announcement));
             }
             var res = _announcementRepo.Delete((int)id);
@@ -47,7 +47,7 @@
             {
                 return Result.DbInternal(2);
             }
-            return Result.Success(nameof(Announcement));
+            return Result.Success();
         }
 
         public List<Announcement> GetAnnouncements()
