@@ -21,43 +21,43 @@ namespace ECom.Application.Services
 		
 		public Result DeleteAddress(int userId, int id)
 		{
-			var data = _addressRepo.Find(id);
-			if (data is null)
+            var data = GetAddress(userId, id);
+            if (data is null)
 			{
                 return Result.Warn(1, ErrorCode.NotFound);
             }
             if (data.UserId != userId)
 			{
-                throw new NotAuthorizedException(AuthType.User);
+				return Result.Error(2, ErrorCode.NotAuthorized,AuthType.User.ToString());
             }
             if (data.DeleteDate.HasValue)
 			{
-                return Result.Warn(2, ErrorCode.AlreadyDeleted);
+                return Result.Warn(3, ErrorCode.AlreadyDeleted);
             }
 			data.DeleteDate = DateTime.Now;
 			var res = _addressRepo.Update(data);	
 			if(!res)
 			{
-                return Result.DbInternal(3);
+                return Result.DbInternal(4);
             }
 			return Result.Success();
 		}
 
 		public List<Address> GetUserAddresses(int userId)
 		{
-			return _addressRepo.GetList(x => x.UserId == userId && x.DeleteDate != null);
+			return _addressRepo.GetList(x => x.UserId == userId && !x.DeleteDate.HasValue);
 		}
 
 		public Result UpdateAddress(int userId,Address data)
 		{
-			var address = _addressRepo.Find(data.Id);
+			var address = GetAddress(userId, data.Id);
 			if(address is null) 
 			{
-                return Result.Error(1, ErrorCode.NotFound);
+                return Result.Warn(1, ErrorCode.NotFound);
             }
 			if (address.UserId != userId)
 			{
-                throw new NotAuthorizedException(AuthType.User);
+                return Result.Error(2, ErrorCode.NotAuthorized, AuthType.User.ToString());
             }
             if (data.DeleteDate.HasValue)
 			{
@@ -81,8 +81,16 @@ namespace ECom.Application.Services
 			return Result.Success();
 		}
 
-		
-	}
+        public Address? GetAddress(int addressId)
+        {
+			return _addressRepo.GetFirstOrDefault(x => x.Id == addressId && !x.DeleteDate.HasValue);
+        }
+
+        public Address? GetAddress(int userId, int addressId)
+        {
+            return _addressRepo.GetFirstOrDefault(x => x.Id == addressId && x.UserId == userId && !x.DeleteDate.HasValue);
+        }
+    }
 
 
 }

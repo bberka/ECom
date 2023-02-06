@@ -55,7 +55,7 @@ namespace ECom.Application.Services
             if (!validateResult.IsValid)
             {
                 var first = validateResult.Errors.First();
-                return ResultData<User>.Warn(3, ErrorCode.ValidationError, nameof(User));
+                return ResultData<User>.Warn(3, ErrorCode.ValidationError, first.ErrorMessage);
             }
             if (user.TwoFactorType != 0)
 			{

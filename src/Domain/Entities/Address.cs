@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ECom.Domain.Entities 
 {
     public class Address : IEfEntity
@@ -11,6 +10,9 @@ namespace ECom.Domain.Entities
         public int Id { get; set; }
 
         public DateTime RegisterDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public DateTime? DeleteDate { get; set; }
 
         [MinLength(ConstantMgr.StringMinLength)]
@@ -40,6 +42,9 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("UserId")]
         public int UserId { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual User User { get; set; }
 
     }

@@ -81,11 +81,11 @@ namespace ECom.Infrastructure
             context.SaveChanges();
             var lang = new Language
             {
-                Culture = "EN",
+                Culture = "en",
             };
             var lang2 = new Language
             {
-                Culture = "TR",
+                Culture = "tr",
             };
             context.Add(lang);
             context.Add(lang2);
@@ -117,7 +117,7 @@ namespace ECom.Infrastructure
             {
                 CitizenShipNumber = 1,
                 DeletedDate = null,
-                EmailAddress = "qwe@qwe",
+                EmailAddress = "string@string.com",
                 FailedPasswordCount = 0,
                 IsEmailVerified = true,
                 IsTestAccount = true,
@@ -126,7 +126,7 @@ namespace ECom.Infrastructure
                 LastLoginIp = "127.0.0.1",
                 LastLoginUserAgent = "",
                 Name = "String",
-                Password = Convert.ToBase64String("qwe".MD5Hash()),
+                Password = Convert.ToBase64String("string".MD5Hash()),
                 PhoneNumber = "5526667788",
                 Culture = "en",
                 RegisterDate = DateTime.Now,
@@ -141,14 +141,14 @@ namespace ECom.Infrastructure
             var testAdmin = new Admin
             {
                 DeletedDate = null,
-                EmailAddress = "qwe@qwe",
+                EmailAddress = "string@string.com",
                 FailedPasswordCount = 0,
                 IsTestAccount = true,
                 IsValid = true,
                 LastLoginDate = DateTime.Now,
                 LastLoginIp = "127.0.0.1",
                 LastLoginUserAgent = "",
-                Password = Convert.ToBase64String("qwe".MD5Hash()),
+                Password = Convert.ToBase64String("string".MD5Hash()),
                 RegisterDate = DateTime.Now,
                 TotalLoginCount = 0,
                 PasswordLastUpdateDate = DateTime.Now,

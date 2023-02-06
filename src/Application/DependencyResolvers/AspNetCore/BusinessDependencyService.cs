@@ -55,7 +55,6 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			//Business Logic
 			services.AddScoped<IOptionService, OptionService>();
 			services.AddScoped<ICompanyInformationService, CompanyInformationService>();
-			services.AddScoped<IRoleService, RoleService>();
 			services.AddScoped<IImageService, ImageService>();
 			services.AddScoped<ILanguageService, LanguageService>();
 			services.AddScoped<IAnnouncementService, AnnouncementService>();

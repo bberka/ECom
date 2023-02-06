@@ -4,8 +4,10 @@
 
 
 
+using EasMe;
 using EasMe.Helpers;
 using ECom.Application.Validators;
+using ECom.Domain.Abstract;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Extensions;
 using ECom.Domain.Lib;
@@ -15,23 +17,26 @@ namespace ECom.Application.Services
     public class AdminService : IAdminService
     {
         private readonly IEfEntityRepository<Admin> _adminRepo;
-        private readonly IEfEntityRepository<RolePermission> _roleBindRepo;
+        private readonly IEfEntityRepository<RolePermission> _rolePermissionRepo;
+        private readonly IEfEntityRepository<Permission> _permissionRepo;
         private readonly IOptionService _optionService;
         private readonly IValidationDbService _validationDbService;
 
         public AdminService(
             IEfEntityRepository<Admin> adminRepo,
-            IEfEntityRepository<RolePermission> roleBindRepo,
+            IEfEntityRepository<RolePermission> rolePermissionRepo,
+            IEfEntityRepository<Permission> permissionRepo,
             IOptionService optionService,
             IValidationDbService validationDbService)
         {
             this._adminRepo = adminRepo;
-            this._roleBindRepo = roleBindRepo;
+            this._rolePermissionRepo = rolePermissionRepo;
+            this._permissionRepo = permissionRepo;
             this._optionService = optionService;
             this._validationDbService = validationDbService;
         }
 
-
+       
         public bool UpdateSuccessLogin(Admin admin)
         {
             var req = HttpContextHelper.Current.GetNecessaryRequestData();
@@ -40,9 +45,7 @@ namespace ECom.Application.Services
             admin.LastLoginDate = DateTime.Now;
             admin.LastLoginIp = req.IpAddress;
             admin.LastLoginUserAgent = req.UserAgent;
-            var ctx = new EComDbContext();
-            ctx.Update(admin);
-            return ctx.SaveChanges() == 1;
+            return _adminRepo.Update(admin);
         }
         public bool IncreaseFailedPasswordCount(Admin admin)
         {
@@ -51,28 +54,57 @@ namespace ECom.Application.Services
         }
         public Admin? GetAdmin(string email)
         {
-            return _adminRepo.GetFirstOrDefault(x => x.EmailAddress == email);
+            var isTestAccount = false;
+#if DEBUG
+            isTestAccount = true;
+#endif
+
+            var admin = _adminRepo
+                .Get(x => x.EmailAddress == email && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue)
+                .Include(x => x.Role)
+                .FirstOrDefault();
+            if (admin is null) return null;
+            admin.Permissions = _rolePermissionRepo
+                .Get(x => x.RoleId == admin.RoleId)
+                .Include(x => x.Permission)
+                .Select(x=> x.Permission)
+                .ToList();
+            return admin;
+        }
+        public bool HasPermission(int adminId, int permissionId)
+        {
+            var isValid = IsValidPermission(permissionId);
+            if(!isValid) return false;
+            var isTestAccount = false;
+#if DEBUG
+            isTestAccount = true;
+#endif
+            var roleId = _adminRepo
+                .Get(x => x.Id == adminId && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue)
+                .Include(x => x.Role)
+                .Select(x => x.RoleId)
+                .FirstOrDefault(0);
+            if (roleId == 0) return false;
+            return _rolePermissionRepo.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
         }
 
         public Admin? GetAdmin(int id)
-        {
-            return _adminRepo.Find(id);
-        }
-
-        public Admin GetAdminOrThrow(int id)
-        {
-            var admin = GetAdmin(id);
-            if (admin is null) throw new NotFoundException(nameof(Admin));
-            return admin;
-        }
-        public Admin GetValidAdminOrThrow(int id)
         {
             var isTestAccount = false;
 #if DEBUG
             isTestAccount = true;
 #endif
-            var admin = _adminRepo.GetFirstOrDefault(x => x.Id == id && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue);
-            if (admin is null) throw new NotFoundException(nameof(Admin));
+
+            var admin = _adminRepo
+                .Get(x => x.Id == id && x.IsTestAccount == isTestAccount && !x.DeletedDate.HasValue)
+                .Include(x => x.Role)
+                .FirstOrDefault();
+            if (admin is null) return null;
+            admin.Permissions = _rolePermissionRepo
+                .Get(x => x.RoleId == admin.RoleId)
+                .Include(x => x.Permission)
+                .Select(x => x.Permission)
+                .ToList();
             return admin;
         }
 
@@ -117,11 +149,12 @@ namespace ECom.Application.Services
 
         public Result ChangePassword(ChangePasswordRequestModel model)
         {
-            var admin = GetAdminOrThrow(model.AuthenticatedAdminId);
-            if (admin.Password != model.EncryptedOldPassword) return Result.Warn(1, ErrorCode.NotMatch, "RealPassword","OldPassword");
+            var admin = _adminRepo.Find(model.AuthenticatedAdminId);
+            if(admin is null) return Result.DbInternal(1);
+            if (admin.Password != model.EncryptedOldPassword) return Result.Warn(2, ErrorCode.NotMatch, "RealPassword","OldPassword");
             admin.Password = model.EncryptedNewPassword;
             var res = _adminRepo.Update(admin);
-            if (!res) return Result.DbInternal(2);
+            if (!res) return Result.DbInternal(3);
             return Result.Success();
         }
 
@@ -147,7 +180,23 @@ namespace ECom.Application.Services
                 //TODO: two factor
             }
             UpdateSuccessLogin(admin);
+            
             return admin;
+        }
+
+        public List<Permission> GetValidPermissions()
+        {
+            return _permissionRepo.GetList(x => x.IsValid == true);
+        }
+
+        public List<Permission> GetInvalidPermissions()
+        {
+            return _permissionRepo.GetList(x => x.IsValid == false);
+        }
+
+        public bool IsValidPermission(int permissionId)
+        {
+            return _permissionRepo.Any(x => x.IsValid == true && x.Id == permissionId);
         }
     }
 }
