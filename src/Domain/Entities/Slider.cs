@@ -33,6 +33,9 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("Culture")]
         public string? Culture { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Language Language { get; set; }
 
     }

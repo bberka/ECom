@@ -31,6 +31,11 @@ namespace ECom.Application.Manager
                 return ResultData<UserLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)error, loginResult.Parameters);
             }
             var userAsDic = loginResult.Data.AsDictionary();
+            var remove = userAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
+            foreach (var kvp in remove)
+            {
+                userAsDic.Remove(kvp.Key);
+            }
             userAsDic.Add("UserOnly", "true");
             userAsDic.Add(ClaimTypes.Role, "User");
             var expireMins = JwtOption.This.TokenExpireMinutes;

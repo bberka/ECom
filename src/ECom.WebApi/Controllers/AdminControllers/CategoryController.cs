@@ -14,10 +14,15 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPost]
-        public ActionResult<Result> Update([FromBody] CategoryUpdateRequestModel category) 
+		public ActionResult<Result> Add([FromBody] AddCategoryRequestModel model)
+		{
+			var res = _categoryService.AddCategory(model);
+			return res;
+		}
+		[HttpPost]
+        public ActionResult<Result> Update([FromBody] CategoryUpdateRequestModel model) 
         {
-			var res = _categoryService.UpdateCategory(category);
-			logger.Info(category.ToJsonString());
+			var res = _categoryService.UpdateCategory(model);
 			return res;
 		}
 		
@@ -26,14 +31,12 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		{
 			//TODO: test
 			var res = _categoryService.DeleteCategory(id);
-			logger.Info(id);
 			return res;
 		}
 		[HttpPut]
 		public ActionResult<Result> EnableOrDisable([FromBody] uint id)
 		{
 			var res = _categoryService.EnableOrDisableCategory(id);
-			logger.Info(id);
 			return res;
 		}
 
@@ -41,7 +44,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		public ActionResult<Result> UpdateSubCategory([FromBody] SubCategory category)
 		{
 			var res = _categoryService.UpdateSubCategory(category);
-			logger.Info(category.ToJsonString());
 			return res;
 		}
 
@@ -49,14 +51,12 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		public ActionResult<Result> DeleteSubCategory([FromBody] uint id)
 		{
 			var res = _categoryService.DeleteSubCategory(id);
-			logger.Info(id);
 			return res;
 		}
 		[HttpPut]
 		public ActionResult<Result> EnableOrDisableSubCategory([FromBody] uint id)
 		{
 			var res = _categoryService.EnableOrDisableSubCategory(id);
-			logger.Info(id);
 			return res;
 		}
 

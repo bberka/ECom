@@ -14,7 +14,9 @@ namespace ECom.WebApi.Controllers.AdminControllers
         [HttpGet]
         public ActionResult<Admin> Get()
         {
-            return HttpContext.GetAdmin();
+            var adminId = HttpContext.GetAdminId();
+            var admin = _adminService.GetAdmin(adminId);
+            return admin;
         }
         
         [HttpPost]

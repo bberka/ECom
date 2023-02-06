@@ -25,6 +25,11 @@ namespace ECom.Application.Manager
                 return ResultData<AdminLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
             }
             var adminAsDic = loginResult.Data.AsDictionary();
+            var remove = adminAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
+            foreach (var kvp in remove)
+            {
+                adminAsDic.Remove(kvp.Key);
+            }
             adminAsDic.Add("AdminOnly", "true");
             adminAsDic.Add(ClaimTypes.Role, "Admin");
 

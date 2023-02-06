@@ -16,5 +16,7 @@ namespace ECom.Domain.Abstract
         List<Category> ListCategories();
         Result UpdateCategory(CategoryUpdateRequestModel model);
         Result UpdateSubCategory(SubCategory? data);
+        Result AddCategory(AddCategoryRequestModel model);
+        Result AddSubCategory(AddCategoryRequestModel model);
     }
 }

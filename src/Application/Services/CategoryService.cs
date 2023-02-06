@@ -115,5 +115,26 @@ namespace ECom.Application.Services
             }
 			return Result.Success("Deleted");
 		}
-	}
+
+        public Result AddCategory(AddCategoryRequestModel model)
+        {
+			var category = new Category
+			{
+				Culture = model.Culture,
+				IsValid = true,
+				Name = model.Name,
+			};
+			var res = _categoryRepo.Add(category);
+			if (!res)
+			{
+				return Result.DbInternal(1);
+			}
+			return Result.Success();
+		}
+
+        public Result AddSubCategory(AddCategoryRequestModel model)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

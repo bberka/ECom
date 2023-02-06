@@ -74,26 +74,25 @@ namespace ECom.Application.Services
             return Result.Success();
         }
 
-        public List<ProductDTO> GetFavoriteProducts(int userId)
+        public List<ProductDTO> GetFavoriteProducts(int userId,string culture)
         {
             var favList = _favoriteProductRepo
                 .Get(x => x.UserId == userId)
                 .Select(x => x.ProductId)
                 .ToArray();
-            var ctx = new EComDbContext();
             var products = _productRepo
                 .Get(x => !favList.Contains(x.Id))
                 .Include(x => x.Variant)
                 .ToList();
             var productDetails = _productDetailRepo
-                .Get(x => !products.Any(y => y.Id == x.ProductId))
+                .Get(x => !products.Any(y => y.Id == x.ProductId) && x.Culture == culture)
                 .ToList();
             var res = new List<ProductDTO>();
             foreach(var product in products)
             {
                 var data = new ProductDTO();
                 data.Product = product;
-                data.Details = productDetails.Where(x=> x.ProductId == product.Id).ToList();
+                data.Details = productDetails.FirstOrDefault(x=> x.ProductId == product.Id);
                 res.Add(data);
             }
             return res;

@@ -11,6 +11,6 @@ namespace ECom.Domain.Abstract
     {
         Result AddProduct(int userId, int productId);
         Result RemoveProduct(int userId, int productId);
-        List<ProductDTO> GetFavoriteProducts(int userId);
+        List<ProductDTO> GetFavoriteProducts(int userId,string culture);
     }
 }

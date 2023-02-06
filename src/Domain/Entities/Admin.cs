@@ -18,14 +18,17 @@ namespace ECom.Domain.Entities
 
 
         [MaxLength(64)]
-		[JsonIgnore]
-		public string Password { get; set; }
+        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        public string Password { get; set; }
 
         [MaxLength(255)]
         public string EmailAddress { get; set; }
 
 
         [MaxLength(255)]
+        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public string? TwoFactorKey { get; set; }
 
         /// <summary>

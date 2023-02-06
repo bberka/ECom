@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Net.Mail;
 
 namespace ECom.Domain.Extensions
 {
@@ -58,21 +59,45 @@ namespace ECom.Domain.Extensions
 			}
 		}
 
-        public static Admin GetAdmin(this HttpContext context)
+		public static string? GetClaim(this HttpContext context,string key)
+		{
+			return context.User.FindFirst(key)?.Value;
+		}
+        public static T GetClaim<T>(this HttpContext context, string key)
         {
-			try
-			{
-                var claims = context.User.Identities.FirstOrDefault()?.Claims.AsDictionary();
-                var admin = claims?.ToObject<Admin>();
-                if (admin is null) throw new NotAuthorizedException(AuthType.Admin);
-                return admin;
-            }
-            catch (Exception ex)
-			{
-
-				throw new NotAuthorizedException(AuthType.Admin);
-			}
+            return context.User.FindFirst(key).Value.StringConversion<T>();
         }
+  //      public static Admin GetAdmin(this HttpContext context)
+		//{
+		//	try
+		//	{
+		//		var EasdmailAddress = context.GetClaim("EmailAddress");
+		//		return new Admin
+		//		{
+		//			Id = context.GetAdminId(),
+		//			EmailAddress = context.GetClaim("EmailAddress"),
+		//			FailedPasswordCount = context.GetClaim<byte>("FailedPasswordCount"),
+		//			IsTestAccount = context.GetClaim<bool>("IsTestAccount"),
+		//			IsValid = context.GetClaim<bool>("IsValid"),
+		//			LastLoginDate = context.GetClaim<DateTime>("LastLoginDate"),
+		//			LastLoginIp = context.GetClaim("LastLoginIp"),
+		//			LastLoginUserAgent = context.GetClaim("LastLoginUserAgent"),
+		//			PasswordLastUpdateDate = context.GetClaim<DateTime>("PasswordLastUpdateDate"),
+		//			RegisterDate = context.GetClaim<DateTime>("RegisterDate"),
+		//			TotalLoginCount = context.GetClaim<int>("TotalLoginCount"),
+		//			RoleId = context.GetClaim<int>("RoleId"),
+		//			TwoFactorType = context.GetClaim<byte>("TwoFactorType"),
+		//			//Role = context.GetClaim("Role").FromJsonString<Role>(),
+		//			//Permissions = context.GetClaim("Permissions").FromJsonString<Permission[]>().ToList(),
+
+		//		};
+  //          }
+  //          catch (Exception ex)
+		//	{
+
+		//		throw new NotAuthorizedException(AuthType.Admin);
+		//	}
+  //      }
         public static User GetUser(this HttpContext context)
         {
             try

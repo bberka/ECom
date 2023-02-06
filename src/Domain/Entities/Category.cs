@@ -17,6 +17,9 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("Language")]
         public string Culture { get; set; }
+
+        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Language Language { get; set; }
 
 		public virtual List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
