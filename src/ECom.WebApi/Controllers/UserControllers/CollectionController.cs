@@ -2,12 +2,12 @@
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Entities;
 using ECom.WebApi.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
 
-    [UserAuthFilter]
     public class CollectionController : BaseUserController
     {
         private readonly ICollectionService _collectionService;
@@ -17,21 +17,20 @@ namespace ECom.WebApi.Controllers.UserControllers
             this._collectionService = collectionService;
         }
         [HttpGet]
-        public IActionResult GetCollections()
+        public ActionResult<List<Collection>> GetCollections()
         {
-            return Ok();
+            var userId = HttpContext.GetUserId();
+            return _collectionService.GetCollections(userId);
         }
+        //[HttpPost]
+        //public IActionResult GetCollectionProducts([FromBody] int id)
+        //{
+        //    return Ok();
+        //}
         [HttpPost]
-        public IActionResult GetCollectionProducts([FromBody] int id)
+        public ActionResult<Result> CreateCollection(CreateCollectionRequestModel model)
         {
-            return Ok();
-        }
-        [HttpPost]
-        public IActionResult CreateCollection(CreateCollectionRequestModel model)
-        {
-            var res = _collectionService.CreateCollection(model);
-            logger.Info(res.Rv, res.ErrorCode, res.Parameters, model.ToJsonString());
-            return Ok();
+            return _collectionService.CreateCollection(model);
         }
     }
 }

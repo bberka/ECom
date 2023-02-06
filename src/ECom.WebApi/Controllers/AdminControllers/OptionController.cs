@@ -14,60 +14,56 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 		
 		[HttpGet]
-		public IActionResult GetCurrentOption()
+		public ActionResult<Option> GetCurrentOption()
 		{
-			var option = _optionService.GetOption();
-			return Ok(option);
+			return _optionService.GetOption();
 		}
 		
 		[HttpGet]
-		public IActionResult ListCargoOptions()
+		public ActionResult<List<CargoOption>> ListCargoOptions()
 		{
-			var option = _optionService.GetCargoOptions();
-			return Ok(option);
+			return _optionService.GetCargoOptions();
 		}
 		[HttpGet]
-		public IActionResult ListPaymentOptions()
+		public ActionResult<List<PaymentOption>> ListPaymentOptions()
 		{
-			var option = _optionService.GetPaymentOptions();
-			return Ok(option);
+			return _optionService.GetPaymentOptions();
 		}
 		[HttpGet]
-		public IActionResult ListSmtpOptions()
+		public ActionResult<List<SmtpOption>> ListSmtpOptions()
 		{
-			var option = _optionService.GetSmtpOptions();
-			return Ok(option);
+			return _optionService.GetSmtpOptions();
 		}
 		[HttpPost]
-		public IActionResult Update([FromBody] Option option)
+		public ActionResult<Result> Update([FromBody] Option option)
 		{
 			var res = _optionService.UpdateOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
-			return Ok(res);
+			return res;
 		}
 
 		
 		[HttpPost]
-		public IActionResult UpdateCargoOption([FromBody] CargoOption option)
+		public ActionResult<Result> UpdateCargoOption([FromBody] CargoOption option)
 		{
 			var res = _optionService.UpdateCargoOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
-			return Ok(res);
+			return res;
 		}
 		[HttpPost]
-		public IActionResult UpdatePaymentOption([FromBody] PaymentOption option)
+		public ActionResult<Result> UpdatePaymentOption([FromBody] PaymentOption option)
 		{
 			var res = _optionService.UpdatePaymentOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
-			return Ok(res);
+			return res;
 		}
 
 		[HttpPost]
-		public IActionResult UpdateSmtpOption([FromBody] SmtpOption option)
+		public ActionResult<Result> UpdateSmtpOption([FromBody] SmtpOption option)
 		{
 			var res = _optionService.UpdateSmtpOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
-			return Ok(res);
+			return res;
 		}
 	}
 }

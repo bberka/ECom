@@ -12,26 +12,25 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			_announcementService = announcementService;
 		}
 		[HttpPost]
-        public IActionResult Update([FromBody] Announcement data) 
+        public ActionResult<Result> Update([FromBody] Announcement data) 
         {
 			var res = _announcementService.UpdateAnnouncement(data);
 			logger.Info(data.ToJsonString());
-			return Ok(res);
+			return res;
 		}
 		
 		[HttpDelete]
-		public IActionResult Delete([FromBody] uint id)
+		public ActionResult<Result> Delete([FromBody] uint id)
 		{
 			var res = _announcementService.DeleteAnnouncement(id);
-			logger.Info(id);
-			return Ok(res);
+			return res;
 		}
 		[HttpPut]
-		public IActionResult EnableOrDisable([FromBody] uint id)
+		public ActionResult<Result> EnableOrDisable([FromBody] uint id)
 		{
 			var res = _announcementService.EnableOrDisable(id);
 			logger.Info(id);
-			return Ok(res);
+			return res;
 		}
 
 	}

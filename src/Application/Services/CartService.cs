@@ -48,16 +48,16 @@ namespace ECom.Application.Services
 			}
 			if (!isSuccess)
 			{
-				throw new DbInternalException(nameof(AddOrIncreaseProduct));
+				return Result.DbInternal(1);
 			}
-			return Result.Success(nameof(AddOrIncreaseProduct));
+			return Result.Success();
 		}
 		public Result RemoveOrDecreaseProduct(int userId, int productId)
 		{
 			var exist = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
 			{
-				throw new NotFoundException(nameof(Product));
+				return Result.Warn(1, ErrorCode.NotFound,nameof(Cart));
 			}
 			var isSuccess = false;
 			if (exist.Count > 1)
@@ -69,8 +69,11 @@ namespace ECom.Application.Services
 			{
 				isSuccess = _cartRepo.Delete(exist);
 			}
-			if (!isSuccess) throw new DbInternalException(nameof(RemoveOrDecreaseProduct));
-			return Result.Success(nameof(RemoveOrDecreaseProduct));
+			if (!isSuccess)
+			{
+                return Result.DbInternal(2);
+            }
+            return Result.Success();
 		}
 		public int GetBasketProductCount(int userId)
 		{
@@ -86,7 +89,10 @@ namespace ECom.Application.Services
 		public Result Clear(int userId)
 		{
 			var res = _cartRepo.DeleteWhere(x => x.UserId == userId);
-            if (res == 0) throw new DbInternalException(nameof(Clear));
+            if (res == 0) 
+			{
+                return Result.DbInternal(2);
+            }
 			return Result.Success("Deleted");
 		}
 	}

@@ -10,6 +10,7 @@ namespace ECom.Domain.ApiModels
 {
     public abstract class AuthRequestModelBase
     {
+        [System.Text.Json.Serialization.JsonIgnore]
         [JsonIgnore]
         public int AuthenticatedUserId
         {
@@ -28,6 +29,7 @@ namespace ECom.Domain.ApiModels
 
         }
 
+        [System.Text.Json.Serialization.JsonIgnore]
         [JsonIgnore]
         public int AuthenticatedAdminId
         {

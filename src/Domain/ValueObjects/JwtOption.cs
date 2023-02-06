@@ -13,8 +13,7 @@ namespace ECom.Domain.ValueObjects
 			Secret = ConfigHelper.GetString("JwtSecret") ?? throw new NullException(nameof(Secret));
             Issuer = ConfigHelper.GetString("JwtIssuer");
             Audience = ConfigHelper.GetString("JwtAudience");
-			TokenExpireDefaultMinutes = ConfigHelper.Get<int>("JwtTokenExpireDefaultMinutes");
-            TokenExpireLongMinutes = ConfigHelper.Get<int>("JwtTokenExpireLongMinutes");
+            TokenExpireMinutes = ConfigHelper.Get<int>("JwtTokenExpireMinutes");
         }
         public static JwtOption This
 		{
@@ -28,8 +27,9 @@ namespace ECom.Domain.ValueObjects
 
 		public string Secret { get; set; }
 		public string? Issuer { get; set; }
+		public bool ValidateIssuer { get => Issuer != null ; }
 		public string? Audience { get; set; }
-		public int TokenExpireDefaultMinutes { get; set; } = 10;
-		public int TokenExpireLongMinutes { get; set; } = 10080;
+        public bool ValidateAudience { get => Audience != null; }
+		public int TokenExpireMinutes { get; set; } = 10080;
 	}
 }

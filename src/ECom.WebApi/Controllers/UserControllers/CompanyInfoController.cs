@@ -1,9 +1,10 @@
 ﻿using ECom.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-
+    [AllowAnonymous]
     public class CompanyInfoController : BaseUserController
     {
         private readonly ICompanyInformationService _companyInformationService;
@@ -13,10 +14,10 @@ namespace ECom.WebApi.Controllers.UserControllers
             this._companyInformationService = companyInformationService;
         }
         [HttpGet]
-        public IActionResult Get()
+        [ResponseCache(Duration = 60)]
+        public ActionResult<CompanyInformation> Get()
         {
-            var res = _companyInformationService.GetFromCache();
-			return Ok(res);
+            return _companyInformationService.GetFromCache();
         }
 
 

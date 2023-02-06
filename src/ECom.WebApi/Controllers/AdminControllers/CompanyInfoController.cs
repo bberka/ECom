@@ -12,10 +12,10 @@ namespace ECom.WebApi.Controllers.AdminControllers
             this._companyInformationService = companyInformationService;
         }
         [HttpPost]
-        public IActionResult Update(CompanyInformation companyInformation)
+        public ActionResult<Result> Update(CompanyInformation companyInformation)
         {
             var res = _companyInformationService.UpdateCompanyInformation(companyInformation);
-			return Ok(res);
+			return res;
         }
 
 	}

@@ -34,52 +34,86 @@ namespace ECom.Application.Services
 			category.IsValid = !category.IsValid;
 			var res = _categoryRepo.Update(category);
 			if (!res) throw new DbInternalException(nameof(EnableOrDisableCategory));
-			return Result.Success(ErrCode.NotFound);
+			return Result.Success();
 		}
 		public Result UpdateCategory(CategoryUpdateRequestModel model)
 		{
-			if (!_categoryRepo.Any(x => x.Id == model.CategoryId)) throw new NotFoundException(nameof(Category));
-            if (!_languageRepo.Any(x => x.Id == model.LanguageId)) throw new NotFoundException(nameof(Language));
+			if (!_categoryRepo.Any(x => x.Id == model.CategoryId))
+			{
+				return Result.Warn(1, ErrorCode.NotFound, nameof(Category));
+            }
+            if (!_languageRepo.Any(x => x.Id == model.LanguageId))
+            {
+                return Result.Warn(1, ErrorCode.NotFound, nameof(Language));
+            }
             var res = _categoryRepo.UpdateWhereSingle(x => x.Id == model.CategoryId, x =>
 			{
 				x.IsValid = model.IsValid;
 				x.Name = model.Name;
 				x.LanguageId = model.LanguageId;
 			});
-            if (!res) throw new DbInternalException(nameof(EnableOrDisableCategory));
-			return Result.Success(ErrCode.NotFound);
+            if (!res) 
+			{
+                return Result.DbInternal(3);
+            }
+			return Result.Success();
 		}
 		public Result DeleteCategory(uint id)
 		{
 			var category = _categoryRepo.Find((int)id);
-			if (category == null) throw new NotFoundException(nameof(Category));
-            var res = _categoryRepo.Delete(category);
-            if (!res) throw new DbInternalException(nameof(DeleteCategory));
-			return Result.Success(ErrCode.Deleted);
+			if (category is null) 
+			{
+                return Result.Warn(1, ErrorCode.NotFound, nameof(Category));
+            }
+			category.IsValid = false;
+            var res = _categoryRepo.Update(category);
+            if (!res) 
+			{
+                return Result.DbInternal(2);
+            }
+			return Result.Success();
 
 		}
 		public Result EnableOrDisableSubCategory(uint id)
 		{
 			var category = _subCategoryRepo.Find((int)id);
-            if (category == null) throw new NotFoundException(nameof(Category));
+            if (category == null) 
+			{
+                return Result.Warn(1, ErrorCode.NotFound, nameof(Category));
+            }
 			category.IsValid = !category.IsValid;
 			var res = _subCategoryRepo.Update(category);
-            if (!res) throw new DbInternalException(nameof(EnableOrDisableSubCategory));
-			return Result.Success("Updated");
+            if (!res) 
+			{
+				return Result.DbInternal(2);
+            }
+			return Result.Success();
 		}
 		public Result UpdateSubCategory(SubCategory? data)
 		{
-			if (data == null) throw new NullException(nameof(SubCategory));
+			if (data == null) 
+			{
+                return Result.Warn(1, ErrorCode.NotFound, nameof(SubCategory));
+            }
 			var res = _subCategoryRepo.Update(data);
-            if (!res) throw new DbInternalException(nameof(UpdateSubCategory));
+            if (!res) 
+			{
+                return Result.DbInternal(2);
+            }
 			return Result.Success("Updated");
 		}
 		public Result DeleteSubCategory(uint id)
 		{
 			var category = _subCategoryRepo.Find((int)id);
-            if (category == null) throw new NullException(nameof(SubCategory));
+            if (category == null) 
+			{
+                return Result.Warn(1, ErrorCode.NotFound, nameof(SubCategory));
+            }
 			var res = _subCategoryRepo.Delete(category);
-            if (category == null) throw new DbInternalException(nameof(DeleteSubCategory));
+            if (category == null) 
+			{
+                return Result.DbInternal(2);
+            }
 			return Result.Success("Deleted");
 		}
 	}

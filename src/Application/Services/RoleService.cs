@@ -70,7 +70,6 @@ namespace ECom.Application.Services
         public List<RoleBind> GetRoleBinds()
         {
             return _roleBindRepo.GetList();
-            throw new NotImplementedException();
         }
 
         public List<RoleBind> GetAdminRoleBinds(int adminId)

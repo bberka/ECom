@@ -10,7 +10,6 @@ namespace ECom.Domain.Interfaces
 {
     public interface IJwtAuthenticator
     {
-        public JwtTokenModel Authenticate(LoginRequestModel model);
-        public string Refresh(string token);
+        public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model);
     }
 }

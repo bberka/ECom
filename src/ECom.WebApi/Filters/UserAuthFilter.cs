@@ -9,7 +9,7 @@ namespace ECom.WebApi.Filters
 			var authorized = context.HttpContext.IsUserAuthenticated();
 			if(!authorized)
 			{
-				context.Result = new UnauthorizedObjectResult(Result.Error(401,ErrCode.NotAuthorized));
+				context.Result = new UnauthorizedObjectResult(Result.Error(401,ErrorCode.NotAuthorized));
 			}
 			
 		}

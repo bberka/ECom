@@ -9,9 +9,9 @@ namespace ECom.Domain.Abstract
     public interface IAddressService
     {
         public List<Address> GetUserAddresses(int userId);
-        public Result UpdateAddress(Address address);
+        public Result UpdateAddress(int userId, Address address);
         public Result DeleteAddress(int userId, int id);
-        public Result AddAddress(Address address);
+        public Result AddAddress(int userId, Address address);
 
     }
 }

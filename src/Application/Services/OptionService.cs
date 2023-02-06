@@ -41,33 +41,32 @@ namespace ECom.Application.Services
 		public Result UpdateOption(Option option)
 		{
 			var res = _optionRepo.Update(option);
-			if (!res) throw new DbInternalException(nameof(UpdateOption));
+			if (!res) return Result.DbInternal(1);
 			OptionCache.Refresh();
             return Result.Success("Updated");
-
         }
        
         public Result UpdateCargoOption(CargoOption option)
 		{
 			var res = _cargoOptionRepo.Update(option);
-            if (!res) throw new DbInternalException(nameof(UpdateCargoOption));
+            if (!res) return Result.DbInternal(1);
 			CargoOptionCache.Refresh();
-            return Result.Success("Updated");
+            return Result.Success();
 
         }
         public Result UpdatePaymentOption(PaymentOption option)
 		{
 			var res = _paymentOptionRepo.Update(option);
-            if (!res) throw new DbInternalException(nameof(UpdatePaymentOption));
+            if (!res) return Result.DbInternal(1);
 			PaymentOptionCache.Refresh();
-			return Result.Success("Updated");
+			return Result.Success();
 		}
 		public Result UpdateSmtpOption(SmtpOption option)
 		{
 			var res = _smtpOptionRepo.Update(option);
-            if (!res) throw new DbInternalException(nameof(UpdateSmtpOption));
+            if (!res) return Result.DbInternal(1);
 			SmtpOptionCache.Refresh();
-            return Result.Success("Updated");
+            return Result.Success();
         }
 
 
@@ -75,13 +74,12 @@ namespace ECom.Application.Services
         public Option GetOption()
 		{
 
-			var option = new Option();
 #if DEBUG
-            option = _optionRepo.GetFirstOrDefault(x => x.IsRelease == false);
+            var option = _optionRepo.GetFirstOrDefault(x => x.IsRelease == false);
 #else
-			return _optionRepo.GetSingle(x => x.IsRelease == true);
+            var option = _optionRepo.GetFirstOrDefault(x => x.IsRelease == true);
 #endif
-			if (option is null) throw new NotFoundException(nameof(Option));
+            if (option is null) throw new NotFoundException(nameof(Option));
             return option;
         }
 

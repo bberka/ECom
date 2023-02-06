@@ -1,8 +1,10 @@
 ﻿using ECom.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
+    [AllowAnonymous]
     public class CategoryController : BaseUserController
     {
         private readonly ICategoryService _service;
@@ -11,10 +13,10 @@ namespace ECom.WebApi.Controllers.UserControllers
             _service = service;
         }
         [HttpGet]
-        public IActionResult List()
+        [ResponseCache(Duration = 60)]
+        public ActionResult<List<Category>> List()
         {
-            var res = _service.ListCategories();
-			return Ok(res);
+            return _service.ListCategories();
         }
 
 	}

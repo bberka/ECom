@@ -8,7 +8,7 @@ namespace ECom.Domain.Exceptions
 {
 	public class UnderMaintenanceException : CustomException
 	{
-		public UnderMaintenanceException() : base(ErrCode.UnderMaintenance.ToString())
+		public UnderMaintenanceException() : base(ErrorCode.UnderMaintenance.ToString())
 		{
 
 		}

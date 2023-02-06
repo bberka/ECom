@@ -18,10 +18,10 @@ namespace ECom.Domain.Abstract
         bool Exists(string email);
         Admin? GetAdmin(string email);
         bool IncreaseFailedPasswordCount(Admin admin);
-        Admin Login(LoginRequestModel model);
+        ResultData<Admin> Login(LoginRequestModel model);
         bool UpdateSuccessLogin(Admin admin);
         Result AddAdmin(AddAdminRequestModel admin);
-
+        Result ChangePassword(ChangePasswordRequestModel model);
         int GetAdminRoleId(int adminId);
         Role GetAdminRole(int adminId);
     }

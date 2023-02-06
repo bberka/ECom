@@ -28,7 +28,7 @@ namespace ECom.WebApi.Filters
 					}
 				}
 
-				context.Result = new BadRequestObjectResult(ResultData<ErrorResponse>.Error(400,ErrCode.ValidationError));
+				context.Result = new BadRequestObjectResult(ResultData<ErrorResponse>.Error(400,ErrorCode.ValidationError));
 				return;
 			}
 

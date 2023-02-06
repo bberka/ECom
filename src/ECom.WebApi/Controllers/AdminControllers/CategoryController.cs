@@ -14,49 +14,50 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPost]
-        public IActionResult Update([FromBody] CategoryUpdateRequestModel category) 
+        public ActionResult<Result> Update([FromBody] CategoryUpdateRequestModel category) 
         {
 			var res = _categoryService.UpdateCategory(category);
 			logger.Info(category.ToJsonString());
-			return Ok(res);
+			return res;
 		}
 		
 		[HttpDelete]
-		public IActionResult Delete([FromBody] uint id)
+		public ActionResult<Result> Delete([FromBody] uint id)
 		{
+			//TODO: test
 			var res = _categoryService.DeleteCategory(id);
 			logger.Info(id);
-			return Ok(res);
+			return res;
 		}
 		[HttpPut]
-		public IActionResult EnableOrDisable([FromBody] uint id)
+		public ActionResult<Result> EnableOrDisable([FromBody] uint id)
 		{
 			var res = _categoryService.EnableOrDisableCategory(id);
 			logger.Info(id);
-			return Ok(res);
+			return res;
 		}
 
 		[HttpPost]
-		public IActionResult UpdateSubCategory([FromBody] SubCategory category)
+		public ActionResult<Result> UpdateSubCategory([FromBody] SubCategory category)
 		{
 			var res = _categoryService.UpdateSubCategory(category);
 			logger.Info(category.ToJsonString());
-			return Ok(res);
+			return res;
 		}
 
 		[HttpDelete]
-		public IActionResult DeleteSubCategory([FromBody] uint id)
+		public ActionResult<Result> DeleteSubCategory([FromBody] uint id)
 		{
 			var res = _categoryService.DeleteSubCategory(id);
 			logger.Info(id);
-			return Ok(res);
+			return res;
 		}
 		[HttpPut]
-		public IActionResult EnableOrDisableSubCategory([FromBody] uint id)
+		public ActionResult<Result> EnableOrDisableSubCategory([FromBody] uint id)
 		{
 			var res = _categoryService.EnableOrDisableSubCategory(id);
 			logger.Info(id);
-			return Ok(res);
+			return res;
 		}
 
 	}

@@ -4,15 +4,15 @@ using ECom.Application.Manager;
 using ECom.Application.Services;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-    [ApiController]
-    [Route("api/[controller]/[action]")]
-    public class AuthController : Controller
+
+	[AllowAnonymous]
+    public class AuthController : BaseUserController
     {
-		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
 		private readonly IUserService _userService;
 		private readonly IUserJwtAuthenticator _userJwtAuthenticator;
 
@@ -23,20 +23,22 @@ namespace ECom.WebApi.Controllers.UserControllers
 			this._userService = userService;
 			this._userJwtAuthenticator = userJwtAuthenticator;
 		}
+
 		[HttpPost]
-		public IActionResult Login([FromBody] LoginRequestModel model)
+		public ActionResult<ResultData<JwtTokenModel>> Login([FromBody] LoginRequestModel model)
 		{
 			HttpContext.Session.Clear();
             var res = _userJwtAuthenticator.Authenticate(model);
             logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-            return Ok(res);
+            return res;
         }
+
 		[HttpPost]
-		public IActionResult Register([FromBody] RegisterRequestModel model)
+		public ActionResult<Result> Register([FromBody] RegisterRequestModel model)
 		{
 			var res = _userService.Register(model);
 			logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-			return Ok(res);
+			return res;
 		}
 	}
 }

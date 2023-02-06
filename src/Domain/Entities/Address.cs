@@ -12,7 +12,6 @@ namespace ECom.Domain.Entities
 
         public DateTime RegisterDate { get; set; }
         public DateTime? DeleteDate { get; set; }
-        public DateTime? LastUseDate { get; set; }
 
         [MinLength(ConstantMgr.StringMinLength)]
         [MaxLength(ConstantMgr.NameMaxLength)]

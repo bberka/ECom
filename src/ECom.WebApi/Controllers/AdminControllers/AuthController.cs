@@ -28,23 +28,24 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			this._adminJwtAuthenticator = adminJwtAuthenticator;
 		}
 		[HttpPost]
-        public IActionResult Login([FromBody] LoginRequestModel model)
+        public ActionResult<ResultData<JwtTokenModel>> Login([FromBody] LoginRequestModel model)
         {
 			HttpContext.Session.Clear();
             var res = _adminJwtAuthenticator.Authenticate(model);
             logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-            return Ok(res);
+            return res;
            
         }
 
 		[HttpPost]
-		public IActionResult Add([FromBody] AddAdminRequestModel model)
+		public ActionResult<Result> Add([FromBody] AddAdminRequestModel model)
 		{
 #if !DEBUG
             return NotFound();
 #endif
 			var res = _adminService.AddAdmin(model);
-			return Ok(res);
+
+			return res;
 		}
 
 	}

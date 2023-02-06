@@ -15,29 +15,26 @@ namespace ECom.Application.Manager
 			_jwtManager = new(JwtOption.This.Secret, JwtOption.This.Issuer, JwtOption.This.Audience);
 		}
 
-		public JwtTokenModel Authenticate(LoginRequestModel model)
-		{
-			var loginResult = _adminService.Login(model);
-			var adminAsDic = loginResult.AsDictionary();
-			adminAsDic.Add("AdminOnly", "");
-			var expireMins = JwtOption.This.TokenExpireDefaultMinutes;
-			if (model.RememberMe) expireMins = JwtOption.This.TokenExpireLongMinutes;
-			var date = DateTime.Now.AddMinutes(expireMins);
-			var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
-			var res = new JwtTokenModel
-			{
-				ExpireUnix = date.ToUnixTime(),
-				RefreshToken = null,
-				Token = token,
-			};
-			return res;
-		}
+	
 
-		public string Refresh(string token)
-		{
-			throw new NotImplementedException();
-		}
-
-        
+        public ResultData<JwtTokenModel> Authenticate(LoginRequestModel model)
+        {
+            var loginResult = _adminService.Login(model);
+            if (!loginResult.IsSuccess)
+            {
+                return ResultData<JwtTokenModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
+            }
+            var adminAsDic = loginResult.AsDictionary();
+            adminAsDic.Add("AdminOnly", "");
+            var expireMins = JwtOption.This.TokenExpireMinutes;
+            var date = DateTime.Now.AddMinutes(expireMins);
+            var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
+            var res = new JwtTokenModel
+            {
+                ExpireUnix = date.ToUnixTime(),
+                Token = token,
+            };
+            return res;
+        }
     }
 }

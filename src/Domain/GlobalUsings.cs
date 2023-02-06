@@ -45,3 +45,5 @@ global using EasMe;
 global using EasMe.Extensions;
 global using ECom.Domain.Extensions;
 global using ECom.Domain.Exceptions;
+global using EasMe.Models.ResultModels;
+global using EasMe.Enums;

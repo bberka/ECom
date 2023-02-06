@@ -1,5 +1,6 @@
 ﻿using EasMe.EFCore;
 using System.Collections.Specialized;
+using System.Runtime.Loader;
 
 namespace ECom.Application.Services
 {
@@ -21,34 +22,63 @@ namespace ECom.Application.Services
 		public Result DeleteAddress(int userId, int id)
 		{
 			var data = _addressRepo.Find(id);
-			if (data is null) throw new NotExistException(nameof(Address));
-			if (data.DeleteDate is not null) throw new AlreadyDeletedException(nameof(Address));
-            if (data.UserId != userId) throw new NotAuthorizedException(AuthType.User);
+			if (data is null)
+			{
+                return Result.Warn(1, ErrorCode.NotFound);
+            }
+            if (data.UserId != userId)
+			{
+                throw new NotAuthorizedException(AuthType.User);
+            }
+            if (data.DeleteDate.HasValue)
+			{
+                return Result.Warn(2, ErrorCode.AlreadyDeleted);
+            }
 			data.DeleteDate = DateTime.Now;
-			_addressRepo.Update(data);	
-			return Result.Success("Updated",nameof(Address));
+			var res = _addressRepo.Update(data);	
+			if(!res)
+			{
+                return Result.DbInternal(3);
+            }
+			return Result.Success();
 		}
 
-	
 		public List<Address> GetUserAddresses(int userId)
 		{
-			_userService.CheckExistsOrThrow(userId);
-			var list = _addressRepo.GetList(x => x.UserId == userId && x.DeleteDate != null);
-			return list;
+			return _addressRepo.GetList(x => x.UserId == userId && x.DeleteDate != null);
 		}
 
-		public Result UpdateAddress(Address address)
+		public Result UpdateAddress(int userId,Address data)
 		{
-			var res = _addressRepo.Update(address);
-			if (!res) throw new DbInternalException(nameof(UpdateAddress));
-			return Result.Success("Updated", "Address");
+			var address = _addressRepo.Find(data.Id);
+			if(address is null) 
+			{
+                return Result.Error(1, ErrorCode.NotFound);
+            }
+			if (address.UserId != userId)
+			{
+                throw new NotAuthorizedException(AuthType.User);
+            }
+            if (data.DeleteDate.HasValue)
+			{
+                return Result.Error(2, ErrorCode.Deleted);
+            }
+            var res = _addressRepo.Update(data);
+            if (!res) 
+			{
+                return Result.DbInternal(3);
+            }
+            return Result.Success();
 		}
 
-		public Result AddAddress(Address address)
+		public Result AddAddress(int userId,Address address)
 		{
 			var res = _addressRepo.Add(address);
-            if (!res) throw new DbInternalException(nameof(AddAddress));
-			return Result.Success("Added", "Address");
+			if (!res)
+			{
+                return Result.DbInternal(1);
+            }
+			return Result.Success();
 		}
 
 		

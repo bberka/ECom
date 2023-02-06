@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-	public class LanguageController : BaseUserController
+    [AllowAnonymous]
+    public class LanguageController : BaseUserController
 	{
 		private readonly ILanguageService _languageService;
 		public LanguageController(ILanguageService languageService)
@@ -10,10 +12,10 @@ namespace ECom.WebApi.Controllers.UserControllers
 			_languageService = languageService;
 		}
 		[HttpGet]
-		public IActionResult List()
+		[ResponseCache(Duration = 60)]
+		public ActionResult<List<Language>> List()
 		{
-			var res = _languageService.GetLanguages();
-			return Ok(res);
+			return _languageService.GetLanguages();
 		}
 
 	}

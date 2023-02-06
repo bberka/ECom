@@ -36,17 +36,26 @@ namespace ECom.Application.Services
 				UserId = model.AuthenticatedUserId,
 				Name = model.Name,
 			});
-			if (!createResult) throw new DbInternalException(nameof(CreateCollection));
-			return Result.Success("Added:Collection");
+			if (!createResult) 
+			{
+				return Result.DbInternal(1);
+			}
+			return Result.Success();
 		}
 
         public Result DeleteCollection(int id)
         {
 			var data = _collectionRepo.Find(id);
-			if (data is null) throw new NotFoundException(nameof(Collection));
+			if (data is null) 
+			{
+                return Result.Warn(1, ErrorCode.NotFound, nameof(Collection));
+            }
 			var res = _collectionRepo.Delete(id);
-			if (!res) throw new DbInternalException(nameof(DeleteCollection));
-			return Result.Success("Deleted");
+			if (!res) 
+			{
+                return Result.DbInternal(2);
+            }
+            return Result.Success();
         }
 
         public Collection? GetCollection(int id)
@@ -83,11 +92,17 @@ namespace ECom.Application.Services
         {
 			_userService.CheckExistsOrThrow(model.AuthenticatedUserId);
 			var collection = GetCollection(model.CollectionId);
-			if (collection is null) throw new NotFoundException(nameof(Collection));
+			if (collection is null)
+			{
+				return Result.Warn(1, ErrorCode.NotFound, nameof(Collection));
+			}
 			collection.Name = model.CollectionName;
 			var res = _collectionRepo.Update(collection);	
-			if(!res) throw new DbInternalException(nameof(UpdateCollection));
-			return Result.Success("Updated");
+			if(!res) 
+			{
+                return Result.Warn(2, ErrorCode.NotFound, nameof(UpdateCollection));
+            }
+			return Result.Success();
         }
     }
 }

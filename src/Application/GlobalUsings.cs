@@ -27,6 +27,8 @@ global using EasMe.Helpers;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using System;
 global using ECom.Domain.Entities;
+global using EasMe.Models.ResultModels;
+global using EasMe.Enums;
 global using ECom.Domain.ValueObjects;
 global using ECom.Domain.Models;
 global using EasMe;

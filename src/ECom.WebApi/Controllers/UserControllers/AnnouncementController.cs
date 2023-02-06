@@ -1,9 +1,10 @@
 ﻿using ECom.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-
+    [AllowAnonymous]
     public class AnnouncementController : BaseUserController
     {
         private readonly IAnnouncementService _announcementService;
@@ -12,10 +13,10 @@ namespace ECom.WebApi.Controllers.UserControllers
             _announcementService = announcementService;  
         }
         [HttpGet]
-        public IActionResult List()
+        [ResponseCache(Duration = 60)]
+        public ActionResult<List<Announcement>> List()
         {
-            var res = _announcementService.GetAnnouncements();
-			return Ok(res.ToJsonString());
+            return _announcementService.GetAnnouncements();
         }
 
 

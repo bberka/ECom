@@ -2,53 +2,54 @@
 using ECom.Domain.Entities;
 using ECom.Domain.Extensions;
 using ECom.WebApi.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
-	[UserAuthFilter]
+
     public class AddressController : BaseUserController
     {
-		private readonly IAddressService _service;
-		public AddressController(IAddressService service)
+        private readonly IAddressService addressService;
+
+        public AddressController(IAddressService addressService)
 		{
-			_service = service;
-		}
+            this.addressService = addressService;
+        }
 		[HttpGet]
-		public IActionResult List()
+		public ActionResult<List<Address>> List()
 		{
 			var user = HttpContext.GetUser();
-			var res = _service.GetUserAddresses(user.Id);
-			return Ok(res);
+			var res = addressService.GetUserAddresses(user.Id);
+			return res;
 		}
 
 		[HttpPut]
-		public IActionResult Add([FromBody] Address address)
+		public ActionResult<Result> Add([FromBody] Address address)
 		{
-			var user = HttpContext.GetUser();
-			var res = _service.AddAddress(address);
-			logger.Info(user.Id, address.ToJsonString());
-			return Ok(res);
-
+			var userId = HttpContext.GetUserId();
+			var res = addressService.AddAddress(userId,address);
+			logger.Info(userId, address.ToJsonString());
+			return res;
 		}
 		[HttpPost]
-		public IActionResult Update([FromBody] Address address)
+		public ActionResult<Result> Update([FromBody] Address address)
 		{
-			var user = HttpContext.GetUser();
-			var res = _service.UpdateAddress(address);
-			logger.Info(user.Id,address.ToJsonString());
-			return Ok(res);
+            var userId = HttpContext.GetUserId();
+            var res = addressService.UpdateAddress(userId,address);
+			logger.Info(userId, address.ToJsonString());
+			return res;
 		}
 
 		[HttpDelete]
-		public IActionResult Delete([FromBody] int id)
+		public ActionResult<Result> Delete([FromBody] int id)
 		{
 			var user = HttpContext.GetUser();
-			var res = _service.DeleteAddress(user.Id, id);
+			var res = addressService.DeleteAddress(user.Id, id);
 			logger.Info(user.Id, id);
-			return Ok(res);
+			return res;
 		}
 
 

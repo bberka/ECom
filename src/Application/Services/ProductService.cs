@@ -167,12 +167,12 @@ namespace ECom.Application.Services
 		public void CheckExists(int id)
 		{
 			var exist = _productRepo.Any(x => x.Id == id);
-			if (!exist) throw new CustomException(ErrCode.NotFound);
+			if (!exist) throw new CustomException(ErrorCode.NotFound);
 		}
 		public void CheckExists(uint id)
 		{
 			var exist = _productRepo.Any(x => x.Id == id);
-			if (!exist) throw new CustomException(ErrCode.NotFound);
+			if (!exist) throw new CustomException(ErrorCode.NotFound);
 		}
 	}
 }

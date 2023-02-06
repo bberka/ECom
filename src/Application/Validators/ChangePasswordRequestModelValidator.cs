@@ -30,12 +30,12 @@ namespace ECom.Application.Validators
             RuleFor(x => x.NewPassword)
                 .Equal(x => x.NewPasswordConfirm)
                 .OverridePropertyName("'New Password' and 'New Password Confirm'")
-                .WithErrorCode(ErrCode.MustBeSame.ToString());
+                .WithErrorCode(ErrorCode.MustBeSame.ToString());
 
             RuleFor(x => x.OldPassword)
                 .NotEqual(x => x.NewPassword)
                 .OverridePropertyName("'Old Password' and 'New Password'")
-                .WithErrorCode(ErrCode.CanNotBeSame.ToString());
+                .WithErrorCode(ErrorCode.CanNotBeSame.ToString());
         }
 
     }

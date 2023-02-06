@@ -28,6 +28,8 @@ global using EasMe;
 global using EasMe.EFCore;
 global using ECom.Infrastructure;
 global using System;
+global using EasMe.Models.ResultModels;
+global using EasMe.Enums;
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;

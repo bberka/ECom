@@ -11,11 +11,11 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPut]
-		public IActionResult EnableOrDisable([FromBody] int id)
+		public ActionResult<Result> EnableOrDisable([FromBody] int id)
 		{
 			var res = _languageService.EnableOrDisable(id);
 			logger.Info("Language EnabledOrDisabled: " + id);
-			return Ok(res);
+			return res;
 		}
 
 		

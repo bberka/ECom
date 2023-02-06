@@ -16,22 +16,32 @@ var builder = WebApplication.CreateBuilder(args);
 AppDomain.CurrentDomain.AddUnexpectedExceptionHandling();
 builder.Services.AddControllers(x =>
 {
-	x.Filters.Add(new ExceptionHandleFilter());
+    x.Filters.Add(new ExceptionHandleFilter());
+}).ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = c =>
+    {
+        var errors = c.ModelState.Values
+          .Where(v => v.Errors.Count > 0)
+          .SelectMany(v => v.Errors)
+          .Select(v => v.ErrorMessage)
+          .ToArray();
+
+        return new BadRequestObjectResult(Result.Error(400, ErrorCode.ValidationError, errors));
+    };
 });
 
 builder.Services.AddEndpointsApiExplorer();
 
 
-
-
 #region Session-Memory
 builder.Services.AddSession(options =>
 {
-	options.IdleTimeout = TimeSpan.FromSeconds(720);
-	options.Cookie.HttpOnly = true;
-	// Make the session cookie essential
-	options.Cookie.IsEssential = true;
-	options.Cookie.Name = ".Session.ECom";	
+    options.IdleTimeout = TimeSpan.FromSeconds(720);
+    options.Cookie.HttpOnly = true;
+    // Make the session cookie essential
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = ".Session.ECom";
 
 });
 builder.Services.AddMemoryCache();
@@ -51,7 +61,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
-	
+
 });
 
 builder.Services
@@ -70,9 +80,9 @@ builder.Services
     token.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey("vztgffzaoyszvahsacfqxxjvtvbbrnbdtrxwarveycuwpyhkrtuhgkimowfuoiitubvvfedfuqkeztjbbkaapbgsuxcvcjrwxgegdedonqvguuputqqjcmznmqojbjvv".ConvertToByteArray()),
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        IssuerSigningKey = new SymmetricSecurityKey(JwtOption.This.Secret.ConvertToByteArray()),
+        ValidateIssuer = JwtOption.This.ValidateIssuer,
+        ValidateAudience = JwtOption.This.ValidateAudience,
         RequireExpirationTime = true,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
@@ -92,20 +102,20 @@ ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
 builder.Services.AddFluentValidationAutoValidation();
 
 
-
-
 builder.Services.AddBusinessDependencies();
 
 
 var app = builder.Build();
-//ServiceProviderProxy.This.Load(app.Services);
 
 #region Default
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-	
+
+
 }
 
 //app.UseHttpsRedirection();

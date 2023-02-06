@@ -5,24 +5,30 @@ namespace ECom.WebApi.Controllers.AdminControllers
 {
     public class AccountController : BaseAdminController
     {
+        private readonly IAdminService _adminService;
+
+        public AccountController(IAdminService adminService)
+        {
+            this._adminService = adminService;
+        }
         [HttpGet]
-        public IActionResult Get()
+        public ActionResult<Admin> Get()
         {
             var admin = HttpContext.GetAdmin();
-            return Ok(admin);
+            return admin;
         }
+        
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordRequestModel model)
+        public ActionResult<Result> ChangePassword(ChangePasswordRequestModel model)
         {
-            var admin = HttpContext.GetAdmin();
-            return Ok(admin);
+            return _adminService.ChangePassword(model);
         }
-        [HttpPost]
-        public IActionResult Update(UpdateAdminAccountRequestModel model)
-        {
-            var admin = HttpContext.GetAdmin();
-            return Ok(admin);
-        }
+        //[HttpPost]
+        //public IActionResult Update(UpdateAdminAccountRequestModel model)
+        //{
+        //    var admin = HttpContext.GetAdmin();
+        //    return Ok(admin);
+        //}
 
     }
 }

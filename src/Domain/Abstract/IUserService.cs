@@ -19,8 +19,9 @@ namespace ECom.Domain.Abstract
         User GetUserOrThrow(int id);
         bool IncreaseFailedPasswordCount(int userId);
         bool IncreaseFailedPasswordCount(User user);
-        User Login(LoginRequestModel model);
+        ResultData<User> Login(LoginRequestModel model);
         Result Register(RegisterRequestModel model);
+        Result ChangePassword(ChangePasswordRequestModel model);
         bool UpdateSuccessLogin(User user);
     }
 }

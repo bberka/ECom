@@ -34,8 +34,8 @@ namespace ECom.Application.Services
 			var language = GetLanguage(id);
 			language.IsValid = !language.IsValid;
 			var res = _languageRepo.Update(language);
-			if (!res) throw new DbInternalException(nameof(EnableOrDisable));
-			return Result.Success("Updated");
+			if (!res) return Result.DbInternal(1);
+			return Result.Success();
 		}
 	}
 }

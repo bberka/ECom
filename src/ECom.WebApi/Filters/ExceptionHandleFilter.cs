@@ -18,28 +18,32 @@ namespace ECom.WebApi.Filters
         public void OnException(ExceptionContext context)
         {
             var query = context.HttpContext.Request.QueryString;
-			logger.Exception(context.Exception, $"Query({query})");
 			context.HttpContext.Response.StatusCode = 500;
 
             var type = context.Exception.GetType();
-            var baseType = type.BaseType;   
             if (type.Equals(typeof(NotAuthorizedException))) 
 			{
 				context.HttpContext.Response.StatusCode = 403;
                 //Logging 
 			}
-            if(baseType is not null)
+            else
             {
-                if (baseType.Equals(typeof(CustomException)))
-                {
-                    var errCode = type.Name.Replace("Exception", "");
-                    var paramArray = context.Exception.Message.Split(':').ToArray();
-                    var body = Result.Error(100, errCode, paramArray);
-                    context.Result = new BadRequestObjectResult(body);
-                    logger.Warn(query, body.ErrorCode,body.Parameters);
-                }
+                context.Result = new ObjectResult(Result.Exception(100, context.Exception));
+                context.HttpContext.Response.StatusCode = 500;
+                logger.Exception(context.Exception, $"Query({query})");
             }
-           
+            //if(baseType is not null)
+            //{
+            //    if (baseType.Equals(typeof(CustomException)))
+            //    {
+            //        var errCode = type.Name.Replace("Exception", "");
+            //        var paramArray = context.Exception.Message.Split(':').ToArray();
+            //        var body = Result.Error(100, errCode, paramArray);
+            //        context.Result = new OkObjectResult(body);
+            //        logger.Warn(query, body.ErrorCode,body.Parameters);
+            //    }
+            //}
+
         }
 
     }

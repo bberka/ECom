@@ -6,8 +6,8 @@ namespace ECom.WebApi.Controllers
 {
     [ApiController]
     [Route("api/Admin/[controller]/[action]")]
-
-    [AdminAuthFilter]
+    [Authorize(Policy = "AdminOnly")]
+    //[AdminAuthFilter]
 	public class BaseAdminController : Controller
     {
         protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseAdminController));

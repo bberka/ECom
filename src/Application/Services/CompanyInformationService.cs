@@ -50,12 +50,18 @@ namespace ECom.Application.Services
 			if (current != null)
 			{
 				var deleteResult = _companyInfoRepo.Delete(current);
-				if (!deleteResult) throw new DbInternalException(nameof(UpdateCompanyInformation));
+				if (!deleteResult) 
+				{
+                    return Result.DbInternal(1);
+                }
 			}
             var res = _companyInfoRepo.Add(info);
-            if (!res) throw new DbInternalException(nameof(UpdateCompanyInformation));
+            if (!res)
+			{
+                return Result.DbInternal(2);
+            }
             Cache.Refresh();
-			return Result.Success("Updated");
+			return Result.Success();
 		}
 	}
 
