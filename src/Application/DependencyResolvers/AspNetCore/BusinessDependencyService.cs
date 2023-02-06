@@ -52,6 +52,8 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<UserLog>, UserLogDAL>();
 			services.AddScoped<IEfEntityRepository<ProductSubCategory>, ProductSubCategoryDAL>();
 			services.AddScoped<IEfEntityRepository<ImageLanguage>, ImageLanguageDAL>();
+			services.AddScoped<IEfEntityRepository<StockChange>, StockChangeDAL>();
+			services.AddScoped<IEfEntityRepository<Supplier>, SupplierDAL>();
 
 
 			//Business Logic

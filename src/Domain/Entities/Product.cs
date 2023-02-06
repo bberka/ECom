@@ -13,6 +13,7 @@ namespace ECom.Domain.Entities
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+		public bool IsValid { get; set; }
 		public DateTime RegisterDate { get; set; }
 		public DateTime? DeleteDate { get; set; }
 		public bool IsLimited { get; set; }

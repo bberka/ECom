@@ -77,6 +77,7 @@ namespace ECom.Infrastructure
             if (!created) return;
             using var context = new EComDbContext();
             var option = new Option();
+            option.IsRelease = !ConstantMgr.IsDebug();
             context.Add(option);
             context.SaveChanges();
             var lang = new Language
