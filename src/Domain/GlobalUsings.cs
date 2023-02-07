@@ -32,7 +32,6 @@ global using ECom.Domain.Lib;
 global using ECom.Domain.Models;
 global using ECom.Domain.Constants;
 global using EasMe;
-global using EasMe.EFCore;
 global using System;
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations.Schema;
@@ -45,5 +44,9 @@ global using EasMe;
 global using EasMe.Extensions;
 global using ECom.Domain.Extensions;
 global using ECom.Domain.Exceptions;
-global using EasMe.Models.ResultModels;
+
 global using EasMe.Enums;
+global using EasMe.Models;
+global using ECom.Domain.ApiModels.Request;
+global using ECom.Domain.ApiModels.Response;
+global using EasMe.EntityFrameworkCore.Abstract;

@@ -44,18 +44,17 @@ namespace ECom.Application.Services
 			{
 				return ResultData<User>.Warn(1, ErrorCode.NotFound, nameof(User));
 			}
-			var hashed = Convert.ToBase64String(model.Password.MD5Hash());
-			if (user.Password != hashed)
+			if (user.Password != model.EncryptedPassword)
 			{
 				IncreaseFailedPasswordCount(user);
                 return ResultData<User>.Warn(2, ErrorCode.NotFound, nameof(User));
 			}
-			var validator = new UserValidator(_validationDbService);
+			var validator = new UserValidator();
 			var validateResult = validator.Validate(user);
             if (!validateResult.IsValid)
             {
                 var first = validateResult.Errors.First();
-                return ResultData<User>.Warn(3, ErrorCode.ValidationError, first.ErrorMessage);
+                return ResultData<User>.Warn(3, ErrorCode.ValidationError, first.PropertyName, first.ErrorMessage);
             }
             if (user.TwoFactorType != 0)
 			{

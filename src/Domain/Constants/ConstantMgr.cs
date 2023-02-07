@@ -15,7 +15,7 @@ namespace ECom.Domain.Constants
 
 		public const byte NameMaxLength = 64;
 		public const byte EmailMaxLength = 255;
-		public const byte PasswordMaxLength = 32;
+		public const byte PasswordMaxLength = 255;
 		public const byte TitleMaxLength = 32;
 		public const byte PhoneNumberMaxLength = 32;
 

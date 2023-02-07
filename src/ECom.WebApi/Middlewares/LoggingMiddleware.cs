@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using System.Diagnostics;
+using EasMe.Logging;
 
 namespace ECom.WebApi.Middlewares
 {

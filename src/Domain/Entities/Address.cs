@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace ECom.Domain.Entities 
+﻿namespace ECom.Domain.Entities
 {
     public class Address : IEfEntity
 	{

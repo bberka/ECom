@@ -4,6 +4,7 @@
 
 
 
+using EasMe.Logging;
 using ECom.Application.Services;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.ApiModels.Response;

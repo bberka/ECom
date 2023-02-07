@@ -1,11 +1,10 @@
-﻿using ECom.Domain.ApiModels.Request;
-using ECom.Domain.Interfaces;
+﻿using ECom.Domain.Interfaces;
 using System.Security.Claims;
 
 namespace ECom.Application.Manager
 {
 
-	public class AdminJwtAuthenticator : IAdminJwtAuthenticator
+    public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 	{
 		private readonly IAdminService _adminService;
 		private readonly EasJWT _jwtManager;
@@ -22,7 +21,7 @@ namespace ECom.Application.Manager
             var loginResult = _adminService.Login(model);
             if (!loginResult.IsSuccess)
             {
-                return ResultData<AdminLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)(object)loginResult.ErrorString, loginResult.Parameters);
+                return ResultData<AdminLoginResponseModel>.Error(loginResult.Rv, loginResult.ErrorCode, loginResult.Parameters);
             }
             var adminAsDic = loginResult.Data.AsDictionary();
             var remove = adminAsDic.Where(x => x.Value == null || x.Value.ToString() == "");

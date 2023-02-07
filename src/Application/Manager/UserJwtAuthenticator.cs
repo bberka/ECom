@@ -26,9 +26,7 @@ namespace ECom.Application.Manager
             var loginResult = _userService.Login(model);
             if (!loginResult.IsSuccess)
             {
-                var parse = Enum.TryParse(typeof(ErrorCode), loginResult.ErrorString, out var error);
-                if (!parse) error = ErrorCode.Error;
-                return ResultData<UserLoginResponseModel>.Error(loginResult.Rv, (ErrorCode)error, loginResult.Parameters);
+                return ResultData<UserLoginResponseModel>.Error(loginResult.Rv, loginResult.ErrorCode, loginResult.Parameters);
             }
             var userAsDic = loginResult.Data.AsDictionary();
             var remove = userAsDic.Where(x => x.Value == null || x.Value.ToString() == "");

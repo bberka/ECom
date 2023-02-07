@@ -55,7 +55,6 @@ namespace ECom.Application.Services
         }
         public Admin? GetAdmin(string email)
         {
-            
             var admin = _adminRepo
                 .Get(x => x.EmailAddress == email && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
@@ -160,19 +159,21 @@ namespace ECom.Application.Services
         public ResultData<Admin> Login(LoginRequestModel model)
         {
             var admin = GetAdmin(model.EmailAddress);
-            if (admin is null) return ResultData<Admin>.Warn(1, ErrorCode.NotFound,nameof(Admin));
-            var hashed = Convert.ToBase64String(model.Password.MD5Hash());
-            if (admin.Password != hashed)
+            if (admin is null)
+            {
+                return ResultData<Admin>.Warn(1, ErrorCode.NotFound, nameof(Admin));
+            }
+            if (admin.Password != model.EncryptedPassword)
             {
                 IncreaseFailedPasswordCount(admin);
-                if (admin is null) return ResultData<Admin>.Warn(2, ErrorCode.NotFound, nameof(Admin));
+                return ResultData<Admin>.Warn(2, ErrorCode.NotFound, nameof(Admin));
             }
             var validator = new AdminValidator(_validationDbService);
             var validateResult = validator.Validate(admin);
             if (!validateResult.IsValid)
             {
                 var first = validateResult.Errors.First();
-                if (admin is null) return ResultData<Admin>.Warn(3, ErrorCode.ValidationError, nameof(Admin), first.PropertyName, first.ErrorCode);
+                return ResultData<Admin>.Warn(3, ErrorCode.ValidationError, nameof(Admin), first.PropertyName, first.ErrorCode);
             }
             if (admin.TwoFactorType != 0)
             {

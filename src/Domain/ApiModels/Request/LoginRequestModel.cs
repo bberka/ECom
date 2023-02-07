@@ -10,5 +10,9 @@ namespace ECom.Domain.ApiModels.Request
     {
         public string EmailAddress { get; set; }
         public string Password { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        public string EncryptedPassword { get => Convert.ToBase64String(Password.MD5Hash()); }
     }
 }

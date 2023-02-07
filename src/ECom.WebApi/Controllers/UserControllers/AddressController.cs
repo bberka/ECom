@@ -26,7 +26,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 			return res;
 		}
 
-		[HttpPut]
+		[HttpPost]
 		public ActionResult<Result> Add([FromBody] Address address)
 		{
 			var userId = HttpContext.GetUserId();

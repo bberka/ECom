@@ -1,15 +1,11 @@
-
-using ECom.Application.DependencyResolvers.AspNetCore;
+using EasMe.Logging;
 using ECom.Application.Validators;
 using ECom.WebApi.Filters;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Globalization;
-using System.Reflection;
 
 EasLogFactory.LoadConfig_TraceDefault(true);
 

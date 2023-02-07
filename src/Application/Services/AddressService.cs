@@ -1,8 +1,4 @@
-﻿using EasMe.EFCore;
-using System.Collections.Specialized;
-using System.Runtime.Loader;
-
-namespace ECom.Application.Services
+﻿namespace ECom.Application.Services
 {
 
 	public class AddressService : IAddressService

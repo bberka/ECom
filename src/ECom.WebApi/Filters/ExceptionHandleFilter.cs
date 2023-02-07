@@ -1,13 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EasMe.Extensions;
-using Azure.Core;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Server.IIS.Core;
+﻿using EasMe.Logging;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ECom.WebApi.Filters
 {
@@ -28,7 +20,7 @@ namespace ECom.WebApi.Filters
 			}
             else
             {
-                context.Result = new ObjectResult(Result.Exception(100, context.Exception));
+                context.Result = new ObjectResult(Result.Error(100, context.Exception.Message));
                 context.HttpContext.Response.StatusCode = 500;
                 logger.Exception(context.Exception, $"Query({query})");
             }

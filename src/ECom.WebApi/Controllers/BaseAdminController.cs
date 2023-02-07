@@ -1,4 +1,5 @@
-﻿using ECom.WebApi.Filters;
+﻿using EasMe.Logging;
+using ECom.WebApi.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
