@@ -12,8 +12,8 @@ namespace ECom.Domain.Abstract
         public Result UpdateAddress(int userId, Address address);
         public Result DeleteAddress(int userId, int id);
         public Result AddAddress(int userId, Address address);
-        public Address? GetAddress(int userId,int addressId);
-        public Address? GetAddress(int addressId);
+        public ResultData<Address> GetAddress(int userId,int addressId);
+        public ResultData<Address> GetAddress(int addressId);
 
     }
 }

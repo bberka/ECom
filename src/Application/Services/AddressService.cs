@@ -19,21 +19,22 @@ namespace ECom.Application.Services
 		
 		public Result DeleteAddress(int userId, int id)
 		{
-            var data = GetAddress(userId, id);
-            if (data is null)
+            var addressResult = GetAddress(userId, id);
+            if (addressResult.IsFailure)
+            {
+                return addressResult.ToResult(10);
+            }
+            var address = addressResult.Data;
+            if (address is null)
             {
                 return DomainResult.Address.NotFoundResult(1);
             }
-            if (data.UserId != userId)
-            {
-                return DomainResult.User.NotAuthorizedResult(2);
-            }
-            if (data.DeleteDate.HasValue)
+            if (address.DeleteDate.HasValue)
             {
                 return DomainResult.Address.AlreadyDeletedResult(3);
             }
-			data.DeleteDate = DateTime.Now;
-			var res = _addressRepo.Update(data);	
+			address.DeleteDate = DateTime.Now;
+			var res = _addressRepo.Update(address);	
 			if(!res)
             {
                 return DomainResult.DbInternalErrorResult(4);
@@ -48,25 +49,21 @@ namespace ECom.Application.Services
 
 		public Result UpdateAddress(int userId,Address data)
 		{
-			var address = GetAddress(userId, data.Id);
-			if(address is null)
+			var addressResult = GetAddress(userId, data.Id);
+            if (addressResult.IsFailure)
             {
-                return DomainResult.Address.NotFoundResult(1);
+                return addressResult.ToResult(10);
             }
-			if (address.UserId != userId)
-            {
-                return DomainResult.User.NotAuthorizedResult(2);
-            }
+            var address = addressResult.Data;
             if (address.DeleteDate.HasValue)
             {
-                return DomainResult.Address.DeletedResult(3);
+                return DomainResult.Address.DeletedResult(1);
             }
             var res = _addressRepo.Update(data);
             if (!res)
             {
-                return DomainResult.DbInternalErrorResult(4);
+                return DomainResult.DbInternalErrorResult(2);
             }
-
             return DomainResult.Address.UpdateSuccessResult();
 		}
 
@@ -81,14 +78,31 @@ namespace ECom.Application.Services
             return DomainResult.Address.AddSuccessResult();
 		}
 
-        public Address? GetAddress(int addressId)
+        public ResultData<Address> GetAddress(int addressId)
         {
-			return _addressRepo.GetFirstOrDefault(x => x.Id == addressId && !x.DeleteDate.HasValue);
+			var address = _addressRepo.GetFirstOrDefault(x => x.Id == addressId && !x.DeleteDate.HasValue);
+            if (address is null)
+            {
+                return DomainResult.Address.NotFoundResult(1);
+            }
+            return address;
         }
 
-        public Address? GetAddress(int userId, int addressId)
+        public ResultData<Address> GetAddress(int userId, int addressId)
         {
-            return _addressRepo.GetFirstOrDefault(x => x.Id == addressId && x.UserId == userId && !x.DeleteDate.HasValue);
+            var address = _addressRepo.GetFirstOrDefault(x => x.Id == addressId && !x.DeleteDate.HasValue);
+            if (address is null)
+            {
+                return DomainResult.Address.NotFoundResult(1);
+            }
+
+            var isAuthorized = address.UserId == userId;
+            if (!isAuthorized)
+            {
+                return DomainResult.User.NotAuthorizedResult(2);
+            }
+            return address;
+
         }
     }
 
