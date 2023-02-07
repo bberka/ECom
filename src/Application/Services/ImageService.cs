@@ -25,9 +25,11 @@ namespace ECom.Application.Services
         }
 
         private const string DefaultImageBase64String = "";
-        public Image? GetImage(int id)
+        public ResultData<Image> GetImage(int id)
         {
-            return _imageRepo.Find(id);
+            var image= _imageRepo.Find(id);
+            if (image is null) return DomainResult.Image.NotFoundResult(1);
+            return image;
         }
 
         public string GetImageBase64String(int id)

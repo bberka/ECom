@@ -13,24 +13,26 @@ namespace ECom.Application.Services
 	{
 
 		const byte CACHE_REFRESH_INTERVAL_MINS = 1;
-		private readonly EasCache<CompanyInformation> Cache;
+		private readonly EasCache<CompanyInformation?> Cache;
 		private readonly IEfEntityRepository<CompanyInformation> _companyInfoRepo;
 
 		public CompanyInformationService(IEfEntityRepository<CompanyInformation> companyInfoRepo)
 		{
-			Cache = new(GetCompanyInformation, CACHE_REFRESH_INTERVAL_MINS);
+			Cache = new(GetCompanyInformationNullable, CACHE_REFRESH_INTERVAL_MINS);
 			this._companyInfoRepo = companyInfoRepo;
 		}
 
-
-		public CompanyInformation GetCompanyInformation()
+        private CompanyInformation? GetCompanyInformationNullable()
+        {
+            return GetCompanyInformation().Data;
+        }
+		public ResultData<CompanyInformation> GetCompanyInformation()
 		{
-			var companyInformation = new CompanyInformation();
-            companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDebug());
-            if (companyInformation is null) throw new NotFoundException(nameof(CompanyInformation));
+            var companyInformation = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDebug());
+            if (companyInformation is null) return DomainResult.CompanyInformation.NotFoundResult(1);
 			return companyInformation;
 		}
-		public CompanyInformation GetFromCache()
+		public CompanyInformation? GetFromCache()
 		{
 			return Cache.Get();
 		}

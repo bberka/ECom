@@ -38,6 +38,8 @@ namespace ECom.Domain.Results
         public static class Product
         {
             public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "Product.NotFound");
+            public static Result NotValidResult(ushort rv) => Result.Warn(rv, "Product.NotValid");
+            public static Result DeletedResult(ushort rv) => Result.Warn(rv, "Product.Deleted");
             public static Result UpdateSuccessResult() => Result.Success("Product.Update");
             public static Result AddSuccessResult() => Result.Success("Product.Add");
         }
@@ -98,6 +100,10 @@ namespace ECom.Domain.Results
             public static Result AddSuccessResult() => Result.Success("SubCategory.Add");
             public static Result DeleteSuccessResult() => Result.Success("SubCategory.Delete");
 
+        }
+        public static class Image
+        {
+            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "Image.NotFound");
         }
         public static class Language
         {

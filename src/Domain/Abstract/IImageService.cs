@@ -13,6 +13,6 @@ namespace ECom.Domain.Abstract
 
         string GetImageBase64String(int id);
 
-        Image? GetImage(int id);
+        ResultData<Image> GetImage(int id);
     }
 }

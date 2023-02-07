@@ -11,8 +11,7 @@ namespace ECom.Domain.Abstract
     public interface IProductService
     {
         bool Exists(int id);
-        Product? GetProduct(long productNo);
-
+        ResultData<Product> GetProduct(long productNo);
         List<ProductDTO> GetProductDTOs(List<int> productIds);
         //List<ProductDetail>? GetProductDetails(long productNo);
         //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);

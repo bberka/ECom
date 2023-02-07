@@ -12,8 +12,14 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		{
 			_optionService = optionService;
 		}
-		
-		[HttpGet]
+
+        [HttpGet]
+        public ActionResult RefreshCache()
+        {
+             _optionService.RefreshCache();
+             return Ok();
+        }
+        [HttpGet]
 		public ActionResult<Option> GetCurrentOption()
 		{
 			return _optionService.GetOption();

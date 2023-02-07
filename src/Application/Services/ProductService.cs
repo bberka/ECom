@@ -1,5 +1,6 @@
 ﻿
 using System.Runtime.InteropServices;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -135,9 +136,13 @@ namespace ECom.Application.Services
             return _productRepo.Any(x => x.Id == id);
         }
 
-        public Product? GetProduct(long productNo)
+        public ResultData<Product> GetProduct(long productNo)
         {
-            return _productRepo.Get(x => x.Id == productNo && x.IsValid == true && !x.DeleteDate.HasValue).FirstOrDefault();
+            var product = _productRepo.GetFirstOrDefault(x => x.Id == productNo);
+            if (product is null) return DomainResult.Product.NotFoundResult(1);
+            if (!product.IsValid) return DomainResult.Product.NotValidResult(2);
+            if (product.DeleteDate.HasValue) return DomainResult.Product.DeletedResult(3);
+            return product;
         }
 
         

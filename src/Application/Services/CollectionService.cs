@@ -77,12 +77,19 @@ namespace ECom.Application.Services
             return collection;
         }
 
-
-        public ListCollectionProductsResponseModel GetCollectionProducts(int userId,int id)
+        public ResultData<Collection> GetCollection(int userId, int id)
         {
-			_userService.Exists(userId);
-			var collection = GetCollection(id);
-			if (collection.IsFailure) return new ListCollectionProductsResponseModel();
+            var collection = _collectionRepo.Find(id);
+            if (collection is null) return DomainResult.Collection.NotFoundResult(1);
+            if (collection.UserId == userId) return DomainResult.User.NotAuthorizedResult(2);
+            return collection;
+        }
+
+
+        public ResultData<ListCollectionProductsResponseModel> GetCollectionProducts(int userId,int id)
+        {
+			var collectionResult = GetCollection(userId,id);
+			if (collectionResult.IsFailure) return collectionResult.ToResult();
 			var collectionProductIds = _collectionProductRepo
 				.Get(x => x.CollectionId == id)
 				.Select(x => x.ProductId)
@@ -90,7 +97,7 @@ namespace ECom.Application.Services
 			var productDTOs = _productService.GetProductDTOs(collectionProductIds);
 			var result = new ListCollectionProductsResponseModel
 			{
-				Collection = collection.Data,
+				Collection = collectionResult.Data,
 				Products = productDTOs,
 			};
 			return result;
@@ -98,14 +105,12 @@ namespace ECom.Application.Services
 
         public List<Collection> GetCollections(int userId)
         {
-			_userService.CheckExistsOrThrow(userId);	
 			return _collectionRepo.GetList(x => x.UserId == userId);
         }
 
         public Result UpdateCollection(UpdateCollectionRequestModel model)
         {
-			_userService.CheckExistsOrThrow(model.AuthenticatedUserId);
-			var collectionResult = GetCollection(model.CollectionId);
+			var collectionResult = GetCollection(model.AuthenticatedUserId,model.CollectionId);
 			if (collectionResult.IsFailure)
             {
                 return collectionResult.ToResult();

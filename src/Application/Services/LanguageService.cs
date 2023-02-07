@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECom.Domain.Results;
 
 
 namespace ECom.Application.Services
@@ -22,10 +23,10 @@ namespace ECom.Application.Services
 		{
 			return _languageRepo.GetList();
 		}
-		public Language GetLanguage(int id)
+		public ResultData<Language> GetLanguage(int id)
 		{
 			var lang  = _languageRepo.Find(id);
-			if (lang is null) throw new NotFoundException(nameof(Language));
+            if (lang is null) return DomainResult.Language.NotFoundResult(1);
 			return lang;
 		}
 

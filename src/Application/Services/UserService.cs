@@ -3,6 +3,7 @@
 
 
 
+using EasMe;
 using ECom.Application.Validators;
 using ECom.Domain.Extensions;
 using ECom.Domain.Results;
@@ -38,12 +39,12 @@ namespace ECom.Application.Services
 		}
 		public ResultData<User> Login(LoginRequestModel model)
 		{
-			var user = GetUser(model.EmailAddress);
-            if (user is null)
+			var userResult = GetUser(model.EmailAddress);
+            if (userResult.IsFailure)
             {
-                return DomainResult.User.NotFoundResult(1);
+                return userResult.ToResult();
             }
-
+            var user = userResult.Data; //Ignore null warning
 			if (user.Password != model.EncryptedPassword)
 			{
 				IncreaseFailedPasswordCount(user);
@@ -81,54 +82,36 @@ namespace ECom.Application.Services
 		{
 			return _userRepo.UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
 		}
-		public User? GetUser(string email)
-		{
-			return _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
-		}
-		public User GetUserOrThrow(string email)
+		public ResultData<User> GetUser(string email)
 		{
 			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
-			if (user is null) throw new NullException(nameof(User));
-			return user;
-		}
-		public void CheckExistsOrThrow(int id)
-		{
-			if(id < 1) throw new NotValidException("UserId");
-			var exist = _userRepo.Any(x => x.Id == id);
-			if (!exist) throw new NotFoundException(nameof(User));
-		}
-		public void CheckExistsOrThrow(uint id)
-		{
-            if (id < 1) throw new NotValidException("UserId");
-            var exist = _userRepo.Any(x => x.Id == id);
-            if (!exist) throw new NotFoundException(nameof(User));
+            if (user is null) return DomainResult.User.NotFoundResult(1);
+            return user;
         }
+        public ResultData<User> GetUser(int id)
+		{
+            var user = _userRepo.Find(id);
+            if (user is null) return DomainResult.User.NotFoundResult(1);
+            return user;
+        }
+
 
 		public bool Exists(string email)
 		{
 			return _userRepo.Any(x => x.EmailAddress == email);
 		}
 
-		public User? GetUser(int id)
-		{
-			return _userRepo.Find(id);
-		}
-
-        public User GetUserOrThrow(int id)
-        {
-            var user = _userRepo.Find(id);
-			if (user is null) throw new NotFoundException(nameof(User));
-			return user;
-        }
 
         public Result ChangePassword(ChangePasswordRequestModel model)
         {
-			var user = GetUserOrThrow(model.AuthenticatedUserId);
+			var userResult = GetUser(model.AuthenticatedUserId);
+            if (userResult.IsFailure) return userResult.ToResult();
+            var user = userResult.Data;
 			if(user.Password != model.EncryptedOldPassword)
             {
                 return DomainResult.Base.PasswordWrongResult(1);
 			}
-			user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
+            user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
 			var res = _userRepo.Update(user);
 			if (!res)
             {

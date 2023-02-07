@@ -8,8 +8,8 @@ namespace ECom.Domain.Abstract
 {
     public interface ICompanyInformationService
     {
-        CompanyInformation GetCompanyInformation();
-        CompanyInformation GetFromCache();
+        ResultData<CompanyInformation> GetCompanyInformation();
+        CompanyInformation? GetFromCache();
         Result UpdateOrAddCompanyInformation(CompanyInformation info);
 
     }

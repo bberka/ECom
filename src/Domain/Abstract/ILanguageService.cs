@@ -9,7 +9,7 @@ namespace ECom.Domain.Abstract
     public interface ILanguageService
     {
         public List<Language> GetLanguages();
-        public Language GetLanguage(int id);
+        public ResultData<Language> GetLanguage(int id);
 
 
     }

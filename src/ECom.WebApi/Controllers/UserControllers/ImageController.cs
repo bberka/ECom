@@ -21,7 +21,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
         [HttpGet]
         [ResponseCache(Duration = 120, VaryByQueryKeys = new string[] { "id" })]
-        public ActionResult<Image?> GetImage(int id)
+        public ActionResult<ResultData<Image>> GetImage(int id)
         {
             return _imageService.GetImage(id);
         }
