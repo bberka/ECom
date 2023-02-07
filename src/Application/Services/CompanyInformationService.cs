@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -34,7 +35,7 @@ namespace ECom.Application.Services
 			return Cache.Get();
 		}
 
-		public Result UpdateCompanyInformation(CompanyInformation info)
+		public Result UpdateOrAddCompanyInformation(CompanyInformation info)
 		{
 #if DEBUG 
 			var isRelease = false;
@@ -45,18 +46,18 @@ namespace ECom.Application.Services
 			if (current != null)
 			{
 				var deleteResult = _companyInfoRepo.Delete(current);
-				if (!deleteResult) 
-				{
-                    return Result.DbInternal(1);
+				if (!deleteResult)
+                {
+                    return DomainResult.DbInternalErrorResult(1);
                 }
 			}
             var res = _companyInfoRepo.Add(info);
             if (!res)
-			{
-                return Result.DbInternal(2);
+            {
+                return DomainResult.DbInternalErrorResult(2);
             }
             Cache.Refresh();
-			return Result.Success();
+            return DomainResult.CompanyInformation.UpdateSuccessResult();
 		}
 	}
 

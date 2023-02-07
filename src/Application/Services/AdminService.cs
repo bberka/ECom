@@ -12,6 +12,7 @@ using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Extensions;
 using ECom.Domain.Lib;
 using System.Linq;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -53,18 +54,47 @@ namespace ECom.Application.Services
             admin.FailedPasswordCount++;
             return _adminRepo.Update(admin);
         }
-        public Admin? GetAdmin(string email)
+        public ResultData<Admin> GetAdmin(string email)
         {
             var admin = _adminRepo
                 .Get(x => x.EmailAddress == email && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .FirstOrDefault();
-            if (admin is null) return null;
+            if (admin is null)
+            {
+                return DomainResult.Admin.NotFoundResult(1);
+            };
             admin.Permissions = _rolePermissionRepo
                 .Get(x => x.RoleId == admin.RoleId)
                 .Include(x => x.Permission)
                 .Select(x=> x.Permission)
                 .ToList();
+            if (!admin.Permissions.Any())
+            {
+                return DomainResult.Admin.NotHavePermissionResult(2);
+            }
+            return admin;
+        }
+        public ResultData<Admin> GetAdmin(int id)
+        {
+
+            var admin = _adminRepo
+                .Get(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
+                .Include(x => x.Role)
+                .FirstOrDefault();
+            if (admin is null)
+            {
+                return DomainResult.Admin.NotFoundResult(1);
+            };
+            admin.Permissions = _rolePermissionRepo
+                .Get(x => x.RoleId == admin.RoleId)
+                .Include(x => x.Permission)
+                .Select(x => x.Permission)
+                .ToList();
+            if (!admin.Permissions.Any())
+            {
+                return DomainResult.Admin.NotHavePermissionResult(2);
+            }
             return admin;
         }
         public bool HasPermission(int adminId, int permissionId)
@@ -81,21 +111,7 @@ namespace ECom.Application.Services
             return _rolePermissionRepo.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
         }
 
-        public Admin? GetAdmin(int id)
-        {
-      
-            var admin = _adminRepo
-                .Get(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
-                .Include(x => x.Role)
-                .FirstOrDefault();
-            if (admin is null) return null;
-            admin.Permissions = _rolePermissionRepo
-                .Get(x => x.RoleId == admin.RoleId)
-                .Include(x => x.Permission)
-                .Select(x => x.Permission)
-                .ToList();
-            return admin;
-        }
+       
 
         public bool IsValidAdminAccount(int id)
         {
@@ -120,10 +136,12 @@ namespace ECom.Application.Services
         public Result AddAdmin(AddAdminRequestModel admin)
         {
             var res = _adminRepo.Add(admin.ToAdminEntity());
-            if (!res) {
-                return Result.DbInternal(1);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
             }
-            return Result.Success(nameof(Admin));
+
+            return DomainResult.Admin.AddSuccessResult();
         }
 
         public int GetAdminRoleId(int adminId)
@@ -141,46 +159,45 @@ namespace ECom.Application.Services
             var admin = _adminRepo.Find(model.AuthenticatedAdminId);
             if(admin is null)
             {
-                return Result.Error(1, ErrorCode.NotFound, nameof(Admin));
+                return DomainResult.Admin.NotFoundResult(1);
             }
             if (admin.Password != model.EncryptedOldPassword)
             {
-                return Result.Warn(2, ErrorCode.NotMatch, "RealPassword", "OldPassword");
+                return DomainResult.Base.PasswordWrongResult(2);
             }
             admin.Password = model.EncryptedNewPassword;
             var res = _adminRepo.Update(admin);
             if (!res)
             {
-                return Result.DbInternal(3);
+                return DomainResult.DbInternalErrorResult(3);
             }
-            return Result.Success();
+            return DomainResult.Admin.ChangePasswordSuccessResult();
         }
 
         public ResultData<Admin> Login(LoginRequestModel model)
         {
-            var admin = GetAdmin(model.EmailAddress);
+            var admin = _adminRepo.GetFirstOrDefault(x => x.EmailAddress == model.EmailAddress);
             if (admin is null)
             {
-                return ResultData<Admin>.Warn(1, ErrorCode.NotFound, nameof(Admin));
+                return DomainResult.Admin.NotFoundResult(1);
             }
             if (admin.Password != model.EncryptedPassword)
             {
                 IncreaseFailedPasswordCount(admin);
-                return ResultData<Admin>.Warn(2, ErrorCode.NotFound, nameof(Admin));
+                return DomainResult.Admin.NotFoundResult(2);
             }
             var validator = new AdminValidator(_validationDbService);
             var validateResult = validator.Validate(admin);
             if (!validateResult.IsValid)
             {
                 var first = validateResult.Errors.First();
-                return ResultData<Admin>.Warn(3, ErrorCode.ValidationError, nameof(Admin), first.PropertyName, first.ErrorCode);
+                return DomainResult.ValidationErrorResult(3, first.PropertyName, first.ErrorCode);
             }
             if (admin.TwoFactorType != 0)
             {
                 //TODO: two factor
             }
             UpdateSuccessLogin(admin);
-            
             return admin;
         }
 

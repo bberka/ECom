@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECom.Domain.Results;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace ECom.Application.Services
@@ -28,20 +29,23 @@ namespace ECom.Application.Services
 			var userExist = _userService.Exists(userId);
             if (!userExist)
             {
-                return Result.Warn(1, ErrorCode.NotFound, nameof(User));
+                return DomainResult.User.NotFoundResult(1);
             }
             var productExist = _productService.Exists(productId);
 			if (!productExist)
-			{
-				return Result.Warn(2, ErrorCode.NotFound, nameof(Product));
+            {
+                return DomainResult.Product.NotFoundResult(2);
 			}
 			var existing = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
-			var isSuccess = false;
 			if (existing != null)
 			{
 				existing.Count++;
-				isSuccess = _cartRepo.Update(existing);
-			}
+				var updateResult = _cartRepo.Update(existing);
+                if (!updateResult)
+                {
+                    return DomainResult.DbInternalErrorResult(3);
+                }
+            }
 			else
 			{
 				var newBasket = new Cart
@@ -52,36 +56,39 @@ namespace ECom.Application.Services
 					UserId = (int)userId,
 					LastUpdateDate = DateTime.Now,
 				};
-				isSuccess = _cartRepo.Add(newBasket);
-			}
-			if (!isSuccess)
-			{
-				return Result.DbInternal(3);
-			}
-			return Result.Success();
+				var addResult = _cartRepo.Add(newBasket);
+                if (!addResult)
+                {
+                    return DomainResult.DbInternalErrorResult(4);
+                }
+            }
+			return DomainResult.Cart.AddProductSuccessResult();
 		}
 		public Result RemoveOrDecreaseProduct(int userId, int productId)
 		{
 			var exist = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
-			{
-				return Result.Warn(1, ErrorCode.NotFound,nameof(Cart));
+            {
+                return DomainResult.Cart.NotFoundResult(1);
 			}
-			var isSuccess = false;
 			if (exist.Count > 1)
 			{
 				exist.Count--;
-				isSuccess = _cartRepo.Update(exist);
-			}
+				var updateResult = _cartRepo.Update(exist);
+                if (!updateResult)
+                {
+                    return DomainResult.DbInternalErrorResult(2);
+                }
+            }
 			else
 			{
-				isSuccess = _cartRepo.Delete(exist);
-			}
-			if (!isSuccess)
-			{
-                return Result.DbInternal(2);
+				var deleteResult = _cartRepo.Delete(exist);
+                if (!deleteResult)
+                {
+                    return DomainResult.DbInternalErrorResult(3);
+                }
             }
-            return Result.Success();
+		    return DomainResult.Cart.RemoveProductSuccessResult();
 		}
 		public int GetBasketProductCount(int userId)
 		{
@@ -97,11 +104,11 @@ namespace ECom.Application.Services
 		public Result Clear(int userId)
 		{
 			var res = _cartRepo.DeleteWhere(x => x.UserId == userId);
-            if (res == 0) 
-			{
-                return Result.DbInternal(2);
+            if (res == 0)
+            {
+                return DomainResult.DbInternalErrorResult(1);
             }
-			return Result.Success("Deleted");
+            return DomainResult.Cart.ClearSuccessResult();
 		}
 	}
 }

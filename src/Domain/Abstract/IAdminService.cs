@@ -10,8 +10,8 @@ namespace ECom.Domain.Abstract
     public interface IAdminService
     {
         List<Admin> GetAdmins();
-        Admin? GetAdmin(int id);
-        Admin? GetAdmin(string email);
+        ResultData<Admin> GetAdmin(int id);
+        ResultData<Admin> GetAdmin(string email);
         bool Exists(int id);
         bool Exists(string email);
         bool IsValidAdminAccount(int id);
@@ -25,7 +25,6 @@ namespace ECom.Domain.Abstract
         List<Permission> GetValidPermissions();
         List<Permission> GetInvalidPermissions();
         List<Permission> GetPermissions(int adminId);
-
         bool IsValidPermission(int permissionId);
     }
 }

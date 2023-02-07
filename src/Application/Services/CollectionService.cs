@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -36,44 +37,52 @@ namespace ECom.Application.Services
 				UserId = model.AuthenticatedUserId,
 				Name = model.Name,
 			});
-			if (!createResult) 
-			{
-				return Result.DbInternal(1);
+			if (!createResult)
+            {
+                return DomainResult.DbInternalErrorResult(1);
 			}
-			return Result.Success();
+
+            return DomainResult.Collection.CreateSuccessResult();
 		}
 
         public Result DeleteCollection(int id)
         {
 			var data = _collectionRepo.Find(id);
-			if (data is null) 
-			{
-                return Result.Warn(1, ErrorCode.NotFound, nameof(Collection));
+			if (data is null)
+            {
+                return DomainResult.Collection.NotFoundResult(1);
+            }
+
+            var collectionProducts = _collectionProductRepo.GetList(x => x.CollectionId == id);
+            if (collectionProducts.Any())
+            {
+                var collectionProductDeleteResult = _collectionProductRepo.DeleteRange(collectionProducts);
+                if (collectionProductDeleteResult == 0)
+                {
+                    return DomainResult.DbInternalErrorResult(2);
+                }
             }
 			var res = _collectionRepo.Delete(id);
-			if (!res) 
-			{
-                return Result.DbInternal(2);
+			if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(3);
             }
-            return Result.Success();
+            return DomainResult.Collection.CreateSuccessResult();
         }
 
-        public Collection? GetCollection(int id)
+        public ResultData<Collection> GetCollection(int id)
         {
-			return _collectionRepo.Find(id);
+			var collection = _collectionRepo.Find(id);
+			if(collection is null) return DomainResult.Collection.NotFoundResult(1); 
+            return collection;
         }
-        public Collection GetCollectionOrThrow(int id)
-        {
-            var res = _collectionRepo.Find(id);
-			if(res is null ) throw new NotFoundException(nameof(Collection)); 
-			return res;
-        }
+
 
         public ListCollectionProductsResponseModel GetCollectionProducts(int userId,int id)
         {
 			_userService.Exists(userId);
 			var collection = GetCollection(id);
-			if (collection is null) return new();
+			if (collection.IsFailure) return new ListCollectionProductsResponseModel();
 			var collectionProductIds = _collectionProductRepo
 				.Get(x => x.CollectionId == id)
 				.Select(x => x.ProductId)
@@ -81,7 +90,7 @@ namespace ECom.Application.Services
 			var productDTOs = _productService.GetProductDTOs(collectionProductIds);
 			var result = new ListCollectionProductsResponseModel
 			{
-				Collection = collection,
+				Collection = collection.Data,
 				Products = productDTOs,
 			};
 			return result;
@@ -96,18 +105,18 @@ namespace ECom.Application.Services
         public Result UpdateCollection(UpdateCollectionRequestModel model)
         {
 			_userService.CheckExistsOrThrow(model.AuthenticatedUserId);
-			var collection = GetCollection(model.CollectionId);
-			if (collection is null)
-			{
-				return Result.Warn(1, ErrorCode.NotFound, nameof(Collection));
+			var collectionResult = GetCollection(model.CollectionId);
+			if (collectionResult.IsFailure)
+            {
+                return collectionResult.ToResult();
 			}
-			collection.Name = model.CollectionName;
-			var res = _collectionRepo.Update(collection);	
-			if(!res) 
-			{
-                return Result.Warn(2, ErrorCode.NotFound, nameof(UpdateCollection));
+            collectionResult.Data.Name = model.CollectionName;
+			var res = _collectionRepo.Update(collectionResult.Data);	
+			if(!res)
+            {
+                return DomainResult.DbInternalErrorResult(1 * 10);
             }
-			return Result.Success();
+            return DomainResult.Collection.UpdateSuccessResult();
         }
     }
 }

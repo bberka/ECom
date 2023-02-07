@@ -1,6 +1,7 @@
 ﻿using ECom.Domain.Entities;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -41,32 +42,43 @@ namespace ECom.Application.Services
 		public Result UpdateOption(Option option)
 		{
 			var res = _optionRepo.Update(option);
-			if (!res) return Result.DbInternal(1);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
+            }
 			OptionCache.Refresh();
-            return Result.Success("Updated");
+            return DomainResult.Option.UpdateSuccessResult();
         }
        
         public Result UpdateCargoOption(CargoOption option)
 		{
 			var res = _cargoOptionRepo.Update(option);
-            if (!res) return Result.DbInternal(1);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
+            }
 			CargoOptionCache.Refresh();
-            return Result.Success();
-
+            return DomainResult.CargoOption.UpdateSuccessResult();
         }
         public Result UpdatePaymentOption(PaymentOption option)
 		{
 			var res = _paymentOptionRepo.Update(option);
-            if (!res) return Result.DbInternal(1);
-			PaymentOptionCache.Refresh();
-			return Result.Success();
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
+            }
+            PaymentOptionCache.Refresh();
+			return DomainResult.PaymentOption.UpdateSuccessResult();
 		}
 		public Result UpdateSmtpOption(SmtpOption option)
 		{
 			var res = _smtpOptionRepo.Update(option);
-            if (!res) return Result.DbInternal(1);
-			SmtpOptionCache.Refresh();
-            return Result.Success();
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
+            }
+            SmtpOptionCache.Refresh();
+            return DomainResult.SmtpOption.UpdateSuccessResult();
         }
 
 

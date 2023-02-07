@@ -21,7 +21,7 @@ namespace ECom.Application.Manager
             var loginResult = _adminService.Login(model);
             if (!loginResult.IsSuccess)
             {
-                return ResultData<AdminLoginResponseModel>.Error(loginResult.Rv, loginResult.ErrorCode, loginResult.Parameters);
+                return Result.Error(loginResult.Rv, loginResult.ErrorCode);
             }
             var adminAsDic = loginResult.Data.AsDictionary();
             var remove = adminAsDic.Where(x => x.Value == null || x.Value.ToString() == "");

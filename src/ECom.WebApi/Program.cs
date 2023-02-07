@@ -25,7 +25,7 @@ builder.Services.AddControllers(x =>
           .Select(v => v.ErrorMessage)
           .ToArray();
 
-        return new BadRequestObjectResult(Result.Error(400, ErrorCode.ValidationError, errors));
+        return new BadRequestObjectResult(Result.Error(400, "ValidationError:" + string.Join("|",errors)));
     };
 });
 

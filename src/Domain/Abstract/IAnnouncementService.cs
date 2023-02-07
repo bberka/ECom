@@ -12,5 +12,6 @@ namespace ECom.Domain.Abstract
         Result DeleteAnnouncement(uint id);
         Result EnableOrDisable(uint id);
         Result UpdateAnnouncement(Announcement data);
+        Result AddAnnouncement(Announcement data);
     }
 }

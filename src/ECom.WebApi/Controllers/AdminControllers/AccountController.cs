@@ -12,11 +12,10 @@ namespace ECom.WebApi.Controllers.AdminControllers
             this._adminService = adminService;
         }
         [HttpGet]
-        public ActionResult<Admin> Get()
+        public ActionResult<ResultData<Admin>> Get()
         {
             var adminId = HttpContext.GetAdminId();
-            var admin = _adminService.GetAdmin(adminId);
-            return admin;
+            return _adminService.GetAdmin(adminId);
         }
         
         [HttpPost]

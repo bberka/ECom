@@ -10,7 +10,7 @@ namespace ECom.Domain.Abstract
     {
         CompanyInformation GetCompanyInformation();
         CompanyInformation GetFromCache();
-        Result UpdateCompanyInformation(CompanyInformation info);
+        Result UpdateOrAddCompanyInformation(CompanyInformation info);
 
     }
 }

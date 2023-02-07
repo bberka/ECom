@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -33,12 +34,12 @@ namespace ECom.Application.Services
             var userExist = _userService.Exists(userId);
             if (!userExist)
             {
-                return Result.Error(1, ErrorCode.NotFound, nameof(User));
+                return DomainResult.User.NotFoundResult(1);
             }
             var productExist = _productService.Exists(productId);
             if(!productExist)
             {
-                return Result.Warn(2,ErrorCode.NotFound, nameof(Product));
+                return DomainResult.Product.NotFoundResult(2);
             }
             var data = new FavoriteProduct
             {
@@ -49,9 +50,9 @@ namespace ECom.Application.Services
             var res =_favoriteProductRepo.Add(data);
             if (!res)
             {
-                return Result.DbInternal(3);
+                return DomainResult.DbInternalErrorResult(3);
             }
-            return Result.Success();
+            return DomainResult.FavoriteProduct.AddSuccessResult();
         }
 
         public Result RemoveProduct(int userId, int productId)
@@ -59,19 +60,20 @@ namespace ECom.Application.Services
             var userExist = _userService.Exists(userId);
             if (!userExist)
             {
-                return Result.Error(1, ErrorCode.NotFound, nameof(User));
+                return DomainResult.User.NotFoundResult(1);
             }
             var favProduct = _favoriteProductRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
             if(favProduct is null)
             {
-                return Result.Warn(2, ErrorCode.NotFound, nameof(FavoriteProduct));
+                return DomainResult.FavoriteProduct.NotFoundResult(2);
             }
             var res = _favoriteProductRepo.Delete(favProduct);
             if (!res)
             {
-                return Result.DbInternal(3);
+                return DomainResult.DbInternalErrorResult(3);
             }
-            return Result.Success();
+
+            return DomainResult.FavoriteProduct.RemoveSuccessResult();
         }
 
         public List<ProductDTO> GetFavoriteProducts(int userId,string culture)

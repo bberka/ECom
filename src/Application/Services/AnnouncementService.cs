@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services
+﻿using ECom.Domain.Results;
+
+namespace ECom.Application.Services
 {
     public class AnnouncementService : IAnnouncementService
     {
@@ -12,42 +14,54 @@
         {
             if (!_announcementRepo.Any(x => x.Id == data.Id))
             {
-                return Result.Error(1, ErrorCode.NotFound, nameof(Announcement));
+                return DomainResult.Announcement.NotFoundResult(1);
             }
             var res = _announcementRepo.Update(data);
             if (!res)
             {
-                return Result.DbInternal(2);
+                return DomainResult.DbInternalErrorResult(2);
             }
-            return Result.Success();
+            return DomainResult.Announcement.UpdateSuccessResult();
         }
+
+        public Result AddAnnouncement(Announcement data)
+        {
+            var res = _announcementRepo.Add(data);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
+            }
+            return DomainResult.Announcement.AddSuccessResult();
+        }
+
         public Result DeleteAnnouncement(uint id)
         {
             if (!_announcementRepo.Any(x => x.Id == id))
             {
-                return Result.Error(1, ErrorCode.NotFound, nameof(Announcement));
+                return DomainResult.Announcement.NotFoundResult(1);
             }
             var res = _announcementRepo.Delete((int)id);
             if (!res)
             {
-                return Result.DbInternal(2);
+                return DomainResult.DbInternalErrorResult(2);
+
             }
-            return Result.Success();
+            return DomainResult.Announcement.DeleteSuccessResult();
         }
         public Result EnableOrDisable(uint id)
         {
             var data = _announcementRepo.Find((int)id);
             if (data is null)
             {
-                return Result.Error(1, ErrorCode.NotFound, nameof(Announcement));
+                return DomainResult.Announcement.NotFoundResult(1);
             }
             data.IsValid = !data.IsValid;
             var res = _announcementRepo.Update(data);
             if (!res)
             {
-                return Result.DbInternal(2);
+                return DomainResult.DbInternalErrorResult(2);
             }
-            return Result.Success();
+            return DomainResult.Announcement.UpdateSuccessResult();
         }
 
         public List<Announcement> GetAnnouncements()

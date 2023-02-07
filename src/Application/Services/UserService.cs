@@ -4,9 +4,8 @@
 
 
 using ECom.Application.Validators;
-using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Extensions;
-using System.Collections.Specialized;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -31,30 +30,31 @@ namespace ECom.Application.Services
 		{
 			var user = model.ToUserEntity();
 			var res = _userRepo.Add(user);
-			if (!res) 
-			{
-				return Result.DbInternal(1);
+			if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(1);
 			}
-			return Result.Success(nameof(User));
+            return DomainResult.User.RegisterSuccessResult();
 		}
 		public ResultData<User> Login(LoginRequestModel model)
 		{
 			var user = GetUser(model.EmailAddress);
-			if (user is null)
-			{
-				return ResultData<User>.Warn(1, ErrorCode.NotFound, nameof(User));
-			}
+            if (user is null)
+            {
+                return DomainResult.User.NotFoundResult(1);
+            }
+
 			if (user.Password != model.EncryptedPassword)
 			{
 				IncreaseFailedPasswordCount(user);
-                return ResultData<User>.Warn(2, ErrorCode.NotFound, nameof(User));
+                return DomainResult.User.NotFoundResult(2);
 			}
 			var validator = new UserValidator();
 			var validateResult = validator.Validate(user);
             if (!validateResult.IsValid)
             {
                 var first = validateResult.Errors.First();
-                return ResultData<User>.Warn(3, ErrorCode.ValidationError, first.PropertyName, first.ErrorMessage);
+                return DomainResult.ValidationErrorResult(3, first.PropertyName, first.ErrorCode);
             }
             if (user.TwoFactorType != 0)
 			{
@@ -125,16 +125,16 @@ namespace ECom.Application.Services
         {
 			var user = GetUserOrThrow(model.AuthenticatedUserId);
 			if(user.Password != model.EncryptedOldPassword)
-			{
-                return Result.Warn(1, ErrorCode.NotMatch, "RealPassword","OldPassword");
+            {
+                return DomainResult.Base.PasswordWrongResult(1);
 			}
 			user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
 			var res = _userRepo.Update(user);
 			if (!res)
-			{
-				return Result.DbInternal(2);
+            {
+                return DomainResult.DbInternalErrorResult(2);
 			}
-			return Result.Success();
+            return DomainResult.User.ChangePasswordSuccessResult();
         }
 
         public bool Exists(int id)

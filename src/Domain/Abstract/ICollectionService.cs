@@ -11,8 +11,7 @@ namespace ECom.Domain.Abstract
     public interface ICollectionService
     {
         public Result CreateCollection(CreateCollectionRequestModel model);
-        public Collection? GetCollection(int id);
-        public Collection GetCollectionOrThrow(int id);
+        public ResultData<Collection> GetCollection(int id);
         public Result UpdateCollection(UpdateCollectionRequestModel model);
         public Result DeleteCollection(int id);
         public List<Collection> GetCollections(int userId);

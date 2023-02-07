@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services
+﻿using ECom.Domain.Results;
+
+namespace ECom.Application.Services
 {
 
 	public class AddressService : IAddressService
@@ -19,22 +21,22 @@
 		{
             var data = GetAddress(userId, id);
             if (data is null)
-			{
-                return Result.Warn(1, ErrorCode.NotFound);
+            {
+                return DomainResult.Address.NotFoundResult(1);
             }
             if (data.UserId != userId)
-			{
-				return Result.Error(2, ErrorCode.NotAuthorized,AuthType.User.ToString());
+            {
+                return DomainResult.User.NotAuthorizedResult(2);
             }
             if (data.DeleteDate.HasValue)
-			{
-                return Result.Warn(3, ErrorCode.AlreadyDeleted);
+            {
+                return DomainResult.Address.AlreadyDeletedResult(3);
             }
 			data.DeleteDate = DateTime.Now;
 			var res = _addressRepo.Update(data);	
 			if(!res)
-			{
-                return Result.DbInternal(4);
+            {
+                return DomainResult.DbInternalErrorResult(4);
             }
 			return Result.Success();
 		}
@@ -47,34 +49,36 @@
 		public Result UpdateAddress(int userId,Address data)
 		{
 			var address = GetAddress(userId, data.Id);
-			if(address is null) 
-			{
-                return Result.Warn(1, ErrorCode.NotFound);
+			if(address is null)
+            {
+                return DomainResult.Address.NotFoundResult(1);
             }
 			if (address.UserId != userId)
-			{
-                return Result.Error(2, ErrorCode.NotAuthorized, AuthType.User.ToString());
+            {
+                return DomainResult.User.NotAuthorizedResult(2);
             }
-            if (data.DeleteDate.HasValue)
-			{
-                return Result.Error(3, ErrorCode.Deleted);
+            if (address.DeleteDate.HasValue)
+            {
+                return DomainResult.Address.DeletedResult(3);
             }
             var res = _addressRepo.Update(data);
-            if (!res) 
-			{
-                return Result.DbInternal(4);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(4);
             }
-            return Result.Success();
+
+            return DomainResult.Address.UpdateSuccessResult();
 		}
 
 		public Result AddAddress(int userId,Address address)
 		{
 			var res = _addressRepo.Add(address);
 			if (!res)
-			{
-                return Result.DbInternal(1);
+            {
+                return DomainResult.DbInternalErrorResult(1);
             }
-			return Result.Success();
+
+            return DomainResult.Address.AddSuccessResult();
 		}
 
         public Address? GetAddress(int addressId)

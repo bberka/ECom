@@ -11,7 +11,7 @@ namespace ECom.Domain.Abstract
         Result EnableOrDisableSubCategory(uint id);
         List<Category> ListCategories();
         Result UpdateCategory(CategoryUpdateRequestModel model);
-        Result UpdateSubCategory(SubCategory? data);
+        Result UpdateSubCategory(SubCategory model);
         Result AddCategory(AddCategoryRequestModel model);
         Result AddSubCategory(AddSubCategoryRequestModel model);
     }
