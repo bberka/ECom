@@ -23,6 +23,10 @@ namespace ECom.Domain.Entities
         [ForeignKey("ProductVariantId")]
         public int? ProductVariantId { get; set; }
         public virtual ProductVariant? Variant { get; set; }
+        public virtual List<ProductComment> Comments { get; set; }
+		public virtual List<ProductImage> Images { get; set; }
+		public virtual List<ProductDetail> Details { get; set; }
+
 
 	}
 }

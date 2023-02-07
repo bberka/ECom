@@ -19,6 +19,8 @@ namespace ECom.Domain.Constants
 		public const byte TitleMaxLength = 32;
 		public const byte PhoneNumberMaxLength = 32;
 
+        public const string DefaultCulture = "tr";
+
 		public const string VERSION = "v0.0.1";
 
 		public static bool IsDebug()

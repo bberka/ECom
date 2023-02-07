@@ -4,6 +4,7 @@ using ECom.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230207155626_init-7")]
+    partial class init7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,6 +249,13 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LanguageCulture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -253,6 +263,8 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageCulture");
 
                     b.ToTable("CargoOptions");
                 });
@@ -291,8 +303,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Culture")
                         .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
@@ -303,6 +314,8 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Culture");
 
                     b.ToTable("Categories");
                 });
@@ -541,11 +554,6 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Culture")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
                     b.Property<byte[]>("Data")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -557,6 +565,38 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.ImageLanguage", b =>
+                {
+                    b.Property<string>("Culture")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageCulture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)");
+
+                    b.HasKey("Culture", "ImageId");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageCulture");
+
+                    b.ToTable("ImageLanguages");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.Language", b =>
+                {
+                    b.Property<string>("Culture")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.HasKey("Culture");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
@@ -700,11 +740,13 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Culture")
                         .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -736,6 +778,8 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LanguageCulture");
+
                     b.ToTable("PaymentOptions");
                 });
 
@@ -746,6 +790,9 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
@@ -760,6 +807,8 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Permissions");
                 });
@@ -851,27 +900,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductCommentImages");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte>("Star")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ProductCommentStars");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -881,14 +909,15 @@ namespace ECom.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Culture")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DescriptionHTML")
                         .IsRequired()
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -908,6 +937,8 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LanguageCulture");
 
                     b.HasIndex("ProductId");
 
@@ -1128,12 +1159,13 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Culture")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
+
+                    b.Property<string>("LanguageCulture")
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<int>("Order")
                         .HasMaxLength(50)
@@ -1147,6 +1179,8 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");
+
+                    b.HasIndex("LanguageCulture");
 
                     b.ToTable("Sliders");
                 });
@@ -1303,8 +1337,8 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Culture")
                         .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -1441,7 +1475,7 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany("Addresses")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1479,7 +1513,15 @@ namespace ECom.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Image");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
@@ -1501,6 +1543,17 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("Culture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.CategoryDiscount", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Category", "Category")
@@ -1513,7 +1566,7 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.Collection", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany("Collections")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1590,7 +1643,7 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany("FavoriteProducts")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1598,6 +1651,25 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.ImageLanguage", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
@@ -1615,7 +1687,7 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1636,6 +1708,22 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.PaymentOption", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Admin", null)
+                        .WithMany("Permissions")
+                        .HasForeignKey("AdminId");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
@@ -1685,24 +1773,19 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture");
+
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany("Details")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Language");
 
                     b.Navigation("Product");
                 });
@@ -1765,7 +1848,7 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Role", "Role")
-                        .WithMany("Permissions")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1792,7 +1875,13 @@ namespace ECom.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
+                    b.HasOne("ECom.Domain.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageCulture");
+
                     b.Navigation("Image");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.StockChange", b =>
@@ -1836,6 +1925,11 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
+                {
+                    b.Navigation("Permissions");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
                 {
                     b.Navigation("SubCategories");
@@ -1853,22 +1947,6 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
                     b.Navigation("Images");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("Permissions");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Addresses");
-
-                    b.Navigation("Collections");
-
-                    b.Navigation("FavoriteProducts");
-
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

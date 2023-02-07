@@ -20,12 +20,7 @@ namespace ECom.Infrastructure
 				u.ProductId,
 				u.ImageId
 			});
-            modelBuilder.Entity<ImageLanguage>()
-                .HasKey(u => new
-                {
-                    u.Culture,
-                    u.ImageId
-                });
+           
             modelBuilder.Entity<Cart>()
                 .HasKey(u => new
                 {
@@ -79,17 +74,6 @@ namespace ECom.Infrastructure
             var option = new Option();
             option.IsRelease = !ConstantMgr.IsDebug();
             context.Add(option);
-            context.SaveChanges();
-            var lang = new Language
-            {
-                Culture = "en",
-            };
-            var lang2 = new Language
-            {
-                Culture = "tr",
-            };
-            context.Add(lang);
-            context.Add(lang2);
             context.SaveChanges();
             var role = new Role
             {
@@ -197,7 +181,6 @@ namespace ECom.Infrastructure
         public DbSet<CollectionProduct> CollectionProducts { get; set; }
         public DbSet<SmtpOption> SmtpOptions { get; set; }
         public DbSet<PaymentOption> PaymentOptions { get; set; }
-        public DbSet<Language> Languages { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<DiscountNotify> DiscountNotifies { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
@@ -205,6 +188,7 @@ namespace ECom.Infrastructure
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductCommentImage> ProductCommentImages { get; set; }
+        public DbSet<ProductCommentStar> ProductCommentStars { get; set; }
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
@@ -218,7 +202,6 @@ namespace ECom.Infrastructure
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
-        public DbSet<ImageLanguage> ImageLanguages { get; set; }
         public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<StockChange> StockChanges { get; set; }

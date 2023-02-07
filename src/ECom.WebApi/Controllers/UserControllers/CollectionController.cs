@@ -1,4 +1,6 @@
-﻿namespace ECom.WebApi.Controllers.UserControllers
+﻿using ECom.Domain.Constants;
+
+namespace ECom.WebApi.Controllers.UserControllers
 {
 
     public class CollectionController : BaseUserController
@@ -21,11 +23,11 @@
             var userId = HttpContext.GetUserId();
             return _collectionService.GetCollections(userId);
         }
-        [HttpPost]
-        public ActionResult<ResultData<ListCollectionProductsResponseModel>> GetCollectionProducts([FromBody] int id)
+        [HttpGet]
+        public ActionResult<ResultData<List<CollectionProduct>>> GetCollectionProducts(int id,ushort page,string culture = ConstantMgr.DefaultCulture)
         {
             var userId = HttpContext.GetUserId();
-            return _collectionService.GetCollectionProducts(userId,id);
+            return _collectionService.GetCollectionProducts(userId,id,page,culture);
         }
         [HttpPost]
         public ActionResult<Result> CreateCollection(CreateCollectionRequestModel model)

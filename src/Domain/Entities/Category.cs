@@ -15,12 +15,9 @@ namespace ECom.Domain.Entities
 		[MaxLength(32)]
 		public string Name { get; set; }
 
-        [ForeignKey("Language")]
-        public string Culture { get; set; }
-
-        [JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual Language Language { get; set; }
+        [MinLength(2)]
+        [MaxLength(4)]
+        public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
 		public virtual List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 	}

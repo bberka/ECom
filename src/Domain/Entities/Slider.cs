@@ -30,13 +30,10 @@ namespace ECom.Domain.Entities
         public int? ImageId { get; set; }
         public virtual Image Image { get; set; }
 
+        [MinLength(2)]
+        [MaxLength(4)]
+        public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
-        [ForeignKey("Culture")]
-        public string? Culture { get; set; }
-
-        [System.Text.Json.Serialization.JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual Language Language { get; set; }
 
     }
 }

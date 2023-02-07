@@ -1,4 +1,5 @@
 ﻿using ECom.Domain.ApiModels.Response;
+using ECom.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 namespace ECom.WebApi.Controllers.UserControllers
 {
@@ -12,35 +13,35 @@ namespace ECom.WebApi.Controllers.UserControllers
             this._productService = productService;
         }
         [HttpGet]
-        public ActionResult<List<ProductDTO>> ListRecommended(int page,string? culture = "tr")
+        public ActionResult<List<Product>> ListRecommended(int page,string? culture = ConstantMgr.DefaultCulture)
         {
-            return new List<ProductDTO>();
+            return new List<Product>();
         }
 
         [HttpGet]
-        public ActionResult<List<ProductDTO>> List(int page, string? culture = "tr")
+        public ActionResult<List<Product>> List(ushort page, string? culture = ConstantMgr.DefaultCulture)
         {
-            return new List<ProductDTO>();
+            return _productService.GetProducts(page, culture);
         }
         [HttpGet]
-        public ActionResult<List<ProductDTO>> Search(string keyword, string? culture = "tr")
+        public ActionResult<List<Product>> Search(string keyword, string? culture = ConstantMgr.DefaultCulture)
         {
-            return new List<ProductDTO>();
+            return new List<Product>();
         }
         [HttpGet]
-        public ActionResult<List<ProductDTO>> SearchByProductCode(string code, string? culture = "tr")
+        public ActionResult<List<Product>> SearchByProductCode(string code, string? culture = ConstantMgr.DefaultCulture)
         {
-            return new List<ProductDTO>();
+            return new List<Product>();
         }
         [HttpGet]
-        public ActionResult<List<ProductDTO>> ListByCategory(int category, int page, string? culture = "tr")
+        public ActionResult<List<Product>> ListByCategory(int category, int page, string? culture = ConstantMgr.DefaultCulture)
         {
-            return new List<ProductDTO>();
+            return new List<Product>();
         }
         [HttpGet]
-        public ActionResult<List<ProductDTO>> ListBySubCategory(int subCategory, int page, string? culture = "tr")
+        public ActionResult<List<Product>> ListBySubCategory(int subCategory, int page, string? culture = ConstantMgr.DefaultCulture)
         {
-            return new List<ProductDTO>();
+            return new List<Product>();
         }
     }
 }

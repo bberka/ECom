@@ -58,6 +58,5 @@ namespace ECom.Domain.Entities
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
 
-        public virtual List<Permission> Permissions { get; set; } = new();
     }
 }

@@ -8,8 +8,8 @@ namespace ECom.Domain.Constants
 {
     public enum LanguageType
     {
-        Default,
-        English,
-        Turkish
+        en,
+        tr
     }
+    
 }

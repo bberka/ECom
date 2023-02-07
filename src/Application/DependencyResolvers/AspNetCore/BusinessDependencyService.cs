@@ -30,7 +30,6 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<EmailVerifyToken>, EmailVerifyTokenDal>();
 			services.AddScoped<IEfEntityRepository<FavoriteProduct>, FavoriteProductDal>();
 			services.AddScoped<IEfEntityRepository<Image>, ImageDal>();
-			services.AddScoped<IEfEntityRepository<Language>, LanguageDal>();
 			services.AddScoped<IEfEntityRepository<Option>, OptionDal>();
 			services.AddScoped<IEfEntityRepository<Order>, OrderDal>();
 			services.AddScoped<IEfEntityRepository<PasswordResetToken>, PasswordResetTokenDal>();
@@ -51,18 +50,17 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<User>, UserDal>();
 			services.AddScoped<IEfEntityRepository<UserLog>, UserLogDal>();
 			services.AddScoped<IEfEntityRepository<ProductSubCategory>, ProductSubCategoryDal>();
-			services.AddScoped<IEfEntityRepository<ImageLanguage>, ImageLanguageDal>();
 			services.AddScoped<IEfEntityRepository<StockChange>, StockChangeDal>();
 			services.AddScoped<IEfEntityRepository<Supplier>, SupplierDal>();
 			services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDal>();
 			services.AddScoped<IEfEntityRepository<ShowCaseImage>, ShowCaseImageDal>();
+			services.AddScoped<IEfEntityRepository<ProductCommentStar>, ProductCommentStarDal>();
 
 
 			//Business Logic
 			services.AddScoped<IOptionService, OptionService>();
 			services.AddScoped<ICompanyInformationService, CompanyInformationService>();
 			services.AddScoped<IImageService, ImageService>();
-			services.AddScoped<ILanguageService, LanguageService>();
 			services.AddScoped<IAnnouncementService, AnnouncementService>();
 			services.AddScoped<ISliderService, SliderService>();
 			services.AddScoped<ILogService, LogService>();

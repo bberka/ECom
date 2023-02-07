@@ -21,5 +21,8 @@ namespace ECom.Domain.Entities
         public string Memo { get; set; }
         
         public bool IsValid { get; set; }
+
+        public virtual List<RolePermission> Permissions { get; set; } = new();
+
     }
 }

@@ -12,6 +12,7 @@ namespace ECom.Application.Services
         private readonly IEfEntityRepository<FavoriteProduct> _favoriteProductRepo;
         private readonly IEfEntityRepository<Product> _productRepo;
         private readonly IEfEntityRepository<ProductDetail> _productDetailRepo;
+        private readonly IEfEntityRepository<ProductImage> _productImageRepo;
         private readonly IProductService _productService;
         private readonly IUserService _userService;
 
@@ -20,13 +21,15 @@ namespace ECom.Application.Services
             IEfEntityRepository<Product> productRepo,
             IEfEntityRepository<ProductDetail> productDetailRepo,
             IProductService productService,
-            IUserService userService)
+            IUserService userService, 
+            IEfEntityRepository<ProductImage> productImageRepo)
         {
             this._favoriteProductRepo = favoriteProductRepo;
             this._productRepo = productRepo;
             this._productDetailRepo = productDetailRepo;
             this._productService = productService;
             this._userService = userService;
+            _productImageRepo = productImageRepo;
         }
 
         public Result AddProduct(int userId, int productId)
@@ -76,28 +79,14 @@ namespace ECom.Application.Services
             return DomainResult.FavoriteProduct.RemoveSuccessResult();
         }
 
-        public List<ProductDTO> GetFavoriteProducts(int userId,string culture)
+        public List<FavoriteProduct> GetFavoriteProducts(int userId, ushort page, string culture = ConstantMgr.DefaultCulture)
         {
-            var favList = _favoriteProductRepo
+            return _favoriteProductRepo
                 .Get(x => x.UserId == userId)
-                .Select(x => x.ProductId)
-                .ToArray();
-            var products = _productRepo
-                .Get(x => !favList.Contains(x.Id))
-                .Include(x => x.Variant)
+                .Include(x => x.Product)
+                .ThenInclude(x => x.Images)
                 .ToList();
-            var productDetails = _productDetailRepo
-                .Get(x => !products.Any(y => y.Id == x.ProductId) && x.Culture == culture)
-                .ToList();
-            var res = new List<ProductDTO>();
-            foreach(var product in products)
-            {
-                var data = new ProductDTO();
-                data.Product = product;
-                data.Details = productDetails.FirstOrDefault(x=> x.ProductId == product.Id);
-                res.Add(data);
-            }
-            return res;
+           
         }
     }
 }

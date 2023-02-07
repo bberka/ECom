@@ -85,21 +85,15 @@ namespace ECom.Application.Services
         }
 
 
-        public ResultData<ListCollectionProductsResponseModel> GetCollectionProducts(int userId,int id)
+        public ResultData<List<CollectionProduct>> GetCollectionProducts(int userId,int id,ushort page, string culture = ConstantMgr.DefaultCulture)
         {
 			var collectionResult = GetCollection(userId,id);
 			if (collectionResult.IsFailure) return collectionResult.ToResult();
-			var collectionProductIds = _collectionProductRepo
+			return _collectionProductRepo
 				.Get(x => x.CollectionId == id)
-				.Select(x => x.ProductId)
+                .Include(x => x.Product)
+                .ThenInclude(x => x.Details)
 				.ToList();
-			var productDTOs = _productService.GetProductDTOs(collectionProductIds);
-			var result = new ListCollectionProductsResponseModel
-			{
-				Collection = collectionResult.Data,
-				Products = productDTOs,
-			};
-			return result;
         }
 
         public List<Collection> GetCollections(int userId)

@@ -1,4 +1,5 @@
 ﻿using ECom.Domain.ApiModels.Response;
+using ECom.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 namespace ECom.WebApi.Controllers.UserControllers
 {
@@ -11,10 +12,10 @@ namespace ECom.WebApi.Controllers.UserControllers
             this._favoriteProductService = favoriteProductService;
         }
         [HttpGet]
-        public ActionResult<List<ProductDTO>> List(string? culture = "tr")
+        public ActionResult<List<FavoriteProduct>> List(ushort page,string culture = ConstantMgr.DefaultCulture)
         {
             var userId = HttpContext.GetUserId();
-            return _favoriteProductService.GetFavoriteProducts(userId,culture);
+            return _favoriteProductService.GetFavoriteProducts(userId, page ,culture);
         }
         [HttpPost]
         public ActionResult<Result> Add([FromBody] int productId)

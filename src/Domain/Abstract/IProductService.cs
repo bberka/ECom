@@ -12,7 +12,11 @@ namespace ECom.Domain.Abstract
     {
         bool Exists(int id);
         ResultData<Product> GetProduct(long productNo);
-        List<ProductDTO> GetProductDTOs(List<int> productIds);
+        List<Product> GetProducts(List<int> productIds,ushort page,string culture = ConstantMgr.DefaultCulture);
+        List<Product> GetProducts(ushort page,string culture = ConstantMgr.DefaultCulture);
+        List<ProductComment> GetProductComments(List<int> productIds, ushort page);
+        List<ProductComment> GetProductComments(int productId,ushort page);
+
         //List<ProductDetail>? GetProductDetails(long productNo);
         //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
         //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);

@@ -107,7 +107,7 @@ namespace ECom.Domain.Results
         }
         public static class Language
         {
-            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "Language.NotFound");
+            public static Result NotValidResult(ushort rv) => Result.Warn(rv, "Language.NotValid");
         }
         public static class PaymentOption
         {

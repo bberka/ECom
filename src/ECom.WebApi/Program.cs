@@ -50,7 +50,7 @@ builder.Services.AddDistributedMemoryCache();
 
 
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddResponseCaching();
 
 
 builder.Services.AddSwaggerGen(c =>
@@ -175,6 +175,8 @@ app.UseMiddleware<MaintenanceCheckMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseResponseCaching();
 
 
 app.MapControllers();

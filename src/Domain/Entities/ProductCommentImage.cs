@@ -13,11 +13,17 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("ImageId")]
         public int ImageId { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual Image Image { get; set; }
 
         [ForeignKey("CommentId")]
         public int CommentId { get; set; }
-        public virtual ProductComment Comment { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public virtual ProductComment? Comment { get; set; }
 
 
     }

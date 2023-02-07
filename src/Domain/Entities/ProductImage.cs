@@ -17,6 +17,9 @@ namespace ECom.Domain.Entities
 
 		[ForeignKey("ProductId")]
         public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public virtual Product? Product { get; set; }
     }
 }

@@ -23,14 +23,12 @@ namespace ECom.Domain.Entities
         
         public int FreeShippingMinCost { get; set; }
 
-
-        [ForeignKey("LanguageId")]
-        public int LanguageId { get; set; }
-        public virtual Language Language { get; set; }
-
-
+    
         [ForeignKey("ImageId")]
         public int ImageId { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual Image Image { get; set; }
     }
 }

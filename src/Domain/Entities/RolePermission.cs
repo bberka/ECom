@@ -13,6 +13,9 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual Role Role { get; set; }
 
         [ForeignKey("PermissionId")]

@@ -16,6 +16,6 @@ namespace ECom.Domain.Abstract
         public Result UpdateCollection(UpdateCollectionRequestModel model);
         public Result DeleteCollection(int userId,int collectionId);
         public List<Collection> GetCollections(int userId);
-        public ResultData<ListCollectionProductsResponseModel> GetCollectionProducts(int userId,int collectionId); 
+        public ResultData<List<CollectionProduct>> GetCollectionProducts(int userId,int collectionId,ushort page,string culture = ConstantMgr.DefaultCulture); 
     }
 }

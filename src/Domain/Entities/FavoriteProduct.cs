@@ -10,7 +10,6 @@ namespace ECom.Domain.Entities
 {
     public class FavoriteProduct : IEfEntity
 	{
-        
         public DateTime RegisterDate { get; set; }
 
         [ForeignKey("UserId")]

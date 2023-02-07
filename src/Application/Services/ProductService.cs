@@ -1,6 +1,7 @@
 ﻿
 using System.Runtime.InteropServices;
 using ECom.Domain.Results;
+using ECom.Infrastructure.DataAccess;
 
 namespace ECom.Application.Services
 {
@@ -48,89 +49,6 @@ namespace ECom.Application.Services
             _option = _optionService.GetOptionFromCache();
         }
 
-        //public List<ProductSimpleResponseModel> ListProductsSimpleViewModel(ListProductsRequestModel model)
-        //{
-        //	var lastIdx = (int)(_option.PagingProductCount * (model.Page - 1));
-        //	var pageProductCount = _option.PagingProductCount;
-        //	var ctx = EComDbContext.New();
-        //	var products = ctx.Products
-        //		.Skip(lastIdx)
-        //		.Take(pageProductCount)
-        //		.OrderByDescending(x => x.RegisterDate)
-        //		.Join(
-        //		ctx.ProductDetails,
-        //		x => x.Id,
-        //		x => x.ProductId,
-        //		(p, d) =>
-        //		new ProductSimpleResponseModel
-        //		{
-        //			Product = p,
-        //			Details = d
-        //		})
-        //		.ToList();
-        //	return products;
-        //}
-
-        //public List<Product> GetVariantProducts(int variantId)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	var list = ctx.Products.Where(x => x.ProductVariantId == variantId).ToList();
-        //	return list;
-        //}
-
-        //public List<ProductVariant> GetVariants()
-        //{
-        //	var ctx = EComDbContext.New();
-        //	return ctx.ProductVariants.ToList();
-        //}
-        //public ProductVariant? GetVariant(int id)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	return ctx.ProductVariants.Where(x => x.Id == id).FirstOrDefault();
-        //}
-        //public ProductVariant GetVariantSingle(int id)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	return ctx.ProductVariants.Where(x => x.Id == id).Single();
-        //}
-
-
-        //public Product? GetProductSingle(long productNo)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	var product = ctx.Products.Where(x => x.Id == productNo).Single();
-        //	return product;
-        //}
-
-        //public List<ProductDetail>? GetProductDetails(long productNo)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	var products = ctx.ProductDetails.Where(x => x.Id == productNo).ToList();
-        //	return products;
-        //}
-        //public ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).FirstOrDefault();
-        //	return product;
-        //}
-        //public ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default)
-        //{
-        //	var ctx = EComDbContext.New();
-        //	var product = ctx.ProductDetails.Where(x => x.Id == productNo && x.LanguageId == (int)type).Single();
-        //	return product;
-        //}
-        public void CheckExists(int id)
-        {
-            var exist = _productRepo.Any(x => x.Id == id);
-            if (!exist) throw new CustomException(ErrorCode.NotFound);
-        }
-        public void CheckExists(uint id)
-        {
-            var exist = _productRepo.Any(x => x.Id == id);
-            if (!exist) throw new CustomException(ErrorCode.NotFound);
-        }
-
         public bool Exists(int id)
         {
             return _productRepo.Any(x => x.Id == id);
@@ -145,20 +63,65 @@ namespace ECom.Application.Services
             return product;
         }
 
-        
-        public List<ProductDTO> GetProductDTOs(List<int> productIds)
+
+
+        public List<ProductComment> GetProductComments(
+            List<int> productIds,
+            ushort page)
         {
-            var result = new List<ProductDTO>();
-            var ctx = new EComDbContext();
-            var productDTOs = _productRepo
-                .Get(x => productIds.Contains(x.Id))
-                .Join(ctx.ProductDetails, x => x.Id, x => x.ProductId, (a, b) => new ProductDTO
-                {
-                    Product = a,
-                    Details = b
-                })
+            var lastIdx = (int)(_option.PagingProductCount * (page));
+            return _productCommentRepo
+                .Get(x => productIds.Contains(x.ProductId))
+                .OrderByDescending(x => x.RegisterDate)
+                .Skip(lastIdx)
+                .Take(_option.PagingProductCount)
+                .Include(x => x.Images)
                 .ToList();
-            return productDTOs;
+        }
+
+        public List<ProductComment> GetProductComments(int productId,ushort page)
+        {
+            var lastIdx = (int)(_option.PagingProductCount * (page));
+            return _productCommentRepo
+                .Get(x => x.ProductId == productId)
+                .OrderByDescending(x => x.RegisterDate)
+                .Skip(lastIdx)
+                .Take(_option.PagingProductCount)
+                .Include(x => x.Images)
+                .ToList();
+        }
+
+        public List<Product> GetProducts(ushort page, string culture = ConstantMgr.DefaultCulture)
+        {
+            if (page == 0) return new();
+            var lastIdx = (int)(_option.PagingProductCount * (page - 1));
+            var ctx = new EComDbContext();
+            return ctx.Products
+                .Where(x => !x.DeleteDate.HasValue && x.IsValid)
+                .OrderByDescending(x => x.RegisterDate)
+                .Skip(lastIdx)
+                .Take(_option.PagingProductCount)
+                .Include(x => x.Variant)
+                .Include(x => x.Images)
+                .Include(x => x.Details)
+                .Include(x => x.Comments)
+                .ThenInclude(x => x.Images)
+                .ToList();
+        }
+
+        public List<Product> GetProducts(List<int> productIds, ushort page, string culture = ConstantMgr.DefaultCulture)
+        {
+            var lastIdx = (int)(_option.PagingProductCount * (page));
+            return _productRepo.Get(x => !x.DeleteDate.HasValue && x.IsValid && productIds.Contains(x.Id))
+                .OrderByDescending(x => x.RegisterDate)
+                .Skip(lastIdx)
+                .Take(_option.PagingProductCount)
+                .Include(x => x.Variant)
+                .Include(x => x.Images)
+                .Include(x => x.Details)
+                .Include(x => x.Comments)
+                .ThenInclude(x => x.Images)
+                .ToList();
         }
     }
 }

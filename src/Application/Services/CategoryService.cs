@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ECom.Domain.Lib;
 using ECom.Domain.Results;
 
 namespace ECom.Application.Services
@@ -10,16 +11,13 @@ namespace ECom.Application.Services
     {
         private readonly IEfEntityRepository<Category> _categoryRepo;
         private readonly IEfEntityRepository<SubCategory> _subCategoryRepo;
-        private readonly IEfEntityRepository<Language> _languageRepo;
 
         public CategoryService(
             IEfEntityRepository<Category> categoryRepo,
-            IEfEntityRepository<SubCategory> subCategoryRepo,
-            IEfEntityRepository<Language> languageRepo)
+            IEfEntityRepository<SubCategory> subCategoryRepo)
         {
             this._categoryRepo = categoryRepo;
             this._subCategoryRepo = subCategoryRepo;
-            this._languageRepo = languageRepo;
         }
         public List<Category> ListCategories()
         {
@@ -42,9 +40,9 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Category.NotFoundResult(1);
             }
-            if (!_languageRepo.Any(x => x.Culture == model.Culture))
+            if (!CommonLib.IsCultureValid(model.Culture))
             {
-                return DomainResult.Language.NotFoundResult(2);
+                return DomainResult.Language.NotValidResult(2);
             }
             var res = _categoryRepo.UpdateWhereSingle(x => x.Id == model.CategoryId, x =>
             {

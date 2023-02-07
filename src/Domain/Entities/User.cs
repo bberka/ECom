@@ -78,8 +78,16 @@ namespace ECom.Domain.Entities
 		public DateTime? PasswordLastUpdateDate { get; set; }
 		public DateTime? DeletedDate { get; set; }
 
-		[MaxLength(6)]
-		public string Culture { get; set; } = "en";
+        [MinLength(2)]
+        [MaxLength(4)]
+        public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+
+		public virtual List<Address> Addresses { get; set; }
+
+        public virtual List<Collection> Collections { get; set; }
+        public virtual List<FavoriteProduct> FavoriteProducts { get; set; }
+
+		public virtual List<Order> Orders { get; set; }
 
     }
 }

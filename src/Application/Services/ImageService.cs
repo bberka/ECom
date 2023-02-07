@@ -14,14 +14,11 @@ namespace ECom.Application.Services
 	public class ImageService : IImageService
 	{
         private readonly IEfEntityRepository<Image> _imageRepo;
-        private readonly IEfEntityRepository<ImageLanguage> _imageLanguageRepo;
 
         public ImageService(
-			IEfEntityRepository<Image> imageRepo,
-			IEfEntityRepository<ImageLanguage> imageLanguageRepo)
+			IEfEntityRepository<Image> imageRepo)
 		{
             this._imageRepo = imageRepo;
-            this._imageLanguageRepo = imageLanguageRepo;
         }
 
         private const string DefaultImageBase64String = "";

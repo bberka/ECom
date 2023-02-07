@@ -32,13 +32,14 @@ namespace ECom.Domain.Entities
         public string? TechnicalInformationHTML { get; set; }
 
         [ForeignKey("ProductId")]
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         public virtual Product? Product { get; set; }
 
-        [ForeignKey("Culture")]
-        public string? Culture { get; set; }
-        public virtual Language? Language { get; set; }
-
+        [MinLength(2)]
+        [MaxLength(4)]
+        public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
     }
 }

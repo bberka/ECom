@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECom.Domain.Entities
+﻿namespace ECom.Domain.Entities
 {
     public class PaymentOption : IEfEntity
 	{
@@ -61,11 +53,11 @@ namespace ECom.Domain.Entities
         [MaxLength(512)]
         public string? Password { get; set; }
 
-        [ForeignKey("Culture")]
-        public string Culture { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual Language Language { get; set; }
+
+        [MinLength(2)]
+        [MaxLength(4)]
+        public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+     
 
 
     }
