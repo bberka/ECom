@@ -23,6 +23,7 @@ namespace ECom.Domain.Entities
         public string Password { get; set; }
 
         [MaxLength(255)]
+        [EmailAddress]
         public string EmailAddress { get; set; }
 
 

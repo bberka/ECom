@@ -45,15 +45,14 @@ namespace ECom.Application.Services
             return DomainResult.Collection.CreateSuccessResult();
 		}
 
-        public Result DeleteCollection(int id)
+        public Result DeleteCollection(int userId, int collectionId)
         {
-			var data = _collectionRepo.Find(id);
-			if (data is null)
+            var collectionResult = GetCollection(userId, collectionId);
+            if (collectionResult.IsFailure)
             {
-                return DomainResult.Collection.NotFoundResult(1);
+                return collectionResult.ToResult(10);
             }
-
-            var collectionProducts = _collectionProductRepo.GetList(x => x.CollectionId == id);
+            var collectionProducts = _collectionProductRepo.GetList(x => x.CollectionId == collectionId);
             if (collectionProducts.Any())
             {
                 var collectionProductDeleteResult = _collectionProductRepo.DeleteRange(collectionProducts);
@@ -62,7 +61,7 @@ namespace ECom.Application.Services
                     return DomainResult.DbInternalErrorResult(2);
                 }
             }
-			var res = _collectionRepo.Delete(id);
+			var res = _collectionRepo.Delete(collectionId);
 			if (!res)
             {
                 return DomainResult.DbInternalErrorResult(3);

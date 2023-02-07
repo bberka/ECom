@@ -28,8 +28,8 @@ namespace ECom.Domain.Entities
 		public string Password { get; set; }
 
 		[MaxLength(ConstantMgr.EmailMaxLength)]
+		[EmailAddress]
 		public string EmailAddress { get; set; }
-
 
 
 		public bool IsEmailVerified { get; set; } = false;

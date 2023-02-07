@@ -42,7 +42,7 @@
 			{
 				return true;
 			}
-			return EasValidate.HasSpecialChars(password);
+			return password.HasSpecialChars();
 		}
 		public bool HasNumber(string password)
 		{
