@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class StockChangeDAL : EfEntityRepositoryBase<StockChange, EComDbContext>, IEfEntityRepository<StockChange>
+	public class StockChangeDal : EfEntityRepositoryBase<StockChange, EComDbContext>, IEfEntityRepository<StockChange>
 	{
 
 	}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class SmtpOptionDAL : EfEntityRepositoryBase<SmtpOption, EComDbContext>, IEfEntityRepository<SmtpOption>
+	public class SmtpOptionDal : EfEntityRepositoryBase<SmtpOption, EComDbContext>, IEfEntityRepository<SmtpOption>
 	{
 
 	}

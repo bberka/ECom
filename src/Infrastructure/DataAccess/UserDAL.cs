@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class UserDAL : EfEntityRepositoryBase<User, EComDbContext>, IEfEntityRepository<User>
+	public class UserDal : EfEntityRepositoryBase<User, EComDbContext>, IEfEntityRepository<User>
 	{
 
 	}

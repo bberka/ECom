@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class PasswordResetTokenDAL : EfEntityRepositoryBase<PasswordResetToken, EComDbContext>, IEfEntityRepository<PasswordResetToken>
+	public class PasswordResetTokenDal : EfEntityRepositoryBase<PasswordResetToken, EComDbContext>, IEfEntityRepository<PasswordResetToken>
 	{
 
 	}

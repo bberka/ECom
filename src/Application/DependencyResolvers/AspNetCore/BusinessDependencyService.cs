@@ -14,12 +14,12 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 		public static IServiceCollection AddBusinessDependencies(this IServiceCollection services)
 		{
 			//Data Access Layer
-			services.AddScoped<IEfEntityRepository<Address>, AddressDAL>();
-			services.AddScoped<IEfEntityRepository<Admin>, AdminDAL>();
-			services.AddScoped<IEfEntityRepository<AdminLog>, AdminLogDAL>();
-			services.AddScoped<IEfEntityRepository<Announcement>, AnnouncementDAL>();
-			services.AddScoped<IEfEntityRepository<CargoOption>, CargoOptionDAL>();
-			services.AddScoped<IEfEntityRepository<Cart>, CartDAL>();
+			services.AddScoped<IEfEntityRepository<Address>, AddressDal>();
+			services.AddScoped<IEfEntityRepository<Admin>, AdminDal>();
+			services.AddScoped<IEfEntityRepository<AdminLog>, AdminLogDal>();
+			services.AddScoped<IEfEntityRepository<Announcement>, AnnouncementDal>();
+			services.AddScoped<IEfEntityRepository<CargoOption>, CargoOptionDal>();
+			services.AddScoped<IEfEntityRepository<Cart>, CartDal>();
 			services.AddScoped<IEfEntityRepository<Category>, CategoryDAL>();
 			services.AddScoped<IEfEntityRepository<CategoryDiscount>, CategoryDiscountDAL>();
 			services.AddScoped<IEfEntityRepository<Collection>, CollectionDAL>();
@@ -29,7 +29,7 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
 			services.AddScoped<IEfEntityRepository<DiscountNotify>, DiscountNotifyDAL>();
 			services.AddScoped<IEfEntityRepository<EmailVerifyToken>, EmailVerifyTokenDAL>();
 			services.AddScoped<IEfEntityRepository<FavoriteProduct>, FavoriteProductDAL>();
-			services.AddScoped<IEfEntityRepository<Image>, ImageDAL>();
+			services.AddScoped<IEfEntityRepository<Image>, ImageDal>();
 			services.AddScoped<IEfEntityRepository<Language>, LanguageDAL>();
 			services.AddScoped<IEfEntityRepository<Option>, OptionDAL>();
 			services.AddScoped<IEfEntityRepository<Order>, OrderDAL>();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-    public class ShowCaseImageDAL : EfEntityRepositoryBase<ShowCaseImage, EComDbContext>, IEfEntityRepository<ShowCaseImage>
+    public class ShowCaseImageDal : EfEntityRepositoryBase<ShowCaseImage, EComDbContext>, IEfEntityRepository<ShowCaseImage>
     {
     }
 }

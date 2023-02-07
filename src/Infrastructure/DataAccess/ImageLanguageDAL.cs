@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-    public class ImageLanguageDAL : EfEntityRepositoryBase<ImageLanguage, EComDbContext>, IEfEntityRepository<ImageLanguage>
+    public class ImageLanguageDal : EfEntityRepositoryBase<ImageLanguage, EComDbContext>, IEfEntityRepository<ImageLanguage>
     {
     }
 }

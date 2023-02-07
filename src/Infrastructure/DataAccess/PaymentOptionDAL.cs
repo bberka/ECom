@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class PaymentOptionDAL : EfEntityRepositoryBase<PaymentOption, EComDbContext>, IEfEntityRepository<PaymentOption>
+	public class PaymentOptionDal : EfEntityRepositoryBase<PaymentOption, EComDbContext>, IEfEntityRepository<PaymentOption>
 	{
 
 	}

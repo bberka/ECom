@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class DiscountCouponDAL : EfEntityRepositoryBase<DiscountCoupon, EComDbContext>, IEfEntityRepository<DiscountCoupon>
+	public class DiscountCouponDal : EfEntityRepositoryBase<DiscountCoupon, EComDbContext>, IEfEntityRepository<DiscountCoupon>
 	{
 	}
 }

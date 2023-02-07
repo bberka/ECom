@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class OptionDAL : EfEntityRepositoryBase<Option, EComDbContext>, IEfEntityRepository<Option>
+	public class OptionDal : EfEntityRepositoryBase<Option, EComDbContext>, IEfEntityRepository<Option>
 	{
 	}
 }

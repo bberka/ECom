@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class RoleDAL : EfEntityRepositoryBase<Role, EComDbContext>, IEfEntityRepository<Role>
+	public class RoleDal : EfEntityRepositoryBase<Role, EComDbContext>, IEfEntityRepository<Role>
 	{
 
 	}

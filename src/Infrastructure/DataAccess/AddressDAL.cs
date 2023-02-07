@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class AddressDAL : EfEntityRepositoryBase<Address, EComDbContext>, IEfEntityRepository<Address>
+	public class AddressDal : EfEntityRepositoryBase<Address, EComDbContext>, IEfEntityRepository<Address>
 	{
 
 	}

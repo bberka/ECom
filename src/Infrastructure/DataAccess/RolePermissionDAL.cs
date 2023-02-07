@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class RolePermissionDAL : EfEntityRepositoryBase<RolePermission, EComDbContext>, IEfEntityRepository<RolePermission>
+	public class RolePermissionDal : EfEntityRepositoryBase<RolePermission, EComDbContext>, IEfEntityRepository<RolePermission>
 	{
 
 	}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class SliderDAL : EfEntityRepositoryBase<Slider, EComDbContext>, IEfEntityRepository<Slider>
+	public class SliderDal : EfEntityRepositoryBase<Slider, EComDbContext>, IEfEntityRepository<Slider>
 	{
 
 	}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class SecurityLogDAL : EfEntityRepositoryBase<SecurityLog, EComDbContext>, IEfEntityRepository<SecurityLog>
+	public class SecurityLogDal : EfEntityRepositoryBase<SecurityLog, EComDbContext>, IEfEntityRepository<SecurityLog>
 	{
 
 	}

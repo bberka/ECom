@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-    public class ProductSubCategoryDAL : EfEntityRepositoryBase<ProductSubCategory, EComDbContext>, IEfEntityRepository<ProductSubCategory>
+    public class ProductSubCategoryDal : EfEntityRepositoryBase<ProductSubCategory, EComDbContext>, IEfEntityRepository<ProductSubCategory>
     {
     }
 }

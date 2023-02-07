@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class AdminDAL : EfEntityRepositoryBase<Admin,EComDbContext>, IEfEntityRepository<Admin>
+	public class AdminDal : EfEntityRepositoryBase<Admin,EComDbContext>, IEfEntityRepository<Admin>
 	{
 
 	}

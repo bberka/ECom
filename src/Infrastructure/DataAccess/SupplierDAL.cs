@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class SupplierDAL : EfEntityRepositoryBase<Supplier, EComDbContext>, IEfEntityRepository<Supplier>
+	public class SupplierDal : EfEntityRepositoryBase<Supplier, EComDbContext>, IEfEntityRepository<Supplier>
 	{
 
 	}

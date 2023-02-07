@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class AnnouncementDAL : EfEntityRepositoryBase<Announcement, EComDbContext>, IEfEntityRepository<Announcement>
+	public class AnnouncementDal : EfEntityRepositoryBase<Announcement, EComDbContext>, IEfEntityRepository<Announcement>
 	{
 
 	}

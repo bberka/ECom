@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class CargoOptionDAL : EfEntityRepositoryBase<CargoOption, EComDbContext>, IEfEntityRepository<CargoOption>
+	public class CargoOptionDal : EfEntityRepositoryBase<CargoOption, EComDbContext>, IEfEntityRepository<CargoOption>
 	{
 	}
 }

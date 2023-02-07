@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class CartDAL : EfEntityRepositoryBase<Cart, EComDbContext>, IEfEntityRepository<Cart>
+	public class CartDal : EfEntityRepositoryBase<Cart, EComDbContext>, IEfEntityRepository<Cart>
 	{
 
 	}

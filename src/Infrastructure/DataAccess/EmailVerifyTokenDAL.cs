@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Infrastructure.DataAccess
 {
-	public class EmailVerifyTokenDAL : EfEntityRepositoryBase<EmailVerifyToken, EComDbContext>, IEfEntityRepository<EmailVerifyToken>
+	public class EmailVerifyTokenDal : EfEntityRepositoryBase<EmailVerifyToken, EComDbContext>, IEfEntityRepository<EmailVerifyToken>
 	{
 	}
 }
