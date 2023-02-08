@@ -3,6 +3,7 @@ using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Entities;
 using ECom.Domain.Interfaces;
 using System.Security.Claims;
+using EasMe.Authorization;
 
 namespace ECom.Application.Manager
 {
@@ -36,6 +37,7 @@ namespace ECom.Application.Manager
             }
             userAsDic.Add("UserOnly", "true");
             userAsDic.Add(ClaimTypes.Role, "User");
+            userAsDic.Add(EasMeClaimType.EndPointPermissions, "Category.List,Category.Get");
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.UtcNow.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(userAsDic, date);

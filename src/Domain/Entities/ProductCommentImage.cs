@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,15 +15,13 @@ namespace ECom.Domain.Entities
         [ForeignKey("ImageId")]
         public int ImageId { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
+        [IgnoreDataMember]
         public virtual Image Image { get; set; }
 
         [ForeignKey("CommentId")]
         public int CommentId { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
+        [IgnoreDataMember]
         public virtual ProductComment? Comment { get; set; }
 
 

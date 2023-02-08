@@ -73,7 +73,6 @@ namespace ECom.Application.Services
         }
         public ResultData<Admin> GetAdmin(int id)
         {
-
             var admin = _adminRepo
                 .Get(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
@@ -168,7 +167,11 @@ namespace ECom.Application.Services
 
         public ResultData<Admin> Login(LoginRequestModel model)
         {
-            var admin = _adminRepo.GetFirstOrDefault(x => x.EmailAddress == model.EmailAddress);
+            var admin = _adminRepo
+                .Get(x => x.EmailAddress == model.EmailAddress)
+                .Include(x => x.Role)
+                .ThenInclude(x => x.Permissions)
+                .FirstOrDefault();
             if (admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
@@ -206,6 +209,15 @@ namespace ECom.Application.Services
         public bool IsValidPermission(int permissionId)
         {
             return _permissionRepo.Any(x => x.IsValid == true && x.Id == permissionId);
+        }
+
+        public List<Admin> ListOtherAdmins(int adminId)
+        {
+            return _adminRepo
+                .Get(x => x.IsTestAccount == ConstantMgr.IsDebug() && x.Id != adminId)
+                .Include(x => x.Role)
+                .ThenInclude(x => x.Permissions)
+                .ToList();
         }
 
         public List<Permission> GetPermissions(int adminId)

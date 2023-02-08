@@ -431,8 +431,9 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int?>("WhatsApp")
-                        .HasColumnType("int");
+                    b.Property<string>("WhatsApp")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("YoutubeLink")
                         .HasMaxLength(255)
@@ -819,6 +820,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProductId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
@@ -832,6 +836,8 @@ namespace ECom.Infrastructure.Migrations
                     b.HasIndex("AuthorUserId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("ProductComments");
                 });
@@ -853,21 +859,18 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
 
                     b.Property<byte>("Star")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.HasKey("UserId", "CommentId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("CommentId");
 
                     b.ToTable("ProductCommentStars");
                 });
@@ -1650,16 +1653,20 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", "AuthorUser")
-                        .WithMany()
+                        .WithMany("ProductComments")
                         .HasForeignKey("AuthorUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany("Comments")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId1");
 
                     b.Navigation("AuthorUser");
 
@@ -1687,11 +1694,19 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
                 {
+                    b.HasOne("ECom.Domain.Entities.ProductComment", "Comment")
+                        .WithMany("Stars")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Comment");
 
                     b.Navigation("User");
                 });
@@ -1853,6 +1868,8 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("Stars");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
@@ -1869,6 +1886,8 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("FavoriteProducts");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("ProductComments");
                 });
 #pragma warning restore 612, 618
         }

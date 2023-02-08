@@ -20,6 +20,8 @@ namespace ECom.Domain.Constants
 		public const byte PhoneNumberMaxLength = 32;
 
         public const string DefaultCulture = "tr";
+        public const CurrencyType DefaultCurrency = CurrencyType.Lira;
+
 
 		public const string VERSION = "v0.0.1";
 

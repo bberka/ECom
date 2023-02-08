@@ -19,7 +19,7 @@ namespace ECom.Domain.Entities
         [MaxLength(4)]
         public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
-		public virtual List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
+		public virtual List<SubCategory> SubCategories { get; set; }
 	}
 
 }

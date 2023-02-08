@@ -1,4 +1,6 @@
-﻿using ECom.Domain.Entities;
+﻿using EasMe.Authorization.Filters;
+using ECom.Domain.Constants;
+using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.AdminControllers
@@ -12,6 +14,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
             this._companyInformationService = companyInformationService;
         }
         [HttpPost]
+        [EndPointAuthorizationFilter(AdminOperationType.CompanyInfo_UpdateOrAdd)]
         public ActionResult<Result> UpdateOrAdd(CompanyInformation companyInformation)
         {
             var res = _companyInformationService.UpdateOrAddCompanyInformation(companyInformation);

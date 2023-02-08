@@ -4,10 +4,12 @@
 
 
 
+using EasMe.Authorization.Filters;
 using EasMe.Logging;
 using ECom.Application.Services;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.ApiModels.Response;
+using ECom.Domain.Constants;
 using ECom.Domain.Interfaces;
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -40,7 +42,8 @@ namespace ECom.WebApi.Controllers.AdminControllers
         }
 
 		[HttpPost]
-		public ActionResult<Result> Add([FromBody] AddAdminRequestModel model)
+        [EndPointAuthorizationFilter(AdminOperationType.Admin_Add)]
+        public ActionResult<Result> Add([FromBody] AddAdminRequestModel model)
 		{
 #if !DEBUG
             return NotFound();

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECom.Domain.Entities
+﻿namespace ECom.Domain.Entities
 {
     public class ProductDetail : IEfEntity
 	{
@@ -33,9 +25,9 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("ProductId")]
         public int ProductId { get; set; }
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
-        public virtual Product? Product { get; set; }
+
+        public virtual Product Product { get; set; }
+
 
         [MinLength(2)]
         [MaxLength(4)]

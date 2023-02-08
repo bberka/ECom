@@ -21,5 +21,14 @@ namespace ECom.Domain.Lib
         {
             return Enum.GetNames<LanguageType>();
         }
-	}
+        public static string[] GetAdminOperationTypes()
+        {
+            return Enum.GetNames<AdminOperationType>();
+        }
+
+        public static string[] GetCurrencyTypes()
+        {
+            return Enum.GetNames<CurrencyType>();
+        }
+    }
 }

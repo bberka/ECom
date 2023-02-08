@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace ECom.Domain.Entities
@@ -17,8 +18,7 @@ namespace ECom.Domain.Entities
 
 		[ForeignKey("CategoryId")]
 		public int CategoryId { get; set; }
-        [JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
+        [IgnoreDataMember]
         public virtual Category Category { get; set; }
 
 	}

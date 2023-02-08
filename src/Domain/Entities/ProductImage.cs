@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,8 +19,7 @@ namespace ECom.Domain.Entities
 		[ForeignKey("ProductId")]
         public int ProductId { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
-        public virtual Product? Product { get; set; }
+        [IgnoreDataMember]
+        public virtual Product Product { get; set; }
     }
 }

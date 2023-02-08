@@ -1,4 +1,6 @@
-﻿using ECom.Domain.Entities;
+﻿using EasMe.Authorization.Filters;
+using ECom.Domain.Constants;
+using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +16,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
         }
         [HttpPost]
         [ResponseCache(Duration = 60)]
+        [EndPointAuthorizationFilter(AdminOperationType.Image_Upload)]
         public ActionResult<ResultData<int>> UploadImage(IFormFile file)
         {
             if (file is null) return BadRequest();

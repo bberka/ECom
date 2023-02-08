@@ -30,7 +30,7 @@ namespace ECom.Application.Manager
                 adminAsDic.Remove(kvp.Key);
             }
             adminAsDic.Add("AdminOnly", "true");
-            adminAsDic.Add(ClaimTypes.Role, "Admin");
+            adminAsDic.Add(ClaimTypes.Role, loginResult.Data.Role.Name);
 
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.UtcNow.AddMinutes(expireMins);

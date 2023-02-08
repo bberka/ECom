@@ -1,4 +1,6 @@
-﻿using ECom.Infrastructure;
+﻿using EasMe.Authorization.Filters;
+using ECom.Domain.Constants;
+using ECom.Infrastructure;
 
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
@@ -14,34 +16,40 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
         [HttpGet]
+        [EndPointAuthorizationFilter(AdminOperationType.Option_RefreshCache)]
         public ActionResult RefreshCache()
         {
              _optionService.RefreshCache();
              return Ok();
         }
         [HttpGet]
-		public ActionResult<Option> GetCurrentOption()
+        [EndPointAuthorizationFilter(AdminOperationType.Option_Get)]
+        public ActionResult<Option> GetCurrentOption()
 		{
 			return _optionService.GetOption();
 		}
 		
 		[HttpGet]
-		public ActionResult<List<CargoOption>> ListCargoOptions()
+        [EndPointAuthorizationFilter(AdminOperationType.CargoOption_Get)]
+        public ActionResult<List<CargoOption>> ListCargoOptions()
 		{
 			return _optionService.GetCargoOptions();
 		}
 		[HttpGet]
-		public ActionResult<List<PaymentOption>> ListPaymentOptions()
+        [EndPointAuthorizationFilter(AdminOperationType.PaymentOption_Get)]
+        public ActionResult<List<PaymentOption>> ListPaymentOptions()
 		{
 			return _optionService.GetPaymentOptions();
 		}
 		[HttpGet]
-		public ActionResult<List<SmtpOption>> ListSmtpOptions()
+        [EndPointAuthorizationFilter(AdminOperationType.SmtpOption_Get)]
+        public ActionResult<List<SmtpOption>> ListSmtpOptions()
 		{
 			return _optionService.GetSmtpOptions();
 		}
 		[HttpPost]
-		public ActionResult<Result> Update([FromBody] Option option)
+        [EndPointAuthorizationFilter(AdminOperationType.Option_Update)]
+        public ActionResult<Result> Update([FromBody] Option option)
 		{
 			var res = _optionService.UpdateOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
@@ -50,14 +58,16 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
 		
 		[HttpPost]
-		public ActionResult<Result> UpdateCargoOption([FromBody] CargoOption option)
+        [EndPointAuthorizationFilter(AdminOperationType.CargoOption_Update)]
+        public ActionResult<Result> UpdateCargoOption([FromBody] CargoOption option)
 		{
 			var res = _optionService.UpdateCargoOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
 			return res;
 		}
 		[HttpPost]
-		public ActionResult<Result> UpdatePaymentOption([FromBody] PaymentOption option)
+        [EndPointAuthorizationFilter(AdminOperationType.PaymentOption_Update)]
+        public ActionResult<Result> UpdatePaymentOption([FromBody] PaymentOption option)
 		{
 			var res = _optionService.UpdatePaymentOption(option);
 			logger.Info($"Option({option.ToJsonString()})");
@@ -65,7 +75,8 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPost]
-		public ActionResult<Result> UpdateSmtpOption([FromBody] SmtpOption option)
+        [EndPointAuthorizationFilter(AdminOperationType.SmtpOption_Update)]
+        public ActionResult<Result> UpdateSmtpOption([FromBody] SmtpOption option)
 		{
 			var res = _optionService.UpdateSmtpOption(option);
 			logger.Info($"Option({option.ToJsonString()})");

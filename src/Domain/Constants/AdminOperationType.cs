@@ -8,9 +8,48 @@ namespace ECom.Domain.Constants
 {
     public enum AdminOperationType
     {
-        None,
-        Login,
-        Register,
+        Admin_List,
+        Admin_Update,
+        Admin_Delete,
+        Admin_GetOrList,
+        Admin_Add,
+
+        Announcement_Update,
+        Announcement_Delete,
+        Announcement_EnableOrDisable,
+
+        Category_Add,
+        Category_Update,
+        Category_Delete,
+        Category_EnableOrDisable,
+
+        SubCategory_Add,
+        SubCategory_Update,
+        SubCategory_Delete,
+        SubCategory_EnableOrDisable,
+
+        CompanyInfo_UpdateOrAdd,
+        
+        Image_Upload,
+
+        Option_RefreshCache,
+        Option_Get,
+        Option_Update,
+
+        CargoOption_Get,
+        CargoOption_Update,
+        CargoOption_Delete,
+
+        PaymentOption_Get,
+        PaymentOption_Update,
+        PaymentOption_Delete,
+
+        SmtpOption_Get,
+        SmtpOption_Update,
+        SmtpOption_Delete,
+
+        
 
     }
+
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20230207164035_init-8")]
-    partial class init8
+    [Migration("20230207195639_init3")]
+    partial class init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -856,21 +856,18 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
 
                     b.Property<byte>("Star")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.HasKey("UserId", "CommentId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("CommentId");
 
                     b.ToTable("ProductCommentStars");
                 });
@@ -1653,9 +1650,9 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", "AuthorUser")
-                        .WithMany()
+                        .WithMany("ProductComments")
                         .HasForeignKey("AuthorUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
@@ -1690,11 +1687,19 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
                 {
+                    b.HasOne("ECom.Domain.Entities.ProductComment", "Comment")
+                        .WithMany("Stars")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Comment");
 
                     b.Navigation("User");
                 });
@@ -1856,6 +1861,8 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("Stars");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
@@ -1872,6 +1879,8 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("FavoriteProducts");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("ProductComments");
                 });
 #pragma warning restore 612, 618
         }

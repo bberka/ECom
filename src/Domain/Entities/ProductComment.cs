@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace ECom.Domain.Entities
+﻿namespace ECom.Domain.Entities
 {
     public class ProductComment : IEfEntity
 	{
@@ -29,12 +20,13 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("AuthorUserId")]
         public int AuthorUserId { get; set; }
-        public virtual User? AuthorUser { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        public virtual User AuthorUser { get; set; }
 
         [ForeignKey("ProductId")]
         public int ProductId { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
         public virtual Product? Product { get; set; }
 

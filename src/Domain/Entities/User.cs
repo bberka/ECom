@@ -16,9 +16,9 @@ namespace ECom.Domain.Entities
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		public DateTime RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-		public bool IsValid { get; set; }
+        public bool IsValid { get; set; } = true;
 
 		public bool IsTestAccount { get; set; } = false;
 
@@ -63,7 +63,7 @@ namespace ECom.Domain.Entities
         /// </summary>
         public byte TwoFactorType { get; set; } = 0;
 
-		public int TotalLoginCount { get; set; }
+        public int TotalLoginCount { get; set; } = 0;
 		
 		[MaxLength(64)]
 		public string? LastLoginIp { get; set; }
@@ -83,11 +83,14 @@ namespace ECom.Domain.Entities
         public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
 		public virtual List<Address> Addresses { get; set; }
-
         public virtual List<Collection> Collections { get; set; }
         public virtual List<FavoriteProduct> FavoriteProducts { get; set; }
-
 		public virtual List<Order> Orders { get; set; }
+		public virtual List<ProductComment> ProductComments { get; set; }
+		//public virtual List<ProductCommentStar> ProductCommentStars { get; set; }
+
+
+
 
     }
 }

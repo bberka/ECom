@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.Extensions
+namespace ECom.Domain.Constants
 {
-	public static class EnumExtensions
-	{
-        
+    public enum CurrencyType
+    {
+        Lira,
+        Dollar,
+        Euro,
     }
 }

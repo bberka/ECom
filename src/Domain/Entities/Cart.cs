@@ -20,6 +20,7 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("ProductId")]
         public int ProductId { get; set; }
+
         public virtual Product Product { get; set; }
 
     }

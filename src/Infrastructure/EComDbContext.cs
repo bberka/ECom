@@ -63,149 +63,133 @@ namespace ECom.Infrastructure
                     u.ProductId,
                     u.SubCategoryId
                 });
+            modelBuilder.Entity<ProductCommentStar>()
+                .HasKey(u => new
+                {
+                    u.UserId,
+                    u.CommentId
+                });
+            modelBuilder.Entity<ProductComment>()
+                .HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(x => x.ProductId);
+
+            modelBuilder.Entity<ProductComment>()
+                .HasMany(s => s.Stars)
+                .WithOne(x => x.Comment)
+                .HasForeignKey(x => x.CommentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>()
+                .HasMany(s => s.ProductComments)
+                .WithOne(x => x.AuthorUser)
+                .HasForeignKey(x => x.AuthorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
-		public static EComDbContext New() => new EComDbContext();
+        public static EComDbContext New() => new EComDbContext();
         public static void EnsureCreated()
         {
             var created = new EComDbContext().Database.EnsureCreated();
             if (!created) return;
-            using var context = new EComDbContext();
-            var option = new Option();
-            option.IsRelease = !ConstantMgr.IsDebug();
-            context.Add(option);
-            context.SaveChanges();
-            var role = new Role
-            {
-                IsValid = true,
-                Memo = "Initial-Create-Owner",
-                Name = "Owner",
-            };
-            context.Add(role);
-            var perms = new List<Permission>
-            {
-                new Permission
-            {
-                IsValid = true,
-                Name = "Get",
-                Memo = "Initial-Create",
-            },
-                new Permission
-            {
-                IsValid = true,
-                Name = "Create",
-                Memo = "Initial-Create",
-            },
-                new Permission
-            {
-                IsValid = true,
-                Name = "Update",
-                Memo = "Initial-Create",
-            },
-                new Permission
-            {
-                IsValid = true,
-                Name = "Delete",
-                Memo = "Initial-Create",
-            }
-            };
-            context.AddRange(perms);
-            context.SaveChanges();
-
-            var roleBind = new RolePermission
-            {
-                PermissionId = 1,
-                RoleId = 1,
-            };
-            context.Add(roleBind);
-            context.SaveChanges();
-            var testUser = new User
-            {
-                CitizenShipNumber = 1,
-                DeletedDate = null,
-                EmailAddress = "qwe@qwe.com",
-                FailedPasswordCount = 0,
-                IsEmailVerified = true,
-                IsTestAccount = true,
-                IsValid = true,
-                LastLoginDate = DateTime.Now,
-                LastLoginIp = "127.0.0.1",
-                LastLoginUserAgent = "",
-                Name = "String",
-                Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
-                PhoneNumber = "5526667788",
-                Culture = "en",
-                RegisterDate = DateTime.Now,
-                Surname = "Str",
-                TotalLoginCount = 0,
-                PasswordLastUpdateDate = DateTime.Now,
-                TaxNumber = 0,
-            };
-            context.Add(testUser);
-            context.SaveChanges();
-
-            var testAdmin = new Admin
-            {
-                DeletedDate = null,
-                EmailAddress = "qwe@qwe.com",
-                FailedPasswordCount = 0,
-                IsTestAccount = true,
-                IsValid = true,
-                LastLoginDate = DateTime.Now,
-                LastLoginIp = "127.0.0.1",
-                LastLoginUserAgent = "",
-                Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
-                RegisterDate = DateTime.Now,
-                TotalLoginCount = 0,
-                PasswordLastUpdateDate = DateTime.Now,
-                RoleId =1,
-            };
-            context.Add(testAdmin);
-            context.SaveChanges();
-
-          
+            BaseDbFiller.Run();
+            
 
         }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Option> Options { get; set; }
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
-        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
-        public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
-        public DbSet<Collection> Collections { get; set; }
-        public DbSet<CollectionProduct> CollectionProducts { get; set; }
-        public DbSet<SmtpOption> SmtpOptions { get; set; }
-        public DbSet<PaymentOption> PaymentOptions { get; set; }
-        public DbSet<Slider> Sliders { get; set; }
-        public DbSet<DiscountNotify> DiscountNotifies { get; set; }
+
+        #region Product-Management
+        public DbSet<StockChange> StockChanges { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        #endregion
+
+        #region Product
+        public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductCommentImage> ProductCommentImages { get; set; }
         public DbSet<ProductCommentStar> ProductCommentStars { get; set; }
+
+        #endregion
+
+        #region Discount
+        public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
+
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
+        public DbSet<DiscountNotify> DiscountNotifies { get; set; }
+
+
+        #endregion
+
+        #region Category
+        public DbSet<Category> Categories { get; set; }
+
         public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
+
+
+        #endregion
+
+        #region  Logs
+
         public DbSet<UserLog> UserLogs { get; set; }
         public DbSet<AdminLog> AdminLogs { get; set; }
         public DbSet<SecurityLog> SecurityLogs { get; set; }
+
+        #endregion
+
+        #region Options
+        public DbSet<CompanyInformation> CompanyInformations { get; set; }
+        public DbSet<Option> Options { get; set; }
         public DbSet<CargoOption> CargoOptions { get; set; }
+        public DbSet<SmtpOption> SmtpOptions { get; set; }
+        public DbSet<PaymentOption> PaymentOptions { get; set; }
+
+        #endregion
+
+        #region Admin - Permissions
+
+        public DbSet<Admin> Admins { get; set; }
+
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Role> Roles { get; set; }
+        #endregion
+
+        #region HomePage
+
+        public DbSet<Slider> Sliders { get; set; }
+
         public DbSet<Announcement> Announcements { get; set; }
+
+        public DbSet<ShowCaseImage> ShowCaseImages { get; set; }
+
+        public DbSet<ProductShowCase> ProductShowCases { get; set; }
+
+
+        #endregion
+
+        #region User
+        public DbSet<User> Users { get; set; }
+
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<CompanyInformation> CompanyInformations { get; set; }
-        public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<StockChange> StockChanges { get; set; }
-        public DbSet<ProductShowCase> ProductShowCases { get; set; }
-        public DbSet<ShowCaseImage> ShowCaseImages { get; set; }
+
+        public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
+        public DbSet<Collection> Collections { get; set; }
+        public DbSet<CollectionProduct> CollectionProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
+
+        public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
+        #endregion
+
+
+
+
     }
 }

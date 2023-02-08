@@ -28,7 +28,9 @@ namespace ECom.Domain.Entities
 
 		[MaxLength(255)]
 		public string ContactEmail { get; set; }
-		public int? WhatsApp { get; set; }
+
+        [MaxLength(16)]
+        public string? WhatsApp { get; set; }
 
 		[MaxLength(255)]
 		public string CompanyAddress { get; set; }

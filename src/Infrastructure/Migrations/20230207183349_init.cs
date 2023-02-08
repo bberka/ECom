@@ -28,6 +28,21 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CompanyInformations",
                 columns: table => new
                 {
@@ -57,22 +72,13 @@ namespace ECom.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Languages",
-                columns: table => new
-                {
-                    Culture = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Languages", x => x.Culture);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,6 +105,44 @@ namespace ECom.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Options", x => x.IsRelease);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentOptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    TypeName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false),
+                    SecretKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    ClientId = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    ApiKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentOptions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Memo = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,6 +214,24 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -178,7 +240,7 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
                     IsTestAccount = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
@@ -197,11 +259,75 @@ namespace ECom.Infrastructure.Migrations
                     FailedPasswordCount = table.Column<int>(type: "int", nullable: false),
                     PasswordLastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Culture = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false)
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CategoryDiscounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryDiscounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategoryDiscounts_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DiscountCoupons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
+                    DiscountCategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiscountCoupons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DiscountCoupons_Categories_DiscountCategoryId",
+                        column: x => x.DiscountCategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,8 +339,6 @@ namespace ECom.Infrastructure.Migrations
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FreeShippingMinCost = table.Column<int>(type: "int", nullable: false),
-                    LanguageId = table.Column<int>(type: "int", nullable: false),
-                    LanguageCulture = table.Column<string>(type: "nvarchar(6)", nullable: false),
                     ImageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -226,87 +350,29 @@ namespace ECom.Infrastructure.Migrations
                         principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CargoOptions_Languages_LanguageCulture",
-                        column: x => x.LanguageCulture,
-                        principalTable: "Languages",
-                        principalColumn: "Culture",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "ShowCaseImages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Culture = table.Column<string>(type: "nvarchar(6)", nullable: false)
+                    Order = table.Column<byte>(type: "tinyint", nullable: false),
+                    ShowCaseType = table.Column<byte>(type: "tinyint", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_ShowCaseImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Categories_Languages_Culture",
-                        column: x => x.Culture,
-                        principalTable: "Languages",
-                        principalColumn: "Culture",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ImageLanguages",
-                columns: table => new
-                {
-                    ImageId = table.Column<int>(type: "int", nullable: false),
-                    Culture = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LanguageCulture = table.Column<string>(type: "nvarchar(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImageLanguages", x => new { x.Culture, x.ImageId });
-                    table.ForeignKey(
-                        name: "FK_ImageLanguages_Images_ImageId",
+                        name: "FK_ShowCaseImages_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ImageLanguages_Languages_LanguageCulture",
-                        column: x => x.LanguageCulture,
-                        principalTable: "Languages",
-                        principalColumn: "Culture",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PaymentOptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    TypeName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Tax = table.Column<float>(type: "real", nullable: false),
-                    SecretKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    ClientId = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    ApiKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Culture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LanguageCulture = table.Column<string>(type: "nvarchar(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentOptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentOptions_Languages_LanguageCulture",
-                        column: x => x.LanguageCulture,
-                        principalTable: "Languages",
-                        principalColumn: "Culture");
                 });
 
             migrationBuilder.CreateTable(
@@ -319,8 +385,7 @@ namespace ECom.Infrastructure.Migrations
                     Alt = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Order = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     ImageId = table.Column<int>(type: "int", nullable: true),
-                    Culture = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LanguageCulture = table.Column<string>(type: "nvarchar(6)", nullable: true)
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -330,11 +395,6 @@ namespace ECom.Infrastructure.Migrations
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Sliders_Languages_LanguageCulture",
-                        column: x => x.LanguageCulture,
-                        principalTable: "Languages",
-                        principalColumn: "Culture");
                 });
 
             migrationBuilder.CreateTable(
@@ -343,9 +403,9 @@ namespace ECom.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsLimited = table.Column<bool>(type: "bit", nullable: false),
                     DiscountedPriceIncludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OriginalPriceIncludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -388,6 +448,30 @@ namespace ECom.Infrastructure.Migrations
                     table.PrimaryKey("PK_Admins", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Admins_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RolePermissions",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolePermissions", x => new { x.PermissionId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_RolePermissions_Permissions_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "Permissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RolePermissions_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
@@ -494,8 +578,8 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LogType = table.Column<int>(type: "int", nullable: false),
-                    OperationType = table.Column<int>(type: "int", nullable: false),
+                    Severity = table.Column<int>(type: "int", nullable: false),
+                    OperationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
                     CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
@@ -512,69 +596,6 @@ namespace ECom.Infrastructure.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryDiscounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryDiscounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CategoryDiscounts_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DiscountCoupons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    DiscountCategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiscountCoupons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DiscountCoupons_Categories_DiscountCategoryId",
-                        column: x => x.DiscountCategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubCategories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubCategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubCategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -654,163 +675,6 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductComments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    Star = table.Column<byte>(type: "tinyint", nullable: false),
-                    AuthorUserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductComments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductComments_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductComments_Users_AuthorUserId",
-                        column: x => x.AuthorUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    DescriptionHTML = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
-                    TechnicalInformationHTML = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
-                    Culture = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LanguageCulture = table.Column<string>(type: "nvarchar(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductDetails_Languages_LanguageCulture",
-                        column: x => x.LanguageCulture,
-                        principalTable: "Languages",
-                        principalColumn: "Culture");
-                    table.ForeignKey(
-                        name: "FK_ProductDetails_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductImages",
-                columns: table => new
-                {
-                    ImageId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductImages", x => new { x.ProductId, x.ImageId });
-                    table.ForeignKey(
-                        name: "FK_ProductImages_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductImages_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AdminLogs",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LogType = table.Column<int>(type: "int", nullable: false),
-                    OperationType = table.Column<int>(type: "int", nullable: false),
-                    RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    AdminId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AdminLogs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AdminLogs_Admins_AdminId",
-                        column: x => x.AdminId,
-                        principalTable: "Admins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Permissions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Memo = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Permissions_Admins_AdminId",
-                        column: x => x.AdminId,
-                        principalTable: "Admins",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CollectionProducts",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    CollectionId = table.Column<int>(type: "int", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CollectionProducts", x => new { x.CollectionId, x.ProductId });
-                    table.ForeignKey(
-                        name: "FK_CollectionProducts_Collections_CollectionId",
-                        column: x => x.CollectionId,
-                        principalTable: "Collections",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CollectionProducts_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -848,6 +712,106 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductComments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    AuthorUserId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductComments_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductComments_Users_AuthorUserId",
+                        column: x => x.AuthorUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    DescriptionHTML = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: false),
+                    TechnicalInformationHTML = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductImages",
+                columns: table => new
+                {
+                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductImages", x => new { x.ProductId, x.ImageId });
+                    table.ForeignKey(
+                        name: "FK_ProductImages_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductImages_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductShowCases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    Order = table.Column<byte>(type: "tinyint", nullable: false),
+                    ShowCaseType = table.Column<byte>(type: "tinyint", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductShowCases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductShowCases_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductSubCategories",
                 columns: table => new
                 {
@@ -867,6 +831,88 @@ namespace ECom.Infrastructure.Migrations
                         name: "FK_ProductSubCategories_SubCategories_SubCategoryId",
                         column: x => x.SubCategoryId,
                         principalTable: "SubCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockChanges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<bool>(type: "bit", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    Cost = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    SupplierId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockChanges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StockChanges_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StockChanges_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdminLogs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Severity = table.Column<int>(type: "int", nullable: false),
+                    OperationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    AdminId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdminLogs_Admins_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CollectionProducts",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CollectionId = table.Column<int>(type: "int", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollectionProducts", x => new { x.CollectionId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_CollectionProducts_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CollectionProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -895,32 +941,6 @@ namespace ECom.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "RolePermissions",
-                columns: table => new
-                {
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    PermissionId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RolePermissions", x => new { x.PermissionId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_RolePermissions_Permissions_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "Permissions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RolePermissions_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
                 table: "Addresses",
@@ -942,19 +962,9 @@ namespace ECom.Infrastructure.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CargoOptions_LanguageCulture",
-                table: "CargoOptions",
-                column: "LanguageCulture");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Carts_ProductId",
                 table: "Carts",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_Culture",
-                table: "Categories",
-                column: "Culture");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryDiscounts_CategoryId",
@@ -992,16 +1002,6 @@ namespace ECom.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImageLanguages_ImageId",
-                table: "ImageLanguages",
-                column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ImageLanguages_LanguageCulture",
-                table: "ImageLanguages",
-                column: "LanguageCulture");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_DiscountCouponId",
                 table: "Orders",
                 column: "DiscountCouponId");
@@ -1022,16 +1022,6 @@ namespace ECom.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaymentOptions_LanguageCulture",
-                table: "PaymentOptions",
-                column: "LanguageCulture");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Permissions_AdminId",
-                table: "Permissions",
-                column: "AdminId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductCommentImages_CommentId",
                 table: "ProductCommentImages",
                 column: "CommentId");
@@ -1045,11 +1035,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "IX_ProductComments_ProductId",
                 table: "ProductComments",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDetails_LanguageCulture",
-                table: "ProductDetails",
-                column: "LanguageCulture");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductDetails_ProductId",
@@ -1067,6 +1052,11 @@ namespace ECom.Infrastructure.Migrations
                 column: "ProductVariantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductShowCases_ProductId",
+                table: "ProductShowCases",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductSubCategories_SubCategoryId",
                 table: "ProductSubCategories",
                 column: "SubCategoryId");
@@ -1077,14 +1067,24 @@ namespace ECom.Infrastructure.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShowCaseImages_ImageId",
+                table: "ShowCaseImages",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sliders_ImageId",
                 table: "Sliders",
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sliders_LanguageCulture",
-                table: "Sliders",
-                column: "LanguageCulture");
+                name: "IX_StockChanges_ProductId",
+                table: "StockChanges",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockChanges_SupplierId",
+                table: "StockChanges",
+                column: "SupplierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubCategories_CategoryId",
@@ -1134,9 +1134,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "FavoriteProducts");
 
             migrationBuilder.DropTable(
-                name: "ImageLanguages");
-
-            migrationBuilder.DropTable(
                 name: "Options");
 
             migrationBuilder.DropTable(
@@ -1158,6 +1155,9 @@ namespace ECom.Infrastructure.Migrations
                 name: "ProductImages");
 
             migrationBuilder.DropTable(
+                name: "ProductShowCases");
+
+            migrationBuilder.DropTable(
                 name: "ProductSubCategories");
 
             migrationBuilder.DropTable(
@@ -1167,13 +1167,22 @@ namespace ECom.Infrastructure.Migrations
                 name: "SecurityLogs");
 
             migrationBuilder.DropTable(
+                name: "ShowCaseImages");
+
+            migrationBuilder.DropTable(
                 name: "Sliders");
 
             migrationBuilder.DropTable(
                 name: "SmtpOptions");
 
             migrationBuilder.DropTable(
+                name: "StockChanges");
+
+            migrationBuilder.DropTable(
                 name: "UserLogs");
+
+            migrationBuilder.DropTable(
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Collections");
@@ -1194,6 +1203,12 @@ namespace ECom.Infrastructure.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
@@ -1203,16 +1218,7 @@ namespace ECom.Infrastructure.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Admins");
-
-            migrationBuilder.DropTable(
                 name: "ProductVariants");
-
-            migrationBuilder.DropTable(
-                name: "Languages");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
         }
     }
 }

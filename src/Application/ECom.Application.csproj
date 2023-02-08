@@ -21,6 +21,9 @@
     <Reference Include="EasMe">
       <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.dll</HintPath>
     </Reference>
+    <Reference Include="EasMe.Authorization">
+      <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.Authorization.dll</HintPath>
+    </Reference>
     <Reference Include="EasMe.EntityFrameworkCore">
       <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.EntityFrameworkCore.dll</HintPath>
     </Reference>

@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Entities;
+﻿using EasMe.Authorization.Filters;
+using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
         [HttpGet]
         [ResponseCache(Duration = 60)]
+        [EndPointAuthorizationFilter("Category.List")]
         public ActionResult<List<Category>> List()
         {
             return _service.ListCategories();

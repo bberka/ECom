@@ -1,4 +1,6 @@
-﻿using ECom.Domain.Entities;
+﻿using EasMe.Authorization.Filters;
+using ECom.Domain.Constants;
+using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers.AdminControllers
@@ -12,6 +14,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			_announcementService = announcementService;
 		}
 		[HttpPost]
+        [EndPointAuthorizationFilter(AdminOperationType.Announcement_Update)]
         public ActionResult<Result> Update([FromBody] Announcement data) 
         {
 			var res = _announcementService.UpdateAnnouncement(data);
@@ -20,13 +23,16 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 		
 		[HttpDelete]
-		public ActionResult<Result> Delete([FromBody] uint id)
+        [EndPointAuthorizationFilter(AdminOperationType.Announcement_Delete)]
+
+        public ActionResult<Result> Delete([FromBody] uint id)
 		{
 			var res = _announcementService.DeleteAnnouncement(id);
 			return res;
 		}
 		[HttpPut]
-		public ActionResult<Result> EnableOrDisable([FromBody] uint id)
+        [EndPointAuthorizationFilter(AdminOperationType.Announcement_EnableOrDisable)]
+        public ActionResult<Result> EnableOrDisable([FromBody] uint id)
 		{
 			var res = _announcementService.EnableOrDisable(id);
 			logger.Info(id);

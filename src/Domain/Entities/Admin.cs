@@ -10,12 +10,9 @@ namespace ECom.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        public DateTime RegisterDate { get; set; }
-
-        public bool IsValid { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+        public bool IsValid { get; set; } = true;
         public bool IsTestAccount { get; set; } = false;
-
 
         [MaxLength(64)]
         [JsonIgnore]
@@ -39,9 +36,9 @@ namespace ECom.Domain.Entities
         /// 3: Authy
         /// </summary>
         public byte TwoFactorType { get; set; } = 0;
-        
 
-        public int TotalLoginCount { get; set; }
+
+        public int TotalLoginCount { get; set; } = 0;
 
         [MaxLength(64)]
         public string? LastLoginIp { get; set; }
