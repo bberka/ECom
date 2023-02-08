@@ -8,10 +8,20 @@ namespace ECom.Application.Validators
 {
     public class AddAdminRequestModelValidator : AbstractValidator<AddAdminRequestModel>, IValidator<AddAdminRequestModel>
     {
-        public AddAdminRequestModelValidator(IValidationDbService validationDbService)
+        public AddAdminRequestModelValidator(IValidationService validationService)
         {
             RuleFor(x => x.EmailAddress)
-                .Must(validationDbService.NotUsedEmail_Admin)
+                .EmailAddress();
+            
+            RuleFor(x => x.Password)
+                .MinimumLength(6)
+                .MaximumLength(32);
+
+            RuleFor(x => x.RoleId)
+                .GreaterThan(0);
+
+            RuleFor(x => x.EmailAddress)
+                .Must(validationService.NotUsedEmail_Admin)
                 .WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
         }
 

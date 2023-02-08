@@ -16,16 +16,16 @@ namespace ECom.Application.Services
 	{
 		private readonly IEfEntityRepository<User> _userRepo;
 		private readonly IOptionService _optionService;
-		private readonly IValidationDbService _validationDbService;
+		private readonly IValidationService _validationService;
 
 		public UserService(
 			IEfEntityRepository<User> userRepo,
 			IOptionService optionService,
-			IValidationDbService validationDbService)
+			IValidationService validationService)
 		{
 			this._userRepo = userRepo;
 			this._optionService = optionService;
-			this._validationDbService = validationDbService;
+			this._validationService = validationService;
 		}
 		public Result Register(RegisterRequestModel model)
 		{

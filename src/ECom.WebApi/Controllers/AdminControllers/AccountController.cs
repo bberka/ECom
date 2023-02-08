@@ -17,13 +17,13 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public ActionResult<ResultData<Admin>> Get()
         {
             var adminId = HttpContext.GetAdminId();
-            return _adminService.GetAdmin(adminId);
+            return _adminService.GetAdmin(adminId).WithoutRv();
         }
         
         [HttpPost]
         public ActionResult<Result> ChangePassword(ChangePasswordRequestModel model)
         {
-            return _adminService.ChangePassword(model);
+            return _adminService.ChangePassword(model).WithoutRv();
         }
 
 

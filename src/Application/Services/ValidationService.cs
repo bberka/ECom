@@ -1,22 +1,19 @@
 ﻿namespace ECom.Application.Services
 {
-	public class ValidationDbService : IValidationDbService
+	public class ValidationService : IValidationService
 	{
 		private readonly IEfEntityRepository<User> _userRepo;
 		private readonly IEfEntityRepository<Admin> _adminRepo;
-		private readonly IEfEntityRepository<Address> _addressRepo;
 		private readonly IOptionService _optionService;
 		private readonly Option _option;
-		public ValidationDbService(
+		public ValidationService(
 			IEfEntityRepository<User> userRepo,
 			IEfEntityRepository<Admin> adminRepo,
-			IEfEntityRepository<Address> addressRepo,
 			IOptionService optionService
 			)
 		{
 			this._userRepo = userRepo;
 			this._adminRepo = adminRepo;
-			this._addressRepo = addressRepo;
 			this._optionService = optionService;
 			_option = _optionService.GetOptionFromCache();
 		}
@@ -37,40 +34,24 @@
 		}
 
 		public bool NotHasSpecialChar(string password)
-		{
-			if (!_option.RequireSpecialCharacterInPassword)
-			{
-				return true;
-			}
-			return password.HasSpecialChars();
-		}
+        {
+            return !_option.RequireSpecialCharacterInPassword || password.HasSpecialChars();
+        }
 		public bool HasNumber(string password)
-		{
-			if (!_option.RequireNumberInPassword)
-			{
-				return true;
-			}
-			return password.Any(x => char.IsDigit(x));
-		}
+        {
+            return !_option.RequireNumberInPassword || password.Any(char.IsDigit);
+        }
 		public bool HasLowerCase(string password)
-		{
-			if (!_option.RequireLowerCaseInPassword)
-			{
-				return true;
-			}
-			return password.Any(x => char.IsLower(x));
-		}
+        {
+            return !_option.RequireLowerCaseInPassword || password.Any(char.IsLower);
+        }
 		public bool HasUpperCase(string password)
-		{
-			if (!_option.RequireUpperCaseInPassword)
-			{
-				return true;
-			}
-			return password.Any(x => char.IsUpper(x));
-		}
+        {
+            return !_option.RequireUpperCaseInPassword || password.Any(char.IsUpper);
+        }
 		public bool NotHasSpace(string password)
 		{
-			return !password.Any(x => x == ' ');
+			return password.All(x => x != ' ');
 		}
 
 

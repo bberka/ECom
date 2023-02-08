@@ -16,12 +16,12 @@ namespace ECom.WebApi.Controllers.AdminControllers
         }
         [HttpPost]
         [ResponseCache(Duration = 60)]
-        [EndPointAuthorizationFilter(AdminOperationType.Image_Upload)]
+        [HasPermission(AdminOperationType.Image_Upload)]
         public ActionResult<ResultData<int>> UploadImage(IFormFile file)
         {
             if (file is null) return BadRequest();
             var res = _imageService.UploadImage(file);
-            return res;
+            return res.WithoutRv();
         }
 
 

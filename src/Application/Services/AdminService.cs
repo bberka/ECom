@@ -1,17 +1,5 @@
-﻿
-
-
-
-
-
-using EasMe;
-using EasMe.Helpers;
-using ECom.Application.Validators;
-using ECom.Domain.Abstract;
-using ECom.Domain.ApiModels.Request;
+﻿using ECom.Application.Validators;
 using ECom.Domain.Extensions;
-using ECom.Domain.Lib;
-using System.Linq;
 using ECom.Domain.Results;
 
 namespace ECom.Application.Services
@@ -22,20 +10,20 @@ namespace ECom.Application.Services
         private readonly IEfEntityRepository<RolePermission> _rolePermissionRepo;
         private readonly IEfEntityRepository<Permission> _permissionRepo;
         private readonly IOptionService _optionService;
-        private readonly IValidationDbService _validationDbService;
+        private readonly IValidationService _validationService;
 
         public AdminService(
             IEfEntityRepository<Admin> adminRepo,
             IEfEntityRepository<RolePermission> rolePermissionRepo,
             IEfEntityRepository<Permission> permissionRepo,
             IOptionService optionService,
-            IValidationDbService validationDbService)
+            IValidationService validationService)
         {
             this._adminRepo = adminRepo;
             this._rolePermissionRepo = rolePermissionRepo;
             this._permissionRepo = permissionRepo;
             this._optionService = optionService;
-            this._validationDbService = validationDbService;
+            _validationService = validationService;
         }
 
        
@@ -187,7 +175,7 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Admin.NotHavePermissionResult(3);
             }
-            var validator = new AdminValidator(_validationDbService);
+            var validator = new AdminValidator(_validationService);
             var validateResult = validator.Validate(admin);
             if (!validateResult.IsValid)
             {
@@ -224,6 +212,47 @@ namespace ECom.Application.Services
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
                 .ToList();
+        }
+
+        public Result EnableOrDisableAdmin(int authorAdminId, int adminId)
+        {
+            //TODO: maybe check admin permissions here as well
+            var admin = _adminRepo.Find(adminId);
+            if (admin is null)
+            {
+                return DomainResult.Admin.NotFoundResult(1);
+            }
+            admin.IsValid = !admin.IsValid;
+            var res = _adminRepo.Update(admin);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(2);
+            }
+
+            return DomainResult.Admin.UpdateSuccessResult();
+        }
+
+        public Result DeleteAdmin(int authorAdminId, int adminId)
+        {
+            //TODO: maybe check admin permissions here as well
+            var admin = _adminRepo.Find(adminId);
+            if (admin is null)
+            {
+                return DomainResult.Admin.NotFoundResult(1);
+            }
+
+            if (admin.DeletedDate.HasValue)
+            {
+                return DomainResult.Admin.DeletedResult(2);
+            }
+            admin.DeletedDate = DateTime.Now;
+            var res = _adminRepo.Update(admin);
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(2);
+            }
+
+            return DomainResult.Admin.DeleteSuccessResult();
         }
 
         public List<Permission> GetPermissions(int adminId)

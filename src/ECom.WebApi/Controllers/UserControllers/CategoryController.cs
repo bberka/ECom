@@ -15,7 +15,6 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
         [HttpGet]
         [ResponseCache(Duration = 60)]
-        [EndPointAuthorizationFilter("Category.List")]
         public ActionResult<List<Category>> List()
         {
             return _service.ListCategories();

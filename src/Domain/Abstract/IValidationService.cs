@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Abstract
 {
-    public interface IValidationDbService
+    public interface IValidationService
     {
         bool AllowTester(bool isTesterAccount);
         bool HasLowerCase(string password);

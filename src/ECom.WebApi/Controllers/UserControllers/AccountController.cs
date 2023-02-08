@@ -22,7 +22,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [HttpPost]
         public ActionResult<Result> ChangePassword([FromBody] ChangePasswordRequestModel model)
         {
-            return _userService.ChangePassword(model);
+            return _userService.ChangePassword(model).WithoutRv();
         }
 
     }

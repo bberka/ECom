@@ -6,7 +6,7 @@ namespace ECom.Application.Validators
 {
 	public class AddressValidator : AbstractValidator<Address>, IValidator<Address>
 	{
-		public AddressValidator(IValidationDbService validationDbService)
+		public AddressValidator(IValidationService validationService)
 		{
 			
 			RuleFor(x => x.DeleteDate)

@@ -28,10 +28,14 @@ namespace ECom.Domain.Results
             public static Result NotAuthorizedResult(ushort rv) => Result.Error(rv, "Admin.NotAuthorized");
             public static Result NotValidResult(ushort rv) => Result.Warn(rv, "Admin.NotValid");
             public static Result DeletedResult(ushort rv) => Result.Warn(rv, "Admin.Deleted");
+            public static Result AlreadyDeletedResult(ushort rv) => Result.Warn(rv, "Admin.AlreadyDeleted");
             public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Warn(rv, "Admin.TestAccountCanNotBeUsed");
+
+
             public static Result AddSuccessResult() => Result.Success("Admin.Add");
             public static Result ChangePasswordSuccessResult() => Result.Success("Admin.ChangePassword");
             public static Result UpdateSuccessResult() => Result.Success("Admin.Update");
+            public static Result DeleteSuccessResult() => Result.Success("Admin.Delete");
 
 
         }

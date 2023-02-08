@@ -26,7 +26,9 @@ namespace ECom.Domain.Abstract
         List<Permission> GetInvalidPermissions();
         List<Permission> GetPermissions(int adminId);
         bool IsValidPermission(int permissionId);
-
         List<Admin> ListOtherAdmins(int adminId);
+
+        Result EnableOrDisableAdmin(int authorAdminId, int adminId);
+        Result DeleteAdmin(int authorAdminId, int adminId);
     }
 }

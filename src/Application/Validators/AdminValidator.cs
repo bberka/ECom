@@ -2,31 +2,20 @@
 {
 	public class AdminValidator : AbstractValidator<Admin>, IValidator<Admin>
 	{
-		public AdminValidator(IValidationDbService validationDbService)
+		public AdminValidator(IValidationService validationService)
 		{
 			RuleFor(x => x.EmailAddress)
-				.NotNull()
 				.NotEmpty()
 				.EmailAddress()
 				.WithErrorCode(CustomValidationType.Invalid.ToString());
 
 			RuleFor(x => x.IsValid)
-				.Equal(x => true)
+				.Equal(true)
 				.WithErrorCode(CustomValidationType.InvalidAccount.ToString());
-
-			if (validationDbService.IsRelease())
-			{
-				RuleFor(x => x.IsTestAccount)
-				.Equal(x => false)
-				.WithErrorCode(CustomValidationType.AccountCanNotBeUsed.ToString());
-			}
-			else
-			{
-				RuleFor(x => x.IsTestAccount)
-				.Equal(x => true)
-				.WithErrorCode(CustomValidationType.AccountCanNotBeUsed.ToString());
-			}
-
+            
+            RuleFor(x => x.IsTestAccount)
+                .Equal(!validationService.IsRelease())
+                .WithErrorCode(CustomValidationType.AccountCanNotBeUsed.ToString());
 
 			RuleFor(x => x.DeletedDate)
 				.Equal(x => null)

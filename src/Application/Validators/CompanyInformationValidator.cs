@@ -8,7 +8,7 @@ namespace ECom.Application.Validators
 {
     public class CompanyInformationValidator : AbstractValidator<CompanyInformation>, IValidator<CompanyInformation>
     {
-        public CompanyInformationValidator(IValidationDbService validationDbService)
+        public CompanyInformationValidator(IValidationService validationService)
         {
 
         }

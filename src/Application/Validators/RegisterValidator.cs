@@ -8,46 +8,39 @@ namespace ECom.Application.Validators
 {
     public class RegisterValidator : AbstractValidator<RegisterRequestModel>, IValidator<RegisterRequestModel>
 	{
-		public RegisterValidator(IValidationDbService validationDbService)
+		public RegisterValidator(IValidationService validationService)
 		{
 			
 			RuleFor(x => x.Password)
-				.NotNull()
-				.NotEmpty();
+				.MinimumLength(6)
+                .MaximumLength(32);
 
-			RuleFor(x => x.Password)
-				.MinimumLength(ConstantMgr.StringMinLength);
-
-			RuleFor(x => x.Password)
-				.MaximumLength(ConstantMgr.PasswordMaxLength);
 
 			RuleFor(x => x.EmailAddress)
-				.NotNull()
-				.NotEmpty()
 				.EmailAddress();
 
 			RuleFor(x => x.Password)
-				.Must(validationDbService.NotHasSpace)
+				.Must(validationService.NotHasSpace)
 				.WithErrorCode(CustomValidationType.CanNotContainSpace.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(validationDbService.NotHasSpecialChar)
+				.Must(validationService.NotHasSpecialChar)
 				.WithErrorCode(CustomValidationType.MustContainSpecialCharacter.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(validationDbService.HasNumber)
+				.Must(validationService.HasNumber)
 				.WithErrorCode(CustomValidationType.MustContainDigit.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(validationDbService.HasLowerCase)
+				.Must(validationService.HasLowerCase)
 				.WithErrorCode(CustomValidationType.MustContainLowerCase.ToString());
 
 			RuleFor(x => x.Password)
-				.Must(validationDbService.HasUpperCase)
+				.Must(validationService.HasUpperCase)
 				.WithErrorCode(CustomValidationType.MustContainUpperCase.ToString());
 
 			RuleFor(x => x.EmailAddress)
-				.Must(validationDbService.NotUsedEmail_User)
+				.Must(validationService.NotUsedEmail_User)
 				.WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
 		}
 

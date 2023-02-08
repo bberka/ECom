@@ -17,7 +17,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
     [Route("api/Admin/[controller]/[action]")]
     public class AuthController : Controller
     {
-		private readonly static EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
+		private static readonly EasLog logger = EasLogFactory.CreateLogger(nameof(AuthController));
 		private readonly IAdminService _adminService;
 		private readonly IOptionService _optionService;
 		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
@@ -36,22 +36,10 @@ namespace ECom.WebApi.Controllers.AdminControllers
         {
 			HttpContext.Session.Clear();
             var res = _adminJwtAuthenticator.Authenticate(model);
-            logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
-            return res;
+            return res.WithoutRv();
            
         }
 
-		[HttpPost]
-        [EndPointAuthorizationFilter(AdminOperationType.Admin_Add)]
-        public ActionResult<Result> Add([FromBody] AddAdminRequestModel model)
-		{
-#if !DEBUG
-            return NotFound();
-#endif
-			var res = _adminService.AddAdmin(model);
-
-			return res;
-		}
 
 	}
 }

@@ -16,65 +16,65 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
 
 		[HttpPost]
-        [EndPointAuthorizationFilter(AdminOperationType.Category_Add)]
+        [HasPermission(AdminOperationType.Category_Add)]
         public ActionResult<Result> AddCategory([FromBody] AddCategoryRequestModel model)
 		{
 			var res = _categoryService.AddCategory(model);
-			return res;
+			return res.WithoutRv();
 		}
         [HttpPost]
-        [EndPointAuthorizationFilter(AdminOperationType.SubCategory_Add)]
+        [HasPermission(AdminOperationType.Category_Add)]
         public ActionResult<Result> AddSubCategory([FromBody] AddSubCategoryRequestModel model)
         {
             var res = _categoryService.AddSubCategory(model);
-            return res;
+            return res.WithoutRv();
         }
 
         [HttpPost]
-        [EndPointAuthorizationFilter(AdminOperationType.Category_Update)]
+        [HasPermission(AdminOperationType.Category_Update)]
         public ActionResult<Result> Update([FromBody] CategoryUpdateRequestModel model) 
         {
 			var res = _categoryService.UpdateCategory(model);
-			return res;
+			return res.WithoutRv();
 		}
 		
 		[HttpDelete]
-        [EndPointAuthorizationFilter(AdminOperationType.Category_Delete)]
+        [HasPermission(AdminOperationType.Category_Delete)]
         public ActionResult<Result> Delete([FromBody] uint id)
 		{
 			//TODO: test
 			var res = _categoryService.DeleteCategory(id);
-			return res;
+			return res.WithoutRv();
 		}
 		[HttpPut]
-        [EndPointAuthorizationFilter(AdminOperationType.Category_EnableOrDisable)]
+        [HasPermission(AdminOperationType.Category_Update)]
         public ActionResult<Result> EnableOrDisable([FromBody] uint id)
 		{
 			var res = _categoryService.EnableOrDisableCategory(id);
-			return res;
+			return res.WithoutRv();
 		}
 
 		[HttpPost]
-        [EndPointAuthorizationFilter(AdminOperationType.SubCategory_Update)]
+        [HasPermission(AdminOperationType.Category_Update)]
         public ActionResult<Result> UpdateSubCategory([FromBody] SubCategory category)
 		{
 			var res = _categoryService.UpdateSubCategory(category);
-			return res;
+			return res.WithoutRv();
 		}
 
 		[HttpDelete]
-        [EndPointAuthorizationFilter(AdminOperationType.SubCategory_Delete)]
+        [HasPermission(AdminOperationType.CargoOption_Delete)]
         public ActionResult<Result> DeleteSubCategory([FromBody] uint id)
 		{
 			var res = _categoryService.DeleteSubCategory(id);
-			return res;
+			return res.WithoutRv();
 		}
 		[HttpPut]
-        [EndPointAuthorizationFilter(AdminOperationType.SubCategory_EnableOrDisable)]
+        [HasPermission(AdminOperationType.Category_Update)]
         public ActionResult<Result> EnableOrDisableSubCategory([FromBody] uint id)
 		{
 			var res = _categoryService.EnableOrDisableSubCategory(id);
-			return res;
+			return res.WithoutRv();
 		}
 
 	}

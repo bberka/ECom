@@ -8,7 +8,6 @@ namespace ECom.Domain.Constants
 {
     public enum AdminOperationType
     {
-        Admin_List,
         Admin_Update,
         Admin_Delete,
         Admin_GetOrList,
@@ -16,17 +15,12 @@ namespace ECom.Domain.Constants
 
         Announcement_Update,
         Announcement_Delete,
-        Announcement_EnableOrDisable,
 
         Category_Add,
         Category_Update,
         Category_Delete,
-        Category_EnableOrDisable,
 
-        SubCategory_Add,
-        SubCategory_Update,
-        SubCategory_Delete,
-        SubCategory_EnableOrDisable,
+    
 
         CompanyInfo_UpdateOrAdd,
         

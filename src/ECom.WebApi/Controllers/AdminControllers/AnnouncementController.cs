@@ -14,29 +14,27 @@ namespace ECom.WebApi.Controllers.AdminControllers
 			_announcementService = announcementService;
 		}
 		[HttpPost]
-        [EndPointAuthorizationFilter(AdminOperationType.Announcement_Update)]
+        [HasPermission(AdminOperationType.Announcement_Update)]
         public ActionResult<Result> Update([FromBody] Announcement data) 
         {
 			var res = _announcementService.UpdateAnnouncement(data);
-			logger.Info(data.ToJsonString());
-			return res;
+			return res.WithoutRv();
 		}
 		
 		[HttpDelete]
-        [EndPointAuthorizationFilter(AdminOperationType.Announcement_Delete)]
+        [HasPermission(AdminOperationType.Announcement_Delete)]
 
         public ActionResult<Result> Delete([FromBody] uint id)
 		{
 			var res = _announcementService.DeleteAnnouncement(id);
-			return res;
+			return res.WithoutRv();
 		}
 		[HttpPut]
-        [EndPointAuthorizationFilter(AdminOperationType.Announcement_EnableOrDisable)]
+        [HasPermission(AdminOperationType.Announcement_Update)]
         public ActionResult<Result> EnableOrDisable([FromBody] uint id)
 		{
 			var res = _announcementService.EnableOrDisable(id);
-			logger.Info(id);
-			return res;
+			return res.WithoutRv();
 		}
 
 	}

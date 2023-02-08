@@ -9,14 +9,14 @@ namespace ECom.Application.Validators
     public class UpdateAdminAccountRequestModelValidator : AbstractValidator<UpdateAdminAccountRequestModel>, IValidator<UpdateAdminAccountRequestModel>
     {
 
-        public UpdateAdminAccountRequestModelValidator(IValidationDbService validationDbService)
+        public UpdateAdminAccountRequestModelValidator(IValidationService validationService)
         {
             RuleFor(x => x.EmailAddress)
                 .NotEmpty()
                 .NotNull()
                 .EmailAddress();
             RuleFor(x => x.EmailAddress)
-                .Must(validationDbService.NotUsedEmail_Admin)
+                .Must(validationService.NotUsedEmail_Admin)
                 .WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
         }
     }

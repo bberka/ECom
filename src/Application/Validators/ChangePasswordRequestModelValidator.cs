@@ -8,7 +8,8 @@ namespace ECom.Application.Validators
 {
     public class ChangePasswordRequestModelValidator : AbstractValidator<ChangePasswordRequestModel>, IValidator<ChangePasswordRequestModel>
     {
-        public ChangePasswordRequestModelValidator()
+
+        public ChangePasswordRequestModelValidator(IValidationService validationService)
         {
             RuleFor(x => x.OldPassword)
                 .MinimumLength(6);
@@ -30,6 +31,27 @@ namespace ECom.Application.Validators
                 .NotEqual(x => x.NewPassword)
                 .OverridePropertyName("'Old Password' and 'New Password'")
                 .WithErrorCode(ErrorCode.CanNotBeSame.ToString());
+
+
+            RuleFor(x => x.NewPassword)
+                .Must(validationService.NotHasSpace)
+                .WithErrorCode(CustomValidationType.CanNotContainSpace.ToString());
+
+            RuleFor(x => x.NewPassword)
+                .Must(validationService.NotHasSpecialChar)
+                .WithErrorCode(CustomValidationType.MustContainSpecialCharacter.ToString());
+
+            RuleFor(x => x.NewPassword)
+                .Must(validationService.HasNumber)
+                .WithErrorCode(CustomValidationType.MustContainDigit.ToString());
+
+            RuleFor(x => x.NewPassword)
+                .Must(validationService.HasLowerCase)
+                .WithErrorCode(CustomValidationType.MustContainLowerCase.ToString());
+
+            RuleFor(x => x.NewPassword)
+                .Must(validationService.HasUpperCase)
+                .WithErrorCode(CustomValidationType.MustContainUpperCase.ToString());
         }
 
     }

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.ApiModels.Request
 {
-    public class AddAdminRequestModel
+    public class AddAdminRequestModel : AuthRequestModelBase
     {
-        [EmailAddress]
-        [Required]
+ 
         public string EmailAddress { get; set; }
 
-        [Required]
         public string Password { get; set; }
+
+        public int RoleId { get; set; }
 
         public Admin ToAdminEntity()
         {
@@ -28,7 +28,7 @@ namespace ECom.Domain.ApiModels.Request
                 IsTestAccount = false,
                 TwoFactorType = 0,
                 TotalLoginCount = 0,
-
+                RoleId = RoleId
             };
         }
     }
