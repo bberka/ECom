@@ -1,5 +1,7 @@
-﻿using ECom.Domain.Interfaces;
+﻿using EasMe.Authorization;
+using ECom.Domain.Interfaces;
 using System.Security.Claims;
+using ECom.Domain.Lib;
 
 namespace ECom.Application.Manager
 {
@@ -31,6 +33,8 @@ namespace ECom.Application.Manager
             }
             adminAsDic.Add("AdminOnly", "true");
             adminAsDic.Add(ClaimTypes.Role, loginResult.Data.Role.Name);
+            adminAsDic.Add(EasMeClaimType.EndPointPermissions, string.Join(",", 
+                loginResult.Data.Role.Permissions.Select(x => x.Permission.Name).ToList()));
 
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.UtcNow.AddMinutes(expireMins);

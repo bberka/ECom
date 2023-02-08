@@ -38,8 +38,9 @@ namespace ECom.Infrastructure
                 {
                     PermissionId = x,
                     RoleId = 1
-                });
-            context.Add(rolePermissions);
+                })
+                .ToList();
+            context.AddRange(rolePermissions);
             context.SaveChanges();
             context.AddRange(_admins);
             context.SaveChanges();

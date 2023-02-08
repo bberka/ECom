@@ -11,7 +11,6 @@ namespace ECom.Domain.Entities
 {
     public class RolePermission : IEfEntity
 	{
-
         [ForeignKey("RoleId")]
         public int RoleId { get; set; }
 

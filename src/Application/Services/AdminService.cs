@@ -171,6 +171,7 @@ namespace ECom.Application.Services
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
+                .ThenInclude(x => x.Permission)
                 .FirstOrDefault();
             if (admin is null)
             {
@@ -181,12 +182,17 @@ namespace ECom.Application.Services
                 IncreaseFailedPasswordCount(admin);
                 return DomainResult.Admin.NotFoundResult(2);
             }
+
+            if (admin.Role.Permissions.Count == 0)
+            {
+                return DomainResult.Admin.NotHavePermissionResult(3);
+            }
             var validator = new AdminValidator(_validationDbService);
             var validateResult = validator.Validate(admin);
             if (!validateResult.IsValid)
             {
                 var first = validateResult.Errors.First();
-                return DomainResult.ValidationErrorResult(3, first.PropertyName, first.ErrorCode);
+                return DomainResult.ValidationErrorResult(4, first.PropertyName, first.ErrorCode);
             }
             if (admin.TwoFactorType != 0)
             {

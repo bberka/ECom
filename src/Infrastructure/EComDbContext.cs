@@ -98,12 +98,9 @@ namespace ECom.Infrastructure
         }
         public DbSet<Image> Images { get; set; }
 
-        #region Product-Management
         public DbSet<StockChange> StockChanges { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        #endregion
 
-        #region Product
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
@@ -112,71 +109,46 @@ namespace ECom.Infrastructure
         public DbSet<ProductCommentImage> ProductCommentImages { get; set; }
         public DbSet<ProductCommentStar> ProductCommentStars { get; set; }
 
-        #endregion
-
-        #region Discount
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
-
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
         public DbSet<DiscountNotify> DiscountNotifies { get; set; }
 
 
-        #endregion
-
-        #region Category
         public DbSet<Category> Categories { get; set; }
-
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
 
-
-        #endregion
-
-        #region  Logs
 
         public DbSet<UserLog> UserLogs { get; set; }
         public DbSet<AdminLog> AdminLogs { get; set; }
         public DbSet<SecurityLog> SecurityLogs { get; set; }
 
-        #endregion
 
-        #region Options
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
         public DbSet<Option> Options { get; set; }
         public DbSet<CargoOption> CargoOptions { get; set; }
         public DbSet<SmtpOption> SmtpOptions { get; set; }
         public DbSet<PaymentOption> PaymentOptions { get; set; }
 
-        #endregion
 
-        #region Admin - Permissions
+
 
         public DbSet<Admin> Admins { get; set; }
-
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Role> Roles { get; set; }
-        #endregion
 
-        #region HomePage
+
 
         public DbSet<Slider> Sliders { get; set; }
-
         public DbSet<Announcement> Announcements { get; set; }
-
         public DbSet<ShowCaseImage> ShowCaseImages { get; set; }
-
         public DbSet<ProductShowCase> ProductShowCases { get; set; }
 
 
-        #endregion
-
-        #region User
         public DbSet<User> Users { get; set; }
-
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Address> Addresses { get; set; }
-
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<CollectionProduct> CollectionProducts { get; set; }
@@ -186,7 +158,6 @@ namespace ECom.Infrastructure
         public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
         public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
-        #endregion
 
 
 
