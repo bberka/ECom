@@ -36,14 +36,11 @@ namespace ECom.Application.Services
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
                 .FirstOrDefault();
-            if (admin is null)
-            {
-                return DomainResult.Admin.NotFoundResult(1);
-            };
-            if (!admin.Role.Permissions.Any())
-            {
-                return DomainResult.Admin.NotHavePermissionResult(2);
-            }
+            if (admin is null) return DomainResult.Admin.NotFoundResult(1);
+            if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
+            if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
+            if (admin.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.Admin.TestAccountCanNotBeUsedResult(4);
+            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public ResultData<Admin> GetAdmin(int id)
@@ -53,14 +50,11 @@ namespace ECom.Application.Services
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
                 .FirstOrDefault();
-            if (admin is null)
-            {
-                return DomainResult.Admin.NotFoundResult(1);
-            };
-            if (!admin.Role.Permissions.Any())
-            {
-                return DomainResult.Admin.NotHavePermissionResult(2);
-            }
+            if (admin is null) return DomainResult.Admin.NotFoundResult(1);
+            if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
+            if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
+            if (admin.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.Admin.TestAccountCanNotBeUsedResult(4);
+            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public bool HasPermission(int adminId, int permissionId)
@@ -161,13 +155,6 @@ namespace ECom.Application.Services
             if (admin.Role.Permissions.Count == 0)
             {
                 return DomainResult.Admin.NotHavePermissionResult(3);
-            }
-            var validator = new AdminValidator(_validationService);
-            var validateResult = validator.Validate(admin);
-            if (!validateResult.IsValid)
-            {
-                var first = validateResult.Errors.First();
-                return DomainResult.ValidationErrorResult(4, first.PropertyName, first.ErrorCode);
             }
             if (admin.TwoFactorType != 0)
             {

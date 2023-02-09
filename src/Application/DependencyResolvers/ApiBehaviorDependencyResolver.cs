@@ -24,8 +24,7 @@ namespace ECom.Application.DependencyResolvers
                         .SelectMany(v => v.Errors)
                         .Select(v => v.ErrorMessage)
                         .ToArray();
-
-                    return new BadRequestObjectResult(Result.Error(400, "ValidationError:" + string.Join("|", errors)));
+                    return new BadRequestObjectResult(Result.Warn(400, "ValidationError",errors));
                 };
             });
             services.AddEndpointsApiExplorer();

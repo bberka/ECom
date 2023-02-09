@@ -47,13 +47,6 @@ namespace ECom.Application.Services
 				//todo log
                 return DomainResult.User.NotFoundResult(2);
 			}
-			var validator = new UserValidator();
-			var validateResult = validator.Validate(user);
-            if (!validateResult.IsValid)
-            {
-                var first = validateResult.Errors.First();
-                return DomainResult.ValidationErrorResult(3, first.PropertyName, first.ErrorCode);
-            }
             if (user.TwoFactorType != 0)
 			{
 				//TODO: implement two factor
@@ -65,12 +58,18 @@ namespace ECom.Application.Services
 		{
 			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
             if (user is null) return DomainResult.User.NotFoundResult(1);
+            if (!user.IsValid) return DomainResult.User.NotValidResult(2);
+            if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
+            if (user.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.User.TestAccountCanNotBeUsedResult(4);
             return user;
         }
         public ResultData<User> GetUser(int id)
 		{
             var user = _userRepo.Find(id);
             if (user is null) return DomainResult.User.NotFoundResult(1);
+            if (user.IsValid == false) return DomainResult.User.NotValidResult(2);
+            if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
+            if (user.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.User.TestAccountCanNotBeUsedResult(4);
             return user;
         }
 

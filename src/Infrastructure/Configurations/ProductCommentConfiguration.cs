@@ -11,23 +11,7 @@ namespace ECom.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductComment> builder)
         {
-            //builder
-            //    .HasMany<ProductCommentStar>()
-            //    .WithOne()
-            //    .HasForeignKey(x => x.ProductCommentId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
-
-            //builder.HasOne<Product>()
-            //    .WithMany()
-            //    .HasForeignKey(x => x.ProductId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-
-            ////builder.HasOne<User>()
-            ////    .WithMany()
-            ////    .HasForeignKey(x => x.ProductId)
-            ////    .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

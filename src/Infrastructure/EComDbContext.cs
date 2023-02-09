@@ -15,7 +15,7 @@ namespace ECom.Infrastructure
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductCommentStarConfiguration).Assembly);
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductCommentStarConfiguration).Assembly);
 
  
 

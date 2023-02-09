@@ -1271,6 +1271,17 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Suppliers");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.TestLog", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("TestLogs");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -1650,17 +1661,21 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.ProductComment", null)
+                    b.HasOne("ECom.Domain.Entities.ProductComment", "ProductComment")
                         .WithMany("ProductCommentStars")
                         .HasForeignKey("ProductCommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", null)
+                    b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany("ProductCommentStars")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("ProductComment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>

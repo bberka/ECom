@@ -1,6 +1,7 @@
 using EasMe.Logging;
 using ECom.Application.DependencyResolvers;
 using ECom.Application.Validators;
+using ECom.Domain.Lib;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -74,6 +75,8 @@ app.UseResponseCaching();
 
 
 app.MapControllers();
+
+var list = CommonLib.GetAdminOperationTypes();
 
 EComDbContext.EnsureCreated();
 app.Run();

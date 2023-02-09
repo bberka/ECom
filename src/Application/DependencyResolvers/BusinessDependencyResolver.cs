@@ -90,15 +90,12 @@ namespace ECom.Application.DependencyResolvers
 
             services.AddScoped<IValidationService, ValidationService>();
 
+
             services.AddTransient<IValidator<LoginRequestModel>, LoginValidator>();
             services.AddTransient<IValidator<RegisterRequestModel>, RegisterValidator>();
-            services.AddTransient<IValidator<User>, UserValidator>();
-            services.AddTransient<IValidator<Admin>, AdminValidator>();
             services.AddTransient<IValidator<AddAdminRequestModel>, AddAdminRequestModelValidator>();
-            services.AddTransient<IValidator<Address>, AddressValidator>();
             services.AddTransient<IValidator<ChangePasswordRequestModel>, ChangePasswordRequestModelValidator>();
             services.AddTransient<IValidator<UpdateAdminAccountRequestModel>, UpdateAdminAccountRequestModelValidator>();
-
             return services;
         }
 

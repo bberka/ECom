@@ -80,28 +80,25 @@ namespace ECom.Application.Services
 
         public ResultData<Address> GetAddress(int addressId)
         {
-			var address = _addressRepo.GetFirstOrDefault(x => x.Id == addressId && !x.DeleteDate.HasValue);
-            if (address is null)
-            {
-                return DomainResult.Address.NotFoundResult(1);
-            }
+			var address = _addressRepo.Find(addressId);
+            if (address is null) return DomainResult.Address.NotFoundResult(1);
+            if(address.DeleteDate.HasValue) return DomainResult.Address.DeletedResult(2);
             return address;
         }
 
         public ResultData<Address> GetAddress(int userId, int addressId)
         {
-            var address = _addressRepo.GetFirstOrDefault(x => x.Id == addressId && !x.DeleteDate.HasValue);
-            if (address is null)
+            var addressResult = GetAddress(addressId);
+            if (addressResult.IsFailure)
             {
-                return DomainResult.Address.NotFoundResult(1);
+                return addressResult.ToResult(100);
             }
-
-            var isAuthorized = address.UserId == userId;
-            if (!isAuthorized)
+            var isAuthorized = addressResult.Data?.UserId == userId;
+            if (isAuthorized == false)
             {
                 return DomainResult.User.NotAuthorizedResult(2);
             }
-            return address;
+            return addressResult.Data;
 
         }
     }
