@@ -30,7 +30,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             var userId = HttpContext.GetUserId();
             var res = _favoriteProductService.AddProduct(userId, productId);
             _logService.UserLog(res,userId,"FavoriteProduct.Add",productId);
-            return res;
+            return res.WithoutRv();
         }
         [HttpPost]
         public ActionResult<Result> Remove([FromBody] int productId)
@@ -38,7 +38,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             var userId = HttpContext.GetUserId();
             var res = _favoriteProductService.RemoveProduct(userId, productId);
             _logService.UserLog(res,userId,"FavoriteProduct.Remove",productId);
-            return res;
+            return res.WithoutRv();
 
         }
     }

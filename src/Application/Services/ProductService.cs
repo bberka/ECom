@@ -16,6 +16,7 @@ namespace ECom.Application.Services
         private readonly IEfEntityRepository<Category> _categoryRepo;
         private readonly IOptionService _optionService;
         private readonly ICategoryService _categoryService;
+        private readonly IImageService _imageService;
 
         private readonly Option _option;
         public ProductService(
@@ -29,7 +30,8 @@ namespace ECom.Application.Services
             IEfEntityRepository<SubCategory> subCategoryRepo,
             IEfEntityRepository<Category> categoryRepo,
             IOptionService optionService,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            IImageService imageService)
         {
             this._productRepo = productRepo;
             this._productDetailRepo = productDetailRepo;
@@ -42,6 +44,7 @@ namespace ECom.Application.Services
             this._categoryRepo = categoryRepo;
             this._optionService = optionService;
             this._categoryService = categoryService;
+            _imageService = imageService;
 
             _option = _optionService.GetOptionFromCache();
         }
@@ -59,9 +62,7 @@ namespace ECom.Application.Services
             if (product.DeleteDate.HasValue) return DomainResult.Product.DeletedResult(3);
             return product;
         }
-
-
-
+        
         public List<ProductComment> GetProductComments(
             List<int> productIds,
             ushort page)
@@ -90,7 +91,24 @@ namespace ECom.Application.Services
                 .ToList();
         }
 
- 
+        public ResultData<int> AddComment(AddProductCommentRequestModel model)
+        {
+            var productResult = GetProduct(model.ProductId);
+            if (productResult.IsFailure) return productResult.ToResult(100);
+            //TODO: Check if user purchased the product
+            var comment = new ProductComment()
+            {
+                ProductId = model.ProductId,
+                Comment = model.Comment,
+                RegisterDate = DateTime.Now,
+                UserId = model.AuthenticatedUserId,
+                Star = model.Star,
+            };
+            var commentResult = _productCommentRepo.Add(comment);
+            if (!commentResult) return DomainResult.DbInternalErrorResult(1);
+            return DomainResult.ProductComment.AddSuccessResult(comment.Id);
+        }
+
         public List<Product> GetProducts(ushort page, string culture = ConstantMgr.DefaultCulture)
         {
             if (page == 0) return new();

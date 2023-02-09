@@ -42,7 +42,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 				var userId = HttpContext.GetUserId();
 				var res = _cartService.RemoveOrDecreaseProduct(userId, productId);
 				_logService.UserLog(res,userId, "Cart.RemoveOrDecreaseProduct",productId);
-                return res;
+                return res.WithoutRv();
 			}
 
             HttpContext.RemoveOrDecreaseInCart(productId);
@@ -80,7 +80,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 				var userId = HttpContext.GetUserId();
 				var res = _cartService.Clear(userId);
 				_logService.UserLog(res,userId,"Cart.Clear");
-				return res;
+				return res.WithoutRv();
 			}
             HttpContext.ClearCart();
             return Result.Success();

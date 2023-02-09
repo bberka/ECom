@@ -12,8 +12,8 @@ namespace ECom.Domain.ApiModels.Request
 {
     public class RegisterRequestModel
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
@@ -38,8 +38,8 @@ namespace ECom.Domain.ApiModels.Request
                 TaxNumber = TaxNumber,
                 TwoFactorType = 0,
                 Culture = "en",
-                Name = Name,
-                Surname = Surname,
+                FirstName = FirstName,
+                LastName = LastName,
 
             };
         }

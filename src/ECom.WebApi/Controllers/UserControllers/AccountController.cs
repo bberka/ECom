@@ -31,7 +31,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         {
             var res = _userService.ChangePassword(model).WithoutRv();
             _logService.UserLog(res,model.AuthenticatedUserId,"Account.ChangePassword",model.EncryptedOldPassword,model.EncryptedNewPassword);
-            return res;
+            return res.WithoutRv();
         }
 
         [HttpPost]
@@ -40,7 +40,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             var userId = model.AuthenticatedUserId;
             var res = _userService.Update(model);
             _logService.UserLog(res,userId,"Account.Update",model.ToJsonString());
-            return res;
+            return res.WithoutRv();
         }
     }
 }

@@ -26,7 +26,9 @@ namespace ECom.Domain.Entities
         public virtual List<ProductComment> ProductComments { get; set; }
 		public virtual List<ProductImage> ProductImages { get; set; }
 		public virtual List<ProductDetail> ProductDetails { get; set; }
+		public virtual List<ProductStar> ProductStars { get; set; }
+        public virtual double StarScore => ProductStars.Average(x => x.Star);
 
 
-	}
+    }
 }

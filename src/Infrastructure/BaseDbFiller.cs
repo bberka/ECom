@@ -81,30 +81,30 @@
                 EmailAddress = "user@mail.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
                 IsTestAccount = false,
-                Name = "User",
+                FirstName = "User",
                 PhoneNumber = "5525553344",
                 TwoFactorType = 0,
-                Surname = "Resu"
+                LastName = "Resu"
             },
             new User()
             {
                 EmailAddress = "test@mail.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
                 IsTestAccount = true,
-                Name = "User",
+                FirstName = "User",
                 PhoneNumber = "5525553344",
                 TwoFactorType = 0,
-                Surname = "Resu"
+                LastName = "Resu"
             },
             new User()
             {
                 EmailAddress = "qwe@qwe.com",
                 Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
                 IsTestAccount = false,
-                Name = "User",
+                FirstName = "User",
                 PhoneNumber = "5525553344",
                 TwoFactorType = 0,
-                Surname = "Resu"
+                LastName = "Resu"
             },
         };
         static readonly List<Admin> _admins = new List<Admin>()

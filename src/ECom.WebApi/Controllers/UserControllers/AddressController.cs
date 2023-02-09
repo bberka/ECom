@@ -25,7 +25,7 @@
 			var userId = HttpContext.GetUserId();
 			var res = addressService.AddAddress(userId,address);
 			_logService.UserLog(res,userId,"Address.Add",address.ToJsonString());
-			return res;
+			return res.WithoutRv();
 		}
 		[HttpPost]
 		public ActionResult<Result> Update([FromBody] Address address)
@@ -33,7 +33,7 @@
             var userId = HttpContext.GetUserId();
             var res = addressService.UpdateAddress(userId,address);
 			_logService.UserLog(res,userId,"Address.Update",address.ToJsonString());
-			return res;
+			return res.WithoutRv();
 		}
 
 		[HttpDelete]
@@ -42,7 +42,7 @@
 			var userId = HttpContext.GetUserId();
 			var res = addressService.DeleteAddress(userId, id);
             _logService.UserLog(res, userId, "Address.Delete");
-			return res;
+			return res.WithoutRv();
 		}
 
 

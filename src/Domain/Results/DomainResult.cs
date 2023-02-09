@@ -47,6 +47,10 @@ namespace ECom.Domain.Results
             public static Result UpdateSuccessResult() => Result.Success("Product.Update");
             public static Result AddSuccessResult() => Result.Success("Product.Add");
         }
+        public static class ProductComment
+        {
+            public static ResultData<int> AddSuccessResult(int value) => ResultData<int>.Success(value,"ProductComment.Add");
+        }
         public static class FavoriteProduct
         {
             public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "FavoriteProduct.NotFound");
@@ -182,7 +186,6 @@ namespace ECom.Domain.Results
         public static Result DbInternalErrorResult(ushort rv, string operationName) => Result.Fatal(rv, operationName);
         public static Result DbInternalErrorResult(ushort rv) => Result.Fatal(rv,"DbInternalError");
 
-        public static Result ValidationErrorResult(ushort rv, string propertyName, string errorCode) =>
-            Result.Warn(rv, $"{propertyName}.{errorCode}");
+        
     }
 }

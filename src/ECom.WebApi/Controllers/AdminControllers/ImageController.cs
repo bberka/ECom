@@ -15,7 +15,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
             this._imageService = imageService;
         }
         [HttpPost]
-        [ResponseCache(Duration = 60)]
         [HasPermission(AdminOperationType.Image_Upload)]
         public ActionResult<ResultData<int>> UploadImage(IFormFile file)
         {
@@ -23,7 +22,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
             var res = _imageService.UploadImage(file);
             return res.WithoutRv();
         }
-
 
 	}
 }

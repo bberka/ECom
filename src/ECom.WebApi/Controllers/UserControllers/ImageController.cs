@@ -23,7 +23,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [ResponseCache(Duration = 120, VaryByQueryKeys = new string[] { "id" })]
         public ActionResult<ResultData<Image>> GetImage(int id)
         {
-            return _imageService.GetImage(id);
+            return _imageService.GetImage(id).WithoutRv();
         }
     }
 }

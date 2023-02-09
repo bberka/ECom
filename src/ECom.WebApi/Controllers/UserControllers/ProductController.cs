@@ -23,6 +23,12 @@ namespace ECom.WebApi.Controllers.UserControllers
         {
             return _productService.GetProducts(page, culture);
         }
+
+        [HttpGet]
+        public ActionResult<List<ProductComment>> GetComments(int productId, ushort page)
+        {
+            return _productService.GetProductComments(productId, page);
+        }
         //[HttpGet]
         //public ActionResult<List<Product>> Search(string keyword, string? culture = ConstantMgr.DefaultCulture)
         //{

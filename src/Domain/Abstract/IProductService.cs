@@ -56,6 +56,8 @@ namespace ECom.Domain.Abstract
         /// </returns>
         List<ProductComment> GetProductComments(int productId,ushort page);
 
+        ResultData<int> AddComment(AddProductCommentRequestModel model);
+
         //List<ProductDetail>? GetProductDetails(long productNo);
         //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
         //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
