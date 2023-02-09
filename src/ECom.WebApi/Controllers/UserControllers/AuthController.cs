@@ -19,20 +19,23 @@ namespace ECom.WebApi.Controllers.UserControllers
     {
 		private readonly IUserService _userService;
 		private readonly IUserJwtAuthenticator _userJwtAuthenticator;
+        private readonly ILogService _logService;
 
-		public AuthController(
+        public AuthController(
 			IUserService userService,
-			IUserJwtAuthenticator userJwtAuthenticator)
+			IUserJwtAuthenticator userJwtAuthenticator,
+            ILogService logService)
 		{
 			this._userService = userService;
 			this._userJwtAuthenticator = userJwtAuthenticator;
-		}
+            _logService = logService;
+        }
 
 		[HttpPost]
 		public ActionResult<ResultData<UserLoginResponseModel>> Login([FromBody] LoginRequestModel model)
 		{
             var res = _userJwtAuthenticator.Authenticate(model);
-            logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+			_logService.UserLog(res.ToResult(),-1,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
             return res;
         }
 
@@ -40,7 +43,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public ActionResult<Result> Register([FromBody] RegisterRequestModel model)
 		{
 			var res = _userService.Register(model);
-			logger.Info($"Login({model.ToJsonString()}) Result({res.ToJsonString()})");
+            _logService.UserLog(res, -1, "Auth.Register", model.EmailAddress);
 			return res;
 		}
 	}

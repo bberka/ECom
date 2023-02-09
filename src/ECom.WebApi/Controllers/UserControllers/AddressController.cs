@@ -4,10 +4,12 @@
 	public class AddressController : BaseUserController
     {
         private readonly IAddressService addressService;
+        private readonly ILogService _logService;
 
-        public AddressController(IAddressService addressService)
-		{
+        public AddressController(IAddressService addressService,ILogService logService)
+        {
             this.addressService = addressService;
+            _logService = logService;
         }
 		[HttpGet]
 		public ActionResult<List<Address>> List()
@@ -22,7 +24,7 @@
 		{
 			var userId = HttpContext.GetUserId();
 			var res = addressService.AddAddress(userId,address);
-			logger.Info(userId, address.ToJsonString());
+			_logService.UserLog(res,userId,"Address.Add",address.ToJsonString());
 			return res;
 		}
 		[HttpPost]
@@ -30,16 +32,16 @@
 		{
             var userId = HttpContext.GetUserId();
             var res = addressService.UpdateAddress(userId,address);
-			logger.Info(userId, address.ToJsonString());
+			_logService.UserLog(res,userId,"Address.Update",address.ToJsonString());
 			return res;
 		}
 
 		[HttpDelete]
 		public ActionResult<Result> Delete([FromBody] int id)
 		{
-			var user = HttpContext.GetUser();
-			var res = addressService.DeleteAddress(user.Id, id);
-			logger.Info(user.Id, id);
+			var userId = HttpContext.GetUserId();
+			var res = addressService.DeleteAddress(userId, id);
+            _logService.UserLog(res, userId, "Address.Delete");
 			return res;
 		}
 

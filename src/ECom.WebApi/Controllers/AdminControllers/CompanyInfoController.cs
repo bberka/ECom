@@ -8,17 +8,23 @@ namespace ECom.WebApi.Controllers.AdminControllers
     public class CompanyInfoController : BaseAdminController
     {
         private readonly ICompanyInformationService _companyInformationService;
+        private readonly ILogService _logService;
 
-        public CompanyInfoController(ICompanyInformationService companyInformationService)
+        public CompanyInfoController(
+            ICompanyInformationService companyInformationService,
+            ILogService logService)
         {
             this._companyInformationService = companyInformationService;
+            _logService = logService;
         }
         [HttpPost]
         [HasPermission(AdminOperationType.CompanyInfo_UpdateOrAdd)]
         public ActionResult<Result> UpdateOrAdd(CompanyInformation companyInformation)
         {
+            var adminId = HttpContext.GetAdminId();
             var res = _companyInformationService.UpdateOrAddCompanyInformation(companyInformation);
-			return res.WithoutRv();
+			_logService.AdminLog(res,adminId,"CompanyInformation.UpdateOrAdd",companyInformation.ToJsonString());
+            return res.WithoutRv();
         }
 
 	}

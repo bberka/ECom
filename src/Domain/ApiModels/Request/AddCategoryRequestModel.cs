@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.ApiModels.Request
 {
-    public class AddCategoryRequestModel
+    public class AddCategoryRequestModel : AuthRequestModelBase
     {
 
         [MinLength(3)]

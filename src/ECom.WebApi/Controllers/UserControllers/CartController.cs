@@ -11,95 +11,81 @@ namespace ECom.WebApi.Controllers.UserControllers
     public class CartController : BaseUserController
     {
 		private readonly ICartService _cartService;
-		public CartController(ICartService cartService)
-		{
-			_cartService = cartService;
-		}
+        private readonly ILogService _logService;
+
+        public CartController(ICartService cartService, ILogService logService)
+        {
+            _cartService = cartService;
+            _logService = logService;
+        }
 
 		[HttpPost]
 		public ActionResult<Result> AddOrIncreaseProduct(int productId)
-		{
-			if (HttpContext.IsUserAuthenticated())
+        {
+            if (HttpContext.IsUserAuthenticated())
 			{
-				var user = HttpContext.GetUser();
-				var res = _cartService.AddOrIncreaseProduct(user.Id, productId);
-				logger.Info(productId.ToJsonString());
+				var userId = HttpContext.GetUserId();
+				var res = _cartService.AddOrIncreaseProduct(userId, productId);
+				_logService.UserLog(res,userId, "Cart.AddOrIncreaseProduct",productId);
 				return res;
 			}
-			else
-			{
-				HttpContext.AddOrIncreaseInCart(productId);
-				return Result.Success();
-			}
-		}
+            HttpContext.AddOrIncreaseInCart(productId);
+            return Result.Success();
+        }
 
 		[HttpPost]
 		public ActionResult<Result> RemoveOrDecreaseProduct(int productId)
-		{
+        {
 
-			if (HttpContext.IsUserAuthenticated())
+            if (HttpContext.IsUserAuthenticated())
 			{
-				var user = HttpContext.GetUser();
-				var res = _cartService.RemoveOrDecreaseProduct(user.Id, productId);
-				logger.Info(productId);
-				return res;
+				var userId = HttpContext.GetUserId();
+				var res = _cartService.RemoveOrDecreaseProduct(userId, productId);
+				_logService.UserLog(res,userId, "Cart.RemoveOrDecreaseProduct",productId);
+                return res;
+			}
 
-			}
-			else
-			{
-				HttpContext.RemoveOrDecreaseInCart(productId);
-				return Result.Success();
-			}
-			
-		}
+            HttpContext.RemoveOrDecreaseInCart(productId);
+            return Result.Success();
+
+        }
 
 		[HttpGet]
 		public ActionResult<int> ProductCount()
-		{
-			if (HttpContext.IsUserAuthenticated())
+        {
+            if (HttpContext.IsUserAuthenticated())
 			{
-				var user = HttpContext.GetUser();
-				return _cartService.GetBasketProductCount(user.Id);
+				var userId = HttpContext.GetUserId();
+				return _cartService.GetBasketProductCount(userId);
 			}
-			else
-			{
-				return HttpContext.GetCart().Count;
-			}
-			
-		}
+            return HttpContext.GetCart().Count;
+
+        }
 		[HttpGet]
 		public ActionResult<List<Cart>> List()
-		{
-			if (HttpContext.IsUserAuthenticated())
+        {
+            if (HttpContext.IsUserAuthenticated())
 			{
 				var userId = HttpContext.GetUserId();
 				return _cartService.ListBasketProducts(userId);
 			}
-			else
-			{
-				return HttpContext.GetDbCartEntity(-1).ToList();
-			}
-			
-		}
+            return HttpContext.GetDbCartEntity(-1).ToList();
+        }
 		[HttpPost]
 		public ActionResult<Result> Clear()
-		{
+        {
 
-			if (HttpContext.IsUserAuthenticated())
+            if (HttpContext.IsUserAuthenticated())
 			{
-				var user = HttpContext.GetUser();
-				var res = _cartService.Clear(user.Id);
-				logger.Info();
+				var userId = HttpContext.GetUserId();
+				var res = _cartService.Clear(userId);
+				_logService.UserLog(res,userId,"Cart.Clear");
 				return res;
-
 			}
-			else
-			{
-				HttpContext.ClearCart();
-				return Result.Success();
-			}
+            HttpContext.ClearCart();
+            return Result.Success();
 
-		}
+        }
 
 	}
 }

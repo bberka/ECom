@@ -1,6 +1,7 @@
 ﻿
 using ECom.Domain.Entities;
 using ECom.Domain.Extensions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ECom.Domain.Results.DomainResult;
 
 namespace ECom.Application.Services
 {
@@ -29,33 +31,13 @@ namespace ECom.Application.Services
 			this._adminLogRepo = adminLogRepo;
 		}
 
-        public void AdminLog(LogSeverity severity, string operationName, int adminId, params string[] parameters)
-        {
-            Task.Run(() =>
-            {
-                var context = HttpContextHelper.Current.GetNecessaryRequestData();
-                var log = new AdminLog
-                {
-                    AdminId = adminId,
-                    OperationName = operationName,
-                    Params = string.Join("|", parameters),
-                    RegisterDate = DateTime.Now,
-                    Severity = (int)severity,
-                    CFConnecting_IpAddress = context?.CFConnectingIpAddress,
-                    RemoteIpAddress = context?.RemoteIpAddress ?? "-",
-                    XReal_IpAddress = context?.XRealIpAddress ?? "-",
-                    UserAgent = context?.UserAgent ?? "-",
-                };
-                _adminLogRepo.Add(log);
-            });
-        }
-
+       
         public void SecurityLog(LogSeverity severity, params string[] parameters)
         {
+            var context = HttpContextHelper.Current;
+            var data = context.GetNecessaryRequestData();
             Task.Run(() =>
             {
-                var context = HttpContextHelper.Current;
-                var data = context.GetNecessaryRequestData();
                 var log = new SecurityLog
                 {
                     Params = string.Join("|", parameters),
@@ -73,22 +55,54 @@ namespace ECom.Application.Services
 
         }
 
-        public void UserLog(LogSeverity severity, string operationName, int userId, params string[] parameters)
+ 
+        public void AdminLog(Result result, int adminId, string operationName, params object[] parameters)
         {
+            var context = HttpContextHelper.Current.GetNecessaryRequestData();
             Task.Run(() =>
             {
-                var context = HttpContextHelper.Current.GetNecessaryRequestData();
-                var log = new UserLog
+                var log = new AdminLog()
                 {
-                    UserId = userId,
+
+                    AdminId = adminId,
                     OperationName = operationName,
-                    Params = string.Join("|", parameters),
                     RegisterDate = DateTime.Now,
-                    Severity = (int)severity,
+                    Severity = (int)result.Severity,
                     CFConnecting_IpAddress = context?.CFConnectingIpAddress,
                     RemoteIpAddress = context?.RemoteIpAddress ?? "-",
                     XReal_IpAddress = context?.XRealIpAddress,
                     UserAgent = context?.UserAgent ?? "-",
+                    Params = string.Join("|", parameters),
+                    ResultErrors = string.Join("|", result.Errors),
+                    ErrorCode = result.ErrorCode,
+                    Rv = result.Rv,
+                };
+                _adminLogRepo.Add(log);
+            });
+            
+        }
+
+        public void UserLog(Result result, int userId, string operationName, params object[] parameters)
+        {
+
+            var context = HttpContextHelper.Current.GetNecessaryRequestData();
+            Task.Run(() =>
+            {
+                var log = new UserLog
+                {
+                    
+                    UserId = userId,
+                    OperationName = operationName,
+                    RegisterDate = DateTime.Now,
+                    Severity = (int)result.Severity,
+                    CFConnecting_IpAddress = context?.CFConnectingIpAddress,
+                    RemoteIpAddress = context?.RemoteIpAddress ?? "-",
+                    XReal_IpAddress = context?.XRealIpAddress,
+                    UserAgent = context?.UserAgent ?? "-",
+                    Params = string.Join("|",parameters),
+                    ResultErrors = string.Join("|",result.Errors),
+                    ErrorCode = result.ErrorCode,
+                    Rv = result.Rv,
                 };
                 _userLogRepo.Add(log);
             });

@@ -6,16 +6,20 @@ namespace ECom.WebApi.Controllers.UserControllers
     public class CollectionController : BaseUserController
     {
         private readonly ICollectionService _collectionService;
+        private readonly ILogService _logService;
 
-        public CollectionController(ICollectionService collectionService)
+        public CollectionController(ICollectionService collectionService, ILogService logService)
         {
             this._collectionService = collectionService;
+            _logService = logService;
         }
         [HttpGet]
         public ActionResult<ResultData<Collection>> Get(int collectionId)
         {
             var userId = HttpContext.GetUserId();
-            return _collectionService.GetCollection(userId,collectionId);
+            var res =_collectionService.GetCollection(userId,collectionId);
+            _logService.UserLog(res.ToResult(),userId,"Collection.Get",collectionId);
+            return res;
         }
         [HttpGet]
         public ActionResult<List<Collection>> List()
@@ -24,27 +28,35 @@ namespace ECom.WebApi.Controllers.UserControllers
             return _collectionService.GetCollections(userId);
         }
         [HttpGet]
-        public ActionResult<ResultData<List<CollectionProduct>>> GetCollectionProducts(int id,ushort page,string culture = ConstantMgr.DefaultCulture)
+        public ActionResult<ResultData<List<CollectionProduct>>> GetProducts(int id,ushort page,string culture = ConstantMgr.DefaultCulture)
         {
             var userId = HttpContext.GetUserId();
-            return _collectionService.GetCollectionProducts(userId,id,page,culture);
+            var res = _collectionService.GetCollectionProducts(userId,id,page,culture);
+            _logService.UserLog(res.ToResult(),userId,"Collection.GetProducts",id,page,culture);
+            return res;
         }
         [HttpPost]
-        public ActionResult<Result> CreateCollection(CreateCollectionRequestModel model)
+        public ActionResult<Result> Create(CreateCollectionRequestModel model)
         {
-            return _collectionService.CreateCollection(model);
+            var res = _collectionService.CreateCollection(model);
+            _logService.UserLog(res,model.AuthenticatedUserId,"Collection.Create",model.ToJsonString());
+            return res;
         }
         [HttpDelete]
         public ActionResult<Result> Delete(int collectionId)
         {
             var userId = HttpContext.GetUserId();
-            return _collectionService.DeleteCollection(userId,collectionId);
+            var res = _collectionService.DeleteCollection(userId,collectionId);
+            _logService.UserLog(res,userId,"Collection.Delete",collectionId);
+            return res;
         }
 
         [HttpPost]
         public ActionResult<Result> Update(UpdateCollectionRequestModel model)
         {
-            return _collectionService.UpdateCollection(model);
+            var res = _collectionService.UpdateCollection(model);
+            _logService.UserLog(res,model.AuthenticatedUserId,"Collection.Update",model.ToJsonString());
+            return res;
         }
     }
 }

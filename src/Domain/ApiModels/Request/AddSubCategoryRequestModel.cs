@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.ApiModels.Request
 {
-    public class AddSubCategoryRequestModel
+    public class AddSubCategoryRequestModel : AuthRequestModelBase
     {
 
         public int CategoryId { get; set; }

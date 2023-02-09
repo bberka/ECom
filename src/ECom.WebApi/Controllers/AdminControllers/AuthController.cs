@@ -11,6 +11,8 @@ using ECom.Domain.ApiModels.Request;
 using ECom.Domain.ApiModels.Response;
 using ECom.Domain.Constants;
 using ECom.Domain.Interfaces;
+using Ninject.Modules;
+
 namespace ECom.WebApi.Controllers.AdminControllers
 {
     [ApiController]
@@ -21,21 +23,25 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		private readonly IAdminService _adminService;
 		private readonly IOptionService _optionService;
 		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
+        private readonly ILogService _logService;
 
-		public AuthController(
+        public AuthController(
 			IAdminService adminService,
 			IOptionService optionService,
-			IAdminJwtAuthenticator adminJwtAuthenticator)
+			IAdminJwtAuthenticator adminJwtAuthenticator,
+            ILogService logService)
 		{
 			this._adminService = adminService;
 			this._optionService = optionService;
 			this._adminJwtAuthenticator = adminJwtAuthenticator;
-		}
+            _logService = logService;
+        }
 		[HttpPost]
         public ActionResult<ResultData<AdminLoginResponseModel>> Login([FromBody] LoginRequestModel model)
         {
 			HttpContext.Session.Clear();
             var res = _adminJwtAuthenticator.Authenticate(model);
+            _logService.AdminLog(res.ToResult(),-1,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
             return res.WithoutRv();
            
         }

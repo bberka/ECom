@@ -10,7 +10,7 @@ namespace ECom.WebApi.Controllers
     [Authorize(Policy = "UserOnly")]
     public class BaseUserController : Controller
     {
-        protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseUserController));
+        //protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseUserController));
 
         
     }

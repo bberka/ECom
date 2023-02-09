@@ -14,16 +14,19 @@ namespace ECom.Application.Services
 		private readonly IEfEntityRepository<User> _userRepo;
 		private readonly IOptionService _optionService;
 		private readonly IValidationService _validationService;
+        private readonly ILogService _logService;
 
-		public UserService(
+        public UserService(
 			IEfEntityRepository<User> userRepo,
 			IOptionService optionService,
-			IValidationService validationService)
+			IValidationService validationService,
+            ILogService logService)
 		{
 			this._userRepo = userRepo;
 			this._optionService = optionService;
 			this._validationService = validationService;
-		}
+            _logService = logService;
+        }
 		public Result Register(RegisterRequestModel model)
 		{
 			var user = model.ToUserEntity();
@@ -42,17 +45,17 @@ namespace ECom.Application.Services
                 return userResult.ToResult();
             }
             var user = userResult.Data; //Ignore null warning
-			if (user.Password != model.EncryptedPassword)
+			if (user?.Password != model.EncryptedPassword)
 			{
-				//todo log
+				//_logService.UserLog(LogSeverity.WARN,2,"User.Login","WrongPassword",user.Id,model.EmailAddress,model.Password);
                 return DomainResult.User.NotFoundResult(2);
 			}
             if (user.TwoFactorType != 0)
 			{
 				//TODO: implement two factor
 			}
-			//Todo log
-			return user;
+            //_logService.UserLog_Info("User.Login", user.Id, model.EmailAddress);
+            return user;
 		}
 		public ResultData<User> GetUser(string email)
 		{

@@ -9,10 +9,14 @@ namespace ECom.WebApi.Controllers.AdminControllers
     public class ManagerController : BaseAdminController
     {
         private readonly IAdminService _adminService;
+        private readonly ILogService _logService;
 
-        public ManagerController(IAdminService adminService)
+        public ManagerController(
+            IAdminService adminService,
+            ILogService logService)
         {
             _adminService = adminService;
+            _logService = logService;
         }
         [HttpGet]
         [HasPermission(AdminOperationType.Admin_GetOrList)]
@@ -26,20 +30,25 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public ActionResult<Result> EnableOrDisable([FromBody] int adminId)
         {
             var authorizedAdminId = HttpContext.GetAdminId();
-            return _adminService.EnableOrDisableAdmin(authorizedAdminId, adminId).WithoutRv();
+            var res =_adminService.EnableOrDisableAdmin(authorizedAdminId, adminId);
+            _logService.AdminLog(res,authorizedAdminId,"Manager.EnableOrDisable",adminId);
+            return res.WithoutRv();
         }
         [HttpDelete]
         [HasPermission(AdminOperationType.Admin_Delete)]
         public ActionResult<Result> Delete([FromBody] int adminId)
         {
             var authorizedAdminId = HttpContext.GetAdminId();
-            return _adminService.DeleteAdmin(authorizedAdminId, adminId).WithoutRv();
+            var res =  _adminService.DeleteAdmin(authorizedAdminId, adminId);
+            _logService.AdminLog(res, authorizedAdminId, "Manager.Delete", adminId);
+            return res.WithoutRv();
         }
         [HttpPost]
         [HasPermission(AdminOperationType.Admin_Add)]
         public ActionResult<Result> Add([FromBody] AddAdminRequestModel model)
         {
             var res = _adminService.AddAdmin(model);
+            _logService.AdminLog(res, model.AuthenticatedAdminId, "Manager.Add", model.ToJsonString());
             return res.WithoutRv();
         }
 

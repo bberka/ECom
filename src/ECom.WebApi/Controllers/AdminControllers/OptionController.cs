@@ -10,10 +10,15 @@ namespace ECom.WebApi.Controllers.AdminControllers
 	public class OptionController : BaseAdminController
 	{
 		private readonly IOptionService _optionService;
-		public OptionController(IOptionService optionService)
-		{
-			_optionService = optionService;
-		}
+        private readonly ILogService _logService;
+
+        public OptionController(
+            IOptionService optionService,
+            ILogService logService)
+        {
+            _optionService = optionService;
+            _logService = logService;
+        }
 
         [HttpGet]
         [HasPermission(AdminOperationType.Option_RefreshCache)]
@@ -52,7 +57,6 @@ namespace ECom.WebApi.Controllers.AdminControllers
         public ActionResult<Result> Update([FromBody] Option option)
 		{
 			var res = _optionService.UpdateOption(option);
-			logger.Info($"Option({option.ToJsonString()})");
 			return res.WithoutRv();
 		}
 

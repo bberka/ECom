@@ -8,7 +8,7 @@ namespace ECom.WebApi.Controllers
     [Authorize(Policy = "AdminOnly")]
 	public class BaseAdminController : Controller
     {
-        protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseAdminController));
+        //protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseAdminController));
 
 	}
 }
