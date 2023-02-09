@@ -1,16 +1,7 @@
-﻿using ECom.Domain.Abstract;
-using ECom.Domain.Entities;
-using ECom.Domain.Extensions;
-using ECom.WebApi.Filters;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.NetworkInformation;
-
-namespace ECom.WebApi.Controllers.UserControllers
+﻿namespace ECom.WebApi.Controllers.UserControllers
 {
 
-    public class AddressController : BaseUserController
+	public class AddressController : BaseUserController
     {
         private readonly IAddressService addressService;
 

@@ -18,7 +18,7 @@ namespace ECom.Domain.Entities
 		[MaxLength(32)]
 		public string Name { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(32)]
         public string? Memo { get; set; }
 
 		public bool IsValid { get; set; }

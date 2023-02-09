@@ -9,20 +9,21 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
+    [PrimaryKey(nameof(ImageId),nameof(ProductCommentId))]
     public class ProductCommentImage : IEfEntity
 	{
-
-        [ForeignKey("ImageId")]
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+        
         public int ImageId { get; set; }
+        public int ProductCommentId { get; set; }
 
+
+        //Virtual
+        //Ignore
+        [IgnoreDataMember]
+        public virtual ProductComment ProductComment { get; set; }
         [IgnoreDataMember]
         public virtual Image Image { get; set; }
-
-        [ForeignKey("CommentId")]
-        public int CommentId { get; set; }
-
-        [IgnoreDataMember]
-        public virtual ProductComment? Comment { get; set; }
 
 
     }

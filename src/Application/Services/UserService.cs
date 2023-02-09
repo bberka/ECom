@@ -1,8 +1,5 @@
 ﻿
 
-
-
-
 using EasMe;
 using ECom.Application.Validators;
 using ECom.Domain.Extensions;
@@ -47,7 +44,7 @@ namespace ECom.Application.Services
             var user = userResult.Data; //Ignore null warning
 			if (user.Password != model.EncryptedPassword)
 			{
-				IncreaseFailedPasswordCount(user);
+				//todo log
                 return DomainResult.User.NotFoundResult(2);
 			}
 			var validator = new UserValidator();
@@ -61,26 +58,8 @@ namespace ECom.Application.Services
 			{
 				//TODO: implement two factor
 			}
-			UpdateSuccessLogin(user);
+			//Todo log
 			return user;
-		}
-		public bool UpdateSuccessLogin(User user)
-		{
-			var req = HttpContextHelper.Current.GetNecessaryRequestData();
-			user.TotalLoginCount++;
-			user.LastLoginDate = DateTime.Now;
-			user.LastLoginIp = req.IpAddress;
-			user.LastLoginUserAgent = req.UserAgent;
-			return _userRepo.Update(user);
-		}
-		public bool IncreaseFailedPasswordCount(User user)
-		{
-			user.FailedPasswordCount++;
-			return _userRepo.Update(user);
-		}
-		public bool IncreaseFailedPasswordCount(int userId)
-		{
-			return _userRepo.UpdateWhereSingle(x => x.Id == userId, x => x.FailedPasswordCount++);
 		}
 		public ResultData<User> GetUser(string email)
 		{

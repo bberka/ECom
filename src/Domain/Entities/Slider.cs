@@ -22,18 +22,17 @@ namespace ECom.Domain.Entities
         public string Alt { get; set; }
 
         
-        [MaxLength(50)]
         public int Order { get; set; }
 
-
-        [ForeignKey("ImageId")]
-        public int? ImageId { get; set; }
-        public virtual Image Image { get; set; }
+        public int ImageId { get; set; }
 
         [MinLength(2)]
         [MaxLength(4)]
         public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
+
+        //virtual
+        public virtual Image Image { get; set; }
 
     }
 }

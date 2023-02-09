@@ -14,7 +14,7 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public DateTime RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
         
         public int Severity { get; set; }
         public string OperationName { get; set; }
@@ -35,8 +35,10 @@ namespace ECom.Domain.Entities
         
         public string? Params { get; set; }
 
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
+
+
+        //virtual
         public virtual User User { get; set; }
 
     }

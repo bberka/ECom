@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECom.Domain.Results;
+﻿using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
 
-	public class CollectionService : ICollectionService
+    public class CollectionService : ICollectionService
 	{
 		private readonly IEfEntityRepository<Collection> _collectionRepo;
 		private readonly IEfEntityRepository<CollectionProduct> _collectionProductRepo;
@@ -92,7 +85,7 @@ namespace ECom.Application.Services
 			return _collectionProductRepo
 				.Get(x => x.CollectionId == id)
                 .Include(x => x.Product)
-                .ThenInclude(x => x.Details)
+                .ThenInclude(x => x.ProductDetails)
 				.ToList();
         }
 

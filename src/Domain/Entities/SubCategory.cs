@@ -13,11 +13,14 @@ namespace ECom.Domain.Entities
 
 		public bool IsValid { get; set; }
 
-        [MaxLength(32)]
+        [MinLength(ConstantMgr.NameMinLength)]
+        [MaxLength(ConstantMgr.NameMaxLength)]
 		public string Name { get; set; }
 
-		[ForeignKey("CategoryId")]
 		public int CategoryId { get; set; }
+
+
+		//virtual
         [IgnoreDataMember]
         public virtual Category Category { get; set; }
 

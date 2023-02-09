@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
+    [PrimaryKey(nameof(UserId),nameof(ProductId))]
     public class Cart : IEfEntity
 	{
-        public DateTime RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.MaxValue;
         public DateTime LastUpdateDate { get; set; }
         public int Count { get; set; }
-
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
-        public virtual User User { get; set; }
-
-        [ForeignKey("ProductId")]
         public int ProductId { get; set; }
 
+
+
+        //Virtual
         public virtual Product Product { get; set; }
+        public virtual User User { get; set; }
+
 
     }
 }

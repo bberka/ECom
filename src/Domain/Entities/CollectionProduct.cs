@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
+    [PrimaryKey(nameof(ProductId),nameof(CollectionId))]
     public class CollectionProduct : IEfEntity
 	{
-        public DateTime RegisterDate { get; set; }
-
-        [ForeignKey("ProductId")]
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
         public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
-
-        [ForeignKey("CollectionId")]
         public int CollectionId { get; set; }
+
+
+        //virtual
+        public virtual Product Product { get; set; }
         public virtual Collection Collection { get; set; }
     }
 }

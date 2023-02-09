@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -9,17 +10,26 @@ namespace ECom.Domain.Entities
 {
     public class ProductCommentStar : IEfEntity
     {
-        public byte Star { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
-        public virtual User User { get; set; }
-        
-        [ForeignKey("CommentId")]
-        public int CommentId { get; set; }
+        public int ProductCommentId { get; set; }
 
-        [System.Text.Json.Serialization.JsonIgnore]
-        public virtual ProductComment Comment { get; set; }
+
+        public byte Star { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+
+
+        //virtual
+        [IgnoreDataMember]
+        [DeleteBehavior(DeleteBehavior.Restrict)]
+        public User User { get; set; }
+
+        [IgnoreDataMember]
+        [DeleteBehavior(DeleteBehavior.Restrict)]
+        public ProductComment ProductComment { get; set; }
+
     }
 }

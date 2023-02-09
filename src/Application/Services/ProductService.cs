@@ -1,7 +1,4 @@
-﻿
-using System.Runtime.InteropServices;
-using ECom.Domain.Results;
-using ECom.Infrastructure.DataAccess;
+﻿using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -75,7 +72,7 @@ namespace ECom.Application.Services
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
-                .Include(x => x.Images)
+                .Include(x => x.ProductCommentImages)
                 .ToList();
         }
 
@@ -87,7 +84,7 @@ namespace ECom.Application.Services
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
-                .Include(x => x.Images)
+                .Include(x => x.ProductCommentImages)
                 .ToList();
         }
 
@@ -101,11 +98,11 @@ namespace ECom.Application.Services
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
-                .Include(x => x.Variant)
-                .Include(x => x.Images)
-                .Include(x => x.Details)
-                .Include(x => x.Comments)
-                .ThenInclude(x => x.Images)
+                .Include(x => x.ProductVariant)
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductDetails)
+                .Include(x => x.ProductComments)
+                .ThenInclude(x => x.ProductCommentImages)
                 .ToList();
         }
 
@@ -116,11 +113,11 @@ namespace ECom.Application.Services
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
-                .Include(x => x.Variant)
-                .Include(x => x.Images)
-                .Include(x => x.Details)
-                .Include(x => x.Comments)
-                .ThenInclude(x => x.Images)
+                .Include(x => x.ProductVariant)
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductDetails)
+                .Include(x => x.ProductComments)
+                .ThenInclude(x => x.ProductCommentImages)
                 .ToList();
         }
     }

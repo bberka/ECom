@@ -7,22 +7,13 @@ using ECom.Infrastructure.DataAccess;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ECom.Application.DependencyResolvers.AspNetCore
+namespace ECom.Application.DependencyResolvers
 {
-    public static class BusinessDependencyService
-	{
+    public static class BusinessDependencyResolver
+    {
+        
 
-		public static IServiceCollection AddBusinessDependencies(this IServiceCollection services)
-		{
-            return services
-                .AddBaseDataBaseAccessLayer()
-                .AddBusinessLogicServices()
-                .AddBusinessValidators()
-                .AddBusinessAuthenticators()
-                .AddScoped<DbContext, EComDbContext>();
-		}
-
-        private static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
+        public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
         {
             services.AddScoped<IOptionService, OptionService>();
             services.AddScoped<ICompanyInformationService, CompanyInformationService>();
@@ -45,7 +36,7 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
             return services;
         }
 
-        private static IServiceCollection AddBaseDataBaseAccessLayer(this IServiceCollection services)
+        public static IServiceCollection AddBaseDataBaseAccessLayer(this IServiceCollection services)
         {
             services.AddScoped<IEfEntityRepository<Address>, AddressDal>();
             services.AddScoped<IEfEntityRepository<Admin>, AdminDal>();
@@ -88,10 +79,13 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
             services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDal>();
             services.AddScoped<IEfEntityRepository<ShowCaseImage>, ShowCaseImageDal>();
             services.AddScoped<IEfEntityRepository<ProductCommentStar>, ProductCommentStarDal>();
+
+            services.AddScoped<DbContext, EComDbContext>();
+
             return services;
         }
 
-        private static IServiceCollection AddBusinessValidators(this IServiceCollection services)
+        public static IServiceCollection AddBusinessValidators(this IServiceCollection services)
         {
 
             services.AddScoped<IValidationService, ValidationService>();
@@ -108,7 +102,7 @@ namespace ECom.Application.DependencyResolvers.AspNetCore
             return services;
         }
 
-        private static IServiceCollection AddBusinessAuthenticators(this IServiceCollection services)
+        public static IServiceCollection AddBusinessAuthenticators(this IServiceCollection services)
         {
             services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
             services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();

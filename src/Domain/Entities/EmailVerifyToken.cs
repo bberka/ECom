@@ -15,16 +15,19 @@ namespace ECom.Domain.Entities
         [MaxLength(512)]
         public string Token { get; set; }
         
-        [MaxLength(512)]
-        public string Email { get; set; }
+        [MaxLength(ConstantMgr.EmailMaxLength)]
+        [EmailAddress]
+        public string EmailAddress { get; set; }
+        public bool IsUsed { get; set; } = false;
 
-        public bool IsUsed { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+        public DateTime ExpireDate { get; set; } 
 
-        public DateTime RegisterDate { get; set; }
-        public DateTime ExpireDate { get; set; }
-
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
+
+
+
+        //virtual
         public virtual User User { get; set; }
 
     }

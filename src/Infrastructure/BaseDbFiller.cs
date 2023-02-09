@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECom.Infrastructure
+﻿namespace ECom.Infrastructure
 {
     internal static class BaseDbFiller
     {
@@ -161,19 +155,16 @@ namespace ECom.Infrastructure
             new Role()
             {
                 IsValid = true,
-                Memo = "",
                 Name = "Owner",
             },
             new Role()
             {
                 IsValid = true,
-                Memo = "",
                 Name = "Admin",
             },
             new Role()
             {
                 IsValid = true,
-                Memo = "",
                 Name = "Mod",
             },
         };

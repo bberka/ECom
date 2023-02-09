@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECom.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
@@ -53,7 +53,7 @@ namespace ECom.Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactEmail = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    WhatsApp = table.Column<int>(type: "int", nullable: true),
+                    WhatsApp = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
                     CompanyAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FacebookLink = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     InstagramLink = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -89,15 +89,13 @@ namespace ECom.Infrastructure.Migrations
                     IsOpen = table.Column<bool>(type: "bit", nullable: false),
                     IsAdminOpen = table.Column<bool>(type: "bit", nullable: false),
                     PagingProductCount = table.Column<byte>(type: "tinyint", nullable: false),
-                    UsernameMinLength = table.Column<byte>(type: "tinyint", nullable: false),
-                    PasswordMinLength = table.Column<byte>(type: "tinyint", nullable: false),
                     RequireUpperCaseInPassword = table.Column<bool>(type: "bit", nullable: false),
                     RequireLowerCaseInPassword = table.Column<bool>(type: "bit", nullable: false),
                     RequireSpecialCharacterInPassword = table.Column<bool>(type: "bit", nullable: false),
                     RequireNumberInPassword = table.Column<bool>(type: "bit", nullable: false),
                     EmailVerificationTimeoutMinutes = table.Column<int>(type: "int", nullable: false),
                     PasswordResetTimeoutMinutes = table.Column<int>(type: "int", nullable: false),
-                    SelectedCurrency = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    SelectedCurrency = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     ShowStock = table.Column<bool>(type: "bit", nullable: false),
                     ProductImageLimit = table.Column<byte>(type: "tinyint", nullable: false),
                     ProductCommentImageLimit = table.Column<byte>(type: "tinyint", nullable: false)
@@ -137,7 +135,7 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Memo = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Memo = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -166,7 +164,6 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Memo = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -182,11 +179,11 @@ namespace ECom.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HttpStatusCodeResponse = table.Column<int>(type: "int", nullable: false),
-                    RequestUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QueryString = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    RequestUrl = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    QueryString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    RemoteIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(64)", maxLength: 64, nullable: true),
                     UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
                 },
@@ -202,7 +199,7 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Host = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Host = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Ssl = table.Column<bool>(type: "bit", nullable: false),
@@ -220,11 +217,11 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
+                    CompanyName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,21 +240,15 @@ namespace ECom.Infrastructure.Migrations
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     CitizenShipNumber = table.Column<int>(type: "int", nullable: true),
                     TaxNumber = table.Column<int>(type: "int", nullable: true),
                     OAuthKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     OAuthType = table.Column<byte>(type: "tinyint", nullable: true),
                     TwoFactorKey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false),
-                    TotalLoginCount = table.Column<int>(type: "int", nullable: false),
-                    LastLoginIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    LastLoginUserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FailedPasswordCount = table.Column<int>(type: "int", nullable: false),
-                    PasswordLastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
@@ -275,7 +266,7 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -284,7 +275,8 @@ namespace ECom.Infrastructure.Migrations
                         name: "FK_CategoryDiscounts_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,7 +308,7 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -383,8 +375,8 @@ namespace ECom.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Alt = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Order = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false),
                     Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
@@ -394,7 +386,8 @@ namespace ECom.Infrastructure.Migrations
                         name: "FK_Sliders_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -435,11 +428,6 @@ namespace ECom.Infrastructure.Migrations
                     TwoFactorKey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false),
                     TotalLoginCount = table.Column<int>(type: "int", nullable: false),
-                    LastLoginIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    LastLoginUserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FailedPasswordCount = table.Column<byte>(type: "tinyint", nullable: false),
-                    PasswordLastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -463,7 +451,7 @@ namespace ECom.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePermissions", x => new { x.PermissionId, x.RoleId });
+                    table.PrimaryKey("PK_RolePermissions", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
                         name: "FK_RolePermissions_Permissions_PermissionId",
                         column: x => x.PermissionId,
@@ -491,9 +479,9 @@ namespace ECom.Infrastructure.Migrations
                     Title = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     Town = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Provience = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Provience = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -533,7 +521,7 @@ namespace ECom.Infrastructure.Migrations
                 columns: table => new
                 {
                     Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsUsed = table.Column<bool>(type: "bit", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -718,9 +706,8 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    AuthorUserId = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -733,8 +720,8 @@ namespace ECom.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductComments_Users_AuthorUserId",
-                        column: x => x.AuthorUserId,
+                        name: "FK_ProductComments_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -773,7 +760,7 @@ namespace ECom.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductImages", x => new { x.ProductId, x.ImageId });
+                    table.PrimaryKey("PK_ProductImages", x => new { x.ImageId, x.ProductId });
                     table.ForeignKey(
                         name: "FK_ProductImages_Images_ImageId",
                         column: x => x.ImageId,
@@ -902,7 +889,7 @@ namespace ECom.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CollectionProducts", x => new { x.CollectionId, x.ProductId });
+                    table.PrimaryKey("PK_CollectionProducts", x => new { x.ProductId, x.CollectionId });
                     table.ForeignKey(
                         name: "FK_CollectionProducts_Collections_CollectionId",
                         column: x => x.CollectionId,
@@ -922,11 +909,12 @@ namespace ECom.Infrastructure.Migrations
                 columns: table => new
                 {
                     ImageId = table.Column<int>(type: "int", nullable: false),
-                    CommentId = table.Column<int>(type: "int", nullable: false)
+                    ProductCommentId = table.Column<int>(type: "int", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCommentImages", x => new { x.ImageId, x.CommentId });
+                    table.PrimaryKey("PK_ProductCommentImages", x => new { x.ImageId, x.ProductCommentId });
                     table.ForeignKey(
                         name: "FK_ProductCommentImages_Images_ImageId",
                         column: x => x.ImageId,
@@ -934,11 +922,39 @@ namespace ECom.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductCommentImages_ProductComments_CommentId",
-                        column: x => x.CommentId,
+                        name: "FK_ProductCommentImages_ProductComments_ProductCommentId",
+                        column: x => x.ProductCommentId,
                         principalTable: "ProductComments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductCommentStars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProductCommentId = table.Column<int>(type: "int", nullable: false),
+                    Star = table.Column<byte>(type: "tinyint", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCommentStars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductCommentStars_ProductComments_ProductCommentId",
+                        column: x => x.ProductCommentId,
+                        principalTable: "ProductComments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductCommentStars_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -972,9 +988,9 @@ namespace ECom.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CollectionProducts_ProductId",
+                name: "IX_CollectionProducts_CollectionId",
                 table: "CollectionProducts",
-                column: "ProductId");
+                column: "CollectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Collections_UserId",
@@ -1022,14 +1038,9 @@ namespace ECom.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCommentImages_CommentId",
+                name: "IX_ProductCommentImages_ProductCommentId",
                 table: "ProductCommentImages",
-                column: "CommentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductComments_AuthorUserId",
-                table: "ProductComments",
-                column: "AuthorUserId");
+                column: "ProductCommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductComments_ProductId",
@@ -1037,14 +1048,29 @@ namespace ECom.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductComments_UserId",
+                table: "ProductComments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCommentStars_ProductCommentId",
+                table: "ProductCommentStars",
+                column: "ProductCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCommentStars_UserId",
+                table: "ProductCommentStars",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductDetails_ProductId",
                 table: "ProductDetails",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImages_ImageId",
+                name: "IX_ProductImages_ProductId",
                 table: "ProductImages",
-                column: "ImageId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductVariantId",
@@ -1062,9 +1088,9 @@ namespace ECom.Infrastructure.Migrations
                 column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePermissions_RoleId",
+                name: "IX_RolePermissions_PermissionId",
                 table: "RolePermissions",
-                column: "RoleId");
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShowCaseImages_ImageId",
@@ -1147,6 +1173,9 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductCommentImages");
+
+            migrationBuilder.DropTable(
+                name: "ProductCommentStars");
 
             migrationBuilder.DropTable(
                 name: "ProductDetails");

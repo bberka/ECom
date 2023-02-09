@@ -27,21 +27,8 @@ namespace ECom.Application.Services
         }
 
        
-        public bool UpdateSuccessLogin(Admin admin)
-        {
-            var req = HttpContextHelper.Current.GetNecessaryRequestData();
-            if (req == null) return false;
-            admin.TotalLoginCount++;
-            admin.LastLoginDate = DateTime.Now;
-            admin.LastLoginIp = req.IpAddress;
-            admin.LastLoginUserAgent = req.UserAgent;
-            return _adminRepo.Update(admin);
-        }
-        public bool IncreaseFailedPasswordCount(Admin admin)
-        {
-            admin.FailedPasswordCount++;
-            return _adminRepo.Update(admin);
-        }
+     
+    
         public ResultData<Admin> GetAdmin(string email)
         {
             var admin = _adminRepo
@@ -167,7 +154,7 @@ namespace ECom.Application.Services
             }
             if (admin.Password != model.EncryptedPassword)
             {
-                IncreaseFailedPasswordCount(admin);
+                //Todo log
                 return DomainResult.Admin.NotFoundResult(2);
             }
 
@@ -186,7 +173,7 @@ namespace ECom.Application.Services
             {
                 //TODO: two factor
             }
-            UpdateSuccessLogin(admin);
+            //todo log
             return admin;
         }
 

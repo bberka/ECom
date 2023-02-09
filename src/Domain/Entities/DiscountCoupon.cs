@@ -13,10 +13,7 @@ namespace ECom.Domain.Entities
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-		
-		public DateTime RegisterDate { get; set; }
-
+		public DateTime RegisterDate { get; set; } = DateTime.Now;
 		
 		public DateTime EndDate { get; set; }
 
@@ -24,7 +21,6 @@ namespace ECom.Domain.Entities
 		[Range(0, 100)]
 		public byte DiscountPercent { get; set; }
 
-        [ForeignKey("DiscountCategoryId")]
         public int DiscountCategoryId { get; set; }
         public virtual Category DiscountCategory { get; set; }
 

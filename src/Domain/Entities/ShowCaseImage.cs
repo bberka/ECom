@@ -14,7 +14,7 @@ namespace ECom.Domain.Entities
 
         public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public bool IsValid { get; set; }
+        public bool IsValid { get; set; } = true;
 
         public byte Order { get; set; }
 
@@ -26,8 +26,12 @@ namespace ECom.Domain.Entities
         /// </summary>
         public byte ShowCaseType { get; set; }
 
-        [ForeignKey("ImageId")]
         public int ImageId { get; set; }
+
+
+
+
+        //virtual
         public virtual Image Image { get; set; }
     }
 }

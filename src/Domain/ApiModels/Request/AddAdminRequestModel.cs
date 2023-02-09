@@ -22,7 +22,6 @@ namespace ECom.Domain.ApiModels.Request
                 RegisterDate = DateTime.Now,
                 DeletedDate = null,
                 EmailAddress = EmailAddress,
-                FailedPasswordCount = 0,
                 Password = Convert.ToBase64String(Password.MD5Hash()),
                 IsValid = true,
                 IsTestAccount = false,

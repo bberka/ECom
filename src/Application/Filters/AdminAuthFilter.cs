@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using ECom.Domain.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ECom.WebApi.Filters
+namespace ECom.Application.Filters
 {
 	public class AdminAuthFilterAttribute : ActionFilterAttribute
 	{

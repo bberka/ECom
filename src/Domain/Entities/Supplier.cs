@@ -14,19 +14,22 @@ namespace ECom.Domain.Entities
 
         public DateTime RegisterDate { get; set; }
 
-        [MaxLength(32)]
+        [MinLength(ConstantMgr.NameMinLength)]
+        [MaxLength(ConstantMgr.NameMaxLength)]
         public string Name { get; set; }
 
         [MaxLength(128)]
         public string Description { get; set; }
 
-        [MaxLength(64)]
+        [MaxLength(128)]
         public string CompanyName { get; set; }
 
-        [MaxLength(16)]
+        [MinLength(ConstantMgr.PhoneNumberMinLength)]
+        [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
 
-        [MaxLength(64)]
+        [MaxLength(ConstantMgr.EmailMaxLength)]
+        [EmailAddress]
         public string EmailAddress { get; set; }
     }
 }

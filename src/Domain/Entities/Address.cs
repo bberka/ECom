@@ -12,15 +12,14 @@
         [Newtonsoft.Json.JsonIgnore]
         public DateTime? DeleteDate { get; set; }
 
-        [MinLength(ConstantMgr.StringMinLength)]
+        [MinLength(ConstantMgr.NameMinLength)]
         [MaxLength(ConstantMgr.NameMaxLength)]
         public string Name { get; set; }
         
-		[MinLength(ConstantMgr.StringMinLength)]
+		[MinLength(ConstantMgr.NameMinLength)]
 		[MaxLength(ConstantMgr.NameMaxLength)]
 		public string Surname { get; set; }
 
-		[MinLength(ConstantMgr.StringMinLength)]
 		[MaxLength(ConstantMgr.TitleMaxLength)]
         public string Title { get; set; }
         
@@ -29,19 +28,21 @@
         
         [MaxLength(32)]
         public string Country { get; set; }
+
+        [MaxLength(32)]
         public string Provience { get; set; }
         
-        [MaxLength(64)]
+        [MaxLength(128)]
         public string Details { get; set; }
 
+        [MinLength(ConstantMgr.PhoneNumberMinLength)]
         [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
-        public string PhoneNumber { get; set; } = null!;
+        public string PhoneNumber { get; set; } 
 
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
 
-        [System.Text.Json.Serialization.JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
+        
+        //Virtual
         public virtual User User { get; set; }
 
     }

@@ -1,7 +1,5 @@
 ﻿using EasMe.Logging;
-using ECom.WebApi.Filters;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.WebApi.Controllers
 {

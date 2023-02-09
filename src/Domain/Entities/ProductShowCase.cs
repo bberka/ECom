@@ -26,8 +26,9 @@ namespace ECom.Domain.Entities
         /// </summary>
         public byte ShowCaseType { get; set; }
 
-        [ForeignKey("ProductId")]
         public int ProductId { get; set; }
+
+        //virtual
         public virtual Product Product { get; set; }
 
 

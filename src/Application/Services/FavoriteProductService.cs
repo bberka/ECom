@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECom.Domain.Results;
+﻿using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -84,7 +79,7 @@ namespace ECom.Application.Services
             return _favoriteProductRepo
                 .Get(x => x.UserId == userId)
                 .Include(x => x.Product)
-                .ThenInclude(x => x.Images)
+                .ThenInclude(x => x.ProductImages)
                 .ToList();
            
         }

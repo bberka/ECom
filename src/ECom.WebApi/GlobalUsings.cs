@@ -1,14 +1,10 @@
-﻿global using EasMe.Enums;
-global using EasMe.Extensions;
+﻿global using EasMe.Extensions;
 global using EasMe.Models;
-global using ECom.Application.DependencyResolvers.AspNetCore;
 global using ECom.Domain.Abstract;
 global using ECom.Domain.ApiModels.Request;
 global using ECom.Domain.ApiModels.Response;
 global using ECom.Domain.Entities;
-global using ECom.Domain.Exceptions;
 global using ECom.Domain.Extensions;
-global using ECom.Domain.ValueObjects;
 global using ECom.Infrastructure;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Mvc;
@@ -17,3 +13,4 @@ global using System;
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
+

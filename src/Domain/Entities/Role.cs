@@ -14,15 +14,15 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [MaxLength(64)]
+        [MinLength(ConstantMgr.NameMinLength)]
+        [MaxLength(ConstantMgr.NameMaxLength)]
         public string Name { get; set; }
-        
-        [MaxLength(256)]
-        public string Memo { get; set; }
-        
-        public bool IsValid { get; set; }
 
-        public virtual List<RolePermission> Permissions { get; set; } = new();
+        public bool IsValid { get; set; } = true;
+
+
+        //Virtual
+        public virtual List<RolePermission> Permissions { get; set; } 
 
     }
 }

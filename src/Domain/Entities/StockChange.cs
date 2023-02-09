@@ -12,23 +12,22 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public DateTime RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+
         /// <summary>
         /// 0: Decrease
         /// 1: Add
         /// </summary>
         public bool Type { get; set; }
-
         public int Count { get; set; }
         public int Cost { get; set; }
-
-        [ForeignKey("ProductId")]
         public int ProductId { get; set; }
+        public int SupplierId { get; set; }
+
+
+        //virtual
+        public Supplier Supplier { get; set; }
         public Product Product { get; set; }
 
-
-        [ForeignKey("SupplierId")]
-        public int SupplierId { get; set; }
-        public Supplier Supplier { get; set; }
     }
 }

@@ -14,15 +14,16 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        
-        public bool IsValid { get; set; }
 
-        
-        [MaxLength(128)]
-        public string Host { get; set; }
+        public bool IsValid { get; set; } = true;
 
         
         [MaxLength(255)]
+        public string Host { get; set; }
+
+        
+        [MaxLength(ConstantMgr.EmailMaxLength)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [MaxLength(255)]

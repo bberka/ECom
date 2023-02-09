@@ -15,8 +15,6 @@ namespace ECom.Domain.Entities
         public bool IsOpen { get; set; } = true;
         public bool IsAdminOpen { get; set; } = true;
         public byte PagingProductCount { get; set; } = 20;
-        public byte UsernameMinLength { get; set; } = 3;
-        public byte PasswordMinLength { get; set; } = 3;
         public bool RequireUpperCaseInPassword { get; set; } = false;
         public bool RequireLowerCaseInPassword { get; set; } = false;
         public bool RequireSpecialCharacterInPassword { get; set; } = false;
@@ -28,9 +26,8 @@ namespace ECom.Domain.Entities
 		[Range(15, 43200)]
 		public int PasswordResetTimeoutMinutes { get; set; } = 30;
 
-        [MaxLength(16)]
+        [MaxLength(12)]
         public string SelectedCurrency { get; set; } = "TL";
-
         public bool ShowStock { get; set; } = false;
         public byte ProductImageLimit { get; set; } = 10;
         public byte ProductCommentImageLimit { get; set; } = 5;

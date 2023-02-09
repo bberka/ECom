@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ECom.Infrastructure.Configurations;
+using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
 namespace ECom.Infrastructure
@@ -14,77 +15,11 @@ namespace ECom.Infrastructure
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<ProductImage>()
-                .HasKey(u => new
-			{
-				u.ProductId,
-				u.ImageId
-			});
-           
-            modelBuilder.Entity<Cart>()
-                .HasKey(u => new
-                {
-                    u.UserId,
-                    u.ProductId
-                });
-            modelBuilder.Entity<CollectionProduct>()
-                .HasKey(u => new
-                {
-                    u.CollectionId,
-                    u.ProductId
-                });
-            modelBuilder.Entity<DiscountNotify>()
-                .HasKey(u => new
-                {
-                    u.UserId,
-                    u.ProductId
-                });
-            modelBuilder.Entity<FavoriteProduct>()
-                .HasKey(u => new
-                {
-                    u.UserId,
-                    u.ProductId
-                });
-            modelBuilder.Entity<ProductCommentImage>()
-                .HasKey(u => new
-                {
-                    u.ImageId,
-                    u.CommentId
-                });
-            modelBuilder.Entity<RolePermission>()
-                .HasKey(u => new
-                {
-                    u.PermissionId,
-                    u.RoleId
-                });
-            modelBuilder.Entity<ProductSubCategory>()
-                .HasKey(u => new
-                {
-                    u.ProductId,
-                    u.SubCategoryId
-                });
-            modelBuilder.Entity<ProductCommentStar>()
-                .HasKey(u => new
-                {
-                    u.UserId,
-                    u.CommentId
-                });
-            modelBuilder.Entity<ProductComment>()
-                .HasOne<Product>()
-                .WithMany()
-                .HasForeignKey(x => x.ProductId);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductCommentStarConfiguration).Assembly);
 
-            modelBuilder.Entity<ProductComment>()
-                .HasMany(s => s.Stars)
-                .WithOne(x => x.Comment)
-                .HasForeignKey(x => x.CommentId)
-                .OnDelete(DeleteBehavior.Restrict);
+ 
 
-            modelBuilder.Entity<User>()
-                .HasMany(s => s.ProductComments)
-                .WithOne(x => x.AuthorUser)
-                .HasForeignKey(x => x.AuthorUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
         public static EComDbContext New() => new EComDbContext();

@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
+    [PrimaryKey(nameof(ProductId),nameof(SubCategoryId))]
     public class ProductSubCategory : IEfEntity
     {
         [ForeignKey("ProductId")]
         public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
 
         [ForeignKey("SubCategoryId")]
         public int SubCategoryId { get; set; }
+
+
+
+        //Virtual
         public virtual SubCategory SubCategory { get; set; }
+        public virtual Product Product { get; set; }
+
     }
 }

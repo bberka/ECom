@@ -9,23 +9,20 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
+    [PrimaryKey(nameof(RoleId),nameof(PermissionId))]
     public class RolePermission : IEfEntity
 	{
-        [ForeignKey("RoleId")]
         public int RoleId { get; set; }
-
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
-        [IgnoreDataMember]
-        public virtual Role Role { get; set; }
-
-        [ForeignKey("PermissionId")]
         public int PermissionId { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        [System.Text.Json.Serialization.JsonIgnore]
+
+
+        //virtual
+        //ignore
         [IgnoreDataMember]
         public virtual Permission Permission { get; set; }
+        [IgnoreDataMember]
+        public virtual Role Role { get; set; }
 
     }
 }

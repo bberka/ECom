@@ -1,9 +1,10 @@
 ﻿using EasMe.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ECom.WebApi.Filters
+namespace ECom.Application.Filters
 {
-    internal class ExceptionHandleFilter : IExceptionFilter
+    public class ExceptionHandleFilter : IExceptionFilter
     {
         private static readonly EasLog logger = EasLogFactory.CreateLogger(nameof(ExceptionHandleFilter));
 

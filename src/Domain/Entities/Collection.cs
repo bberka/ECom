@@ -19,8 +19,10 @@ namespace ECom.Domain.Entities
         [MaxLength(128)]
         public string Name { get; set; }
 
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
+
+
+        //Virtual
         public virtual User User { get; set; }
 
     }

@@ -14,18 +14,18 @@ namespace ECom.Domain.Entities
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 		public bool IsValid { get; set; }
-		public DateTime RegisterDate { get; set; }
+		public DateTime RegisterDate { get; set; } = DateTime.Now;
 		public DateTime? DeleteDate { get; set; }
 		public decimal DiscountedPriceIncludingTax { get; set; }
         public decimal OriginalPriceIncludingTax { get; set; }
         public decimal Tax { get; set; }
-
-        [ForeignKey("ProductVariantId")]
         public int? ProductVariantId { get; set; }
-        public virtual ProductVariant? Variant { get; set; }
-        public virtual List<ProductComment> Comments { get; set; }
-		public virtual List<ProductImage> Images { get; set; }
-		public virtual List<ProductDetail> Details { get; set; }
+
+		//virtual
+        public virtual ProductVariant? ProductVariant { get; set; }
+        public virtual List<ProductComment> ProductComments { get; set; }
+		public virtual List<ProductImage> ProductImages { get; set; }
+		public virtual List<ProductDetail> ProductDetails { get; set; }
 
 
 	}

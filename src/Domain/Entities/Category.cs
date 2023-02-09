@@ -12,13 +12,15 @@ namespace ECom.Domain.Entities
 		
 		public bool IsValid { get; set; }
 
-		[MaxLength(32)]
+		[MinLength(ConstantMgr.NameMinLength)]
+		[MaxLength(ConstantMgr.NameMaxLength)]
 		public string Name { get; set; }
 
         [MinLength(2)]
         [MaxLength(4)]
         public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
+		//Virtual
 		public virtual List<SubCategory> SubCategories { get; set; }
 	}
 

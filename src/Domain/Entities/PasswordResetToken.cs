@@ -14,18 +14,12 @@ namespace ECom.Domain.Entities
         
         [MaxLength(512)]
         public string Token { get; set; }
-
-        
         public bool IsUsed { get; set; }
-
-        
         public DateTime RegisterDate { get; set; }
-
-        
         public DateTime ExpireDate { get; set; }
-
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
+
+        //Virtual
         public virtual User User { get; set; }
 
     }
