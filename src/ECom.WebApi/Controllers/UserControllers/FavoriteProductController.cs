@@ -20,7 +20,6 @@ namespace ECom.WebApi.Controllers.UserControllers
         {
             var userId = HttpContext.GetUserId();
             var res = _favoriteProductService.GetFavoriteProducts(userId, page ,culture);
-            //_logService.UserLog(res,userId,"FavoriteProduct.List",page,culture);
             return res;
         }
 

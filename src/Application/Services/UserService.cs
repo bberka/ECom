@@ -44,17 +44,15 @@ namespace ECom.Application.Services
             {
                 return userResult.ToResult();
             }
-            var user = userResult.Data; //Ignore null warning
+            var user = userResult.Data;
 			if (user?.Password != model.EncryptedPassword)
 			{
-				//_logService.UserLog(LogSeverity.WARN,2,"User.Login","WrongPassword",user.Id,model.EmailAddress,model.Password);
                 return DomainResult.User.NotFoundResult(2);
 			}
             if (user.TwoFactorType != 0)
 			{
 				//TODO: implement two factor
 			}
-            //_logService.UserLog_Info("User.Login", user.Id, model.EmailAddress);
             return user;
 		}
 		public ResultData<User> GetUser(string email)
@@ -99,6 +97,23 @@ namespace ECom.Application.Services
                 return DomainResult.DbInternalErrorResult(2);
 			}
             return DomainResult.User.ChangePasswordSuccessResult();
+        }
+
+        public Result Update(UpdateUserRequestModel model)
+        {
+            var userId = model.AuthenticatedUserId;
+            if (userId < 1) return DomainResult.User.NotFoundResult(1);
+            var user = _userRepo.Find(userId);
+            if (user is null) return DomainResult.User.NotFoundResult(2);
+            user.EmailAddress = model.EmailAddress;
+            user.CitizenShipNumber = model.CitizenShipNumber;
+            user.PhoneNumber = model.PhoneNumber;
+            user.TaxNumber = model.TaxNumber;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            var res = _userRepo.Update(user);
+            if (!res) return DomainResult.DbInternalErrorResult(3);
+            return DomainResult.User.UpdateSuccessResult();
         }
 
         public bool Exists(int id)

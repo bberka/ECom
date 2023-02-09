@@ -34,5 +34,13 @@ namespace ECom.WebApi.Controllers.UserControllers
             return res;
         }
 
+        [HttpPost]
+        public ActionResult<Result> Update([FromBody] UpdateUserRequestModel model)
+        {
+            var userId = model.AuthenticatedUserId;
+            var res = _userService.Update(model);
+            _logService.UserLog(res,userId,"Account.Update",model.ToJsonString());
+            return res;
+        }
     }
 }

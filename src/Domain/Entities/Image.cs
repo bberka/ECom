@@ -16,6 +16,8 @@ namespace ECom.Domain.Entities
 		public string Name { get; set; }
 		public byte[] Data { get; set; }
 
+        //public int AuthorId { get; set; }
+
 		[MaxLength(4)]
 		[MinLength(2)]
         public string Culture { get; set; }

@@ -40,12 +40,12 @@ namespace ECom.Domain.Entities
 
 		[MinLength(ConstantMgr.NameMinLength)]
 		[MaxLength(ConstantMgr.NameMaxLength)]
-		public string Name { get; set; }
+		public string FirstName { get; set; }
 
 
         [MinLength(ConstantMgr.NameMinLength)]
         [MaxLength(ConstantMgr.NameMaxLength)]
-        public string Surname { get; set; }
+        public string LastName { get; set; }
 
 
         [MinLength(ConstantMgr.PhoneNumberMinLength)]
@@ -78,7 +78,9 @@ namespace ECom.Domain.Entities
         [MaxLength(4)]
         public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
-		//Virtural
+
+
+		//Virtual
 		public virtual List<Address> Addresses { get; set; }
         public virtual List<Collection> Collections { get; set; }
         public virtual List<FavoriteProduct> FavoriteProducts { get; set; }
@@ -88,5 +90,13 @@ namespace ECom.Domain.Entities
         public virtual List<UserLog> UserLogs { get; set; }
         public virtual List<PasswordResetToken> PasswordResetTokens { get; set; }
         public virtual List<EmailVerifyToken> EmailVerifyTokens { get; set; }
+
+        public virtual int FailedLoginCount => UserLogs
+            .Where(x => x.OperationName == "Auth.Login" && x.Rv != -1 && x.Params.Contains(EmailAddress))
+            .Count();
+
+        public virtual int TotalLoginCount => UserLogs
+            .Where(x => x.OperationName == "Auth.Login" && x.Rv == 0 && x.Params.Contains(EmailAddress))
+            .Count();
     }
 }

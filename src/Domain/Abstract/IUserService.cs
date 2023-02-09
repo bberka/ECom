@@ -9,5 +9,8 @@
         ResultData<User> Login(LoginRequestModel model);
         Result Register(RegisterRequestModel model);
         Result ChangePassword(ChangePasswordRequestModel model);
+
+        Result Update(UpdateUserRequestModel model);
     }
+
 }
