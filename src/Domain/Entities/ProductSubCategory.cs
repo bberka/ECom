@@ -14,9 +14,7 @@ namespace ECom.Domain.Entities
 
         [ForeignKey("SubCategoryId")]
         public int SubCategoryId { get; set; }
-
-
-
+        
         //Virtual
         public virtual SubCategory SubCategory { get; set; }
         public virtual Product Product { get; set; }

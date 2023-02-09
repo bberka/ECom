@@ -11,10 +11,49 @@ namespace ECom.Domain.Abstract
     public interface IProductService
     {
         bool Exists(int id);
+
         ResultData<Product> GetProduct(long productNo);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="productIds"></param>
+        /// <param name="page"></param>
+        /// <param name="culture"></param>
+        /// <returns>
+        /// <see cref="Product"/> list by given parameters with including <see cref="ProductVariant"/>, <see cref="ProductImage"/>, <see cref="ProductDetail"/>
+        /// without including <see cref="ProductComment"/> or related data
+        /// </returns>
         List<Product> GetProducts(List<int> productIds,ushort page,string culture = ConstantMgr.DefaultCulture);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="productIds"></param>
+        /// <param name="page"></param>
+        /// <param name="culture"></param>
+        /// <returns>
+        /// <see cref="Product"/> list by given parameters with including <see cref="ProductVariant"/>, <see cref="ProductImage"/>, <see cref="ProductDetail"/>
+        /// without including <see cref="ProductComment"/> or related data
+        /// </returns>
         List<Product> GetProducts(ushort page,string culture = ConstantMgr.DefaultCulture);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="productIds"></param>
+        /// <param name="page"></param>
+        /// <param name="culture"></param>
+        /// <returns>
+        /// <see cref="ProductComment"/> list by given parameters with including <see cref="ProductCommentImage"/>, <see cref="ProductCommentStar"/>
+        /// </returns>
         List<ProductComment> GetProductComments(List<int> productIds, ushort page);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="productIds"></param>
+        /// <param name="page"></param>
+        /// <param name="culture"></param>
+        /// <returns>
+        /// <see cref="ProductComment"/> list by given parameters with including <see cref="ProductCommentImage"/>, <see cref="ProductCommentStar"/>
+        /// </returns>
         List<ProductComment> GetProductComments(int productId,ushort page);
 
         //List<ProductDetail>? GetProductDetails(long productNo);

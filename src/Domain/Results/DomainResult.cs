@@ -139,6 +139,16 @@ namespace ECom.Domain.Results
             public static Result RemoveProductSuccessResult() => Result.Success("Cart.RemoveProduct");
 
         }
+        public static class Slider
+        {
+            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "Slider.NotFound");
+            public static Result DeletedResult(ushort rv) => Result.Warn(rv, "Slider.Deleted");
+            public static Result UpdateSuccessResult() => Result.Success("Slider.Update");
+            public static Result AddSuccessResult() => Result.Success("Slider.Add");
+            public static Result DeleteSuccessResult() => Result.Success("Slider.Delete");
+        }
+
+
 
         public static class Action
         {

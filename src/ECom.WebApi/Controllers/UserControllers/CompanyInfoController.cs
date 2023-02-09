@@ -15,7 +15,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
         [HttpGet]
         [ResponseCache(Duration = 60)]
-        public ActionResult<CompanyInformation> Get()
+        public ActionResult<CompanyInformation?> Get()
         {
             return _companyInformationService.GetFromCache();
         }

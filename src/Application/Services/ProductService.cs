@@ -73,6 +73,7 @@ namespace ECom.Application.Services
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
                 .Include(x => x.ProductCommentImages)
+                .Include(x => x.ProductCommentStars)
                 .ToList();
         }
 
@@ -85,27 +86,28 @@ namespace ECom.Application.Services
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
                 .Include(x => x.ProductCommentImages)
+                .Include(x => x.ProductCommentStars)
                 .ToList();
         }
 
+ 
         public List<Product> GetProducts(ushort page, string culture = ConstantMgr.DefaultCulture)
         {
             if (page == 0) return new();
             var lastIdx = (int)(_option.PagingProductCount * (page - 1));
-            var ctx = new EComDbContext();
-            return ctx.Products
-                .Where(x => !x.DeleteDate.HasValue && x.IsValid)
+            return _productRepo
+                .Get(x => !x.DeleteDate.HasValue && x.IsValid)
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
                 .Include(x => x.ProductVariant)
                 .Include(x => x.ProductImages)
                 .Include(x => x.ProductDetails)
-                .Include(x => x.ProductComments)
-                .ThenInclude(x => x.ProductCommentImages)
+                //.Include(x => x.ProductComments)
+                //.ThenInclude(x => x.ProductCommentImages)
                 .ToList();
         }
-
+        
         public List<Product> GetProducts(List<int> productIds, ushort page, string culture = ConstantMgr.DefaultCulture)
         {
             var lastIdx = (int)(_option.PagingProductCount * (page));
@@ -116,8 +118,8 @@ namespace ECom.Application.Services
                 .Include(x => x.ProductVariant)
                 .Include(x => x.ProductImages)
                 .Include(x => x.ProductDetails)
-                .Include(x => x.ProductComments)
-                .ThenInclude(x => x.ProductCommentImages)
+                //.Include(x => x.ProductComments)
+                //.ThenInclude(x => x.ProductCommentImages)
                 .ToList();
         }
     }

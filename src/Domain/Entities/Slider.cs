@@ -14,7 +14,9 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+        public DateTime? DeleteDate { get; set; }
+
         [MaxLength(50)]
         public string Title { get; set; }
         

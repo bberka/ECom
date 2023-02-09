@@ -23,7 +23,6 @@ namespace ECom.Application.Services
             }
             return DomainResult.Announcement.UpdateSuccessResult();
         }
-
         public Result AddAnnouncement(Announcement data)
         {
             var res = _announcementRepo.Add(data);
@@ -33,7 +32,6 @@ namespace ECom.Application.Services
             }
             return DomainResult.Announcement.AddSuccessResult();
         }
-
         public Result DeleteAnnouncement(uint id)
         {
             if (!_announcementRepo.Any(x => x.Id == id))
@@ -63,7 +61,6 @@ namespace ECom.Application.Services
             }
             return DomainResult.Announcement.UpdateSuccessResult();
         }
-
         public List<Announcement> GetAnnouncements()
         {
             return _announcementRepo.GetList();
