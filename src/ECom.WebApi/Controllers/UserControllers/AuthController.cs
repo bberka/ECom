@@ -35,7 +35,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public ActionResult<ResultData<UserLoginResponseModel>> Login([FromBody] LoginRequestModel model)
 		{
             var res = _userJwtAuthenticator.Authenticate(model);
-			_logService.UserLog(res.ToResult(),-1,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
+			_logService.UserLog(res.ToResult(),null,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
             return res.WithoutRv();
         }
 
@@ -43,7 +43,7 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public ActionResult<Result> Register([FromBody] RegisterRequestModel model)
 		{
 			var res = _userService.Register(model);
-            _logService.UserLog(res, -1, "Auth.Register", model.EmailAddress);
+            _logService.UserLog(res, null, "Auth.Register", model.EmailAddress);
 			return res.WithoutRv();
 		}
 	}

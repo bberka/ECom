@@ -56,7 +56,7 @@ namespace ECom.Application.Services
         }
 
  
-        public void AdminLog(Result result, int adminId, string operationName, params object[] parameters)
+        public void AdminLog(Result result, int? adminId, string operationName, params object[] parameters)
         {
             var context = HttpContextHelper.Current.GetNecessaryRequestData();
             Task.Run(() =>
@@ -82,7 +82,7 @@ namespace ECom.Application.Services
             
         }
 
-        public void UserLog(Result result, int userId, string operationName, params object[] parameters)
+        public void UserLog(Result result, int? userId, string operationName, params object[] parameters)
         {
 
             var context = HttpContextHelper.Current.GetNecessaryRequestData();

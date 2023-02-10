@@ -44,11 +44,8 @@ namespace ECom.Domain.Entities
         [MaxLength(2000)]
 
         public string? ResultErrors { get; set; }
-        public int AdminId { get; set; }
-
-
-        //virtual
-        public virtual Admin Admin { get; set; }
+        
+        public int? AdminId { get; set; }
 
     }
 }

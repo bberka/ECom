@@ -22,7 +22,7 @@ namespace ECom.Domain.Entities
 
 
         //Virtual
-        public virtual List<RolePermission> Permissions { get; set; } 
+        public virtual List<RolePermission> RolePermissions { get; set; } 
 
     }
 }

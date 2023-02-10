@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECom.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class mig1 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,6 +144,18 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductSubCategories",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    SubCategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSubCategories", x => new { x.ProductId, x.SubCategoryId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductVariants",
                 columns: table => new
                 {
@@ -240,8 +252,8 @@ namespace ECom.Infrastructure.Migrations
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     CitizenShipNumber = table.Column<int>(type: "int", nullable: true),
                     TaxNumber = table.Column<int>(type: "int", nullable: true),
@@ -373,6 +385,8 @@ namespace ECom.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Alt = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Order = table.Column<int>(type: "int", nullable: false),
@@ -567,13 +581,16 @@ namespace ECom.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Severity = table.Column<int>(type: "int", nullable: false),
-                    OperationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OperationName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    ErrorCode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Rv = table.Column<int>(type: "int", nullable: false),
                     RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
                     CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
                     UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    ResultErrors = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -582,8 +599,7 @@ namespace ECom.Infrastructure.Migrations
                         name: "FK_UserLogs_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -707,6 +723,7 @@ namespace ECom.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Star = table.Column<byte>(type: "tinyint", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -799,30 +816,6 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSubCategories",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    SubCategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSubCategories", x => new { x.ProductId, x.SubCategoryId });
-                    table.ForeignKey(
-                        name: "FK_ProductSubCategories_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductSubCategories_SubCategories_SubCategoryId",
-                        column: x => x.SubCategoryId,
-                        principalTable: "SubCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StockChanges",
                 columns: table => new
                 {
@@ -860,13 +853,16 @@ namespace ECom.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Severity = table.Column<int>(type: "int", nullable: false),
-                    OperationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OperationName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    ErrorCode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Rv = table.Column<int>(type: "int", nullable: false),
                     RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     XRealIpAddress = table.Column<string>(name: "XReal_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
                     CFConnectingIpAddress = table.Column<string>(name: "CFConnecting_IpAddress", type: "nvarchar(32)", maxLength: 32, nullable: true),
                     UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    AdminId = table.Column<int>(type: "int", nullable: false)
+                    ResultErrors = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    AdminId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -875,8 +871,7 @@ namespace ECom.Infrastructure.Migrations
                         name: "FK_AdminLogs_Admins_AdminId",
                         column: x => x.AdminId,
                         principalTable: "Admins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -927,34 +922,6 @@ namespace ECom.Infrastructure.Migrations
                         principalTable: "ProductComments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductCommentStars",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductCommentId = table.Column<int>(type: "int", nullable: false),
-                    Star = table.Column<byte>(type: "tinyint", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductCommentStars", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductCommentStars_ProductComments_ProductCommentId",
-                        column: x => x.ProductCommentId,
-                        principalTable: "ProductComments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProductCommentStars_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -1053,16 +1020,6 @@ namespace ECom.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCommentStars_ProductCommentId",
-                table: "ProductCommentStars",
-                column: "ProductCommentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductCommentStars_UserId",
-                table: "ProductCommentStars",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductDetails_ProductId",
                 table: "ProductDetails",
                 column: "ProductId");
@@ -1081,11 +1038,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "IX_ProductShowCases_ProductId",
                 table: "ProductShowCases",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductSubCategories_SubCategoryId",
-                table: "ProductSubCategories",
-                column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",
@@ -1175,9 +1127,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "ProductCommentImages");
 
             migrationBuilder.DropTable(
-                name: "ProductCommentStars");
-
-            migrationBuilder.DropTable(
                 name: "ProductDetails");
 
             migrationBuilder.DropTable(
@@ -1208,6 +1157,9 @@ namespace ECom.Infrastructure.Migrations
                 name: "StockChanges");
 
             migrationBuilder.DropTable(
+                name: "SubCategories");
+
+            migrationBuilder.DropTable(
                 name: "UserLogs");
 
             migrationBuilder.DropTable(
@@ -1223,9 +1175,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "ProductComments");
 
             migrationBuilder.DropTable(
-                name: "SubCategories");
-
-            migrationBuilder.DropTable(
                 name: "Permissions");
 
             migrationBuilder.DropTable(
@@ -1238,13 +1187,13 @@ namespace ECom.Infrastructure.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "ProductVariants");

@@ -1,4 +1,5 @@
-﻿using EasMe.Authorization.Filters;
+﻿using System.Net;
+using EasMe.Authorization.Filters;
 using ECom.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 
@@ -7,16 +8,13 @@ namespace ECom.WebApi.Controllers.UserControllers
     public class ProductCommentController : BaseUserController
     {
         private readonly IProductService _productService;
-        private readonly IImageService _imageService;
         private readonly ILogService _logService;
 
         public ProductCommentController(
             IProductService productService,
-            IImageService imageService,
             ILogService logService)
         {
             _productService = productService;
-            _imageService = imageService;
             _logService = logService;
         }
 
@@ -28,9 +26,11 @@ namespace ECom.WebApi.Controllers.UserControllers
             return res.WithoutRv();
         }
         [HttpPost]
-        public ActionResult<ResultData<int>> UploadImage(IFormFile file)
+        public ActionResult<ResultData<int>> UploadCommentImage([FromBody] IFormFile file, [FromQuery] int commentId)
         {
-            var res = _imageService.UploadImage(file);
+            var userId = HttpContext.GetUserId();
+            var res = _productService.AddCommentImage(file, userId,commentId);
+            _logService.UserLog(res.ToResult(),userId,"ProductCommentImage.Add");
             return res.WithoutRv();
         }
 

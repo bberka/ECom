@@ -21,8 +21,8 @@ namespace ECom.Domain.Entities
         //ignore
         [IgnoreDataMember]
         public virtual Permission Permission { get; set; }
-        [IgnoreDataMember]
-        public virtual Role Role { get; set; }
+        //[IgnoreDataMember]
+        //public virtual Role Role { get; set; }
 
     }
 }

@@ -86,17 +86,16 @@ namespace ECom.Domain.Entities
         public virtual List<FavoriteProduct> FavoriteProducts { get; set; }
 		public virtual List<Order> Orders { get; set; }
 		public virtual List<ProductComment> ProductComments { get; set; }
-		public virtual List<ProductCommentStar> ProductCommentStars { get; set; }
         public virtual List<UserLog> UserLogs { get; set; }
         public virtual List<PasswordResetToken> PasswordResetTokens { get; set; }
         public virtual List<EmailVerifyToken> EmailVerifyTokens { get; set; }
 
-        public virtual int FailedLoginCount => UserLogs
+        public virtual int FailedLoginCount => UserLogs?
             .Where(x => x.OperationName == "Auth.Login" && x.Rv != -1 && x.Params.Contains(EmailAddress))
-            .Count();
+            .Count() ?? 0;
 
-        public virtual int TotalLoginCount => UserLogs
+        public virtual int TotalLoginCount => UserLogs?
             .Where(x => x.OperationName == "Auth.Login" && x.Rv == 0 && x.Params.Contains(EmailAddress))
-            .Count();
+            .Count() ?? 0;
     }
 }

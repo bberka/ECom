@@ -15,8 +15,6 @@ namespace ECom.Domain.Entities
         public string Comment { get; set; }
 
         public byte Star { get; set; }
-
-
         //FK
         public int UserId { get; set; }
         public int ProductId { get; set; }
@@ -25,15 +23,12 @@ namespace ECom.Domain.Entities
 
         //Virtual
         public virtual List<ProductCommentImage> ProductCommentImages { get; set; }
-        public virtual List<ProductCommentStar> ProductCommentStars { get; set; }
         
-        public virtual double StarScore => ProductCommentStars.Average(x => x.Star);
 
-
-        //Ignore
-        [IgnoreDataMember]
-        public virtual User User { get; set; }
-        [IgnoreDataMember]
-        public virtual Product Product { get; set; }
+        ////Ignore
+        //[IgnoreDataMember]
+        //public virtual User User { get; set; }
+        //[IgnoreDataMember]
+        //public virtual Product Product { get; set; }
     }
 }

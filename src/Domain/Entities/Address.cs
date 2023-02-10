@@ -1,4 +1,7 @@
-﻿namespace ECom.Domain.Entities
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
+namespace ECom.Domain.Entities
 {
     public class Address : IEfEntity
 	{
@@ -39,11 +42,8 @@
         [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; } 
 
+        //FK
         public int UserId { get; set; }
-
         
-        //Virtual
-        public virtual User User { get; set; }
-
     }
 }

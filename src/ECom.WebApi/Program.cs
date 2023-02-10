@@ -78,7 +78,7 @@ app.MapControllers();
 
 var list = CommonLib.GetAdminOperationTypes();
 
-EComDbContext.EnsureCreated();
+EComDbContext.EnsureCreatedAndUpdated();
 app.Run();
 
 EasLogFactory.StaticLogger.Info("Exiting...");

@@ -144,7 +144,7 @@ namespace ECom.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("AdminId")
+                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
                     b.Property<string>("CFConnecting_IpAddress")
@@ -811,6 +811,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("Star")
+                        .HasColumnType("tinyint");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -839,35 +842,6 @@ namespace ECom.Infrastructure.Migrations
                     b.HasIndex("ProductCommentId");
 
                     b.ToTable("ProductCommentImages");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte>("Star")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductCommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ProductCommentStars");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
@@ -966,8 +940,6 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ProductId", "SubCategoryId");
-
-                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("ProductSubCategories");
                 });
@@ -1127,11 +1099,17 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1308,6 +1286,11 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<bool>("IsEmailVerified")
                         .HasColumnType("bit");
 
@@ -1317,7 +1300,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
@@ -1341,11 +1324,6 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("TaxNumber")
                         .HasColumnType("int");
@@ -1411,7 +1389,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("XReal_IpAddress")
@@ -1427,13 +1405,11 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Domain.Entities.User", null)
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
@@ -1449,13 +1425,9 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.AdminLog", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Admin", "Admin")
+                    b.HasOne("ECom.Domain.Entities.Admin", null)
                         .WithMany("AdminLogs")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
+                        .HasForeignKey("AdminId");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
@@ -1638,21 +1610,17 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Domain.Entities.Product", null)
                         .WithMany("ProductComments")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Domain.Entities.User", null)
                         .WithMany("ProductComments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImage", b =>
@@ -1672,25 +1640,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("ProductComment");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentStar", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.ProductComment", "ProductComment")
-                        .WithMany("ProductCommentStars")
-                        .HasForeignKey("ProductCommentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ECom.Domain.Entities.User", "User")
-                        .WithMany("ProductCommentStars")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ProductComment");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
@@ -1734,25 +1683,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductSubCategory", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECom.Domain.Entities.SubCategory", "SubCategory")
-                        .WithMany()
-                        .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("SubCategory");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Permission", "Permission")
@@ -1761,15 +1691,13 @@ namespace ECom.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Role", "Role")
-                        .WithMany("Permissions")
+                    b.HasOne("ECom.Domain.Entities.Role", null)
+                        .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Permission");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ShowCaseImage", b =>
@@ -1815,24 +1743,18 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.SubCategory", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Category", "Category")
+                    b.HasOne("ECom.Domain.Entities.Category", null)
                         .WithMany("SubCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Domain.Entities.User", null)
                         .WithMany("UserLogs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
@@ -1857,13 +1779,11 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
                     b.Navigation("ProductCommentImages");
-
-                    b.Navigation("ProductCommentStars");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
                 {
-                    b.Navigation("Permissions");
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.User", b =>
@@ -1879,8 +1799,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("PasswordResetTokens");
-
-                    b.Navigation("ProductCommentStars");
 
                     b.Navigation("ProductComments");
 

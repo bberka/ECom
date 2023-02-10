@@ -11,7 +11,7 @@ namespace ECom.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductComment> builder)
         {
-
+            
 
         }
     }

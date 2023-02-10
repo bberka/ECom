@@ -78,7 +78,6 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<IEfEntityRepository<Supplier>, SupplierDal>();
             services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDal>();
             services.AddScoped<IEfEntityRepository<ShowCaseImage>, ShowCaseImageDal>();
-            services.AddScoped<IEfEntityRepository<ProductCommentStar>, ProductCommentStarDal>();
 
             services.AddScoped<DbContext, EComDbContext>();
 

@@ -39,11 +39,9 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		[HttpPost]
         public ActionResult<ResultData<AdminLoginResponseModel>> Login([FromBody] LoginRequestModel model)
         {
-			HttpContext.Session.Clear();
             var res = _adminJwtAuthenticator.Authenticate(model);
-            _logService.AdminLog(res.ToResult(),-1,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
+            _logService.UserLog(res.ToResult(), null, "Auth.Login", model.EmailAddress, model.EncryptedPassword);
             return res.WithoutRv();
-           
         }
 
 

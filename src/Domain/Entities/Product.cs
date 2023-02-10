@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECom.Domain.Entities
+﻿namespace ECom.Domain.Entities
 {
 	public class Product : IEfEntity
 	{
@@ -26,8 +18,7 @@ namespace ECom.Domain.Entities
         public virtual List<ProductComment> ProductComments { get; set; }
 		public virtual List<ProductImage> ProductImages { get; set; }
 		public virtual List<ProductDetail> ProductDetails { get; set; }
-		public virtual List<ProductStar> ProductStars { get; set; }
-        public virtual double StarScore => ProductStars.Average(x => x.Star);
+        public virtual double StarScore => ProductComments.Average(x => x.Star);
 
 
     }

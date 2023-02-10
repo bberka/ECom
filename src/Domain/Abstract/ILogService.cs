@@ -6,8 +6,8 @@ namespace ECom.Domain.Abstract
     {
         void SecurityLog(LogSeverity severity, params string[] parameters);
 
-        void AdminLog(Result result, int adminId, string operationName, params object[] parameters);
-        void UserLog(Result result, int userId, string operationName,params object[] parameters);
+        void AdminLog(Result result, int? adminId, string operationName, params object[] parameters);
+        void UserLog(Result result, int? userId, string operationName,params object[] parameters);
 
 
 

@@ -15,7 +15,7 @@ namespace ECom.Infrastructure
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductCommentStarConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(User).Assembly);
 
  
 
@@ -23,13 +23,17 @@ namespace ECom.Infrastructure
         }
 
         public static EComDbContext New() => new EComDbContext();
-        public static void EnsureCreated()
+        public static void EnsureCreatedAndUpdated()
         {
+            var context = new EComDbContext();
             var created = new EComDbContext().Database.EnsureCreated();
+            //var missingMigrations = context.Database.GetAppliedMigrations().ToList();
+            //if (missingMigrations.Count > 0)
+            //{
+            //    context.Database.Migrate();
+            //}
             if (!created) return;
             BaseDbFiller.Run();
-            
-
         }
         public DbSet<Image> Images { get; set; }
 
@@ -42,8 +46,6 @@ namespace ECom.Infrastructure
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductCommentImage> ProductCommentImages { get; set; }
-        public DbSet<ProductCommentStar> ProductCommentStars { get; set; }
-        public DbSet<ProductStar> ProductStars { get; set; }
 
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }

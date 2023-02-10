@@ -18,10 +18,7 @@ namespace ECom.Domain.Entities
 		public string Name { get; set; }
 
 		public int CategoryId { get; set; }
-		
-		//virtual
-        [IgnoreDataMember]
-        public virtual Category Category { get; set; }
+
 
 	}
 }

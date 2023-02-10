@@ -45,11 +45,7 @@ namespace ECom.Domain.Entities
         [MaxLength(2000)]
         public string? Params { get; set; }
 
-        public int UserId { get; set; }
-
-
-        //virtual
-        public virtual User User { get; set; }
+        public int? UserId { get; set; }
 
     }
 }

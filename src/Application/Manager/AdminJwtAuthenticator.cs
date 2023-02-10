@@ -34,7 +34,7 @@ namespace ECom.Application.Manager
             adminAsDic.Add("AdminOnly", "true");
             adminAsDic.Add(ClaimTypes.Role, loginResult.Data.Role.Name);
             adminAsDic.Add(EasMeClaimType.EndPointPermissions, string.Join(",", 
-                loginResult.Data.Role.Permissions.Select(x => x.Permission.Name).ToList()));
+                loginResult.Data.Role.RolePermissions.Select(x => x.Permission.Name).ToList()));
 
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.UtcNow.AddMinutes(expireMins);

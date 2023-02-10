@@ -12,7 +12,7 @@ namespace ECom.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasData(_roles);
+            //builder.HasData(_roles);
         }
 
         private static readonly List<Role> _roles = new()

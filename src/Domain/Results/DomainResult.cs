@@ -49,7 +49,14 @@ namespace ECom.Domain.Results
         }
         public static class ProductComment
         {
+            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "ProductComment.NotFound");
             public static ResultData<int> AddSuccessResult(int value) => ResultData<int>.Success(value,"ProductComment.Add");
+        }
+        public static class ProductCommentImage
+        {
+            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "ProductCommentImage.NotFound");
+            public static ResultData<int> AddSuccessResult(int value) => ResultData<int>.Success(value, "ProductCommentImage.Add");
+
         }
         public static class FavoriteProduct
         {

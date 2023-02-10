@@ -1,4 +1,5 @@
 ﻿using ECom.Application.Validators;
+using ECom.Domain.Abstract;
 using ECom.Domain.Extensions;
 using ECom.Domain.Results;
 
@@ -34,13 +35,13 @@ namespace ECom.Application.Services
             var admin = _adminRepo
                 .Get(x => x.EmailAddress == email && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                .ThenInclude(x => x.RolePermissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
             if (admin.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.Admin.TestAccountCanNotBeUsedResult(4);
-            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
+            if (admin.Role.RolePermissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public ResultData<Admin> GetAdmin(int id)
@@ -48,13 +49,13 @@ namespace ECom.Application.Services
             var admin = _adminRepo
                 .Get(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                .ThenInclude(x => x.RolePermissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
             if (admin.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.Admin.TestAccountCanNotBeUsedResult(4);
-            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
+            if (admin.Role.RolePermissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public bool HasPermission(int adminId, int permissionId)
@@ -139,7 +140,7 @@ namespace ECom.Application.Services
             var admin = _adminRepo
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                .ThenInclude(x => x.RolePermissions)
                 .ThenInclude(x => x.Permission)
                 .FirstOrDefault();
             if (admin is null)
@@ -148,11 +149,9 @@ namespace ECom.Application.Services
             }
             if (admin.Password != model.EncryptedPassword)
             {
-                //Todo log
                 return DomainResult.Admin.NotFoundResult(2);
             }
-
-            if (admin.Role.Permissions.Count == 0)
+            if (admin.Role.RolePermissions.Count == 0)
             {
                 return DomainResult.Admin.NotHavePermissionResult(3);
             }
@@ -160,7 +159,6 @@ namespace ECom.Application.Services
             {
                 //TODO: two factor
             }
-            //todo log
             return admin;
         }
 
@@ -184,7 +182,7 @@ namespace ECom.Application.Services
             return _adminRepo
                 .Get(x => x.IsTestAccount == ConstantMgr.IsDebug() && x.Id != adminId)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                .ThenInclude(x => x.RolePermissions)
                 .ToList();
         }
 
