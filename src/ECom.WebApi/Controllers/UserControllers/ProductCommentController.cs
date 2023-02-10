@@ -25,14 +25,14 @@ namespace ECom.WebApi.Controllers.UserControllers
             _logService.UserLog(res.ToResult(),requestModel.AuthenticatedUserId,"ProductComment.Add",requestModel.ToJsonString());
             return res.WithoutRv();
         }
-        [HttpPost]
-        public ActionResult<ResultData<int>> UploadCommentImage([FromBody] IFormFile file, [FromQuery] int commentId)
-        {
-            var userId = HttpContext.GetUserId();
-            var res = _productService.AddCommentImage(file, userId,commentId);
-            _logService.UserLog(res.ToResult(),userId,"ProductCommentImage.Add");
-            return res.WithoutRv();
-        }
+        //[HttpPost]
+        //public ActionResult<ResultData<int>> UploadCommentImage([FromBody] IFormFile file, [FromQuery] int commentId)
+        //{
+        //    var userId = HttpContext.GetUserId();
+        //    var res = _productService.AddCommentImage(file, userId,commentId);
+        //    _logService.UserLog(res.ToResult(),userId,"ProductCommentImage.Add");
+        //    return res.WithoutRv();
+        //}
 
     }
 }

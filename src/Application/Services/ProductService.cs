@@ -10,7 +10,6 @@ namespace ECom.Application.Services
         private readonly IEfEntityRepository<ProductDetail> _productDetailRepo;
         private readonly IEfEntityRepository<ProductComment> _productCommentRepo;
         private readonly IEfEntityRepository<ProductImage> _productImageRepo;
-        private readonly IEfEntityRepository<ProductCommentImage> _productCommentImageRepo;
         private readonly IEfEntityRepository<ProductVariant> _productVariantRepo;
         private readonly IEfEntityRepository<FavoriteProduct> _favoriteProductRepo;
         private readonly IEfEntityRepository<SubCategory> _subCategoryRepo;
@@ -25,7 +24,6 @@ namespace ECom.Application.Services
             IEfEntityRepository<ProductDetail> productDetailRepo,
             IEfEntityRepository<ProductComment> productCommentRepo,
             IEfEntityRepository<ProductImage> productImageRepo,
-            IEfEntityRepository<ProductCommentImage> productCommentImageRepo,
             IEfEntityRepository<ProductVariant> productVariantRepo,
             IEfEntityRepository<FavoriteProduct> favoriteProductRepo,
             IEfEntityRepository<SubCategory> subCategoryRepo,
@@ -38,7 +36,6 @@ namespace ECom.Application.Services
             this._productDetailRepo = productDetailRepo;
             this._productCommentRepo = productCommentRepo;
             this._productImageRepo = productImageRepo;
-            this._productCommentImageRepo = productCommentImageRepo;
             this._productVariantRepo = productVariantRepo;
             this._favoriteProductRepo = favoriteProductRepo;
             this._subCategoryRepo = subCategoryRepo;
@@ -74,7 +71,6 @@ namespace ECom.Application.Services
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
-                .Include(x => x.ProductCommentImages)
                 .ToList();
         }
 
@@ -86,7 +82,6 @@ namespace ECom.Application.Services
                 .OrderByDescending(x => x.RegisterDate)
                 .Skip(lastIdx)
                 .Take(_option.PagingProductCount)
-                .Include(x => x.ProductCommentImages)
                 .ToList();
         }
 
@@ -108,36 +103,36 @@ namespace ECom.Application.Services
             return DomainResult.ProductComment.AddSuccessResult(comment.Id);
         }
 
-        public ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId)
-        {
-            var productComment = _productCommentRepo.Find(commentId);
-            if (productComment is null)
-            {
-                return DomainResult.ProductComment.NotFoundResult(1);
-            }
-            if (productComment.UserId != userId)
-            {
-                return DomainResult.User.NotAuthorizedResult(2);
-            }
-            var imageResult = _imageService.UploadImage(file);
-            if (imageResult.IsFailure)
-            {
-                return DomainResult.DbInternalErrorResult(3);
-            }
+        //public ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId)
+        //{
+        //    var productComment = _productCommentRepo.Find(commentId);
+        //    if (productComment is null)
+        //    {
+        //        return DomainResult.ProductComment.NotFoundResult(1);
+        //    }
+        //    if (productComment.UserId != userId)
+        //    {
+        //        return DomainResult.User.NotAuthorizedResult(2);
+        //    }
+        //    var imageResult = _imageService.UploadImage(file);
+        //    if (imageResult.IsFailure)
+        //    {
+        //        return DomainResult.DbInternalErrorResult(3);
+        //    }
 
-            var commentImage = new ProductCommentImage()
-            {
-                ImageId = imageResult.Data,
-                RegisterDate = DateTime.Now,
-                ProductCommentId = commentId
-            };
-            var commentImageResult = _productCommentImageRepo.Add(commentImage);
-            if (!commentImageResult)
-            {
-                return DomainResult.DbInternalErrorResult(4);
-            }
-            return DomainResult.ProductCommentImage.AddSuccessResult(commentId);
-        }
+        //    var commentImage = new ProductCommentImage()
+        //    {
+        //        ImageId = imageResult.Data,
+        //        RegisterDate = DateTime.Now,
+        //        ProductCommentId = commentId
+        //    };
+        //    var commentImageResult = _productCommentImageRepo.Add(commentImage);
+        //    if (!commentImageResult)
+        //    {
+        //        return DomainResult.DbInternalErrorResult(4);
+        //    }
+        //    return DomainResult.ProductCommentImage.AddSuccessResult(commentId);
+        //}
 
         public List<Product> GetProducts(ushort page, string culture = ConstantMgr.DefaultCulture)
         {

@@ -899,31 +899,6 @@ namespace ECom.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ProductCommentImages",
-                columns: table => new
-                {
-                    ImageId = table.Column<int>(type: "int", nullable: false),
-                    ProductCommentId = table.Column<int>(type: "int", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductCommentImages", x => new { x.ImageId, x.ProductCommentId });
-                    table.ForeignKey(
-                        name: "FK_ProductCommentImages_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductCommentImages_ProductComments_ProductCommentId",
-                        column: x => x.ProductCommentId,
-                        principalTable: "ProductComments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
                 table: "Addresses",
@@ -1003,11 +978,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "IX_PasswordResetTokens_UserId",
                 table: "PasswordResetTokens",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductCommentImages_ProductCommentId",
-                table: "ProductCommentImages",
-                column: "ProductCommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductComments_ProductId",
@@ -1124,7 +1094,7 @@ namespace ECom.Infrastructure.Migrations
                 name: "PaymentOptions");
 
             migrationBuilder.DropTable(
-                name: "ProductCommentImages");
+                name: "ProductComments");
 
             migrationBuilder.DropTable(
                 name: "ProductDetails");
@@ -1172,13 +1142,13 @@ namespace ECom.Infrastructure.Migrations
                 name: "DiscountCoupons");
 
             migrationBuilder.DropTable(
-                name: "ProductComments");
-
-            migrationBuilder.DropTable(
                 name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
@@ -1187,13 +1157,10 @@ namespace ECom.Infrastructure.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "ProductVariants");

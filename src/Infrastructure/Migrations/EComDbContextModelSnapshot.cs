@@ -826,24 +826,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductComments");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImage", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ImageId", "ProductCommentId");
-
-                    b.HasIndex("ProductCommentId");
-
-                    b.ToTable("ProductCommentImages");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -1623,25 +1605,6 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCommentImage", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECom.Domain.Entities.ProductComment", "ProductComment")
-                        .WithMany("ProductCommentImages")
-                        .HasForeignKey("ProductCommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-
-                    b.Navigation("ProductComment");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
@@ -1774,11 +1737,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("ProductDetails");
 
                     b.Navigation("ProductImages");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
-                {
-                    b.Navigation("ProductCommentImages");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Role", b =>

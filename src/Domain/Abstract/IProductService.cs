@@ -59,7 +59,7 @@ namespace ECom.Domain.Abstract
 
         ResultData<int> AddComment(AddProductCommentRequestModel model);
 
-        ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId);
+        //ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId);
         //List<ProductDetail>? GetProductDetails(long productNo);
         //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
         //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);

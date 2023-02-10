@@ -61,7 +61,6 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<IEfEntityRepository<Permission>, PermissionDal>();
             services.AddScoped<IEfEntityRepository<Product>, ProductDal>();
             services.AddScoped<IEfEntityRepository<ProductComment>, ProductCommentDal>();
-            services.AddScoped<IEfEntityRepository<ProductCommentImage>, ProductCommentImageDal>();
             services.AddScoped<IEfEntityRepository<ProductDetail>, ProductDetailDal>();
             services.AddScoped<IEfEntityRepository<ProductImage>, ProductImageDal>();
             services.AddScoped<IEfEntityRepository<ProductVariant>, ProductVariantDal>();

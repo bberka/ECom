@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace ECom.Domain.Entities
+﻿namespace ECom.Domain.Entities
 {
     public class ProductComment : IEfEntity
 	{
@@ -15,20 +13,10 @@ namespace ECom.Domain.Entities
         public string Comment { get; set; }
 
         public byte Star { get; set; }
+
         //FK
         public int UserId { get; set; }
         public int ProductId { get; set; }
-
-
-
-        //Virtual
-        public virtual List<ProductCommentImage> ProductCommentImages { get; set; }
-        
-
-        ////Ignore
-        //[IgnoreDataMember]
-        //public virtual User User { get; set; }
-        //[IgnoreDataMember]
-        //public virtual Product Product { get; set; }
+  
     }
 }

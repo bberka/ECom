@@ -45,7 +45,6 @@ namespace ECom.Infrastructure
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
-        public DbSet<ProductCommentImage> ProductCommentImages { get; set; }
 
         public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
         public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
