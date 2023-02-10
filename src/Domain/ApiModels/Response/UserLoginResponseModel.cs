@@ -8,7 +8,7 @@ namespace ECom.Domain.ApiModels.Response
 {
     public class UserLoginResponseModel
     {
-        public User User { get; set; }
+        public UserNecessaryInfo User { get; set; }
         public JwtTokenModel Token { get; set; }
     }
 }

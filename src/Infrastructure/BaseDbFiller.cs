@@ -7,35 +7,9 @@
         {
             using var context = new EComDbContext();
             var option = new Option();
-            var option2 = new Option();
-            option2.IsRelease = false;
+            option.IsRelease = !ConstantMgr.IsDebug();
             context.Add(option);
-            context.Add(option2);
             context.AddRange(_users);
-            var permissionStrings = CommonLib.GetAdminOperationTypes();
-            var permissions = new List<Permission>();
-            foreach (var item in permissionStrings)
-            {
-                permissions.Add(new Permission()
-                {
-                    IsValid = true,
-                    Name = item
-                });
-            }
-            context.AddRange(permissions);
-            context.AddRange(_roles);
-            context.SaveChanges();
-            var rolePermissions = context.Permissions
-                .Select(x => x.Id)
-                .ToList()
-                .Select(x => new RolePermission()
-                {
-                    PermissionId = x,
-                    RoleId = 1
-                })
-                .ToList();
-            context.AddRange(rolePermissions);
-            context.SaveChanges();
             context.AddRange(_admins);
             context.SaveChanges();
             context.AddRange(_companyInformations);
@@ -80,7 +54,6 @@
             {
                 EmailAddress = "user@mail.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
-                IsTestAccount = false,
                 FirstName = "User",
                 PhoneNumber = "5525553344",
                 TwoFactorType = 0,
@@ -90,7 +63,6 @@
             {
                 EmailAddress = "test@mail.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
-                IsTestAccount = true,
                 FirstName = "User",
                 PhoneNumber = "5525553344",
                 TwoFactorType = 0,
@@ -100,7 +72,6 @@
             {
                 EmailAddress = "qwe@qwe.com",
                 Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
-                IsTestAccount = false,
                 FirstName = "User",
                 PhoneNumber = "5525553344",
                 TwoFactorType = 0,
@@ -113,7 +84,6 @@
             {
                 EmailAddress = "owner@mail.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
-                IsTestAccount = false,
                 RoleId = 1,
                 TwoFactorType = 0
             },
@@ -121,7 +91,6 @@
             {
                 EmailAddress = "test@owner.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
-                IsTestAccount = true,
                 RoleId = 1,
                 TwoFactorType = 0
             },
@@ -129,7 +98,6 @@
             {
                 EmailAddress = "test@admin.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
-                IsTestAccount = true,
                 RoleId = 2,
                 TwoFactorType = 0
             },
@@ -137,7 +105,6 @@
             {
                 EmailAddress = "test@mod.com",
                 Password = Convert.ToBase64String("123456789".MD5Hash()),
-                IsTestAccount = true,
                 RoleId = 3,
                 TwoFactorType = 0
             },
@@ -145,30 +112,11 @@
             {
                 EmailAddress = "qwe@qwe.com",
                 Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
-                IsTestAccount = true,
                 RoleId = 1,
                 TwoFactorType = 0
             },
         };
-        static readonly List<Role> _roles = new List<Role>()
-        {
-            new Role()
-            {
-                IsValid = true,
-                Name = "Owner",
-            },
-            new Role()
-            {
-                IsValid = true,
-                Name = "Admin",
-            },
-            new Role()
-            {
-                IsValid = true,
-                Name = "Mod",
-            },
-        };
-
+      
 
     }
 }

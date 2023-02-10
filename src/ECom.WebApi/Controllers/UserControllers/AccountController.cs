@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using EasMe.Authorization;
 using EasMe.Authorization.Filters;
 using EasMe.Extensions;
+using ECom.Domain.Models;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
@@ -21,7 +22,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             _logService = logService;
         }
         [HttpGet]
-        public ActionResult<User> Get()
+        public ActionResult<UserNecessaryInfo> Get()
         {
             var user = HttpContext.GetUser();
             return user;

@@ -15,7 +15,7 @@ namespace ECom.Infrastructure
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(User).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
 
  
 
@@ -26,7 +26,7 @@ namespace ECom.Infrastructure
         public static void EnsureCreatedAndUpdated()
         {
             var context = new EComDbContext();
-            var created = new EComDbContext().Database.EnsureCreated();
+            var created = context.Database.EnsureCreated();
             //var missingMigrations = context.Database.GetAppliedMigrations().ToList();
             //if (missingMigrations.Count > 0)
             //{

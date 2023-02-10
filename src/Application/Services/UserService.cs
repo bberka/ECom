@@ -34,7 +34,7 @@ namespace ECom.Application.Services
 			}
             return DomainResult.User.RegisterSuccessResult();
 		}
-		public ResultData<User> Login(LoginRequestModel model)
+		public ResultData<UserNecessaryInfo> Login(LoginRequestModel model)
 		{
 			var userResult = GetUser(model.EmailAddress);
             if (userResult.IsFailure)
@@ -50,15 +50,27 @@ namespace ECom.Application.Services
 			{
 				//TODO: implement two factor
 			}
-            return user;
-		}
+
+            var userNecessary = new UserNecessaryInfo()
+            {
+                TwoFactorType = user.TwoFactorType,
+                Culture = user.Culture,
+                EmailPassword = user.EmailAddress,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                PhoneNumber = user.PhoneNumber,
+                IsEmailVerified = user.IsEmailVerified,
+                TaxNumber = user.TaxNumber
+            };
+            return userNecessary;
+        }
 		public ResultData<User> GetUser(string email)
 		{
 			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
             if (user is null) return DomainResult.User.NotFoundResult(1);
             if (!user.IsValid) return DomainResult.User.NotValidResult(2);
             if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
-            if (user.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.User.TestAccountCanNotBeUsedResult(4);
             return user;
         }
         public ResultData<User> GetUser(int id)
@@ -67,7 +79,6 @@ namespace ECom.Application.Services
             if (user is null) return DomainResult.User.NotFoundResult(1);
             if (user.IsValid == false) return DomainResult.User.NotValidResult(2);
             if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
-            if (user.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.User.TestAccountCanNotBeUsedResult(4);
             return user;
         }
 

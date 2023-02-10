@@ -43,6 +43,7 @@ namespace ECom.Application.DependencyResolvers
                         new List<string>()
                     }
                 });
+
             });
             return services;
         }

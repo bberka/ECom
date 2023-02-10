@@ -12,11 +12,12 @@ namespace ECom.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public DateTime RegisterDate { get; set; } = DateTime.Now;
+
         public bool IsValid { get; set; } = true;
-        public bool IsTestAccount { get; set; } = false;
+
 
         [MaxLength(64)]
-        [IgnoreDataMember]
+        [Newtonsoft.Json.JsonIgnore,JsonIgnore,IgnoreDataMember]
         public string Password { get; set; }
 
         [MaxLength(ConstantMgr.EmailMaxLength)]
@@ -25,7 +26,7 @@ namespace ECom.Domain.Entities
 
 
         [MaxLength(255)]
-        [IgnoreDataMember]
+        [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
         public string? TwoFactorKey { get; set; }
 
         /// <summary>
@@ -36,13 +37,11 @@ namespace ECom.Domain.Entities
         /// </summary>
         public byte TwoFactorType { get; set; } = 0;
         
-        public int TotalLoginCount { get; set; } = 0;
         
         public DateTime? DeletedDate { get; set; }
 
         public int RoleId { get; set; }
         
-
 
         //virtual
         public virtual Role Role { get; set; }

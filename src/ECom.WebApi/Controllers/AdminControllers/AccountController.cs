@@ -1,7 +1,9 @@
 ﻿using EasMe.Authorization.Filters;
 using ECom.Domain.ApiModels.Request;
 using ECom.Domain.Constants;
+using ECom.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ECom.WebApi.Controllers.AdminControllers
 {
@@ -18,12 +20,13 @@ namespace ECom.WebApi.Controllers.AdminControllers
             _logService = logService;
         }
         [HttpGet]
-        public ActionResult<ResultData<Admin>> Get()
+        public ActionResult<AdminNecessaryInfo> Get()
         {
-            var adminId = HttpContext.GetAdminId();
-            var res = _adminService.GetAdmin(adminId).WithoutRv();
-            _logService.AdminLog(res.ToResult(),adminId,"Account.Get");
-            return res;
+            var admin = HttpContext.GetAdmin();
+            return admin;
+            //var res = _adminService.GetAdmin(adminId).WithoutRv();
+            //_logService.AdminLog(res.ToResult(),adminId,"Account.Get");
+            //return res;
         }
 
         

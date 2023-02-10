@@ -21,13 +21,13 @@ namespace ECom.Domain.Entities
 		
         public bool IsValid { get; set; } = true;
 		
-        public bool IsTestAccount { get; set; } = false;
 
 		
 		[MinLength(ConstantMgr.PasswordMinLength)]
 		[MaxLength(ConstantMgr.PasswordMaxLength)]
-		[IgnoreDataMember]
-		public string Password { get; set; }
+        [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
+
+        public string Password { get; set; }
 
 		[MaxLength(ConstantMgr.EmailMaxLength)]
 		[EmailAddress]
@@ -35,8 +35,7 @@ namespace ECom.Domain.Entities
 
 
 		public bool IsEmailVerified { get; set; } = false;
-
-
+        
 
 		[MinLength(ConstantMgr.NameMinLength)]
 		[MaxLength(ConstantMgr.NameMaxLength)]
@@ -56,13 +55,14 @@ namespace ECom.Domain.Entities
         public int? TaxNumber { get; set; }
 
         [MaxLength(512)]
+        [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
         public string? OAuthKey { get; set; }
 
         public byte? OAuthType { get; set; }
 
         [MaxLength(255)]
-		[IgnoreDataMember] //!!!!!!!!!!!!!!!!
-		public string? TwoFactorKey { get; set; }
+        [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
+        public string? TwoFactorKey { get; set; }
 
         /// <summary>
         /// 0: None

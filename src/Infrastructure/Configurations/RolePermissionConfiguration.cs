@@ -11,18 +11,18 @@ namespace ECom.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<RolePermission> builder)
         {
-            //var permList = CommonLib.GetAdminOperationTypes();
-            //var rolePermList = new List<RolePermission>();
-            //for (int i = 0; i < permList.Length; i++)
-            //{
-            //    rolePermList.Add(new RolePermission
-            //    {
-            //        PermissionId = i + 1 ,
-            //        RoleId = 1
-            //    });
-            //}
+            var permList = CommonLib.GetAdminOperationTypes();
+            var rolePermList = new List<RolePermission>();
+            for (int i = 1; i < permList.Length; i++)
+            {
+                rolePermList.Add(new RolePermission
+                {
+                    PermissionId = i,
+                    RoleId = 1
+                });
+            }
 
-            //builder.HasData(rolePermList);
+            builder.HasData(rolePermList);
         }
     }
 }

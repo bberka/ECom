@@ -15,7 +15,7 @@ namespace ECom.Domain.Results
             public static Result NotValidResult(ushort rv) => Result.Warn(rv,"User.NotValid");
             public static Result NotAuthorizedResult(ushort rv) => Result.Error(rv,"User.NotAuthorized");
             public static Result DeletedResult(ushort rv) => Result.Warn(rv,"User.Deleted");
-            public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Error(rv, "User.TestAccountCanNotBeUsed");
+            //public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Error(rv, "User.TestAccountCanNotBeUsed");
             public static Result RegisterSuccessResult() => Result.Success("User.Register");
             public static Result ChangePasswordSuccessResult() => Result.Success("User.ChangePassword");
             public static Result UpdateSuccessResult() => Result.Success("User.Update");
@@ -29,7 +29,7 @@ namespace ECom.Domain.Results
             public static Result NotValidResult(ushort rv) => Result.Warn(rv, "Admin.NotValid");
             public static Result DeletedResult(ushort rv) => Result.Warn(rv, "Admin.Deleted");
             public static Result AlreadyDeletedResult(ushort rv) => Result.Warn(rv, "Admin.AlreadyDeleted");
-            public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Warn(rv, "Admin.TestAccountCanNotBeUsed");
+            //public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Warn(rv, "Admin.TestAccountCanNotBeUsed");
 
 
             public static Result AddSuccessResult() => Result.Success("Admin.Add");

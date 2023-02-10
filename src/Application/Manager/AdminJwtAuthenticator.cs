@@ -32,10 +32,8 @@ namespace ECom.Application.Manager
                 adminAsDic.Remove(kvp.Key);
             }
             adminAsDic.Add("AdminOnly", "true");
-            adminAsDic.Add(ClaimTypes.Role, loginResult.Data.Role.Name);
-            adminAsDic.Add(EasMeClaimType.EndPointPermissions, string.Join(",", 
-                loginResult.Data.Role.RolePermissions.Select(x => x.Permission.Name).ToList()));
-
+            adminAsDic.Add(ClaimTypes.Role, loginResult.Data.RoleName);
+            adminAsDic.Add(EasMeClaimType.EndPointPermissions,loginResult.Data.Permissions);
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.UtcNow.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(adminAsDic, date);

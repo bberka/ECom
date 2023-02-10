@@ -15,7 +15,7 @@ namespace ECom.Domain.Abstract
         bool Exists(int id);
         bool Exists(string email);
         bool IsValidAdminAccount(int id);
-        ResultData<Admin> Login(LoginRequestModel model);
+        ResultData<AdminNecessaryInfo> Login(LoginRequestModel model);
         Result AddAdmin(AddAdminRequestModel admin);
         Result ChangePassword(ChangePasswordRequestModel model);
         int GetAdminRoleId(int adminId);

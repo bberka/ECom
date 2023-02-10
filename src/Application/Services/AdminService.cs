@@ -33,28 +33,26 @@ namespace ECom.Application.Services
         public ResultData<Admin> GetAdmin(string email)
         {
             var admin = _adminRepo
-                .Get(x => x.EmailAddress == email && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
+                .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.RolePermissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
-            if (admin.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.Admin.TestAccountCanNotBeUsedResult(4);
             if (admin.Role.RolePermissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public ResultData<Admin> GetAdmin(int id)
         {
             var admin = _adminRepo
-                .Get(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
+                .Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.RolePermissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
-            if (admin.IsTestAccount == ConstantMgr.IsDebug()) return DomainResult.Admin.TestAccountCanNotBeUsedResult(4);
             if (admin.Role.RolePermissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
@@ -64,7 +62,7 @@ namespace ECom.Application.Services
             if(!isValid) return false;
            
             var roleId = _adminRepo
-                .Get(x => x.Id == adminId && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true)
+                .Get(x => x.Id == adminId && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .Select(x => x.RoleId)
                 .FirstOrDefault(0);
@@ -76,7 +74,7 @@ namespace ECom.Application.Services
 
         public bool IsValidAdminAccount(int id)
         {
-            return _adminRepo.Any(x => x.Id == id && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue && x.IsValid == true);
+            return _adminRepo.Any(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true);
         }
 
         public bool Exists(int id)
@@ -108,7 +106,7 @@ namespace ECom.Application.Services
         public int GetAdminRoleId(int adminId)
         {
             return _adminRepo
-                .Get(x => x.Id == adminId && x.IsValid == true && x.IsTestAccount == ConstantMgr.IsDebug() && !x.DeletedDate.HasValue)
+                .Get(x => x.Id == adminId && x.IsValid == true && !x.DeletedDate.HasValue)
                 .Select(x => x.RoleId)
                 .FirstOrDefault(0);
         }
@@ -135,31 +133,43 @@ namespace ECom.Application.Services
             return DomainResult.Admin.ChangePasswordSuccessResult();
         }
 
-        public ResultData<Admin> Login(LoginRequestModel model)
+        public ResultData<AdminNecessaryInfo> Login(LoginRequestModel model)
         {
-            var admin = _adminRepo
+            var adminResult = _adminRepo
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.RolePermissions)
                 .ThenInclude(x => x.Permission)
+                .Select(x =>new 
+                {
+                    x.Password,
+                    Admin = new AdminNecessaryInfo()
+                    {
+                        EmailAddress = x.EmailAddress,
+                        RoleName = x.Role.Name,
+                        TwoFactorType = x.TwoFactorType,
+                        Id = x.Id,
+                        Permissions = string.Join(",", x.Role.RolePermissions.Select(y => y.Permission.Name).ToList())
+                    }
+                })
                 .FirstOrDefault();
-            if (admin is null)
+            if (adminResult is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
             }
-            if (admin.Password != model.EncryptedPassword)
+            if (adminResult.Password != model.EncryptedPassword)
             {
                 return DomainResult.Admin.NotFoundResult(2);
             }
-            if (admin.Role.RolePermissions.Count == 0)
+            if (adminResult.Admin.Permissions.Length == 0)
             {
                 return DomainResult.Admin.NotHavePermissionResult(3);
             }
-            if (admin.TwoFactorType != 0)
+            if (adminResult.Admin.TwoFactorType != 0)
             {
                 //TODO: two factor
             }
-            return admin;
+            return adminResult.Admin;
         }
 
         public List<Permission> GetValidPermissions()
@@ -180,7 +190,7 @@ namespace ECom.Application.Services
         public List<Admin> ListOtherAdmins(int adminId)
         {
             return _adminRepo
-                .Get(x => x.IsTestAccount == ConstantMgr.IsDebug() && x.Id != adminId)
+                .Get(x => x.Id != adminId)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.RolePermissions)
                 .ToList();

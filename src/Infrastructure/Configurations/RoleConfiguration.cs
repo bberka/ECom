@@ -12,7 +12,7 @@ namespace ECom.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            //builder.HasData(_roles);
+            builder.HasData(_roles);
         }
 
         private static readonly List<Role> _roles = new()
@@ -21,16 +21,19 @@ namespace ECom.Infrastructure.Configurations
             {
                 IsValid = true,
                 Name = "Owner",
+                Id = 1
             },
             new Role()
             {
                 IsValid = true,
                 Name = "Admin",
+                Id = 2
             },
             new Role()
             {
                 IsValid = true,
                 Name = "Moderator",
+                Id = 3
             },
         };
 

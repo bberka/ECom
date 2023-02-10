@@ -4,10 +4,6 @@ using ECom.Application.Validators;
 using ECom.Domain.Lib;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 EasLogFactory.LoadConfig_TraceDefault(true);
 
@@ -76,7 +72,7 @@ app.UseResponseCaching();
 
 app.MapControllers();
 
-var list = CommonLib.GetAdminOperationTypes();
+
 
 EComDbContext.EnsureCreatedAndUpdated();
 app.Run();
