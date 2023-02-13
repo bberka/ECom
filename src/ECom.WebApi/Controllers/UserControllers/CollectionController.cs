@@ -36,7 +36,7 @@ namespace ECom.WebApi.Controllers.UserControllers
             return res.WithoutRv();
         }
         [HttpPost]
-        public ActionResult<Result> Create(CreateCollectionRequestModel model)
+        public ActionResult<Result> Create(AddCollectionRequest model)
         {
             var res = _collectionService.CreateCollection(model);
             _logService.UserLog(res,model.AuthenticatedUserId,"Collection.Create",model.ToJsonString());
@@ -52,7 +52,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
 
         [HttpPost]
-        public ActionResult<Result> Update(UpdateCollectionRequestModel model)
+        public ActionResult<Result> Update(UpdateCollectionRequest model)
         {
             var res = _collectionService.UpdateCollection(model);
             _logService.UserLog(res,model.AuthenticatedUserId,"Collection.Update",model.ToJsonString());

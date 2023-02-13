@@ -29,6 +29,7 @@ builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddBusinessAuthenticators();
 
+
 var app = builder.Build();
 
 #region Default

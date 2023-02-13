@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Abstract
+﻿using ECom.Domain.DTOs.Response;
+
+namespace ECom.Domain.Abstract
 {
     public interface IUserService
     {
@@ -6,10 +8,10 @@
         bool Exists(int id);
         ResultData<User> GetUser(string email);
         ResultData<User> GetUser(int id);
-        ResultData<UserNecessaryInfo> Login(LoginRequestModel model);
-        Result Register(RegisterRequestModel model);
-        Result ChangePassword(ChangePasswordRequestModel model);
-        Result Update(UpdateUserRequestModel model);
+        ResultData<UserDto> Login(LoginRequest model);
+        Result Register(RegisterRequest model);
+        Result ChangePassword(ChangePasswordRequest model);
+        Result Update(UpdateUserRequest model);
     }
 
 }

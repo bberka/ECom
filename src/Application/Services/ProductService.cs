@@ -85,7 +85,7 @@ namespace ECom.Application.Services
                 .ToList();
         }
 
-        public ResultData<int> AddComment(AddProductCommentRequestModel model)
+        public ResultData<int> AddComment(AddProductCommentRequest model)
         {
             var productResult = GetProduct(model.ProductId);
             if (productResult.IsFailure) return productResult.ToResult(100);

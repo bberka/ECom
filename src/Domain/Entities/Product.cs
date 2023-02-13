@@ -20,6 +20,7 @@
 		public virtual List<ProductDetail> ProductDetails { get; set; }
         public virtual double StarScore => ProductComments.Average(x => x.Star);
 
+        public virtual List<StockChange> StockChanges { get; set; }
 
     }
 }

@@ -1,13 +1,4 @@
-﻿using ECom.Domain.ApiModels.Request;
-using ECom.Domain.ApiModels.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-
-namespace ECom.Domain.Abstract
+﻿namespace ECom.Domain.Abstract
 {
     public interface IProductService
     {
@@ -57,7 +48,7 @@ namespace ECom.Domain.Abstract
         /// </returns>
         List<ProductComment> GetProductComments(int productId,ushort page);
 
-        ResultData<int> AddComment(AddProductCommentRequestModel model);
+        ResultData<int> AddComment(AddProductCommentRequest model);
 
         //ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId);
         //List<ProductDetail>? GetProductDetails(long productNo);

@@ -31,9 +31,9 @@ namespace ECom.Application.Services
 			this._paymentOptionRepo = paymentOptionRepo;
 
 			OptionCache = new(GetOption, CACHE_REFRESH_INTERVAL_MINS);
-			CargoOptionCache = new(GetCargoOptions, CACHE_REFRESH_INTERVAL_MINS);
-			SmtpOptionCache = new(GetSmtpOptions, CACHE_REFRESH_INTERVAL_MINS);
-			PaymentOptionCache = new(GetPaymentOptions, CACHE_REFRESH_INTERVAL_MINS);
+			CargoOptionCache = new(ListCargoOptions, CACHE_REFRESH_INTERVAL_MINS);
+			SmtpOptionCache = new(ListSmtpOptions, CACHE_REFRESH_INTERVAL_MINS);
+			PaymentOptionCache = new(ListPaymentOptions, CACHE_REFRESH_INTERVAL_MINS);
 
 		}
 
@@ -96,16 +96,16 @@ namespace ECom.Application.Services
         }
 
 
-        public List<CargoOption> GetCargoOptions()
+        public List<CargoOption> ListCargoOptions()
 		{
 			return _cargoOptionRepo.GetList(x => x.IsValid == true);
 		}
 
-		public List<PaymentOption> GetPaymentOptions()
+		public List<PaymentOption> ListPaymentOptions()
 		{
 			return _paymentOptionRepo.GetList(x => x.IsValid == true);
 		}
-		public List<SmtpOption> GetSmtpOptions()
+		public List<SmtpOption> ListSmtpOptions()
 		{
 			return _smtpOptionRepo.GetList(x => x.IsValid == true);
 		}
@@ -125,17 +125,17 @@ namespace ECom.Application.Services
 			return OptionCache.Get();
 		}
 
-		public List<CargoOption> GetCargoOptionsFromCache()
+		public List<CargoOption> ListCargoOptionsFromCache()
 		{
 			return CargoOptionCache.Get();
 		}
 
-		public List<PaymentOption> GetPaymentOptionsFromCache()
+		public List<PaymentOption> ListPaymentOptionsFromCache()
 		{
 			return PaymentOptionCache.Get();
 		}
 
-		public List<SmtpOption> GetSmtpOptionsFromCache()
+		public List<SmtpOption> ListSmtpOptionsFromCache()
 		{
 			return SmtpOptionCache.Get();
 		}

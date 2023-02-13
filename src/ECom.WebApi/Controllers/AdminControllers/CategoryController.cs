@@ -1,5 +1,5 @@
 ﻿using EasMe.Authorization.Filters;
-using ECom.Domain.ApiModels.Request;
+using ECom.Domain.DTOs.Request;
 using ECom.Domain.Constants;
 using ECom.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
 		[HttpPost]
         [HasPermission(AdminOperationType.Category_Add)]
-        public ActionResult<Result> AddCategory([FromBody] AddCategoryRequestModel model)
+        public ActionResult<Result> AddCategory([FromBody] AddCategoryRequest model)
 		{
 			var res = _categoryService.AddCategory(model);
 			_logService.AdminLog(res,model.AuthenticatedAdminId,"Category.Add",model.ToJsonString());
@@ -31,7 +31,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 		}
         [HttpPost]
         [HasPermission(AdminOperationType.Category_Add)]
-        public ActionResult<Result> AddSubCategory([FromBody] AddSubCategoryRequestModel model)
+        public ActionResult<Result> AddSubCategory([FromBody] AddSubCategoryRequest model)
         {
             var res = _categoryService.AddSubCategory(model);
             _logService.AdminLog(res, model.AuthenticatedAdminId, "SubCategory.Add", model.ToJsonString());
@@ -40,7 +40,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
         [HttpPost]
         [HasPermission(AdminOperationType.Category_Update)]
-        public ActionResult<Result> Update([FromBody] CategoryUpdateRequestModel model) 
+        public ActionResult<Result> Update([FromBody] UpdateCategoryRequest model) 
         {
 			var res = _categoryService.UpdateCategory(model);
             _logService.AdminLog(res, model.AuthenticatedAdminId, "Category.Update", model.ToJsonString());

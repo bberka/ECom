@@ -61,7 +61,7 @@ namespace ECom.Application.Services
             }
             return DomainResult.Announcement.UpdateSuccessResult();
         }
-        public List<Announcement> GetAnnouncements()
+        public List<Announcement> ListAnnouncements()
         {
             return _announcementRepo.GetList();
         }

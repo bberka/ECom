@@ -1,11 +1,11 @@
 ﻿using EasMe;
-using ECom.Domain.ApiModels.Request;
+using ECom.Domain.DTOs.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EasMe.Authorization;
 using EasMe.Authorization.Filters;
 using EasMe.Extensions;
-using ECom.Domain.Models;
+using ECom.Domain.DTOs.Response;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {
@@ -22,13 +22,13 @@ namespace ECom.WebApi.Controllers.UserControllers
             _logService = logService;
         }
         [HttpGet]
-        public ActionResult<UserNecessaryInfo> Get()
+        public ActionResult<UserDto> Get()
         {
             var user = HttpContext.GetUser();
             return user;
         }
         [HttpPost]
-        public ActionResult<Result> ChangePassword([FromBody] ChangePasswordRequestModel model)
+        public ActionResult<Result> ChangePassword([FromBody] ChangePasswordRequest model)
         {
             var res = _userService.ChangePassword(model).WithoutRv();
             _logService.UserLog(res,model.AuthenticatedUserId,"Account.ChangePassword",model.EncryptedOldPassword,model.EncryptedNewPassword);
@@ -36,7 +36,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
 
         [HttpPost]
-        public ActionResult<Result> Update([FromBody] UpdateUserRequestModel model)
+        public ActionResult<Result> Update([FromBody] UpdateUserRequest model)
         {
             var userId = model.AuthenticatedUserId;
             var res = _userService.Update(model);

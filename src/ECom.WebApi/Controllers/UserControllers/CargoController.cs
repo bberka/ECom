@@ -15,7 +15,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [HttpGet]
         public ActionResult<List<CargoOption>> Get()
         {
-            return _optionService.GetCargoOptions();
+            return _optionService.ListCargoOptions();
         }
     }
 }

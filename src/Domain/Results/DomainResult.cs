@@ -15,7 +15,8 @@ namespace ECom.Domain.Results
             public static Result NotValidResult(ushort rv) => Result.Warn(rv,"User.NotValid");
             public static Result NotAuthorizedResult(ushort rv) => Result.Error(rv,"User.NotAuthorized");
             public static Result DeletedResult(ushort rv) => Result.Warn(rv,"User.Deleted");
-            //public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Error(rv, "User.TestAccountCanNotBeUsed");
+
+            //Success
             public static Result RegisterSuccessResult() => Result.Success("User.Register");
             public static Result ChangePasswordSuccessResult() => Result.Success("User.ChangePassword");
             public static Result UpdateSuccessResult() => Result.Success("User.Update");
@@ -29,7 +30,6 @@ namespace ECom.Domain.Results
             public static Result NotValidResult(ushort rv) => Result.Warn(rv, "Admin.NotValid");
             public static Result DeletedResult(ushort rv) => Result.Warn(rv, "Admin.Deleted");
             public static Result AlreadyDeletedResult(ushort rv) => Result.Warn(rv, "Admin.AlreadyDeleted");
-            //public static Result TestAccountCanNotBeUsedResult(ushort rv) => Result.Warn(rv, "Admin.TestAccountCanNotBeUsed");
 
 
             public static Result AddSuccessResult() => Result.Success("Admin.Add");
@@ -115,6 +115,17 @@ namespace ECom.Domain.Results
             public static Result AddSuccessResult() => Result.Success("SubCategory.Add");
             public static Result DeleteSuccessResult() => Result.Success("SubCategory.Delete");
 
+        }
+        public static class StockChange
+        {
+            public static Result AddSuccessResult() => Result.Success("StockChange.Add");
+        }
+        public static class Supplier
+        {
+            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "Supplier.NotFound");
+            public static Result UpdateSuccessResult() => Result.Success("Supplier.Update");
+            public static Result AddSuccessResult() => Result.Success("Supplier.Add");
+            public static Result DeleteSuccessResult() => Result.Success("Supplier.Delete");
         }
         public static class Image
         {

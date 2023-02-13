@@ -1,7 +1,4 @@
-﻿using EasMe.Authorization;
-using ECom.Domain.Interfaces;
-using System.Security.Claims;
-using ECom.Domain.Lib;
+﻿
 
 namespace ECom.Application.Manager
 {
@@ -18,7 +15,7 @@ namespace ECom.Application.Manager
 
 	
 
-        public ResultData<AdminLoginResponseModel> Authenticate(LoginRequestModel model)
+        public ResultData<AdminLoginResponse> Authenticate(LoginRequest model)
         {
             var loginResult = _adminService.Login(model);
             if (!loginResult.IsSuccess)
@@ -38,12 +35,12 @@ namespace ECom.Application.Manager
             var date = DateTime.UtcNow.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(adminAsDic, date);
     
-            var jwtTokenModel = new JwtTokenModel
+            var jwtTokenModel = new JwtToken
             {
                 ExpireUnix = date.ToUnixTime(),
                 Token = token,
             };
-            return new AdminLoginResponseModel
+            return new AdminLoginResponse
             {
                 Admin = loginResult.Data,
                 Token = jwtTokenModel

@@ -1,12 +1,6 @@
-﻿
-
-
-
-using ECom.Domain.ApiModels.Request;
-
-namespace ECom.Application.Validators
+﻿namespace ECom.Application.Validators
 {
-    public class RegisterValidator : AbstractValidator<RegisterRequestModel>, IValidator<RegisterRequestModel>
+    public class RegisterValidator : AbstractValidator<RegisterRequest>, IValidator<RegisterRequest>
 	{
 		public RegisterValidator(IValidationService validationService)
 		{

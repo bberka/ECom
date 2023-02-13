@@ -16,7 +16,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         [ResponseCache(Duration = 60)]
         public ActionResult<List<Announcement>> List()
         {
-            return _announcementService.GetAnnouncements();
+            return _announcementService.ListAnnouncements();
         }
 
 

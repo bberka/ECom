@@ -13,9 +13,9 @@ namespace ECom.WebApi.Controllers.UserControllers
             _optionService = optionService;
         }
         [HttpGet]
-        public ActionResult<List<PaymentOption>> Get()
+        public ActionResult<List<PaymentOption>> List()
         {
-            return _optionService.GetPaymentOptions();
+            return _optionService.ListPaymentOptions();
         }
     }
 }

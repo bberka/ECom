@@ -31,5 +31,7 @@ namespace ECom.Domain.Entities
         [MaxLength(ConstantMgr.EmailMaxLength)]
         [EmailAddress]
         public string EmailAddress { get; set; }
+
+        public virtual List<StockChange> StockChanges { get; set; }
     }
 }

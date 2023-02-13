@@ -2,6 +2,7 @@
 
 using EasMe;
 using ECom.Application.Validators;
+using ECom.Domain.DTOs.Response;
 using ECom.Domain.Extensions;
 using ECom.Domain.Results;
 
@@ -9,7 +10,7 @@ namespace ECom.Application.Services
 {
 
 
-	public class UserService : IUserService
+    public class UserService : IUserService
 	{
 		private readonly IEfEntityRepository<User> _userRepo;
 		private readonly IOptionService _optionService;
@@ -24,7 +25,7 @@ namespace ECom.Application.Services
 			this._optionService = optionService;
 			this._validationService = validationService;
         }
-		public Result Register(RegisterRequestModel model)
+		public Result Register(RegisterRequest model)
 		{
 			var user = model.ToUserEntity();
 			var res = _userRepo.Add(user);
@@ -34,7 +35,7 @@ namespace ECom.Application.Services
 			}
             return DomainResult.User.RegisterSuccessResult();
 		}
-		public ResultData<UserNecessaryInfo> Login(LoginRequestModel model)
+		public ResultData<UserDto> Login(LoginRequest model)
 		{
 			var userResult = GetUser(model.EmailAddress);
             if (userResult.IsFailure)
@@ -51,7 +52,7 @@ namespace ECom.Application.Services
 				//TODO: implement two factor
 			}
 
-            var userNecessary = new UserNecessaryInfo()
+            var userNecessary = new UserDto()
             {
                 TwoFactorType = user.TwoFactorType,
                 Culture = user.Culture,
@@ -89,7 +90,7 @@ namespace ECom.Application.Services
 		}
 
 
-        public Result ChangePassword(ChangePasswordRequestModel model)
+        public Result ChangePassword(ChangePasswordRequest model)
         {
 			var userResult = GetUser(model.AuthenticatedUserId);
             if (userResult.IsFailure) return userResult.ToResult();
@@ -107,7 +108,7 @@ namespace ECom.Application.Services
             return DomainResult.User.ChangePasswordSuccessResult();
         }
 
-        public Result Update(UpdateUserRequestModel model)
+        public Result Update(UpdateUserRequest model)
         {
             var userId = model.AuthenticatedUserId;
             if (userId < 1) return DomainResult.User.NotFoundResult(1);

@@ -3,8 +3,8 @@ using EasMe.Extensions;
 using ECom.Application.Manager;
 using ECom.Application.Services;
 using ECom.Application.Validators;
-using ECom.Domain.ApiModels.Request;
-using ECom.Domain.ApiModels.Response;
+using ECom.Domain.DTOs.Request;
+using ECom.Domain.DTOs.Response;
 using ECom.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +32,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
 
 		[HttpPost]
-		public ActionResult<ResultData<UserLoginResponseModel>> Login([FromBody] LoginRequestModel model)
+		public ActionResult<ResultData<UserLoginResponse>> Login([FromBody] LoginRequest model)
 		{
             var res = _userJwtAuthenticator.Authenticate(model);
 			_logService.UserLog(res.ToResult(),null,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
@@ -40,7 +40,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
 
 		[HttpPost]
-		public ActionResult<Result> Register([FromBody] RegisterRequestModel model)
+		public ActionResult<Result> Register([FromBody] RegisterRequest model)
 		{
 			var res = _userService.Register(model);
             _logService.UserLog(res, null, "Auth.Register", model.EmailAddress);

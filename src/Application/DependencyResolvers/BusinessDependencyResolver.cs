@@ -1,6 +1,6 @@
 ﻿using ECom.Application.Manager;
 using ECom.Application.Validators;
-using ECom.Domain.ApiModels.Request;
+using ECom.Domain.DTOs.Request;
 using ECom.Domain.Interfaces;
 using ECom.Infrastructure;
 using ECom.Infrastructure.DataAccess;
@@ -89,11 +89,11 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<IValidationService, ValidationService>();
 
 
-            services.AddTransient<IValidator<LoginRequestModel>, LoginValidator>();
-            services.AddTransient<IValidator<RegisterRequestModel>, RegisterValidator>();
-            services.AddTransient<IValidator<AddAdminRequestModel>, AddAdminRequestModelValidator>();
-            services.AddTransient<IValidator<ChangePasswordRequestModel>, ChangePasswordRequestModelValidator>();
-            services.AddTransient<IValidator<UpdateAdminAccountRequestModel>, UpdateAdminAccountRequestModelValidator>();
+            services.AddTransient<IValidator<LoginRequest>, LoginValidator>();
+            services.AddTransient<IValidator<RegisterRequest>, RegisterValidator>();
+            services.AddTransient<IValidator<AddAdminRequest>, AddAdminRequestValidator>();
+            services.AddTransient<IValidator<ChangePasswordRequest>, ChangePasswordRequestValidator>();
+            services.AddTransient<IValidator<UpdateAdminAccountRequest>, UpdateAdminAccountRequestValidator>();
             return services;
         }
 

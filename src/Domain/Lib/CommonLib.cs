@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace ECom.Domain.Lib
 {
 	public static class CommonLib
 	{
+        public static string SerializeJson(this object obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                NullValueHandling = NullValueHandling.Include,
+                
+            });
+        }
         public static bool IsCultureValid(string cultureName)
         {
             if(cultureName == null) return false;

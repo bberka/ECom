@@ -7,8 +7,8 @@
 using EasMe.Authorization.Filters;
 using EasMe.Logging;
 using ECom.Application.Services;
-using ECom.Domain.ApiModels.Request;
-using ECom.Domain.ApiModels.Response;
+using ECom.Domain.DTOs.Request;
+using ECom.Domain.DTOs.Response;
 using ECom.Domain.Constants;
 using ECom.Domain.Interfaces;
 using Ninject.Modules;
@@ -37,7 +37,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
             _logService = logService;
         }
 		[HttpPost]
-        public ActionResult<ResultData<AdminLoginResponseModel>> Login([FromBody] LoginRequestModel model)
+        public ActionResult<ResultData<AdminLoginResponse>> Login([FromBody] LoginRequest model)
         {
             var res = _adminJwtAuthenticator.Authenticate(model);
             _logService.UserLog(res.ToResult(), null, "Auth.Login", model.EmailAddress, model.EncryptedPassword);

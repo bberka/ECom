@@ -51,5 +51,5 @@ global using FluentValidation;
 global using EasMe.Enums;
 global using EasMe.Enums;
 global using EasMe.Models;
-global using ECom.Domain.ApiModels.Request;
-global using ECom.Domain.ApiModels.Response;
+global using ECom.Domain.DTOs.Request;
+global using ECom.Domain.DTOs.Response;

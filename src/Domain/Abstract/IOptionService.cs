@@ -9,14 +9,14 @@ namespace ECom.Domain.Abstract
     public interface IOptionService
     {
         Option GetOption();
-        List<CargoOption> GetCargoOptions();
-        List<PaymentOption> GetPaymentOptions();
-        List<SmtpOption> GetSmtpOptions();
+        List<CargoOption> ListCargoOptions();
+        List<PaymentOption> ListPaymentOptions();
+        List<SmtpOption> ListSmtpOptions();
 
         Option GetOptionFromCache();
-        List<CargoOption> GetCargoOptionsFromCache();
-        List<PaymentOption> GetPaymentOptionsFromCache();
-        List<SmtpOption> GetSmtpOptionsFromCache();
+        List<CargoOption> ListCargoOptionsFromCache();
+        List<PaymentOption> ListPaymentOptionsFromCache();
+        List<SmtpOption> ListSmtpOptionsFromCache();
 
         Result UpdateCargoOption(CargoOption option);
         Result UpdateOption(Option option);

@@ -22,8 +22,8 @@ namespace ECom.Domain.Constants
 
     
 
-        CompanyInfo_UpdateOrAdd,
-        
+        CompanyInfo_AddOrUpdate,
+
         Image_Upload,
 
         Option_RefreshCache,
@@ -42,7 +42,6 @@ namespace ECom.Domain.Constants
         SmtpOption_Update,
         SmtpOption_Delete,
 
-        
 
     }
 

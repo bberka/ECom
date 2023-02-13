@@ -9,10 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Net.Mail;
+using ECom.Domain.DTOs.Response;
 
 namespace ECom.Domain.Extensions
 {
-	public static class AuthExtensions
+    public static class AuthExtensions
 	{
 	
         public static int GetUserId(this HttpContext context)
@@ -98,12 +99,12 @@ namespace ECom.Domain.Extensions
         //		throw new NotAuthorizedException(AuthType.Admin);
         //	}
         //      }
-        public static AdminNecessaryInfo GetAdmin(this HttpContext context)
+        public static AdminDto GetAdmin(this HttpContext context)
         {
             try
             {
                 var claims = context.User.Identities.FirstOrDefault()?.Claims.AsDictionary();
-                var user = claims?.ToObject<AdminNecessaryInfo>();
+                var user = claims?.ToObject<AdminDto>();
                 if (user is null) throw new NotAuthorizedException(AuthType.Admin);
                 return user;
             }
@@ -113,12 +114,12 @@ namespace ECom.Domain.Extensions
                 throw new NotAuthorizedException(AuthType.User);
             }
         }
-        public static UserNecessaryInfo GetUser(this HttpContext context)
+        public static UserDto GetUser(this HttpContext context)
         {
             try
             {
                 var claims = context.User.Identities.FirstOrDefault()?.Claims.AsDictionary();
-				var user = claims?.ToObject<UserNecessaryInfo>();
+				var user = claims?.ToObject<UserDto>();
 				if(user is null) throw new NotAuthorizedException(AuthType.User);
                 return user;
             }

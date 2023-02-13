@@ -38,19 +38,19 @@ namespace ECom.WebApi.Controllers.AdminControllers
         [HasPermission(AdminOperationType.CargoOption_Get)]
         public ActionResult<List<CargoOption>> ListCargoOptions()
 		{
-			return _optionService.GetCargoOptions();
+			return _optionService.ListCargoOptions();
 		}
 		[HttpGet]
         [HasPermission(AdminOperationType.PaymentOption_Get)]
         public ActionResult<List<PaymentOption>> ListPaymentOptions()
 		{
-			return _optionService.GetPaymentOptions();
+			return _optionService.ListPaymentOptions();
 		}
 		[HttpGet]
         [HasPermission(AdminOperationType.SmtpOption_Get)]
         public ActionResult<List<SmtpOption>> ListSmtpOptions()
 		{
-			return _optionService.GetSmtpOptions();
+			return _optionService.ListSmtpOptions();
 		}
 		[HttpPost]
         [HasPermission(AdminOperationType.Option_Update)]

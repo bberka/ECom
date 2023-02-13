@@ -45,7 +45,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
         }
         [HttpPost]
         [HasPermission(AdminOperationType.Admin_Add)]
-        public ActionResult<Result> Add([FromBody] AddAdminRequestModel model)
+        public ActionResult<Result> Add([FromBody] AddAdminRequest model)
         {
             var res = _adminService.AddAdmin(model);
             _logService.AdminLog(res, model.AuthenticatedAdminId, "Manager.Add", model.ToJsonString());

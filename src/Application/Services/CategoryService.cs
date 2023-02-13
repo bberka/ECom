@@ -1,4 +1,4 @@
-﻿using ECom.Domain.ApiModels.Request;
+﻿using ECom.Domain.DTOs.Request;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,7 +34,7 @@ namespace ECom.Application.Services
             if (!res) throw new DbInternalException(nameof(EnableOrDisableCategory));
             return Result.Success();
         }
-        public Result UpdateCategory(CategoryUpdateRequestModel model)
+        public Result UpdateCategory(UpdateCategoryRequest model)
         {
             if (!_categoryRepo.Any(x => x.Id == model.CategoryId))
             {
@@ -134,7 +134,7 @@ namespace ECom.Application.Services
             return DomainResult.SubCategory.DeleteSuccessResult();
         }
 
-        public Result AddCategory(AddCategoryRequestModel model)
+        public Result AddCategory(AddCategoryRequest model)
         {
             var category = new Category
             {
@@ -150,7 +150,7 @@ namespace ECom.Application.Services
             return DomainResult.Category.AddSuccessResult();
         }
 
-        public Result AddSubCategory(AddSubCategoryRequestModel model)
+        public Result AddSubCategory(AddSubCategoryRequest model)
         {
             var categoryExists = CategoryExists(model.CategoryId);
             if (!categoryExists)

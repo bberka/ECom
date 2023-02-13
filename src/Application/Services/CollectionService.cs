@@ -22,7 +22,7 @@ namespace ECom.Application.Services
             this._productService = productService;
         }
 
-		public Result CreateCollection(CreateCollectionRequestModel model)
+		public Result CreateCollection(AddCollectionRequest model)
 		{
 			var createResult = _collectionRepo.Add(new Collection
 			{
@@ -94,7 +94,7 @@ namespace ECom.Application.Services
 			return _collectionRepo.GetList(x => x.UserId == userId);
         }
 
-        public Result UpdateCollection(UpdateCollectionRequestModel model)
+        public Result UpdateCollection(UpdateCollectionRequest model)
         {
 			var collectionResult = GetCollection(model.AuthenticatedUserId,model.CollectionId);
 			if (collectionResult.IsFailure)

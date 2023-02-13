@@ -1,11 +1,4 @@
-﻿using ECom.Domain.ApiModels.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECom.Domain.Abstract
+﻿namespace ECom.Domain.Abstract
 {
     public interface IAdminService
     {
@@ -15,9 +8,9 @@ namespace ECom.Domain.Abstract
         bool Exists(int id);
         bool Exists(string email);
         bool IsValidAdminAccount(int id);
-        ResultData<AdminNecessaryInfo> Login(LoginRequestModel model);
-        Result AddAdmin(AddAdminRequestModel admin);
-        Result ChangePassword(ChangePasswordRequestModel model);
+        ResultData<AdminDto> Login(LoginRequest model);
+        Result AddAdmin(AddAdminRequest admin);
+        Result ChangePassword(ChangePasswordRequest model);
         int GetAdminRoleId(int adminId);
         bool HasPermission(int adminId, int permissionId);
         List<Permission> GetValidPermissions();

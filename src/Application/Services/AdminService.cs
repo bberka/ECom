@@ -1,7 +1,4 @@
-﻿using ECom.Application.Validators;
-using ECom.Domain.Abstract;
-using ECom.Domain.Extensions;
-using ECom.Domain.Results;
+﻿using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -92,7 +89,7 @@ namespace ECom.Application.Services
             return _adminRepo.GetList();
         }
 
-        public Result AddAdmin(AddAdminRequestModel admin)
+        public Result AddAdmin(AddAdminRequest admin)
         {
             var res = _adminRepo.Add(admin.ToAdminEntity());
             if (!res)
@@ -113,7 +110,7 @@ namespace ECom.Application.Services
 
     
 
-        public Result ChangePassword(ChangePasswordRequestModel model)
+        public Result ChangePassword(ChangePasswordRequest model)
         {
             var admin = _adminRepo.Find(model.AuthenticatedAdminId);
             if(admin is null)
@@ -133,7 +130,7 @@ namespace ECom.Application.Services
             return DomainResult.Admin.ChangePasswordSuccessResult();
         }
 
-        public ResultData<AdminNecessaryInfo> Login(LoginRequestModel model)
+        public ResultData<AdminDto> Login(LoginRequest model)
         {
             var adminResult = _adminRepo
                 .Get(x => x.EmailAddress == model.EmailAddress)
@@ -143,7 +140,7 @@ namespace ECom.Application.Services
                 .Select(x =>new 
                 {
                     x.Password,
-                    Admin = new AdminNecessaryInfo()
+                    Admin = new AdminDto()
                     {
                         EmailAddress = x.EmailAddress,
                         RoleName = x.Role.Name,

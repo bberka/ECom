@@ -1,7 +1,7 @@
 ﻿using EasMe.Authorization.Filters;
-using ECom.Domain.ApiModels.Request;
+using ECom.Domain.DTOs.Request;
 using ECom.Domain.Constants;
-using ECom.Domain.Models;
+using ECom.Domain.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -20,7 +20,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
             _logService = logService;
         }
         [HttpGet]
-        public ActionResult<AdminNecessaryInfo> Get()
+        public ActionResult<AdminDto> Get()
         {
             var admin = HttpContext.GetAdmin();
             return admin;
@@ -31,7 +31,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
 
         
         [HttpPost]
-        public ActionResult<Result> ChangePassword(ChangePasswordRequestModel model)
+        public ActionResult<Result> ChangePassword(ChangePasswordRequest model)
         {
             var res = _adminService.ChangePassword(model).WithoutRv();
             _logService.AdminLog(res, model.AuthenticatedAdminId, "Account.ChangePassword",model.EncryptedOldPassword,model.EncryptedNewPassword);

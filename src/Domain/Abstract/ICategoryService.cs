@@ -10,9 +10,9 @@ namespace ECom.Domain.Abstract
         Result EnableOrDisableCategory(uint id);
         Result EnableOrDisableSubCategory(uint id);
         List<Category> ListCategories();
-        Result UpdateCategory(CategoryUpdateRequestModel model);
+        Result UpdateCategory(UpdateCategoryRequest model);
         Result UpdateSubCategory(SubCategory model);
-        Result AddCategory(AddCategoryRequestModel model);
-        Result AddSubCategory(AddSubCategoryRequestModel model);
+        Result AddCategory(AddCategoryRequest model);
+        Result AddSubCategory(AddSubCategoryRequest model);
     }
 }

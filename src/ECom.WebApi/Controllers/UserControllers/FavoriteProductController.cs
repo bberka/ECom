@@ -1,4 +1,4 @@
-﻿using ECom.Domain.ApiModels.Response;
+﻿using ECom.Domain.DTOs.Response;
 using ECom.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 namespace ECom.WebApi.Controllers.UserControllers

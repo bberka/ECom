@@ -38,13 +38,9 @@ namespace ECom.Application.Services
 		}
 
 		public Result UpdateOrAddCompanyInformation(CompanyInformation info)
-		{
-#if DEBUG 
-			var isRelease = false;
-#else
-			var isRelease = true;
-#endif
-			var current = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == isRelease);
+        {
+            info.IsRelease = !ConstantMgr.IsDebug();
+			var current = _companyInfoRepo.GetFirstOrDefault(x => x.IsRelease == info.IsRelease);
 			if (current != null)
 			{
 				var deleteResult = _companyInfoRepo.Delete(current);

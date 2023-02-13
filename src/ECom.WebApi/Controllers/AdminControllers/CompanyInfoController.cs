@@ -18,8 +18,8 @@ namespace ECom.WebApi.Controllers.AdminControllers
             _logService = logService;
         }
         [HttpPost]
-        [HasPermission(AdminOperationType.CompanyInfo_UpdateOrAdd)]
-        public ActionResult<Result> UpdateOrAdd(CompanyInformation companyInformation)
+        [HasPermission(AdminOperationType.CompanyInfo_AddOrUpdate)]
+        public ActionResult<Result> AddOrUpdate(CompanyInformation companyInformation)
         {
             var adminId = HttpContext.GetAdminId();
             var res = _companyInformationService.UpdateOrAddCompanyInformation(companyInformation);

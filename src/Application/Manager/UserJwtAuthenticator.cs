@@ -1,5 +1,5 @@
 ﻿
-using ECom.Domain.ApiModels.Request;
+using ECom.Domain.DTOs.Request;
 using ECom.Domain.Entities;
 using ECom.Domain.Interfaces;
 using System.Security.Claims;
@@ -22,7 +22,7 @@ namespace ECom.Application.Manager
 		}
 
 
-        public ResultData<UserLoginResponseModel> Authenticate(LoginRequestModel model)
+        public ResultData<UserLoginResponse> Authenticate(LoginRequest model)
         {
             var loginResult = _userService.Login(model);
             if (!loginResult.IsSuccess)
@@ -40,12 +40,12 @@ namespace ECom.Application.Manager
             var expireMins = JwtOption.This.TokenExpireMinutes;
             var date = DateTime.UtcNow.AddMinutes(expireMins);
             var token = _jwtManager.GenerateJwtToken(userAsDic, date);
-            var jwtTokenModel = new JwtTokenModel
+            var jwtTokenModel = new JwtToken
             {
                 ExpireUnix = date.ToUnixTime(),
                 Token = token,
             };
-            return new UserLoginResponseModel
+            return new UserLoginResponse
             {
                 User = loginResult.Data,
                 Token = jwtTokenModel

@@ -19,7 +19,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
 
         [HttpPost]
-        public ActionResult<ResultData<int>> Add([FromBody] AddProductCommentRequestModel requestModel)
+        public ActionResult<ResultData<int>> Add([FromBody] AddProductCommentRequest requestModel)
         {
             var res = _productService.AddComment(requestModel);
             _logService.UserLog(res.ToResult(),requestModel.AuthenticatedUserId,"ProductComment.Add",requestModel.ToJsonString());
