@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.DTOs.Response
+namespace ECom.Domain.DTOs.UserDTOs
 {
-    public class AdminLoginResponse
+    public class UserLoginResponse
     {
-        public AdminDto Admin { get; set; }
+        public UserDto User { get; set; }
         public JwtToken Token { get; set; }
     }
 }

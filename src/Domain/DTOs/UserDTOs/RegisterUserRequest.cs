@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.DTOs.Request
+namespace ECom.Domain.DTOs.UserDTOs
 {
-    public class RegisterRequest
+    public class RegisterUserRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,7 +20,7 @@ namespace ECom.Domain.DTOs.Request
         public string PhoneNumber { get; set; }
         public int? CitizenshipNumber { get; set; }
         public int? TaxNumber { get; set; }
-        public int PreferredLangauge { get; set; }
+        public int PreferredLanguage { get; set; }
 
         [IgnoreDataMember, Newtonsoft.Json.JsonIgnore, System.Text.Json.Serialization.JsonIgnore]
         public string EncryptedPassword => Password.ToEncryptedText();

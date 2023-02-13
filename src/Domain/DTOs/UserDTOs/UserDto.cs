@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.DTOs.Response
+namespace ECom.Domain.DTOs.UserDTOs
 {
     public class UserDto
     {

@@ -51,18 +51,18 @@ namespace ECom.Domain.Entities
         [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
 
-        public int? CitizenShipNumber { get; set; }
-        public int? TaxNumber { get; set; }
+        public int? CitizenShipNumber { get; set; } = null;
+        public int? TaxNumber { get; set; } = null;
 
         [MaxLength(512)]
         [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
-        public string? OAuthKey { get; set; }
+        public string? OAuthKey { get; set; } = null;
 
-        public byte? OAuthType { get; set; }
+        public byte? OAuthType { get; set; } = null;
 
         [MaxLength(255)]
         [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
-        public string? TwoFactorKey { get; set; }
+        public string? TwoFactorKey { get; set; } = null;
 
         /// <summary>
         /// 0: None
@@ -72,7 +72,7 @@ namespace ECom.Domain.Entities
         /// </summary>
         public byte TwoFactorType { get; set; } = 0;
 
-		public DateTime? DeletedDate { get; set; }
+        public DateTime? DeletedDate { get; set; } = null;
 
         [MinLength(2)]
         [MaxLength(4)]

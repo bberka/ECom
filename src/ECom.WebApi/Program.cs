@@ -20,7 +20,7 @@ builder.Services.AddSwaggerConfigured();
 builder.Services.AddCors();
 builder.Services.AddAuthorizationConfigured();
 
-builder.Services.AddBaseDataBaseAccessLayer();
+builder.Services.AddDataBaseAccessServices();
 builder.Services.AddBusinessLogicServices();
 
 ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
@@ -28,7 +28,7 @@ builder.Services.AddBusinessValidators();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddBusinessAuthenticators();
-
+builder.Services.AddAutoMapperConfigured();
 
 var app = builder.Build();
 

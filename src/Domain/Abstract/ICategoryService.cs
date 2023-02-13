@@ -1,5 +1,7 @@
 ﻿
 
+using ECom.Domain.DTOs.CategoryDTOs;
+
 namespace ECom.Domain.Abstract
 {
     public interface ICategoryService

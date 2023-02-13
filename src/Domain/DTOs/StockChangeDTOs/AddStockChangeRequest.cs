@@ -1,4 +1,4 @@
-﻿namespace ECom.Domain.DTOs.Request
+﻿namespace ECom.Domain.DTOs.StockChangeDTOs
 {
     public class AddStockChangeRequest
     {

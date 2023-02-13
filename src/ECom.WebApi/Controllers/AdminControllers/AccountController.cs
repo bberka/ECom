@@ -1,9 +1,9 @@
 ﻿using EasMe.Authorization.Filters;
-using ECom.Domain.DTOs.Request;
 using ECom.Domain.Constants;
-using ECom.Domain.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs;
 
 namespace ECom.WebApi.Controllers.AdminControllers
 {

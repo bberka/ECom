@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using EasMe.Authorization.Filters;
 using ECom.Domain.Constants;
+using ECom.Domain.DTOs.ProductDTOs;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ECom.WebApi.Controllers.UserControllers

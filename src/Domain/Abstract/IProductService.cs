@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Abstract
+﻿using ECom.Domain.DTOs.ProductDTOs;
+
+namespace ECom.Domain.Abstract
 {
     public interface IProductService
     {

@@ -1,7 +1,9 @@
 ﻿using ECom.Application.Manager;
 using ECom.Application.Validators;
-using ECom.Domain.DTOs.Request;
+using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs.UserDTOs;
 using ECom.Domain.Interfaces;
+using ECom.Domain.Lib;
 using ECom.Infrastructure;
 using ECom.Infrastructure.DataAccess;
 using FluentValidation;
@@ -32,11 +34,12 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IFavoriteProductService, FavoriteProductService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             return services;
         }
 
-        public static IServiceCollection AddBaseDataBaseAccessLayer(this IServiceCollection services)
+        public static IServiceCollection AddDataBaseAccessServices(this IServiceCollection services)
         {
             services.AddScoped<IEfEntityRepository<Address>, AddressDal>();
             services.AddScoped<IEfEntityRepository<Admin>, AdminDal>();
@@ -77,9 +80,7 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<IEfEntityRepository<Supplier>, SupplierDal>();
             services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDal>();
             services.AddScoped<IEfEntityRepository<ShowCaseImage>, ShowCaseImageDal>();
-
             services.AddScoped<DbContext, EComDbContext>();
-
             return services;
         }
 
@@ -88,15 +89,19 @@ namespace ECom.Application.DependencyResolvers
 
             services.AddScoped<IValidationService, ValidationService>();
 
-
             services.AddTransient<IValidator<LoginRequest>, LoginValidator>();
-            services.AddTransient<IValidator<RegisterRequest>, RegisterValidator>();
+            services.AddTransient<IValidator<RegisterUserRequest>, RegisterValidator>();
             services.AddTransient<IValidator<AddAdminRequest>, AddAdminRequestValidator>();
             services.AddTransient<IValidator<ChangePasswordRequest>, ChangePasswordRequestValidator>();
             services.AddTransient<IValidator<UpdateAdminAccountRequest>, UpdateAdminAccountRequestValidator>();
             return services;
         }
 
+        public static IServiceCollection AddAutoMapperConfigured(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            return services;
+        }
         public static IServiceCollection AddBusinessAuthenticators(this IServiceCollection services)
         {
             services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();

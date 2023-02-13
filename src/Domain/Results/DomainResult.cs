@@ -47,6 +47,17 @@ namespace ECom.Domain.Results
             public static Result UpdateSuccessResult() => Result.Success("Product.Update");
             public static Result AddSuccessResult() => Result.Success("Product.Add");
         }
+
+        public static class Role
+        {
+            public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "Role.NotFound");
+            public static Result NotValidResult(ushort rv) => Result.Warn(rv, "Role.NotValid");
+
+
+            public static Result DeletedResult(ushort rv) => Result.Warn(rv, "Role.Deleted");
+            public static Result UpdateSuccessResult() => Result.Success("Role.Update");
+            public static Result AddSuccessResult() => Result.Success("Role.Add");
+        }
         public static class ProductComment
         {
             public static Result NotFoundResult(ushort rv) => Result.Warn(rv, "ProductComment.NotFound");

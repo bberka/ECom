@@ -1,4 +1,7 @@
-﻿namespace ECom.Domain.Abstract
+﻿using ECom.Domain.DTOs;
+using ECom.Domain.DTOs.AdminDTOs;
+
+namespace ECom.Domain.Abstract
 {
     public interface IAdminService
     {
@@ -15,7 +18,6 @@
         bool HasPermission(int adminId, int permissionId);
         List<Permission> GetValidPermissions();
         List<Permission> GetInvalidPermissions();
-        List<Permission> GetPermissions(int adminId);
         bool IsValidPermission(int permissionId);
         List<Admin> ListOtherAdmins(int adminId);
         Result EnableOrDisableAdmin(int authorAdminId, int adminId);

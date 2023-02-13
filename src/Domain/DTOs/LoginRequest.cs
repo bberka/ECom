@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.DTOs.Request
+namespace ECom.Domain.DTOs
 {
     public class LoginRequest
     {

@@ -1,4 +1,5 @@
-﻿using ECom.Domain.DTOs.Response;
+﻿using ECom.Domain.DTOs;
+using ECom.Domain.DTOs.UserDTOs;
 
 namespace ECom.Domain.Abstract
 {
@@ -9,7 +10,7 @@ namespace ECom.Domain.Abstract
         ResultData<User> GetUser(string email);
         ResultData<User> GetUser(int id);
         ResultData<UserDto> Login(LoginRequest model);
-        Result Register(RegisterRequest model);
+        Result Register(RegisterUserRequest model);
         Result ChangePassword(ChangePasswordRequest model);
         Result Update(UpdateUserRequest model);
     }

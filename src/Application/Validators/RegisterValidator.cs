@@ -1,6 +1,8 @@
-﻿namespace ECom.Application.Validators
+﻿using ECom.Domain.DTOs.UserDTOs;
+
+namespace ECom.Application.Validators
 {
-    public class RegisterValidator : AbstractValidator<RegisterRequest>, IValidator<RegisterRequest>
+    public class RegisterValidator : AbstractValidator<RegisterUserRequest>, IValidator<RegisterUserRequest>
 	{
 		public RegisterValidator(IValidationService validationService)
 		{

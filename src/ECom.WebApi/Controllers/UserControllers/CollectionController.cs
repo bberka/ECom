@@ -1,4 +1,5 @@
 ﻿using ECom.Domain.Constants;
+using ECom.Domain.DTOs.CollectionDTOs;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {

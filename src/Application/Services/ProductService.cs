@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Results;
+﻿using ECom.Domain.DTOs.ProductDTOs;
+using ECom.Domain.Results;
 using Microsoft.AspNetCore.Http;
 
 namespace ECom.Application.Services

@@ -4,8 +4,6 @@ global using EasMe.Enums;
 global using EasMe.Extensions;
 global using EasMe.Models;
 global using ECom.Domain.Constants;
-global using ECom.Domain.DTOs.Request;
-global using ECom.Domain.DTOs.Response;
 global using ECom.Domain.Entities;
 global using ECom.Domain.Exceptions;
 global using ECom.Domain.Extensions;

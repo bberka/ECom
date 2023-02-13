@@ -1,4 +1,4 @@
-﻿
+﻿using ECom.Domain.DTOs.AdminDTOs;
 
 namespace ECom.Application.Manager
 {

@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Abstract
+﻿using ECom.Domain.DTOs.CollectionDTOs;
+
+namespace ECom.Domain.Abstract
 {
     public interface ICollectionService
     {

@@ -1,4 +1,4 @@
-﻿namespace ECom.Domain.DTOs.Request
+﻿namespace ECom.Domain.DTOs.CategoryDTOs
 {
     public class AddCategoryRequest : AuthRequestModelBase
     {

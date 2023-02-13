@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Abstract;
+﻿using ECom.Domain.DTOs.StockChangeDTOs;
+
+namespace ECom.Domain.Abstract;
 
 public interface IStockChangeService
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECom.Domain.DTOs.Request
+namespace ECom.Domain.DTOs.CollectionDTOs
 {
     public class AddCollectionRequest : AuthRequestModelBase
     {

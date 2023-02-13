@@ -1,14 +1,13 @@
-﻿
-using ECom.Domain.DTOs.Request;
-using ECom.Domain.Entities;
+﻿using ECom.Domain.Entities;
 using ECom.Domain.Interfaces;
 using System.Security.Claims;
 using EasMe.Authorization;
+using ECom.Domain.DTOs.UserDTOs;
 
 namespace ECom.Application.Manager
 {
 
-	public class UserJwtAuthenticator : IUserJwtAuthenticator
+    public class UserJwtAuthenticator : IUserJwtAuthenticator
 	{
 		private readonly IUserService _userService;
 		private readonly IOptionService _optionService;

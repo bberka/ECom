@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Net.Mail;
-using ECom.Domain.DTOs.Response;
+using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs.UserDTOs;
 
 namespace ECom.Domain.Extensions
 {

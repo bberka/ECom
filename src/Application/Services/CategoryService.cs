@@ -1,9 +1,9 @@
-﻿using ECom.Domain.DTOs.Request;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ECom.Domain.Lib;
 using ECom.Domain.Results;
+using ECom.Domain.DTOs.CategoryDTOs;
 
 namespace ECom.Application.Services
 {

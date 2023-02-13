@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.Request;
+﻿using ECom.Domain.DTOs.ProductDTOs;
 using FluentValidation;
 
 namespace ECom.Application.Validators

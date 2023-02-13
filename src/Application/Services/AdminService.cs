@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Results;
+﻿using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {
@@ -32,12 +33,12 @@ namespace ECom.Application.Services
             var admin = _adminRepo
                 .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.RolePermissions)
+                .ThenInclude(x => x.Permissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
-            if (admin.Role.RolePermissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
+            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public ResultData<Admin> GetAdmin(int id)
@@ -45,12 +46,12 @@ namespace ECom.Application.Services
             var admin = _adminRepo
                 .Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.RolePermissions)
+                .ThenInclude(x => x.Permissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
-            if (admin.Role.RolePermissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
+            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public bool HasPermission(int adminId, int permissionId)
@@ -135,8 +136,7 @@ namespace ECom.Application.Services
             var adminResult = _adminRepo
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.RolePermissions)
-                .ThenInclude(x => x.Permission)
+                .ThenInclude(x => x.Permissions)
                 .Select(x =>new 
                 {
                     x.Password,
@@ -146,7 +146,7 @@ namespace ECom.Application.Services
                         RoleName = x.Role.Name,
                         TwoFactorType = x.TwoFactorType,
                         Id = x.Id,
-                        Permissions = string.Join(",", x.Role.RolePermissions.Select(y => y.Permission.Name).ToList())
+                        Permissions = string.Join(",", x.Role.Permissions.Select(y => y.Name).ToList())
                     }
                 })
                 .FirstOrDefault();
@@ -189,7 +189,7 @@ namespace ECom.Application.Services
             return _adminRepo
                 .Get(x => x.Id != adminId)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.RolePermissions)
+                .ThenInclude(x => x.Permissions)
                 .ToList();
         }
 
@@ -234,16 +234,6 @@ namespace ECom.Application.Services
             return DomainResult.Admin.DeleteSuccessResult();
         }
 
-        public List<Permission> GetPermissions(int adminId)
-        {
-            var roleId = GetAdminRoleId(adminId);
-            if (roleId < 1) return new();
-            var invalidPerms = GetInvalidPermissions().Select(x => x.Id).ToList();
-            return _rolePermissionRepo
-                .Get(x => x.RoleId == roleId && !invalidPerms.Contains(x.PermissionId))
-                .Include(x => x.Permission)
-                .Select(x => x.Permission)
-                .ToList();
-        }
+       
     }
 }

@@ -2,7 +2,7 @@
 
 using EasMe;
 using ECom.Application.Validators;
-using ECom.Domain.DTOs.Response;
+using ECom.Domain.DTOs.UserDTOs;
 using ECom.Domain.Extensions;
 using ECom.Domain.Results;
 
@@ -25,7 +25,7 @@ namespace ECom.Application.Services
 			this._optionService = optionService;
 			this._validationService = validationService;
         }
-		public Result Register(RegisterRequest model)
+		public Result Register(RegisterUserRequest model)
 		{
 			var user = model.ToUserEntity();
 			var res = _userRepo.Add(user);

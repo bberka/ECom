@@ -3,8 +3,8 @@ using EasMe.Extensions;
 using ECom.Application.Manager;
 using ECom.Application.Services;
 using ECom.Application.Validators;
-using ECom.Domain.DTOs.Request;
-using ECom.Domain.DTOs.Response;
+using ECom.Domain.DTOs;
+using ECom.Domain.DTOs.UserDTOs;
 using ECom.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ using System.Globalization;
 namespace ECom.WebApi.Controllers.UserControllers
 {
 
-	[AllowAnonymous]
+    [AllowAnonymous]
     public class AuthController : BaseUserController
     {
 		private readonly IUserService _userService;
@@ -40,7 +40,7 @@ namespace ECom.WebApi.Controllers.UserControllers
         }
 
 		[HttpPost]
-		public ActionResult<Result> Register([FromBody] RegisterRequest model)
+		public ActionResult<Result> Register([FromBody] RegisterUserRequest model)
 		{
 			var res = _userService.Register(model);
             _logService.UserLog(res, null, "Auth.Register", model.EmailAddress);

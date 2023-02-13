@@ -12,17 +12,10 @@ namespace ECom.Domain.Entities
     [PrimaryKey(nameof(RoleId),nameof(PermissionId))]
     public class RolePermission : IEfEntity
 	{
+        [ForeignKey(nameof(Role))]
         public int RoleId { get; set; }
+
+        [ForeignKey(nameof(Permission))]
         public int PermissionId { get; set; }
-
-
-
-        //virtual
-        //ignore
-        [IgnoreDataMember]
-        public virtual Permission Permission { get; set; }
-        //[IgnoreDataMember]
-        //public virtual Role Role { get; set; }
-
     }
 }

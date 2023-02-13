@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.Response;
-using ECom.Domain.Constants;
-using Microsoft.AspNetCore.Authorization;
+﻿using ECom.Domain.Constants;
 namespace ECom.WebApi.Controllers.UserControllers
 {
     public class FavoriteProductController : BaseUserController

@@ -12,16 +12,11 @@ namespace ECom.Domain.Entities
     [PrimaryKey(nameof(ImageId),nameof(ProductId))]
     public class ProductImage : IEfEntity
 	{
+        [ForeignKey(nameof(Image))]
         public int ImageId { get; set; }
+
+        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
-
-
-        //Virtual
-        //Ignore
-        [IgnoreDataMember]
-        public virtual Product Product { get; set; }
-        [IgnoreDataMember]
-        public virtual Image Image { get; set; }
 
     }
 }

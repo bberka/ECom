@@ -1,11 +1,11 @@
 ﻿using EasMe;
-using ECom.Domain.DTOs.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EasMe.Authorization;
 using EasMe.Authorization.Filters;
 using EasMe.Extensions;
-using ECom.Domain.DTOs.Response;
+using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs;
 
 namespace ECom.WebApi.Controllers.UserControllers
 {

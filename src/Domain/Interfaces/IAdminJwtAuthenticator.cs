@@ -1,4 +1,7 @@
-﻿namespace ECom.Domain.Interfaces
+﻿using ECom.Domain.DTOs;
+using ECom.Domain.DTOs.AdminDTOs;
+
+namespace ECom.Domain.Interfaces
 {
     public interface IAdminJwtAuthenticator 
     {
