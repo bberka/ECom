@@ -2,12 +2,7 @@
 using ECom.Application.Validators;
 using ECom.Domain.DTOs.AdminDTOs;
 using ECom.Domain.DTOs.UserDTOs;
-using ECom.Domain.Interfaces;
 using ECom.Domain.Lib;
-using ECom.Infrastructure;
-using ECom.Infrastructure.DataAccess;
-using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ECom.Application.DependencyResolvers
 {
@@ -17,6 +12,8 @@ namespace ECom.Application.DependencyResolvers
 
         public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
         {
+            //services.AddScoped<DbContext, EComDbContext>();
+            services.AddDbContext<EComDbContext>();
             services.AddScoped<IOptionService, OptionService>();
             services.AddScoped<ICompanyInformationService, CompanyInformationService>();
             services.AddScoped<IImageService, ImageService>();
@@ -35,52 +32,51 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IFavoriteProductService, FavoriteProductService>();
             services.AddScoped<IRoleService, RoleService>();
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
 
         public static IServiceCollection AddDataBaseAccessServices(this IServiceCollection services)
         {
-            services.AddScoped<IEfEntityRepository<Address>, AddressDal>();
-            services.AddScoped<IEfEntityRepository<Admin>, AdminDal>();
-            services.AddScoped<IEfEntityRepository<AdminLog>, AdminLogDal>();
-            services.AddScoped<IEfEntityRepository<Announcement>, AnnouncementDal>();
-            services.AddScoped<IEfEntityRepository<CargoOption>, CargoOptionDal>();
-            services.AddScoped<IEfEntityRepository<Cart>, CartDal>();
-            services.AddScoped<IEfEntityRepository<Category>, CategoryDAL>();
-            services.AddScoped<IEfEntityRepository<CategoryDiscount>, CategoryDiscountDal>();
-            services.AddScoped<IEfEntityRepository<Collection>, CollectionDal>();
-            services.AddScoped<IEfEntityRepository<CollectionProduct>, CollectionProductDal>();
-            services.AddScoped<IEfEntityRepository<CompanyInformation>, CompanyInformationDal>();
-            services.AddScoped<IEfEntityRepository<DiscountCoupon>, DiscountCouponDal>();
-            services.AddScoped<IEfEntityRepository<DiscountNotify>, DiscountNotifyDal>();
-            services.AddScoped<IEfEntityRepository<EmailVerifyToken>, EmailVerifyTokenDal>();
-            services.AddScoped<IEfEntityRepository<FavoriteProduct>, FavoriteProductDal>();
-            services.AddScoped<IEfEntityRepository<Image>, ImageDal>();
-            services.AddScoped<IEfEntityRepository<Option>, OptionDal>();
-            services.AddScoped<IEfEntityRepository<Order>, OrderDal>();
-            services.AddScoped<IEfEntityRepository<PasswordResetToken>, PasswordResetTokenDal>();
-            services.AddScoped<IEfEntityRepository<PaymentOption>, PaymentOptionDal>();
-            services.AddScoped<IEfEntityRepository<Permission>, PermissionDal>();
-            services.AddScoped<IEfEntityRepository<Product>, ProductDal>();
-            services.AddScoped<IEfEntityRepository<ProductComment>, ProductCommentDal>();
-            services.AddScoped<IEfEntityRepository<ProductDetail>, ProductDetailDal>();
-            services.AddScoped<IEfEntityRepository<ProductImage>, ProductImageDal>();
-            services.AddScoped<IEfEntityRepository<ProductVariant>, ProductVariantDal>();
-            services.AddScoped<IEfEntityRepository<Role>, RoleDal>();
-            services.AddScoped<IEfEntityRepository<RolePermission>, RolePermissionDal>();
-            services.AddScoped<IEfEntityRepository<SecurityLog>, SecurityLogDal>();
-            services.AddScoped<IEfEntityRepository<Slider>, SliderDal>();
-            services.AddScoped<IEfEntityRepository<SmtpOption>, SmtpOptionDal>();
-            services.AddScoped<IEfEntityRepository<SubCategory>, SubCategoryDal>();
-            services.AddScoped<IEfEntityRepository<User>, UserDal>();
-            services.AddScoped<IEfEntityRepository<UserLog>, UserLogDal>();
-            services.AddScoped<IEfEntityRepository<ProductSubCategory>, ProductSubCategoryDal>();
-            services.AddScoped<IEfEntityRepository<StockChange>, StockChangeDal>();
-            services.AddScoped<IEfEntityRepository<Supplier>, SupplierDal>();
-            services.AddScoped<IEfEntityRepository<ProductShowCase>, ProductShowCaseDal>();
-            services.AddScoped<IEfEntityRepository<ShowCaseImage>, ShowCaseImageDal>();
-            services.AddScoped<DbContext, EComDbContext>();
+            //services.AddScoped<IEntityRepository<Address>, AddressDal>();
+            //services.AddScoped<IEntityRepository<Admin>, AdminDal>();
+            //services.AddScoped<IEntityRepository<AdminLog>, AdminLogDal>();
+            //services.AddScoped<IEntityRepository<Announcement>, AnnouncementDal>();
+            //services.AddScoped<IEntityRepository<CargoOption>, CargoOptionDal>();
+            //services.AddScoped<IEntityRepository<Cart>, CartDal>();
+            //services.AddScoped<IEntityRepository<Category>, CategoryDAL>();
+            //services.AddScoped<IEntityRepository<CategoryDiscount>, CategoryDiscountDal>();
+            //services.AddScoped<IEntityRepository<Collection>, CollectionDal>();
+            //services.AddScoped<IEntityRepository<CollectionProduct>, CollectionProductDal>();
+            //services.AddScoped<IEntityRepository<CompanyInformation>, CompanyInformationDal>();
+            //services.AddScoped<IEntityRepository<DiscountCoupon>, DiscountCouponDal>();
+            //services.AddScoped<IEntityRepository<DiscountNotify>, DiscountNotifyDal>();
+            //services.AddScoped<IEntityRepository<EmailVerifyToken>, EmailVerifyTokenDal>();
+            //services.AddScoped<IEntityRepository<FavoriteProduct>, FavoriteProductDal>();
+            //services.AddScoped<IEntityRepository<Image>, ImageDal>();
+            //services.AddScoped<IEntityRepository<Option>, OptionDal>();
+            //services.AddScoped<IEntityRepository<Order>, OrderDal>();
+            //services.AddScoped<IEntityRepository<PasswordResetToken>, PasswordResetTokenDal>();
+            //services.AddScoped<IEntityRepository<PaymentOption>, PaymentOptionDal>();
+            //services.AddScoped<IEntityRepository<Permission>, PermissionDal>();
+            //services.AddScoped<IEntityRepository<Product>, ProductDal>();
+            //services.AddScoped<IEntityRepository<ProductComment>, ProductCommentDal>();
+            //services.AddScoped<IEntityRepository<ProductDetail>, ProductDetailDal>();
+            //services.AddScoped<IEntityRepository<ProductImage>, ProductImageDal>();
+            //services.AddScoped<IEntityRepository<ProductVariant>, ProductVariantDal>();
+            //services.AddScoped<IEntityRepository<Role>, RoleDal>();
+            //services.AddScoped<IEntityRepository<RolePermission>, RolePermissionDal>();
+            //services.AddScoped<IEntityRepository<SecurityLog>, SecurityLogDal>();
+            //services.AddScoped<IEntityRepository<Slider>, SliderDal>();
+            //services.AddScoped<IEntityRepository<SmtpOption>, SmtpOptionDal>();
+            //services.AddScoped<IEntityRepository<SubCategory>, SubCategoryDal>();
+            //services.AddScoped<IEntityRepository<User>, UserDal>();
+            //services.AddScoped<IEntityRepository<UserLog>, UserLogDal>();
+            //services.AddScoped<IEntityRepository<ProductSubCategory>, ProductSubCategoryDal>();
+            //services.AddScoped<IEntityRepository<StockChange>, StockChangeDal>();
+            //services.AddScoped<IEntityRepository<Supplier>, SupplierDal>();
+            //services.AddScoped<IEntityRepository<ProductShowCase>, ProductShowCaseDal>();
+            //services.AddScoped<IEntityRepository<ShowCaseImage>, ShowCaseImageDal>();
             return services;
         }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class Image : IEfEntity
+	public class Image : IEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

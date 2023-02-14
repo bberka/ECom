@@ -5,7 +5,6 @@ using ECom.Application.Services;
 using ECom.Application.Validators;
 using ECom.Domain.DTOs;
 using ECom.Domain.DTOs.UserDTOs;
-using ECom.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class CompanyInformation : IEfEntity
+	public class CompanyInformation : IEntity
 	{
 		[Key]
 		[JsonIgnore]

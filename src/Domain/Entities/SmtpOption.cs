@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class SmtpOption : IEfEntity
+    public class SmtpOption : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

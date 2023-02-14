@@ -4,27 +4,18 @@ namespace ECom.Application.Services
 {
     public class FavoriteProductService : IFavoriteProductService
     {
-        private readonly IEfEntityRepository<FavoriteProduct> _favoriteProductRepo;
-        private readonly IEfEntityRepository<Product> _productRepo;
-        private readonly IEfEntityRepository<ProductDetail> _productDetailRepo;
-        private readonly IEfEntityRepository<ProductImage> _productImageRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IProductService _productService;
         private readonly IUserService _userService;
 
         public FavoriteProductService(
-            IEfEntityRepository<FavoriteProduct> favoriteProductRepo,
-            IEfEntityRepository<Product> productRepo,
-            IEfEntityRepository<ProductDetail> productDetailRepo,
+            IUnitOfWork unitOfWork,
             IProductService productService,
-            IUserService userService, 
-            IEfEntityRepository<ProductImage> productImageRepo)
+            IUserService userService)
         {
-            this._favoriteProductRepo = favoriteProductRepo;
-            this._productRepo = productRepo;
-            this._productDetailRepo = productDetailRepo;
+            _unitOfWork = unitOfWork;
             this._productService = productService;
             this._userService = userService;
-            _productImageRepo = productImageRepo;
         }
 
         public Result AddProduct(int userId, int productId)
@@ -45,7 +36,8 @@ namespace ECom.Application.Services
                 ProductId = productId,
                 UserId = userId,
             };
-            var res =_favoriteProductRepo.Add(data);
+            _unitOfWork.FavoriteProductRepository.Add(data);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(3);
@@ -60,12 +52,13 @@ namespace ECom.Application.Services
             {
                 return DomainResult.User.NotFoundResult(1);
             }
-            var favProduct = _favoriteProductRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+            var favProduct = _unitOfWork.FavoriteProductRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
             if(favProduct is null)
             {
                 return DomainResult.FavoriteProduct.NotFoundResult(2);
             }
-            var res = _favoriteProductRepo.Delete(favProduct);
+            _unitOfWork.FavoriteProductRepository.Delete(favProduct);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(3);
@@ -76,7 +69,7 @@ namespace ECom.Application.Services
 
         public List<FavoriteProduct> GetFavoriteProducts(int userId, ushort page, string culture = ConstantMgr.DefaultCulture)
         {
-            return _favoriteProductRepo
+            return _unitOfWork.FavoriteProductRepository
                 .Get(x => x.UserId == userId)
                 .Include(x => x.Product)
                 .ThenInclude(x => x.ProductImages)

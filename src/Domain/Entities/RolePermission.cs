@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ECom.Domain.Entities
 {
     [PrimaryKey(nameof(RoleId),nameof(PermissionId))]
-    public class RolePermission : IEfEntity
+    public class RolePermission : IEntity
 	{
         [ForeignKey(nameof(Role))]
         public int RoleId { get; set; }

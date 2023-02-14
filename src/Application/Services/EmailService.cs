@@ -12,18 +12,13 @@ namespace ECom.Application.Services
 
 	public class EmailService : IEmailService
 	{
-		private readonly IEfEntityRepository<EmailVerifyToken> _emailVerifyTokenRepo;
-		private readonly IEfEntityRepository<PasswordResetToken> _passswordResetTokenRepo;
-		private readonly IOptionService _optionService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IOptionService _optionService;
 
-		public EmailService(
-			IEfEntityRepository<EmailVerifyToken> emailVerifyTokenRepo,
-			IEfEntityRepository<PasswordResetToken> passswordResetTokenRepo,
-			IOptionService optionService)
+		public EmailService(IUnitOfWork unitOfWork,IOptionService optionService)
 		{
-			this._emailVerifyTokenRepo = emailVerifyTokenRepo;
-			this._passswordResetTokenRepo = passswordResetTokenRepo;
-			this._optionService = optionService;
+            _unitOfWork = unitOfWork;
+            this._optionService = optionService;
 		}
 	}
 }

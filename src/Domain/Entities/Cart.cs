@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ECom.Domain.Entities
 {
     [PrimaryKey(nameof(UserId),nameof(ProductId))]
-    public class Cart : IEfEntity
+    public class Cart : IEntity
 	{
         public DateTime RegisterDate { get; set; } = DateTime.MaxValue;
         public DateTime LastUpdateDate { get; set; }

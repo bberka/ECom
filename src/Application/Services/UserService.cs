@@ -12,24 +12,25 @@ namespace ECom.Application.Services
 
     public class UserService : IUserService
 	{
-		private readonly IEfEntityRepository<User> _userRepo;
-		private readonly IOptionService _optionService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IOptionService _optionService;
 		private readonly IValidationService _validationService;
 
         public UserService(
-			IEfEntityRepository<User> userRepo,
+            IUnitOfWork unitOfWork,
 			IOptionService optionService,
 			IValidationService validationService)
 		{
-			this._userRepo = userRepo;
-			this._optionService = optionService;
+            _unitOfWork = unitOfWork;
+            this._optionService = optionService;
 			this._validationService = validationService;
         }
 		public Result Register(RegisterUserRequest model)
 		{
 			var user = model.ToUserEntity();
-			var res = _userRepo.Add(user);
-			if (!res)
+			_unitOfWork.UserRepository.Add(user);
+            var res = _unitOfWork.Save();
+            if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
 			}
@@ -68,7 +69,7 @@ namespace ECom.Application.Services
         }
 		public ResultData<User> GetUser(string email)
 		{
-			var user = _userRepo.GetFirstOrDefault(x => x.EmailAddress == email);
+			var user = _unitOfWork.UserRepository.GetFirstOrDefault(x => x.EmailAddress == email);
             if (user is null) return DomainResult.User.NotFoundResult(1);
             if (!user.IsValid) return DomainResult.User.NotValidResult(2);
             if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
@@ -76,7 +77,7 @@ namespace ECom.Application.Services
         }
         public ResultData<User> GetUser(int id)
 		{
-            var user = _userRepo.Find(id);
+            var user = _unitOfWork.UserRepository.Find(id);
             if (user is null) return DomainResult.User.NotFoundResult(1);
             if (user.IsValid == false) return DomainResult.User.NotValidResult(2);
             if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
@@ -86,7 +87,7 @@ namespace ECom.Application.Services
 
 		public bool Exists(string email)
 		{
-			return _userRepo.Any(x => x.EmailAddress == email);
+			return _unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
 		}
 
 
@@ -100,8 +101,9 @@ namespace ECom.Application.Services
                 return DomainResult.Base.PasswordWrongResult(1);
 			}
             user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
-			var res = _userRepo.Update(user);
-			if (!res)
+			_unitOfWork.UserRepository.Update(user);
+            var res = _unitOfWork.Save();
+            if (!res)
             {
                 return DomainResult.DbInternalErrorResult(2);
 			}
@@ -112,7 +114,7 @@ namespace ECom.Application.Services
         {
             var userId = model.AuthenticatedUserId;
             if (userId < 1) return DomainResult.User.NotFoundResult(1);
-            var user = _userRepo.Find(userId);
+            var user = _unitOfWork.UserRepository.Find(userId);
             if (user is null) return DomainResult.User.NotFoundResult(2);
             user.EmailAddress = model.EmailAddress;
             user.CitizenShipNumber = model.CitizenShipNumber;
@@ -120,14 +122,15 @@ namespace ECom.Application.Services
             user.TaxNumber = model.TaxNumber;
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
-            var res = _userRepo.Update(user);
+            _unitOfWork.UserRepository.Update(user);
+            var res = _unitOfWork.Save();
             if (!res) return DomainResult.DbInternalErrorResult(3);
             return DomainResult.User.UpdateSuccessResult();
         }
 
         public bool Exists(int id)
         {
-			return _userRepo.Any(x => x.Id == id);
+			return _unitOfWork.UserRepository.Any(x => x.Id == id);
         }
     }
 }

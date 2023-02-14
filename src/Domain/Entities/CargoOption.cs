@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class CargoOption : IEfEntity
+    public class CargoOption : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

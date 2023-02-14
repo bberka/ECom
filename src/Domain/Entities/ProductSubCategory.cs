@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ECom.Domain.Entities
 {
     [PrimaryKey(nameof(ProductId),nameof(SubCategoryId))]
-    public class ProductSubCategory : IEfEntity
+    public class ProductSubCategory : IEntity
     {
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }

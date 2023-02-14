@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-	public class Order : IEfEntity
+	public class Order : IEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

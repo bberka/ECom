@@ -2,7 +2,7 @@
 
 namespace ECom.Domain.Entities
 {
-    public class Announcement : IEfEntity
+    public class Announcement : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

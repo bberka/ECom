@@ -5,16 +5,16 @@ namespace ECom.Application.Services
 
 	public class AddressService : IAddressService
 	{
-		private readonly IEfEntityRepository<Address> _addressRepo;
-		private readonly IUserService _userService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 
 		public AddressService(
-			IEfEntityRepository<Address> addressRepo,
+			IUnitOfWork unitOfWork,
 			IUserService userService)
-		{
-			this._addressRepo = addressRepo;
-			this._userService = userService;
-		}
+        {
+            _unitOfWork = unitOfWork;
+            this._userService = userService;
+        }
 
 		
 		public Result DeleteAddress(int userId, int id)
@@ -34,17 +34,18 @@ namespace ECom.Application.Services
                 return DomainResult.Address.AlreadyDeletedResult(3);
             }
 			address.DeleteDate = DateTime.Now;
-			var res = _addressRepo.Update(address);	
+			_unitOfWork.AddressRepository.Update(address);
+            var res = _unitOfWork.Save();
 			if(!res)
             {
                 return DomainResult.DbInternalErrorResult(4);
             }
-			return Result.Success();
+            return DomainResult.Address.DeleteSuccessResult();
 		}
 
 		public List<Address> GetUserAddresses(int userId)
 		{
-			return _addressRepo.GetList(x => x.UserId == userId && !x.DeleteDate.HasValue);
+			return _unitOfWork.AddressRepository.GetList(x => x.UserId == userId && !x.DeleteDate.HasValue);
 		}
 
 		public Result UpdateAddress(int userId,Address data)
@@ -59,8 +60,8 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Address.DeletedResult(1);
             }
-            var res = _addressRepo.Update(data);
-            if (!res)
+            _unitOfWork.AddressRepository.Update(data);
+            if (!_unitOfWork.Save())
             {
                 return DomainResult.DbInternalErrorResult(2);
             }
@@ -69,18 +70,17 @@ namespace ECom.Application.Services
 
 		public Result AddAddress(int userId,Address address)
 		{
-			var res = _addressRepo.Add(address);
-			if (!res)
+			_unitOfWork.AddressRepository.Add(address);
+			if (!_unitOfWork.Save())
             {
                 return DomainResult.DbInternalErrorResult(1);
             }
-
             return DomainResult.Address.AddSuccessResult();
 		}
 
         public ResultData<Address> GetAddress(int addressId)
         {
-			var address = _addressRepo.Find(addressId);
+			var address = _unitOfWork.AddressRepository.Find(addressId);
             if (address is null) return DomainResult.Address.NotFoundResult(1);
             if(address.DeleteDate.HasValue) return DomainResult.Address.DeletedResult(2);
             return address;

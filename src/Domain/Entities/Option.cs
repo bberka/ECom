@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class Option : IEfEntity
+    public class Option : IEntity
 	{
         [Key]
         public bool IsRelease { get; set; } = true;

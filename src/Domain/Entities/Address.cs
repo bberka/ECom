@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ECom.Domain.Entities
 {
-    public class Address : IEfEntity
+    public class Address : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

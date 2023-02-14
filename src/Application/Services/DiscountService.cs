@@ -12,18 +12,11 @@ namespace ECom.Application.Services
 
 	public class DiscountService : IDiscountService
 	{
-		private readonly IEfEntityRepository<CategoryDiscount> _categoryDiscountRepo;
-		private readonly IEfEntityRepository<DiscountCoupon> _discountCouponRepo;
-		private readonly IEfEntityRepository<DiscountNotify> _discountNotifyRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-		public DiscountService(
-			IEfEntityRepository<CategoryDiscount> categoryDiscountRepo,
-			IEfEntityRepository<DiscountCoupon> discountCouponRepo,
-			IEfEntityRepository<DiscountNotify> discountNotifyRepo)
+        public DiscountService(IUnitOfWork unitOfWork)
 		{
-			this._categoryDiscountRepo = categoryDiscountRepo;
-			this._discountCouponRepo = discountCouponRepo;
-			this._discountNotifyRepo = discountNotifyRepo;
+            _unitOfWork = unitOfWork;
 		}
 	
 	}

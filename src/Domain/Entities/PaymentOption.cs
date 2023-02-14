@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.Entities
 {
-    public class PaymentOption : IEfEntity
+    public class PaymentOption : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

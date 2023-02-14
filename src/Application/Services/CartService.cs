@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECom.Domain.Results;
+﻿using ECom.Domain.Results;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace ECom.Application.Services
 {
 	public class CartService : ICartService
 	{
-		private readonly IEfEntityRepository<Cart> _cartRepo;
-		private readonly IUserService _userService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 		private readonly IProductService _productService;
 		public CartService(
-			IEfEntityRepository<Cart> cartRepo,
+			IUnitOfWork unitOfWork,
 			IUserService userService,
 			IProductService productService)
 		{
-			this._cartRepo = cartRepo;
-			this._userService = userService;
+            _unitOfWork = unitOfWork;
+            this._userService = userService;
 			this._productService = productService;
 		}
 		public Result AddOrIncreaseProduct(int userId, int productId)
@@ -36,15 +29,12 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Product.NotFoundResult(2);
 			}
-			var existing = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+			var existing = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (existing != null)
 			{
 				existing.Count++;
-				var updateResult = _cartRepo.Update(existing);
-                if (!updateResult)
-                {
-                    return DomainResult.DbInternalErrorResult(3);
-                }
+				_unitOfWork.CartRepository.Update(existing);
+                
             }
 			else
 			{
@@ -56,17 +46,20 @@ namespace ECom.Application.Services
 					UserId = (int)userId,
 					LastUpdateDate = DateTime.Now,
 				};
-				var addResult = _cartRepo.Add(newBasket);
-                if (!addResult)
-                {
-                    return DomainResult.DbInternalErrorResult(4);
-                }
+				_unitOfWork.CartRepository.Add(newBasket);
+                
             }
-			return DomainResult.Cart.AddProductSuccessResult();
+            var res = _unitOfWork.Save();
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(3);
+            }
+
+            return DomainResult.Cart.AddProductSuccessResult();
 		}
 		public Result RemoveOrDecreaseProduct(int userId, int productId)
 		{
-			var exist = _cartRepo.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+			var exist = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
 			if (exist is null)
             {
                 return DomainResult.Cart.NotFoundResult(1);
@@ -74,37 +67,38 @@ namespace ECom.Application.Services
 			if (exist.Count > 1)
 			{
 				exist.Count--;
-				var updateResult = _cartRepo.Update(exist);
-                if (!updateResult)
-                {
-                    return DomainResult.DbInternalErrorResult(2);
-                }
+				_unitOfWork.CartRepository.Update(exist);
             }
 			else
 			{
-				var deleteResult = _cartRepo.Delete(exist);
-                if (!deleteResult)
-                {
-                    return DomainResult.DbInternalErrorResult(3);
-                }
+				_unitOfWork.CartRepository.Delete(exist);
+                
             }
-		    return DomainResult.Cart.RemoveProductSuccessResult();
+
+            var res = _unitOfWork.Save();
+            if (!res)
+            {
+                return DomainResult.DbInternalErrorResult(2);
+            }
+
+            return DomainResult.Cart.RemoveProductSuccessResult();
 		}
 		public int GetBasketProductCount(int userId)
 		{
-			var count = _cartRepo.Count(x => x.UserId == userId);
-			return count;
+			return _unitOfWork.CartRepository.Count(x => x.UserId == userId);
 		}
 		public List<Cart> ListBasketProducts(int userId)
 		{
-			var list = _cartRepo.Get(x => x.UserId == userId).ToList();
-			return list ?? new();
+			return _unitOfWork.CartRepository.GetList(x => x.UserId == userId);
 		}
 
 		public Result Clear(int userId)
 		{
-			var res = _cartRepo.DeleteWhere(x => x.UserId == userId);
-            if (res == 0)
+
+			var list = _unitOfWork.CartRepository.GetList(x => x.UserId == userId);
+            _unitOfWork.CartRepository.DeleteRange(list);
+            var res = _unitOfWork.Save();
+            if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
             }

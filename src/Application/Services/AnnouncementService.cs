@@ -4,19 +4,20 @@ namespace ECom.Application.Services
 {
     public class AnnouncementService : IAnnouncementService
     {
-        private readonly IEfEntityRepository<Announcement> _announcementRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AnnouncementService(IEfEntityRepository<Announcement> announcementRepo)
+        public AnnouncementService(IUnitOfWork unitOfWork)
         {
-            this._announcementRepo = announcementRepo;
+            _unitOfWork = unitOfWork;
         }
         public Result UpdateAnnouncement(Announcement data)
         {
-            if (!_announcementRepo.Any(x => x.Id == data.Id))
+            if (!_unitOfWork.AnnouncementRepository.Any(x => x.Id == data.Id))
             {
                 return DomainResult.Announcement.NotFoundResult(1);
             }
-            var res = _announcementRepo.Update(data);
+            _unitOfWork.AnnouncementRepository.Update(data);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(2);
@@ -25,7 +26,8 @@ namespace ECom.Application.Services
         }
         public Result AddAnnouncement(Announcement data)
         {
-            var res = _announcementRepo.Add(data);
+            _unitOfWork.AnnouncementRepository.Add(data);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
@@ -34,11 +36,12 @@ namespace ECom.Application.Services
         }
         public Result DeleteAnnouncement(uint id)
         {
-            if (!_announcementRepo.Any(x => x.Id == id))
+            if (!_unitOfWork.AnnouncementRepository.Any(x => x.Id == id))
             {
                 return DomainResult.Announcement.NotFoundResult(1);
             }
-            var res = _announcementRepo.Delete((int)id);
+            _unitOfWork.AnnouncementRepository.Delete((int)id);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(2);
@@ -48,13 +51,14 @@ namespace ECom.Application.Services
         }
         public Result EnableOrDisable(uint id)
         {
-            var data = _announcementRepo.Find((int)id);
+            var data = _unitOfWork.AnnouncementRepository.Find((int)id);
             if (data is null)
             {
                 return DomainResult.Announcement.NotFoundResult(1);
             }
             data.IsValid = !data.IsValid;
-            var res = _announcementRepo.Update(data);
+            _unitOfWork.AnnouncementRepository.Update(data);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(2);
@@ -63,7 +67,7 @@ namespace ECom.Application.Services
         }
         public List<Announcement> ListAnnouncements()
         {
-            return _announcementRepo.GetList();
+            return _unitOfWork.AnnouncementRepository.GetList();
         }
     }
 }

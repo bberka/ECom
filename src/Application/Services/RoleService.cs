@@ -4,20 +4,16 @@ namespace ECom.Application.Services;
 
 public class RoleService : IRoleService
 {
-    private readonly IEfEntityRepository<Role> _roleRepo;
-    private readonly IEfEntityRepository<RolePermission> _rolePermissionRepo;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RoleService(
-        IEfEntityRepository<Role> roleRepo,
-        IEfEntityRepository<RolePermission> rolePermissionRepo)
+    public RoleService(IUnitOfWork unitOfWork)
     {
-        _roleRepo = roleRepo;
-        _rolePermissionRepo = rolePermissionRepo;
+        _unitOfWork = unitOfWork;
     }
 
     public List<Role> GetRolesWithPermissions()
     {
-        return _roleRepo
+        return _unitOfWork.RoleRepository
             .Get()
             .Include(x => x.Permissions)
             .ToList();
@@ -25,14 +21,14 @@ public class RoleService : IRoleService
 
     public ResultData<Role> GetRole(int roleId)
     {
-        var role = _roleRepo.Find(roleId);
+        var role = _unitOfWork.RoleRepository.Find(roleId);
         if (role is null) return DomainResult.Role.NotFoundResult(1);
         return role;
     }
 
     public ResultData<Role> GetRoleByName(string roleName)
     {
-        var role = _roleRepo.GetFirstOrDefault(x => x.Name == roleName);
+        var role = _unitOfWork.RoleRepository.GetFirstOrDefault(x => x.Name == roleName);
         if (role is null) return DomainResult.Role.NotFoundResult(1);
         return role;
     }
@@ -40,7 +36,7 @@ public class RoleService : IRoleService
 
     public List<Permission> GetRolePermissions(int roleId)
     {
-        var role = _roleRepo
+        var role = _unitOfWork.RoleRepository
             .Get(x => x.Id == roleId)
             .Include(x => x.Permissions)
             .FirstOrDefault();

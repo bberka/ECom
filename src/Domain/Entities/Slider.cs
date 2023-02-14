@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class Slider : IEfEntity
+    public class Slider : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,6 +26,7 @@ namespace ECom.Domain.Entities
         
         public int Order { get; set; }
 
+        [ForeignKey(nameof(Image))]
         public int ImageId { get; set; }
 
         [MinLength(2)]

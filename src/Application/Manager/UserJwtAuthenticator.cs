@@ -1,5 +1,4 @@
 ﻿using ECom.Domain.Entities;
-using ECom.Domain.Interfaces;
 using System.Security.Claims;
 using EasMe.Authorization;
 using ECom.Domain.DTOs.UserDTOs;

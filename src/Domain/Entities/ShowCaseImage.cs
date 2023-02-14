@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class ShowCaseImage : IEfEntity
+    public class ShowCaseImage : IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

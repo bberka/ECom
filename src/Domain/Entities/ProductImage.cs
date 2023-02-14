@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ECom.Domain.Entities
 {
     [PrimaryKey(nameof(ImageId),nameof(ProductId))]
-    public class ProductImage : IEfEntity
+    public class ProductImage : IEntity
 	{
         [ForeignKey(nameof(Image))]
         public int ImageId { get; set; }

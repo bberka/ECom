@@ -13,30 +13,32 @@ namespace ECom.Application.Services
 {
 	public class ImageService : IImageService
 	{
-        private readonly IEfEntityRepository<Image> _imageRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ImageService(
-			IEfEntityRepository<Image> imageRepo)
-		{
-            this._imageRepo = imageRepo;
+        public ImageService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
         }
 
         private const string DefaultImageBase64String = "";
         public ResultData<Image> GetImage(int id)
         {
-            var image= _imageRepo.Find(id);
+            var image= _unitOfWork.ImageRepository.Find(id);
             if (image is null) return DomainResult.Image.NotFoundResult(1);
             return image;
         }
 
         public string GetImageBase64String(int id)
         {
-            var image = _imageRepo.Find(id);
-            if (image is null)
+            var imageData = _unitOfWork.ImageRepository
+                .GetList(x => x.Id == id)
+                .Select(x => x.Data)
+                .FirstOrDefault();
+            if (imageData is null)
             {
                 return $"data:image/jpg;base64,{DefaultImageBase64String}";
             }
-            var imageBase64Data = Convert.ToBase64String(image.Data);
+            var imageBase64Data = Convert.ToBase64String(imageData);
             return $"data:image/jpg;base64,{imageBase64Data}";
         }
 
@@ -47,7 +49,8 @@ namespace ECom.Application.Services
             file.CopyTo(ms);
             img.Data = ms.ToArray();
             img.Name = file.FileName;
-            var res = _imageRepo.Add(img);
+            _unitOfWork.ImageRepository.Add(img);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace ECom.Domain.Entities
 {
-	public class Category : IEfEntity
+	public class Category : IEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

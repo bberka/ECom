@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class ProductVariant : IEfEntity
+    public class ProductVariant : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

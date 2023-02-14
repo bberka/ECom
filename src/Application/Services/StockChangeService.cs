@@ -5,16 +5,16 @@ namespace ECom.Application.Services;
 
 public class StockChangeService : IStockChangeService
 {
-    private readonly IEfEntityRepository<StockChange> _stockChangeRepo;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ISupplierService _supplierService;
     private readonly IProductService _productService;
 
     public StockChangeService(
-        IEfEntityRepository<StockChange> stockChangeRepo,
+        IUnitOfWork unitOfWork,
         ISupplierService supplierService,
         IProductService productService)
     {
-        _stockChangeRepo = stockChangeRepo;
+        _unitOfWork = unitOfWork;
         _supplierService = supplierService;
         _productService = productService;
     }
@@ -23,7 +23,7 @@ public class StockChangeService : IStockChangeService
         var productExist = _productService.Exists(model.ProductId);
         if (!productExist) return DomainResult.Product.NotFoundResult(1);
         var supplierExist = _supplierService.Exists(model.SupplierId);
-        if(!supplierExist) return DomainResult.Supplier.NotFoundResult(2);
+        if (!supplierExist) return DomainResult.Supplier.NotFoundResult(2);
         var stockChange = new StockChange()
         {
             ProductId = model.ProductId,
@@ -33,7 +33,8 @@ public class StockChangeService : IStockChangeService
             SupplierId = model.SupplierId,
             Type = model.Type,
         };
-        var res = _stockChangeRepo.Add(stockChange);
+        _unitOfWork.StockChangeRepository.Add(stockChange);
+        var res = _unitOfWork.Save();
         if (!res) return DomainResult.DbInternalErrorResult(3);
         return DomainResult.StockChange.AddSuccessResult();
     }

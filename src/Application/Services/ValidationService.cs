@@ -2,19 +2,16 @@
 {
 	public class ValidationService : IValidationService
 	{
-		private readonly IEfEntityRepository<User> _userRepo;
-		private readonly IEfEntityRepository<Admin> _adminRepo;
-		private readonly IOptionService _optionService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IOptionService _optionService;
 		private readonly Option _option;
 		public ValidationService(
-			IEfEntityRepository<User> userRepo,
-			IEfEntityRepository<Admin> adminRepo,
+            IUnitOfWork unitOfWork,
 			IOptionService optionService
 			)
 		{
-			this._userRepo = userRepo;
-			this._adminRepo = adminRepo;
-			this._optionService = optionService;
+            _unitOfWork = unitOfWork;
+            _optionService = optionService;
 			_option = _optionService.GetOptionFromCache();
 		}
 
@@ -25,12 +22,12 @@
 		}
 		public bool NotUsedEmail_Admin(string email)
 		{
-			return !_adminRepo.Any(x => x.EmailAddress == email);
+			return !_unitOfWork.AdminRepository.Any(x => x.EmailAddress == email);
 		}
 
 		public bool NotUsedEmail_User(string email)
 		{
-			return !_userRepo.Any(x => x.EmailAddress == email);
+			return !_unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
 		}
 
 		public bool NotHasSpecialChar(string password)

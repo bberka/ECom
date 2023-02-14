@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace ECom.Domain.Entities
 {
-    public class Admin : IEfEntity
+    public class Admin : IEntity
 	{
 
         [Key]

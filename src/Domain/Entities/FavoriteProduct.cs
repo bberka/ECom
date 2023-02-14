@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ECom.Domain.Entities
 {
     [PrimaryKey(nameof(UserId),nameof(ProductId))]
-    public class FavoriteProduct : IEfEntity
+    public class FavoriteProduct : IEntity
 	{
         public DateTime RegisterDate { get; set; } = DateTime.Now;
         public int UserId { get; set; }

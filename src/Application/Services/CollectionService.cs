@@ -6,36 +6,26 @@ namespace ECom.Application.Services
 
     public class CollectionService : ICollectionService
 	{
-		private readonly IEfEntityRepository<Collection> _collectionRepo;
-		private readonly IEfEntityRepository<CollectionProduct> _collectionProductRepo;
-        private readonly IUserService _userService;
-        private readonly IProductService _productService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CollectionService(
-			IEfEntityRepository<Collection> collectionRepo,
-			IEfEntityRepository<CollectionProduct> collectionProductRepo,
-			IUserService userService,
-			IProductService productService)
+        public CollectionService(IUnitOfWork unitOfWork)
 		{
-			this._collectionRepo = collectionRepo;
-			this._collectionProductRepo = collectionProductRepo;
-            this._userService = userService;
-            this._productService = productService;
+            _unitOfWork = unitOfWork;
         }
 
 		public Result CreateCollection(AddCollectionRequest model)
 		{
-			var createResult = _collectionRepo.Add(new Collection
+			_unitOfWork.CollectionRepository.Add(new Collection
 			{
 				RegisterDate = DateTime.Now,
 				UserId = model.AuthenticatedUserId,
 				Name = model.Name,
 			});
-			if (!createResult)
+            var res = _unitOfWork.Save();
+			if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
 			}
-
             return DomainResult.Collection.CreateSuccessResult();
 		}
 
@@ -46,16 +36,13 @@ namespace ECom.Application.Services
             {
                 return collectionResult.ToResult(10);
             }
-            var collectionProducts = _collectionProductRepo.GetList(x => x.CollectionId == collectionId);
+            var collectionProducts = _unitOfWork.CollectionProductRepository.GetList(x => x.CollectionId == collectionId);
             if (collectionProducts.Any())
             {
-                var collectionProductDeleteResult = _collectionProductRepo.DeleteRange(collectionProducts);
-                if (collectionProductDeleteResult == 0)
-                {
-                    return DomainResult.DbInternalErrorResult(2);
-                }
+                _unitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
             }
-			var res = _collectionRepo.Delete(collectionId);
+			_unitOfWork.CollectionRepository.Delete(collectionId);
+            var res = _unitOfWork.Save();
 			if (!res)
             {
                 return DomainResult.DbInternalErrorResult(3);
@@ -65,14 +52,14 @@ namespace ECom.Application.Services
 
         public ResultData<Collection> GetCollection(int id)
         {
-			var collection = _collectionRepo.Find(id);
+			var collection = _unitOfWork.CollectionRepository.Find(id);
 			if(collection is null) return DomainResult.Collection.NotFoundResult(1); 
             return collection;
         }
 
         public ResultData<Collection> GetCollection(int userId, int id)
         {
-            var collection = _collectionRepo.Find(id);
+            var collection = _unitOfWork.CollectionRepository.Find(id);
             if (collection is null) return DomainResult.Collection.NotFoundResult(1);
             if (collection.UserId == userId) return DomainResult.User.NotAuthorizedResult(2);
             return collection;
@@ -83,7 +70,7 @@ namespace ECom.Application.Services
         {
 			var collectionResult = GetCollection(userId,id);
 			if (collectionResult.IsFailure) return collectionResult.ToResult();
-			return _collectionProductRepo
+			return _unitOfWork.CollectionProductRepository
 				.Get(x => x.CollectionId == id)
                 .Include(x => x.Product)
                 .ThenInclude(x => x.ProductDetails)
@@ -92,7 +79,7 @@ namespace ECom.Application.Services
 
         public List<Collection> GetCollections(int userId)
         {
-			return _collectionRepo.GetList(x => x.UserId == userId);
+			return _unitOfWork.CollectionRepository.GetList(x => x.UserId == userId);
         }
 
         public Result UpdateCollection(UpdateCollectionRequest model)
@@ -100,13 +87,14 @@ namespace ECom.Application.Services
 			var collectionResult = GetCollection(model.AuthenticatedUserId,model.CollectionId);
 			if (collectionResult.IsFailure)
             {
-                return collectionResult.ToResult();
+                return collectionResult.ToResult(100);
 			}
             collectionResult.Data.Name = model.CollectionName;
-			var res = _collectionRepo.Update(collectionResult.Data);	
+			_unitOfWork.CollectionRepository.Update(collectionResult.Data);
+            var res = _unitOfWork.Save();
 			if(!res)
             {
-                return DomainResult.DbInternalErrorResult(1 * 10);
+                return DomainResult.DbInternalErrorResult(1);
             }
             return DomainResult.Collection.UpdateSuccessResult();
         }

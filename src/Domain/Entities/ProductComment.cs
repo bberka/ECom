@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.Entities
 {
-    public class ProductComment : IEfEntity
+    public class ProductComment : IEntity
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

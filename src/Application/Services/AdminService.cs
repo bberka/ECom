@@ -5,22 +5,16 @@ namespace ECom.Application.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IEfEntityRepository<Admin> _adminRepo;
-        private readonly IEfEntityRepository<RolePermission> _rolePermissionRepo;
-        private readonly IEfEntityRepository<Permission> _permissionRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IOptionService _optionService;
         private readonly IValidationService _validationService;
 
         public AdminService(
-            IEfEntityRepository<Admin> adminRepo,
-            IEfEntityRepository<RolePermission> rolePermissionRepo,
-            IEfEntityRepository<Permission> permissionRepo,
+            IUnitOfWork unitOfWork,
             IOptionService optionService,
             IValidationService validationService)
         {
-            this._adminRepo = adminRepo;
-            this._rolePermissionRepo = rolePermissionRepo;
-            this._permissionRepo = permissionRepo;
+            _unitOfWork = unitOfWork;
             this._optionService = optionService;
             _validationService = validationService;
         }
@@ -30,7 +24,7 @@ namespace ECom.Application.Services
     
         public ResultData<Admin> GetAdmin(string email)
         {
-            var admin = _adminRepo
+            var admin = _unitOfWork.AdminRepository
                 .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
@@ -43,7 +37,7 @@ namespace ECom.Application.Services
         }
         public ResultData<Admin> GetAdmin(int id)
         {
-            var admin = _adminRepo
+            var admin = _unitOfWork.AdminRepository
                 .Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
@@ -59,40 +53,41 @@ namespace ECom.Application.Services
             var isValid = IsValidPermission(permissionId);
             if(!isValid) return false;
            
-            var roleId = _adminRepo
+            var roleId = _unitOfWork.AdminRepository
                 .Get(x => x.Id == adminId && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
                 .Select(x => x.RoleId)
                 .FirstOrDefault(0);
             if (roleId == 0) return false;
-            return _rolePermissionRepo.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
+            return _unitOfWork.RolePermissionRepository.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
         }
 
        
 
         public bool IsValidAdminAccount(int id)
         {
-            return _adminRepo.Any(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true);
+            return _unitOfWork.AdminRepository.Any(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true);
         }
 
         public bool Exists(int id)
         {
-            return _adminRepo.Any(x => x.Id == id);
+            return _unitOfWork.AdminRepository.Any(x => x.Id == id);
         }
 
         public bool Exists(string email)
         {
-            return _adminRepo.Any(x => x.EmailAddress == email);
+            return _unitOfWork.AdminRepository.Any(x => x.EmailAddress == email);
         }
 
         public List<Admin> GetAdmins()
         {
-            return _adminRepo.GetList();
+            return _unitOfWork.AdminRepository.GetList();
         }
 
         public Result AddAdmin(AddAdminRequest admin)
         {
-            var res = _adminRepo.Add(admin.ToAdminEntity());
+            _unitOfWork.AdminRepository.Add(admin.ToAdminEntity());
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
@@ -103,7 +98,7 @@ namespace ECom.Application.Services
 
         public int GetAdminRoleId(int adminId)
         {
-            return _adminRepo
+            return _unitOfWork.AdminRepository
                 .Get(x => x.Id == adminId && x.IsValid == true && !x.DeletedDate.HasValue)
                 .Select(x => x.RoleId)
                 .FirstOrDefault(0);
@@ -113,7 +108,7 @@ namespace ECom.Application.Services
 
         public Result ChangePassword(ChangePasswordRequest model)
         {
-            var admin = _adminRepo.Find(model.AuthenticatedAdminId);
+            var admin = _unitOfWork.AdminRepository.Find(model.AuthenticatedAdminId);
             if(admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
@@ -123,7 +118,8 @@ namespace ECom.Application.Services
                 return DomainResult.Base.PasswordWrongResult(2);
             }
             admin.Password = model.EncryptedNewPassword;
-            var res = _adminRepo.Update(admin);
+            _unitOfWork.AdminRepository.Update(admin);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(3);
@@ -133,7 +129,7 @@ namespace ECom.Application.Services
 
         public ResultData<AdminDto> Login(LoginRequest model)
         {
-            var adminResult = _adminRepo
+            var adminResult = _unitOfWork.AdminRepository
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
@@ -171,22 +167,22 @@ namespace ECom.Application.Services
 
         public List<Permission> GetValidPermissions()
         {
-            return _permissionRepo.GetList(x => x.IsValid == true);
+            return _unitOfWork.PermissionRepository.GetList(x => x.IsValid == true);
         }
 
         public List<Permission> GetInvalidPermissions()
         {
-            return _permissionRepo.GetList(x => x.IsValid == false);
+            return _unitOfWork.PermissionRepository.GetList(x => x.IsValid == false);
         }
 
         public bool IsValidPermission(int permissionId)
         {
-            return _permissionRepo.Any(x => x.IsValid == true && x.Id == permissionId);
+            return _unitOfWork.PermissionRepository.Any(x => x.IsValid == true && x.Id == permissionId);
         }
 
         public List<Admin> ListOtherAdmins(int adminId)
         {
-            return _adminRepo
+            return _unitOfWork.AdminRepository
                 .Get(x => x.Id != adminId)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
@@ -196,25 +192,24 @@ namespace ECom.Application.Services
         public Result EnableOrDisableAdmin(int authorAdminId, int adminId)
         {
             //TODO: maybe check admin permissions here as well
-            var admin = _adminRepo.Find(adminId);
+            var admin = _unitOfWork.AdminRepository.Find(adminId);
             if (admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
             }
             admin.IsValid = !admin.IsValid;
-            var res = _adminRepo.Update(admin);
+            _unitOfWork.AdminRepository.Update(admin);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(2);
             }
-
             return DomainResult.Admin.UpdateSuccessResult();
         }
 
         public Result DeleteAdmin(int authorAdminId, int adminId)
         {
-            //TODO: maybe check admin permissions here as well
-            var admin = _adminRepo.Find(adminId);
+            var admin = _unitOfWork.AdminRepository.Find(adminId);
             if (admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
@@ -225,7 +220,8 @@ namespace ECom.Application.Services
                 return DomainResult.Admin.DeletedResult(2);
             }
             admin.DeletedDate = DateTime.Now;
-            var res = _adminRepo.Update(admin);
+            _unitOfWork.AdminRepository.Update(admin);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(2);

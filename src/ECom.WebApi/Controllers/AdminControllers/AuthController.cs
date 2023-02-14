@@ -8,7 +8,6 @@ using EasMe.Authorization.Filters;
 using EasMe.Logging;
 using ECom.Application.Services;
 using ECom.Domain.Constants;
-using ECom.Domain.Interfaces;
 using Ninject.Modules;
 using ECom.Domain.DTOs.AdminDTOs;
 using ECom.Domain.DTOs;

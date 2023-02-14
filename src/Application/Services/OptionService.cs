@@ -7,29 +7,18 @@ namespace ECom.Application.Services
 {
 	public class OptionService : IOptionService
 	{
-		const byte CACHE_REFRESH_INTERVAL_MINS = 1;
+        private readonly IUnitOfWork _unitOfWork;
+        const byte CACHE_REFRESH_INTERVAL_MINS = 1;
 
 		private readonly EasCache<Option> OptionCache;
 		private readonly EasCache<List<CargoOption>> CargoOptionCache;
 		private readonly EasCache<List<SmtpOption>> SmtpOptionCache;
 		private readonly EasCache<List<PaymentOption>> PaymentOptionCache;
 
-		private readonly IEfEntityRepository<Option> _optionRepo;
-		private readonly IEfEntityRepository<SmtpOption> _smtpOptionRepo;
-		private readonly IEfEntityRepository<CargoOption> _cargoOptionRepo;
-		private readonly IEfEntityRepository<PaymentOption> _paymentOptionRepo;
 
-		public OptionService(
-			IEfEntityRepository<Option> optionRepo,
-			IEfEntityRepository<SmtpOption> smtpOptionRepo,
-			IEfEntityRepository<CargoOption> cargoOptionRepo,
-			IEfEntityRepository<PaymentOption> paymentOptionRepo)
+		public OptionService(IUnitOfWork unitOfWork)
 		{
-			this._optionRepo = optionRepo;
-			this._smtpOptionRepo = smtpOptionRepo;
-			this._cargoOptionRepo = cargoOptionRepo;
-			this._paymentOptionRepo = paymentOptionRepo;
-
+            _unitOfWork = unitOfWork;
 			OptionCache = new(GetOption, CACHE_REFRESH_INTERVAL_MINS);
 			CargoOptionCache = new(ListCargoOptions, CACHE_REFRESH_INTERVAL_MINS);
 			SmtpOptionCache = new(ListSmtpOptions, CACHE_REFRESH_INTERVAL_MINS);
@@ -41,7 +30,8 @@ namespace ECom.Application.Services
 
 		public Result UpdateOption(Option option)
 		{
-			var res = _optionRepo.Update(option);
+			_unitOfWork.OptionRepository.Update(option);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
@@ -52,17 +42,19 @@ namespace ECom.Application.Services
        
         public Result UpdateCargoOption(CargoOption option)
 		{
-			var res = _cargoOptionRepo.Update(option);
+			_unitOfWork.CargoOptionRepository.Update(option);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
             }
-			CargoOptionCache.Refresh();
+            CargoOptionCache.Refresh();
             return DomainResult.CargoOption.UpdateSuccessResult();
         }
         public Result UpdatePaymentOption(PaymentOption option)
 		{
-			var res = _paymentOptionRepo.Update(option);
+			_unitOfWork.PaymentOptionRepository.Update(option);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
@@ -72,7 +64,8 @@ namespace ECom.Application.Services
 		}
 		public Result UpdateSmtpOption(SmtpOption option)
 		{
-			var res = _smtpOptionRepo.Update(option);
+			_unitOfWork.SmtpOptionRepository.Update(option);
+            var res = _unitOfWork.Save();
             if (!res)
             {
                 return DomainResult.DbInternalErrorResult(1);
@@ -85,12 +78,7 @@ namespace ECom.Application.Services
 
         public Option GetOption()
 		{
-
-#if DEBUG
-            var option = _optionRepo.GetFirstOrDefault(x => x.IsRelease == false);
-#else
-            var option = _optionRepo.GetFirstOrDefault(x => x.IsRelease == true);
-#endif
+            var option = _unitOfWork.OptionRepository.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDebug());
             if (option is null) throw new NotFoundException(nameof(Option));
             return option;
         }
@@ -98,16 +86,16 @@ namespace ECom.Application.Services
 
         public List<CargoOption> ListCargoOptions()
 		{
-			return _cargoOptionRepo.GetList(x => x.IsValid == true);
+			return _unitOfWork.CargoOptionRepository.GetList(x => x.IsValid == true);
 		}
 
 		public List<PaymentOption> ListPaymentOptions()
 		{
-			return _paymentOptionRepo.GetList(x => x.IsValid == true);
+			return _unitOfWork.PaymentOptionRepository.GetList(x => x.IsValid == true);
 		}
 		public List<SmtpOption> ListSmtpOptions()
 		{
-			return _smtpOptionRepo.GetList(x => x.IsValid == true);
+			return _unitOfWork.SmtpOptionRepository.GetList(x => x.IsValid == true);
 		}
 
 		public void RefreshCache()

@@ -12,7 +12,6 @@ global using ECom.Domain.Constants;
 global using ECom.Domain.DTOs;
 global using ECom.Domain.Entities;
 global using ECom.Domain.Exceptions;
-global using ECom.Domain.Interfaces;
 global using ECom.Domain.ValueObjects;
 global using ECom.Infrastructure;
 global using FluentValidation;

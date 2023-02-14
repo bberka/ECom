@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ECom.Domain.Entities
 {
     [PrimaryKey(nameof(UserId),nameof(ProductId))]
-    public class DiscountNotify : IEfEntity
+    public class DiscountNotify : IEntity
 	{
         public int UserId { get; set; }
         public int ProductId { get; set; }

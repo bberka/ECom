@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECom.Domain.Entities
 {
-    public class Supplier : IEfEntity
+    public class Supplier : IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

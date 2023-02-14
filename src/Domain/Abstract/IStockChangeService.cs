@@ -1,6 +1,7 @@
 ﻿using ECom.Domain.DTOs.StockChangeDTOs;
 
-namespace ECom.Domain.Abstract;
+namespace ECom.Domain.Abstract
+{
 
 public interface IStockChangeService
 {
@@ -12,4 +13,5 @@ public interface IStockChangeService
     ResultData<List<StockChange>> GetProductStockChanges(int productId);
     ResultData<List<StockChange>> GetSupplierStockChanges(int supplierId);
 
+}
 }

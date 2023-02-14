@@ -1,11 +1,13 @@
-﻿namespace ECom.Domain.Abstract;
-
-public interface IRoleService
+﻿namespace ECom.Domain.Abstract
 {
-    List<Role> GetRolesWithPermissions();
 
-    ResultData<Role> GetRole(int roleId);
+    public interface IRoleService
+    {
+        List<Role> GetRolesWithPermissions();
 
-    ResultData<Role> GetRoleByName(string roleName);
-    List<Permission> GetRolePermissions(int roleId); 
- }
+        ResultData<Role> GetRole(int roleId);
+
+        ResultData<Role> GetRoleByName(string roleName);
+        List<Permission> GetRolePermissions(int roleId);
+    }
+}

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace ECom.Domain.Entities
 {
-	public class SubCategory : IEfEntity
+	public class SubCategory : IEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,7 +18,5 @@ namespace ECom.Domain.Entities
 		public string Name { get; set; }
 
 		public int CategoryId { get; set; }
-
-
 	}
 }

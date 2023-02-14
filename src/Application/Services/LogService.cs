@@ -17,18 +17,11 @@ namespace ECom.Application.Services
 
 	public class LogService : ILogService
 	{
-		private readonly IEfEntityRepository<UserLog> _userLogRepo;
-		private readonly IEfEntityRepository<SecurityLog> _securityLogRepo;
-		private readonly IEfEntityRepository<AdminLog> _adminLogRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-		public LogService(
-			IEfEntityRepository<UserLog> userLogRepo,
-			IEfEntityRepository<SecurityLog> securityLogRepo,
-			IEfEntityRepository<AdminLog> adminLogRepo)
+        public LogService(IUnitOfWork unitOfWork)
 		{
-			this._userLogRepo = userLogRepo;
-			this._securityLogRepo = securityLogRepo;
-			this._adminLogRepo = adminLogRepo;
+            _unitOfWork = unitOfWork;
 		}
 
        
@@ -50,7 +43,12 @@ namespace ECom.Application.Services
                     QueryString = context?.Request.QueryString.ToString() ?? "-",
                     RequestUrl = context?.Request.GetDisplayUrl() ?? "-",
                 };
-                _securityLogRepo.Add(log);
+                _unitOfWork.SecurityLogRepository.Add(log);
+                var res = _unitOfWork.Save();
+                if (!res)
+                {
+                    //TODO File logging
+                }
             });
 
         }
@@ -77,7 +75,12 @@ namespace ECom.Application.Services
                     ErrorCode = result.ErrorCode,
                     Rv = result.Rv,
                 };
-                _adminLogRepo.Add(log);
+                _unitOfWork.AdminLogRepository.Add(log);
+                var res = _unitOfWork.Save();
+                if (!res)
+                {
+                    //TODO File logging
+                }
             });
             
         }
@@ -104,7 +107,12 @@ namespace ECom.Application.Services
                     ErrorCode = result.ErrorCode,
                     Rv = result.Rv,
                 };
-                _userLogRepo.Add(log);
+                _unitOfWork.UserLogRepository.Add(log);
+                var res = _unitOfWork.Save();
+                if (!res)
+                {
+                    //TODO File logging
+                }
             });
         }
     }
