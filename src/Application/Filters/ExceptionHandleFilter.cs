@@ -6,7 +6,7 @@ namespace ECom.Application.Filters
 {
     public class ExceptionHandleFilter : IExceptionFilter
     {
-        private static readonly EasLog logger = EasLogFactory.CreateLogger(nameof(ExceptionHandleFilter));
+        private static readonly IEasLog logger = EasLogFactory.CreateLogger();
 
         public void OnException(ExceptionContext context)
         {

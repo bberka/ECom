@@ -7,7 +7,7 @@ namespace ECom.WebApi.Middlewares
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly EasLog logger = EasLogFactory.CreateLogger(nameof(LoggingMiddleware));
+        private readonly IEasLog logger = EasLogFactory.CreateLogger();
         public LoggingMiddleware(RequestDelegate next)
         {
             _next = next;

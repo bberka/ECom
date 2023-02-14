@@ -11,26 +11,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static ECom.Domain.Results.DomainResult;
+using Action = System.Action;
 
 namespace ECom.Application.Services
 {
 
 	public class LogService : ILogService
 	{
-        private readonly IUnitOfWork _unitOfWork;
 
-        public LogService(IUnitOfWork unitOfWork)
-		{
-            _unitOfWork = unitOfWork;
-		}
+        private static readonly EasTask EasTask = new();
 
-       
         public void SecurityLog(LogSeverity severity, params string[] parameters)
         {
             var context = HttpContextHelper.Current;
             var data = context.GetNecessaryRequestData();
-            Task.Run(() =>
+            var action = new Action(() =>
             {
+                var unitOfWork = new UnitOfWork();
                 var log = new SecurityLog
                 {
                     Params = string.Join("|", parameters),
@@ -43,22 +40,23 @@ namespace ECom.Application.Services
                     QueryString = context?.Request.QueryString.ToString() ?? "-",
                     RequestUrl = context?.Request.GetDisplayUrl() ?? "-",
                 };
-                _unitOfWork.SecurityLogRepository.Add(log);
-                var res = _unitOfWork.Save();
+                unitOfWork.SecurityLogRepository.Add(log);
+                var res = unitOfWork.Save();
                 if (!res)
                 {
                     //TODO File logging
                 }
             });
-
+            EasTask.AddToQueue(action);
         }
 
  
         public void AdminLog(Result result, int? adminId, string operationName, params object[] parameters)
         {
-            var context = HttpContextHelper.Current.GetNecessaryRequestData();
-            Task.Run(() =>
+            var data = HttpContextHelper.Current.GetNecessaryRequestData();
+            var action = new Action(() =>
             {
+                var unitOfWork = new UnitOfWork();
                 var log = new AdminLog()
                 {
 
@@ -66,31 +64,32 @@ namespace ECom.Application.Services
                     OperationName = operationName,
                     RegisterDate = DateTime.Now,
                     Severity = (int)result.Severity,
-                    CFConnecting_IpAddress = context?.CFConnectingIpAddress,
-                    RemoteIpAddress = context?.RemoteIpAddress ?? "-",
-                    XReal_IpAddress = context?.XRealIpAddress,
-                    UserAgent = context?.UserAgent ?? "-",
+                    CFConnecting_IpAddress = data?.CFConnectingIpAddress,
+                    RemoteIpAddress = data?.RemoteIpAddress ?? "-",
+                    XReal_IpAddress = data?.XRealIpAddress,
+                    UserAgent = data?.UserAgent ?? "-",
                     Params = string.Join("|", parameters),
                     ResultErrors = string.Join("|", result.Errors),
                     ErrorCode = result.ErrorCode,
                     Rv = result.Rv,
                 };
-                _unitOfWork.AdminLogRepository.Add(log);
-                var res = _unitOfWork.Save();
+                unitOfWork.AdminLogRepository.Add(log);
+                var res = unitOfWork.Save();
                 if (!res)
                 {
                     //TODO File logging
                 }
             });
-            
+            EasTask.AddToQueue(action);
         }
 
         public void UserLog(Result result, int? userId, string operationName, params object[] parameters)
         {
 
             var context = HttpContextHelper.Current.GetNecessaryRequestData();
-            Task.Run(() =>
+            var action = new Action(() =>
             {
+                var unitOfWork = new UnitOfWork();
                 var log = new UserLog
                 {
                     
@@ -107,13 +106,14 @@ namespace ECom.Application.Services
                     ErrorCode = result.ErrorCode,
                     Rv = result.Rv,
                 };
-                _unitOfWork.UserLogRepository.Add(log);
-                var res = _unitOfWork.Save();
+                unitOfWork.UserLogRepository.Add(log);
+                var res = unitOfWork.Save();
                 if (!res)
                 {
                     //TODO File logging
                 }
             });
+            EasTask.AddToQueue(action);
         }
     }
 }

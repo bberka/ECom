@@ -5,7 +5,7 @@ using ECom.Domain.Lib;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
 
-EasLogFactory.LoadConfig_TraceDefault(true);
+EasLogFactory.ConfigureTraceDefault(true);
 
 var builder = WebApplication.CreateBuilder(args);
 AppDomain.CurrentDomain.AddUnexpectedExceptionHandling();

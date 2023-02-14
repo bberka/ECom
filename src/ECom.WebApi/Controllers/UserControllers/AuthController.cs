@@ -34,7 +34,8 @@ namespace ECom.WebApi.Controllers.UserControllers
 		public ActionResult<ResultData<UserLoginResponse>> Login([FromBody] LoginRequest model)
 		{
             var res = _userJwtAuthenticator.Authenticate(model);
-			_logService.UserLog(res.ToResult(),null,"Auth.Login",model.EmailAddress,model.EncryptedPassword);
+            var userId = res.Data?.User.Id;
+			_logService.UserLog(res.ToResult(), userId, "Auth.Login",model.EmailAddress,model.EncryptedPassword);
             return res.WithoutRv();
         }
 
