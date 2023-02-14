@@ -15,7 +15,7 @@ namespace ECom.Infrastructure
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(RoleConfiguration).Assembly);
 
  
 
@@ -32,7 +32,7 @@ namespace ECom.Infrastructure
             //{
             //    context.Database.Migrate();
             //}
-            if (!created) return;
+            //if (!created) return;
             BaseDbFiller.Run();
         }
         public DbSet<Image> Images { get; set; }
@@ -42,7 +42,7 @@ namespace ECom.Infrastructure
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
+        //public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
 
@@ -72,7 +72,6 @@ namespace ECom.Infrastructure
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-        public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Role> Roles { get; set; }
 
 

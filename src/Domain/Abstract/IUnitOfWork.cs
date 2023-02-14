@@ -35,12 +35,12 @@ namespace ECom.Domain.Abstract
         IEntityRepository<Product> ProductRepository { get; }
         IEntityRepository<ProductComment> ProductCommentRepository { get; }
         IEntityRepository<ProductDetail> ProductDetailRepository { get; }
-        IEntityRepository<ProductImage> ProductImageRepository { get; }
+        //IEntityRepository<ProductImage> ProductImageRepository { get; }
         IEntityRepository<ProductShowCase> ProductShowCaseRepository { get; }
         IEntityRepository<ProductSubCategory> ProductSubCategoryRepository { get; }
         IEntityRepository<ProductVariant> ProductVariantRepository { get; }
         IEntityRepository<Role> RoleRepository { get; }
-        IEntityRepository<RolePermission> RolePermissionRepository { get; }
+        //IEntityRepository<PermissionRole> RolePermissionRepository { get; }
         IEntityRepository<SecurityLog> SecurityLogRepository { get; }
         IEntityRepository<ShowCaseImage> ShowCaseImageRepository { get; }
         IEntityRepository<Slider> SliderRepository { get; }

@@ -1,4 +1,5 @@
 ﻿using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.Lib;
 using ECom.Domain.Results;
 
 namespace ECom.Application.Services
@@ -48,19 +49,19 @@ namespace ECom.Application.Services
             if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
-        public bool HasPermission(int adminId, int permissionId)
-        {
-            var isValid = IsValidPermission(permissionId);
-            if(!isValid) return false;
+        //public bool HasPermission(int adminId, int permissionId)
+        //{
+        //    var isValid = IsValidPermission(permissionId);
+        //    if(!isValid) return false;
            
-            var roleId = _unitOfWork.AdminRepository
-                .Get(x => x.Id == adminId && !x.DeletedDate.HasValue && x.IsValid == true)
-                .Include(x => x.Role)
-                .Select(x => x.RoleId)
-                .FirstOrDefault(0);
-            if (roleId == 0) return false;
-            return _unitOfWork.RolePermissionRepository.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
-        }
+        //    var roleId = _unitOfWork.AdminRepository
+        //        .Get(x => x.Id == adminId && !x.DeletedDate.HasValue && x.IsValid == true)
+        //        .Include(x => x.Role)
+        //        .Select(x => x.RoleId)
+        //        .FirstOrDefault(0);
+        //    if (roleId == 0) return false;
+        //    return _unitOfWork.RolePermissionRepository.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
+        //}
 
        
 
@@ -133,17 +134,10 @@ namespace ECom.Application.Services
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
-                .Select(x =>new 
+                .Select(x => new 
                 {
                     x.Password,
-                    Admin = new AdminDto()
-                    {
-                        EmailAddress = x.EmailAddress,
-                        RoleName = x.Role.Name,
-                        TwoFactorType = x.TwoFactorType,
-                        Id = x.Id,
-                        Permissions = string.Join(",", x.Role.Permissions.Select(y => y.Name).ToList())
-                    }
+                    Admin = x
                 })
                 .FirstOrDefault();
             if (adminResult is null)
@@ -154,7 +148,7 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Admin.NotFoundResult(2);
             }
-            if (adminResult.Admin.Permissions.Length == 0)
+            if (adminResult.Admin.Role.Permissions.Count == 0)
             {
                 return DomainResult.Admin.NotHavePermissionResult(3);
             }
@@ -162,7 +156,8 @@ namespace ECom.Application.Services
             {
                 //TODO: two factor
             }
-            return adminResult.Admin;
+            
+            return AdminDto.FromEntity(adminResult.Admin);
         }
 
         public List<Permission> GetValidPermissions()

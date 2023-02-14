@@ -12,19 +12,19 @@ namespace ECom.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            var permEnumList = CommonLib.GetAdminOperationTypes();
-            var permList  = new List<Permission>();
-            for (int i = 1; i < permEnumList.Length; i++)
-            {
-                var str = permEnumList[i];
-                permList.Add(new Permission()
-                {
-                    Id = i,
-                    IsValid = true,
-                    Name = str
-                });
-            }
-            builder.HasData(permList);
+            //var permEnumList = CommonLib.GetAdminOperationTypes();
+            //var permList  = new List<Permission>();
+            //for (int i = 1; i < permEnumList.Length; i++)
+            //{
+            //    var str = permEnumList[i];
+            //    permList.Add(new Permission()
+            //    {
+            //        Id = i,
+            //        IsValid = true,
+            //        Name = str
+            //    });
+            //}
+            //builder.HasData(permList);
         }
     }
 }

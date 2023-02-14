@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20230213152032_test")]
-    partial class test
+    [Migration("20230214191056_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -538,8 +538,8 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Culture")
                         .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<byte[]>("Data")
                         .IsRequired()
@@ -547,9 +547,15 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Images");
                 });
@@ -748,12 +754,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Permissions");
 
@@ -1004,21 +1005,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductDetails");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ImageId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
                 {
                     b.Property<int>("Id")
@@ -1102,153 +1088,6 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsValid = true,
-                            Name = "Owner"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsValid = true,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsValid = true,
-                            Name = "Moderator"
-                        });
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.RolePermission", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("RolePermissions");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 9
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 10
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 11
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 12
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 13
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 14
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 15
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 16
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 17
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 18
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 19
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 20
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 21
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 22
-                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SecurityLog", b =>
@@ -1661,6 +1500,21 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("UserLogs");
                 });
 
+            modelBuilder.Entity("PermissionRole", b =>
+                {
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissionsId", "RolesId");
+
+                    b.HasIndex("RolesId");
+
+                    b.ToTable("PermissionRole");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", null)
@@ -1819,6 +1673,13 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.Image", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Product", null)
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.DiscountCoupon", "DiscountCoupon")
@@ -1857,13 +1718,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Role", null)
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.ProductVariant", "ProductVariant")
@@ -1899,15 +1753,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Product", null)
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
@@ -1917,23 +1762,6 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.RolePermission", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Permission", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECom.Domain.Entities.Role", null)
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ShowCaseImage", b =>
@@ -1999,6 +1827,21 @@ namespace ECom.Infrastructure.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("PermissionRole", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
                 {
                     b.Navigation("AdminLogs");
@@ -2011,20 +1854,13 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("ProductComments");
 
                     b.Navigation("ProductDetails");
 
-                    b.Navigation("ProductImages");
-
                     b.Navigation("StockChanges");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("Permissions");
-
-                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>

@@ -23,6 +23,8 @@ builder.Services.AddAuthorizationConfigured();
 builder.Services.AddDataBaseAccessServices();
 builder.Services.AddBusinessLogicServices();
 
+
+
 ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
 builder.Services.AddBusinessValidators();
 builder.Services.AddFluentValidationAutoValidation();

@@ -2,6 +2,7 @@
 
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using ECom.Domain.DTOs.AdminDTOs;
 
 namespace ECom.Domain.Entities
 {

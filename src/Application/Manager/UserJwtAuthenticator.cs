@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using EasMe.Authorization;
 using ECom.Domain.DTOs.UserDTOs;
+using static ECom.Domain.Results.DomainResult;
 
 namespace ECom.Application.Manager
 {
@@ -9,25 +10,32 @@ namespace ECom.Application.Manager
     public class UserJwtAuthenticator : IUserJwtAuthenticator
 	{
 		private readonly IUserService _userService;
-		private readonly IOptionService _optionService;
-		public readonly EasJWT _jwtManager;
+        private readonly IDebugService _debugService;
+        public readonly EasJWT _jwtManager;
 
-		public UserJwtAuthenticator(IUserService userService, IOptionService optionService)
+		public UserJwtAuthenticator(
+            IUserService userService, 
+            IDebugService debugService)
 		{
 			this._userService = userService;
-			this._optionService = optionService;
-			_jwtManager = new(JwtOption.This.Secret, JwtOption.This.Issuer, JwtOption.This.Audience);
+            _debugService = debugService;
+            _jwtManager = new(JwtOption.This.Secret, JwtOption.This.Issuer, JwtOption.This.Audience);
 		}
 
 
         public ResultData<UserLoginResponse> Authenticate(LoginRequest model)
         {
+#if DEBUG
+            var user = _debugService.GetUserDto();
+#else
             var loginResult = _userService.Login(model);
             if (!loginResult.IsSuccess)
             {
                 return Result.Error(loginResult.Rv, loginResult.ErrorCode);
             }
-            var userAsDic = loginResult.Data.AsDictionary();
+            var user = loginResult.Data;
+#endif
+            var userAsDic = user.AsDictionary();
             var remove = userAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
             foreach (var kvp in remove)
             {
@@ -45,7 +53,7 @@ namespace ECom.Application.Manager
             };
             return new UserLoginResponse
             {
-                User = loginResult.Data,
+                User = user,
                 Token = jwtTokenModel
             };
         }

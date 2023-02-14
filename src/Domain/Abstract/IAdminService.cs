@@ -15,7 +15,7 @@ namespace ECom.Domain.Abstract
         Result AddAdmin(AddAdminRequest admin);
         Result ChangePassword(ChangePasswordRequest model);
         int GetAdminRoleId(int adminId);
-        bool HasPermission(int adminId, int permissionId);
+        //bool HasPermission(int adminId, int permissionId);
         List<Permission> GetValidPermissions();
         List<Permission> GetInvalidPermissions();
         bool IsValidPermission(int permissionId);

@@ -33,6 +33,8 @@ namespace ECom.Application.DependencyResolvers
             services.AddScoped<IFavoriteProductService, FavoriteProductService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDebugService, DebugService>();
+
             return services;
         }
 

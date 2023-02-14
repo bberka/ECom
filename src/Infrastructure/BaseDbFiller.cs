@@ -10,10 +10,29 @@
             option.IsRelease = !ConstantMgr.IsDebug();
             context.Add(option);
             context.AddRange(_users);
+           
+            context.AddRange(_roles);
             context.AddRange(_admins);
             context.SaveChanges();
+            foreach (var role in _roles)
+            {
+                if (role.Id != 1) continue;
+                var permList = CommonLib.GetAdminOperationTypes();
+                role.Permissions = new();
+                for (int i = 1; i < permList.Length; i++)
+                {
+                    var name = permList[i];
+                    role.Permissions.Add(new Permission()
+                    {
+                        IsValid = true,
+                        Name = name,
+                    });
+                }
+            }
+            context.Update(_roles);
             context.AddRange(_companyInformations);
             context.SaveChanges();
+           
         }
         static readonly List<CompanyInformation> _companyInformations = new List<CompanyInformation>()
         {
@@ -78,7 +97,26 @@
                 LastName = "Resu"
             },
         };
-        static readonly List<Admin> _admins = new List<Admin>()
+        
+        private static List<Role> _roles = new()
+        {
+            new Role()
+            {
+                IsValid = true,
+                Name = "Owner",
+            },
+            new Role()
+            {
+                IsValid = true,
+                Name = "Admin",
+            },
+            new Role()
+            {
+                IsValid = true,
+                Name = "Moderator",
+            },
+        };
+            static readonly List<Admin> _admins = new List<Admin>()
         {
             new Admin()
             {

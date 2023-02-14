@@ -61,12 +61,12 @@ public class UnitOfWork : IUnitOfWork
         ProductRepository = new EntityRepositoryBase<Product,EComDbContext>(_dbContext);
         ProductCommentRepository = new EntityRepositoryBase<ProductComment,EComDbContext>(_dbContext);
         ProductDetailRepository = new EntityRepositoryBase<ProductDetail,EComDbContext>(_dbContext);
-        ProductImageRepository = new EntityRepositoryBase<ProductImage,EComDbContext>(_dbContext);
+        //ProductImageRepository = new EntityRepositoryBase<ProductImage,EComDbContext>(_dbContext);
         ProductShowCaseRepository = new EntityRepositoryBase<ProductShowCase, EComDbContext>(_dbContext);
         ProductSubCategoryRepository = new EntityRepositoryBase<ProductSubCategory, EComDbContext>(_dbContext);
         ProductVariantRepository = new EntityRepositoryBase<ProductVariant, EComDbContext>(_dbContext);
         RoleRepository = new EntityRepositoryBase<Role, EComDbContext>(_dbContext);
-        RolePermissionRepository = new EntityRepositoryBase<RolePermission, EComDbContext>(_dbContext);
+        //RolePermissionRepository = new EntityRepositoryBase<PermissionRole, EComDbContext>(_dbContext);
         SecurityLogRepository = new EntityRepositoryBase<SecurityLog, EComDbContext>(_dbContext);
         ShowCaseImageRepository = new EntityRepositoryBase<ShowCaseImage, EComDbContext>(_dbContext);
         SliderRepository = new EntityRepositoryBase<Slider, EComDbContext>(_dbContext);
@@ -102,12 +102,12 @@ public class UnitOfWork : IUnitOfWork
     public IEntityRepository<Product> ProductRepository { get; }
     public IEntityRepository<ProductComment> ProductCommentRepository { get; }
     public IEntityRepository<ProductDetail> ProductDetailRepository { get; }
-    public IEntityRepository<ProductImage> ProductImageRepository { get; }
+    //public IEntityRepository<ProductImage> ProductImageRepository { get; }
     public IEntityRepository<ProductShowCase> ProductShowCaseRepository { get; }
     public IEntityRepository<ProductSubCategory> ProductSubCategoryRepository { get; }
     public IEntityRepository<ProductVariant> ProductVariantRepository { get; }
     public IEntityRepository<Role> RoleRepository { get; }
-    public IEntityRepository<RolePermission> RolePermissionRepository { get; }
+    //public IEntityRepository<PermissionRole> RolePermissionRepository { get; }
     public IEntityRepository<SecurityLog> SecurityLogRepository { get; }
     public IEntityRepository<ShowCaseImage> ShowCaseImageRepository { get; }
     public IEntityRepository<Slider> SliderRepository { get; }

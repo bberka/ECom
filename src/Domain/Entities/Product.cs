@@ -16,7 +16,7 @@
 		//virtual
         public virtual ProductVariant? ProductVariant { get; set; }
         public virtual List<ProductComment> ProductComments { get; set; }
-		public virtual List<ProductImage> ProductImages { get; set; }
+		public virtual List<Image> Images { get; set; }
 		public virtual List<ProductDetail> ProductDetails { get; set; }
         public virtual double StarScore => ProductComments.Average(x => x.Star);
         public virtual List<StockChange> StockChanges { get; set; }

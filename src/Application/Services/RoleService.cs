@@ -34,7 +34,7 @@ public class RoleService : IRoleService
     }
 
 
-    public List<Permission> GetRolePermissions(int roleId)
+    public HashSet<Permission> GetRolePermissions(int roleId)
     {
         var role = _unitOfWork.RoleRepository
             .Get(x => x.Id == roleId)

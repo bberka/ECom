@@ -23,5 +23,7 @@ namespace ECom.Domain.Entities
 
 		public bool IsValid { get; set; }
 
+        public HashSet<Role> Roles { get; set; }
+
 	}
 }

@@ -72,7 +72,7 @@ namespace ECom.Application.Services
             return _unitOfWork.FavoriteProductRepository
                 .Get(x => x.UserId == userId)
                 .Include(x => x.Product)
-                .ThenInclude(x => x.ProductImages)
+                .ThenInclude(x => x.Images)
                 .ToList();
            
         }

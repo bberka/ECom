@@ -8,6 +8,6 @@
         ResultData<Role> GetRole(int roleId);
 
         ResultData<Role> GetRoleByName(string roleName);
-        List<Permission> GetRolePermissions(int roleId);
+        HashSet<Permission> GetRolePermissions(int roleId);
     }
 }

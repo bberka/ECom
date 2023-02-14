@@ -1,9 +1,4 @@
-﻿
-
-using EasMe;
-using ECom.Application.Validators;
-using ECom.Domain.DTOs.UserDTOs;
-using ECom.Domain.Extensions;
+﻿using ECom.Domain.DTOs.UserDTOs;
 using ECom.Domain.Results;
 
 namespace ECom.Application.Services
@@ -57,7 +52,7 @@ namespace ECom.Application.Services
             {
                 TwoFactorType = user.TwoFactorType,
                 Culture = user.Culture,
-                EmailPassword = user.EmailAddress,
+                EmailAddress = user.EmailAddress,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Id = user.Id,
