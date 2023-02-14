@@ -1,4 +1,5 @@
 ﻿using ECom.Domain.Abstract;
+using Ninject.Activation;
 
 namespace ECom.Infrastructure;
 
@@ -31,9 +32,10 @@ namespace ECom.Infrastructure;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly EComDbContext _dbContext;
-
+    private bool _disposed;
     public UnitOfWork()
     {
+        _disposed = false;
         _dbContext = new EComDbContext();
         AddressRepository = new EntityRepositoryBase<Address,EComDbContext>(_dbContext);
         AdminRepository = new EntityRepositoryBase<Admin, EComDbContext>(_dbContext);
@@ -119,16 +121,50 @@ public class UnitOfWork : IUnitOfWork
 
     public bool Save()
     {
-        return _dbContext.SaveChanges() > 0;
+        using var transaction = _dbContext.Database.BeginTransaction();
+        try
+        {
+            var affected = _dbContext.SaveChanges();
+            if (affected > 0)
+            {
+                transaction.Commit();
+                return true;
+            }
+           
+        }
+        catch (Exception ex)
+        {
+            //TODO Log Exception Handling message                      
+        }
+        transaction.Rollback();
+        return false;
     }
     public async Task<bool> SaveAsync()
     {
-        return await _dbContext.SaveChangesAsync() > 0;
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+        try
+        {
+            var affected = await _dbContext.SaveChangesAsync();
+            if (affected > 0)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            //TODO Log Exception Handling message                      
+        }
+        await transaction.RollbackAsync();
+        return false;
     }
 
     public void Dispose()
     {
+        if(_disposed) return;
         _dbContext.Dispose();
         GC.SuppressFinalize(this);
+        _disposed = true;
     }
 }
