@@ -21,7 +21,7 @@ public class RoleService : IRoleService
 
     public ResultData<Role> GetRole(int roleId)
     {
-        var role = _unitOfWork.RoleRepository.Find(roleId);
+        var role = _unitOfWork.RoleRepository.GetById(roleId);
         if (role is null) return DomainResult.Role.NotFoundResult(1);
         return role;
     }

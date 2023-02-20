@@ -9,3 +9,4 @@ global using System.Collections.Generic;
 global using EasMe.EntityFrameworkCore.V1;
 global using ECom.Domain.Abstract;
 global using Ninject.Activation;
+global using EasMe.EntityFrameworkCore.V2;

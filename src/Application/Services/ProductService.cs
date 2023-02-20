@@ -77,7 +77,7 @@ namespace ECom.Application.Services
                 UserId = model.AuthenticatedUserId,
                 Star = model.Star,
             };
-            _unitOfWork.ProductCommentRepository.Add(comment);
+            _unitOfWork.ProductCommentRepository.Insert(comment);
             var res = _unitOfWork.Save();
             if (!res) return DomainResult.DbInternalErrorResult(1);
             return DomainResult.ProductComment.AddSuccessResult(comment.Id);
@@ -119,30 +119,27 @@ namespace ECom.Application.Services
             if (page == 0) return new();
             var lastIdx = (int)(_option.PagingProductCount * (page - 1));
             return _unitOfWork.ProductRepository
-                .Get(x => !x.DeleteDate.HasValue && x.IsValid)
-                .OrderByDescending(x => x.RegisterDate)
-                .Skip(lastIdx)
-                .Take(_option.PagingProductCount)
-                .Include(x => x.ProductVariant)
-                .Include(x => x.Images)
-                .Include(x => x.ProductDetails)
-                //.Include(x => x.ProductComments)
-                //.ThenInclude(x => x.ProductCommentImages)
+                .GetPaging(page,
+                    _option.PagingProductCount,
+                    x => !x.DeleteDate.HasValue && x.IsValid,
+                    x => x.OrderByDescending(y => y.RegisterDate),
+                    x => x.ProductComments,
+                    x => x.ProductDetails,
+                    x => x.Images)
                 .ToList();
         }
         
         public List<Product> GetProducts(List<int> productIds, ushort page, string culture = ConstantMgr.DefaultCulture)
         {
-            var lastIdx = (int)(_option.PagingProductCount * (page));
-            return _unitOfWork.ProductRepository.Get(x => !x.DeleteDate.HasValue && x.IsValid && productIds.Contains(x.Id))
-                .OrderByDescending(x => x.RegisterDate)
-                .Skip(lastIdx)
-                .Take(_option.PagingProductCount)
-                .Include(x => x.ProductVariant)
-                .Include(x => x.Images)
-                .Include(x => x.ProductDetails)
-                //.Include(x => x.ProductComments)
-                //.ThenInclude(x => x.ProductCommentImages)
+            return _unitOfWork.ProductRepository
+                .GetPaging(page,
+                    _option.PagingProductCount,
+                    x => !x.DeleteDate.HasValue && x.IsValid && productIds.Contains(x.Id),
+                    x => x.OrderByDescending(y => y.RegisterDate),
+                    x => x.ProductComments,
+                    x => x.ProductDetails,
+                    x => x.Images)
+                .ToList()
                 .ToList();
         }
     }

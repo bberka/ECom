@@ -22,7 +22,7 @@ namespace ECom.Application.Services
 
         public ResultData<Slider> Get(int sliderId)
         {
-            var slider = _unitOfWork.SliderRepository.Find(sliderId);
+            var slider = _unitOfWork.SliderRepository.GetById(sliderId);
             if (slider is null) return DomainResult.Slider.NotFoundResult(1);
             if (slider.DeleteDate.HasValue) return DomainResult.Slider.DeletedResult(3);
             return slider;
@@ -30,7 +30,7 @@ namespace ECom.Application.Services
 
         public List<Slider> GetList()
         {
-            return _unitOfWork.SliderRepository.GetList(x => !x.DeleteDate.HasValue);
+            return _unitOfWork.SliderRepository.Get(x => !x.DeleteDate.HasValue).ToList();
         }
 
         public Result Update(Slider slider)
@@ -57,7 +57,7 @@ namespace ECom.Application.Services
 
         public Result Add(Slider slider)
         {
-            _unitOfWork.SliderRepository.Add(slider);
+            _unitOfWork.SliderRepository.Insert(slider);
             var res = _unitOfWork.Save();
             if (!res) return DomainResult.DbInternalErrorResult(1);
             return DomainResult.Slider.AddSuccessResult();

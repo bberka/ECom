@@ -46,7 +46,7 @@ namespace ECom.Application.Services
 
 		public List<Address> GetUserAddresses(int userId)
 		{
-			return _unitOfWork.AddressRepository.GetList(x => x.UserId == userId && !x.DeleteDate.HasValue);
+			return _unitOfWork.AddressRepository.Get(x => x.UserId == userId && !x.DeleteDate.HasValue).ToList();
 		}
 
 		public Result UpdateAddress(int userId,Address data)
@@ -71,7 +71,7 @@ namespace ECom.Application.Services
 
 		public Result AddAddress(int userId,Address address)
 		{
-			_unitOfWork.AddressRepository.Add(address);
+			_unitOfWork.AddressRepository.Insert(address);
 			if (!_unitOfWork.Save())
             {
                 return DomainResult.DbInternalErrorResult(1);
@@ -81,7 +81,7 @@ namespace ECom.Application.Services
 
         public ResultData<Address> GetAddress(int addressId)
         {
-			var address = _unitOfWork.AddressRepository.Find(addressId);
+			var address = _unitOfWork.AddressRepository.GetById(addressId);
             if (address is null) return DomainResult.Address.NotFoundResult(1);
             if(address.DeleteDate.HasValue) return DomainResult.Address.DeletedResult(2);
             return address;

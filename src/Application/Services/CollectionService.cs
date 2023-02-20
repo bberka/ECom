@@ -14,13 +14,14 @@ namespace ECom.Application.Services
         }
 
 		public Result CreateCollection(AddCollectionRequest model)
-		{
-			_unitOfWork.CollectionRepository.Add(new Collection
-			{
-				RegisterDate = DateTime.Now,
-				UserId = model.AuthenticatedUserId,
-				Name = model.Name,
-			});
+        {
+            var collection = new Collection
+            {
+                RegisterDate = DateTime.Now,
+                UserId = model.AuthenticatedUserId,
+                Name = model.Name,
+            };
+            _unitOfWork.CollectionRepository.Insert(collection);
             var res = _unitOfWork.Save();
 			if (!res)
             {
@@ -36,7 +37,7 @@ namespace ECom.Application.Services
             {
                 return collectionResult.ToResult(10);
             }
-            var collectionProducts = _unitOfWork.CollectionProductRepository.GetList(x => x.CollectionId == collectionId);
+            var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId);
             if (collectionProducts.Any())
             {
                 _unitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
@@ -52,14 +53,14 @@ namespace ECom.Application.Services
 
         public ResultData<Collection> GetCollection(int id)
         {
-			var collection = _unitOfWork.CollectionRepository.Find(id);
+			var collection = _unitOfWork.CollectionRepository.GetById(id);
 			if(collection is null) return DomainResult.Collection.NotFoundResult(1); 
             return collection;
         }
 
         public ResultData<Collection> GetCollection(int userId, int id)
         {
-            var collection = _unitOfWork.CollectionRepository.Find(id);
+            var collection = _unitOfWork.CollectionRepository.GetById(id);
             if (collection is null) return DomainResult.Collection.NotFoundResult(1);
             if (collection.UserId == userId) return DomainResult.User.NotAuthorizedResult(2);
             return collection;
@@ -71,15 +72,15 @@ namespace ECom.Application.Services
 			var collectionResult = GetCollection(userId,id);
 			if (collectionResult.IsFailure) return collectionResult.ToResult();
 			return _unitOfWork.CollectionProductRepository
-				.Get(x => x.CollectionId == id)
-                .Include(x => x.Product)
-                .ThenInclude(x => x.ProductDetails)
+				.Get(x => x.CollectionId == id, x=> x.Product)
+                //.Include(x => x.Product)
+                //.ThenInclude(x => x.ProductDetails)
 				.ToList();
         }
 
         public List<Collection> GetCollections(int userId)
         {
-			return _unitOfWork.CollectionRepository.GetList(x => x.UserId == userId);
+			return _unitOfWork.CollectionRepository.Get(x => x.UserId == userId).ToList();
         }
 
         public Result UpdateCollection(UpdateCollectionRequest model)

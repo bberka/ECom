@@ -46,7 +46,7 @@ namespace ECom.Application.Services
 					UserId = (int)userId,
 					LastUpdateDate = DateTime.Now,
 				};
-				_unitOfWork.CartRepository.Add(newBasket);
+				_unitOfWork.CartRepository.Insert(newBasket);
                 
             }
             var res = _unitOfWork.Save();
@@ -89,13 +89,13 @@ namespace ECom.Application.Services
 		}
 		public List<Cart> ListBasketProducts(int userId)
 		{
-			return _unitOfWork.CartRepository.GetList(x => x.UserId == userId);
+			return _unitOfWork.CartRepository.Get(x => x.UserId == userId).ToList();
 		}
 
 		public Result Clear(int userId)
 		{
 
-			var list = _unitOfWork.CartRepository.GetList(x => x.UserId == userId);
+			var list = _unitOfWork.CartRepository.Get(x => x.UserId == userId);
             _unitOfWork.CartRepository.DeleteRange(list);
             var res = _unitOfWork.Save();
             if (!res)

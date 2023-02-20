@@ -49,7 +49,7 @@ namespace ECom.Application.Services
 			{
                 _unitOfWork.CompanyInformationRepository.Delete(current);
 			}
-            _unitOfWork.CompanyInformationRepository.Add(info);
+            _unitOfWork.CompanyInformationRepository.Insert(info);
             var res = _unitOfWork.Save();
             if (!res)
             {

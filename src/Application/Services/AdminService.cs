@@ -26,9 +26,9 @@ namespace ECom.Application.Services
         public ResultData<Admin> GetAdmin(string email)
         {
             var admin = _unitOfWork.AdminRepository
-                .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true)
-                .Include(x => x.Role)
-                //.ThenInclude(x => x.Permissions)
+                .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true,
+                    null,
+                    x => x.Role)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
@@ -39,9 +39,9 @@ namespace ECom.Application.Services
         public ResultData<Admin> GetAdmin(int id)
         {
             var admin = _unitOfWork.AdminRepository
-                .Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true)
-                .Include(x => x.Role)
-                //.ThenInclude(x => x.Permissions)
+                .Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true,
+                    null,
+                    x => x.Role)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
@@ -82,12 +82,12 @@ namespace ECom.Application.Services
 
         public List<Admin> GetAdmins()
         {
-            return _unitOfWork.AdminRepository.GetList();
+            return _unitOfWork.AdminRepository.Get().ToList();
         }
 
         public Result AddAdmin(AddAdminRequest admin)
         {
-            _unitOfWork.AdminRepository.Add(admin.ToAdminEntity());
+            _unitOfWork.AdminRepository.Insert(admin.ToAdminEntity());
             var res = _unitOfWork.Save();
             if (!res)
             {
@@ -109,7 +109,7 @@ namespace ECom.Application.Services
 
         public Result ChangePassword(ChangePasswordRequest model)
         {
-            var admin = _unitOfWork.AdminRepository.Find(model.AuthenticatedAdminId);
+            var admin = _unitOfWork.AdminRepository.GetById(model.AuthenticatedAdminId);
             if(admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
@@ -131,10 +131,10 @@ namespace ECom.Application.Services
         public ResultData<AdminDto> Login(LoginRequest model)
         {
             var adminResult = _unitOfWork.AdminRepository
-                .Get(x => x.EmailAddress == model.EmailAddress)
-                .Include(x => x.Role)
-                .ThenInclude(x => x.PermissionRoles)
-                .ThenInclude(x => x.Permission)
+                .Get(x => x.EmailAddress == model.EmailAddress,
+                    x => x.Role)
+                //.ThenInclude(x => x.PermissionRoles)
+                //.ThenInclude(x => x.Permission)
                 .Select(x => new
                 {
                     x.Password,
@@ -172,12 +172,12 @@ namespace ECom.Application.Services
 
         public List<Permission> GetValidPermissions()
         {
-            return _unitOfWork.PermissionRepository.GetList(x => x.IsValid == true);
+            return _unitOfWork.PermissionRepository.Get(x => x.IsValid == true).ToList();
         }
 
         public List<Permission> GetInvalidPermissions()
         {
-            return _unitOfWork.PermissionRepository.GetList(x => x.IsValid == false);
+            return _unitOfWork.PermissionRepository.Get(x => x.IsValid == false).ToList();
         }
 
         public bool IsValidPermission(int permissionId)
@@ -188,16 +188,15 @@ namespace ECom.Application.Services
         public List<Admin> ListOtherAdmins(int adminId)
         {
             return _unitOfWork.AdminRepository
-                .Get(x => x.Id != adminId)
-                .Include(x => x.Role)
-                //.ThenInclude(x => x.Permissions)
+                .Get(x => x.Id != adminId,
+                    x => x.Role)
                 .ToList();
         }
 
         public Result EnableOrDisableAdmin(int authorAdminId, int adminId)
         {
             //TODO: maybe check admin permissions here as well
-            var admin = _unitOfWork.AdminRepository.Find(adminId);
+            var admin = _unitOfWork.AdminRepository.GetById(adminId);
             if (admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
@@ -214,7 +213,7 @@ namespace ECom.Application.Services
 
         public Result DeleteAdmin(int authorAdminId, int adminId)
         {
-            var admin = _unitOfWork.AdminRepository.Find(adminId);
+            var admin = _unitOfWork.AdminRepository.GetById(adminId);
             if (admin is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);

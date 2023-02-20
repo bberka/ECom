@@ -33,7 +33,7 @@ public class StockChangeService : IStockChangeService
             SupplierId = model.SupplierId,
             Type = model.Type,
         };
-        _unitOfWork.StockChangeRepository.Add(stockChange);
+        _unitOfWork.StockChangeRepository.Insert(stockChange);
         var res = _unitOfWork.Save();
         if (!res) return DomainResult.DbInternalErrorResult(3);
         return DomainResult.StockChange.AddSuccessResult();

@@ -40,7 +40,7 @@ namespace ECom.Application.Services
                     QueryString = context?.Request.QueryString.ToString() ?? "-",
                     RequestUrl = context?.Request.GetDisplayUrl() ?? "-",
                 };
-                unitOfWork.SecurityLogRepository.Add(log);
+                unitOfWork.SecurityLogRepository.Insert(log);
                 var res = unitOfWork.Save();
                 if (!res)
                 {
@@ -73,7 +73,7 @@ namespace ECom.Application.Services
                     ErrorCode = result.ErrorCode,
                     Rv = result.Rv,
                 };
-                unitOfWork.AdminLogRepository.Add(log);
+                unitOfWork.AdminLogRepository.Insert(log);
                 var res = unitOfWork.Save();
                 if (!res)
                 {
@@ -106,7 +106,7 @@ namespace ECom.Application.Services
                     ErrorCode = result.ErrorCode,
                     Rv = result.Rv,
                 };
-                unitOfWork.UserLogRepository.Add(log);
+                unitOfWork.UserLogRepository.Insert(log);
                 var res = unitOfWork.Save();
                 if (!res)
                 {

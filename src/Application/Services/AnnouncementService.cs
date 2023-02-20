@@ -26,7 +26,7 @@ namespace ECom.Application.Services
         }
         public Result AddAnnouncement(Announcement data)
         {
-            _unitOfWork.AnnouncementRepository.Add(data);
+            _unitOfWork.AnnouncementRepository.Insert(data);
             var res = _unitOfWork.Save();
             if (!res)
             {
@@ -51,7 +51,7 @@ namespace ECom.Application.Services
         }
         public Result EnableOrDisable(uint id)
         {
-            var data = _unitOfWork.AnnouncementRepository.Find((int)id);
+            var data = _unitOfWork.AnnouncementRepository.GetById((int)id);
             if (data is null)
             {
                 return DomainResult.Announcement.NotFoundResult(1);
@@ -67,7 +67,7 @@ namespace ECom.Application.Services
         }
         public List<Announcement> ListAnnouncements()
         {
-            return _unitOfWork.AnnouncementRepository.GetList();
+            return _unitOfWork.AnnouncementRepository.Get().ToList();
         }
     }
 }

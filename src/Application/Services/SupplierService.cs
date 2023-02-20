@@ -25,7 +25,7 @@ public class SupplierService : ISupplierService
 
     public ResultData<Supplier> Get(int id)
     {
-        var supplier = _unitOfWork.SupplierRepository.Find(id);
+        var supplier = _unitOfWork.SupplierRepository.GetById(id);
         if (supplier is null) return DomainResult.Supplier.NotFoundResult(1);
         return supplier;
     }
@@ -42,7 +42,7 @@ public class SupplierService : ISupplierService
 
     public Result Delete(int id)
     {
-        var supplier = _unitOfWork.SupplierRepository.Find(id);
+        var supplier = _unitOfWork.SupplierRepository.GetById(id);
         if (supplier is null) return DomainResult.Supplier.NotFoundResult(1);
         _unitOfWork.SupplierRepository.Delete(supplier);
         var res = _unitOfWork.Save();

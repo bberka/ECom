@@ -15,13 +15,13 @@ namespace ECom.Application.Services
         }
         public List<Category> ListCategories()
         {
-            return _unitOfWork.CategoryRepository.Get(x => x.IsValid == true)
-                .Include(x => x.SubCategories)
+            return _unitOfWork.CategoryRepository
+                .Get(x => x.IsValid == true,x => x.SubCategories)
                 .ToList();
         }
         public Result EnableOrDisableCategory(uint id)
         {
-            var category = _unitOfWork.CategoryRepository.Find((int)id);
+            var category = _unitOfWork.CategoryRepository.GetById((int)id);
             if (category == null) return DomainResult.Category.NotFoundResult(1);
             category.IsValid = !category.IsValid;
             _unitOfWork.CategoryRepository.Update(category);
@@ -54,7 +54,7 @@ namespace ECom.Application.Services
 
         public Result UpdateSubCategory(SubCategory model)
         {
-            var category = _unitOfWork.CategoryRepository.Find(model.CategoryId);
+            var category = _unitOfWork.CategoryRepository.GetById(model.CategoryId);
             if (category is null)
             {
                 return DomainResult.Category.NotFoundResult(1);
@@ -64,7 +64,7 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Category.NotValidResult(2);
             }
-            var subCategory = _unitOfWork.SubCategoryRepository.Find(model.Id);
+            var subCategory = _unitOfWork.SubCategoryRepository.GetById(model.Id);
             if (subCategory is null)
             {
                 return DomainResult.SubCategory.NotFoundResult(3);
@@ -84,7 +84,7 @@ namespace ECom.Application.Services
 
         public Result DeleteCategory(uint id)
         {
-            var category = _unitOfWork.CategoryRepository.Find((int)id);
+            var category = _unitOfWork.CategoryRepository.GetById((int)id);
             if (category is null)
             {
                 return DomainResult.Category.NotFoundResult(1);
@@ -101,7 +101,7 @@ namespace ECom.Application.Services
         }
         public Result EnableOrDisableSubCategory(uint id)
         {
-            var category = _unitOfWork.SubCategoryRepository.Find((int)id);
+            var category = _unitOfWork.SubCategoryRepository.GetById((int)id);
             if (category == null)
             {
                 return DomainResult.SubCategory.NotFoundResult(1);
@@ -117,7 +117,7 @@ namespace ECom.Application.Services
         }
         public Result DeleteSubCategory(uint id)
         {
-            var category = _unitOfWork.SubCategoryRepository.Find((int)id);
+            var category = _unitOfWork.SubCategoryRepository.GetById((int)id);
             if (category == null)
             {
                 return DomainResult.SubCategory.NotFoundResult(1);
@@ -139,7 +139,7 @@ namespace ECom.Application.Services
                 IsValid = true,
                 Name = model.Name,
             };
-            _unitOfWork.CategoryRepository.Add(category);
+            _unitOfWork.CategoryRepository.Insert(category);
             var res = _unitOfWork.Save();
             if (!res)
             {
@@ -161,7 +161,7 @@ namespace ECom.Application.Services
                 IsValid = true,
                 CategoryId = model.CategoryId,
             };
-            _unitOfWork.SubCategoryRepository.Add(subCategory);
+            _unitOfWork.SubCategoryRepository.Insert(subCategory);
             var res = _unitOfWork.Save();
             if (!res)
             {

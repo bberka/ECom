@@ -28,13 +28,19 @@
 
   <ItemGroup>
     <Reference Include="EasMe">
-      <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.dll</HintPath>
+      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.dll</HintPath>
+    </Reference>
+    <Reference Include="EasMe.Authorization">
+      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="EasMe.EntityFrameworkCore">
-      <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.EntityFrameworkCore.dll</HintPath>
+      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.EntityFrameworkCore.dll</HintPath>
     </Reference>
     <Reference Include="EasMe.Logging">
-      <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="EasMe.Result">
+      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Result.dll</HintPath>
     </Reference>
   </ItemGroup>
 

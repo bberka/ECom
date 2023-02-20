@@ -23,7 +23,7 @@ namespace ECom.Application.Services
 		public Result Register(RegisterUserRequest model)
 		{
 			var user = model.ToUserEntity();
-			_unitOfWork.UserRepository.Add(user);
+			_unitOfWork.UserRepository.Insert(user);
             var res = _unitOfWork.Save();
             if (!res)
             {
@@ -72,7 +72,7 @@ namespace ECom.Application.Services
         }
         public ResultData<User> GetUser(int id)
 		{
-            var user = _unitOfWork.UserRepository.Find(id);
+            var user = _unitOfWork.UserRepository.GetById(id);
             if (user is null) return DomainResult.User.NotFoundResult(1);
             if (user.IsValid == false) return DomainResult.User.NotValidResult(2);
             if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult(3);
@@ -109,7 +109,7 @@ namespace ECom.Application.Services
         {
             var userId = model.AuthenticatedUserId;
             if (userId < 1) return DomainResult.User.NotFoundResult(1);
-            var user = _unitOfWork.UserRepository.Find(userId);
+            var user = _unitOfWork.UserRepository.GetById(userId);
             if (user is null) return DomainResult.User.NotFoundResult(2);
             user.EmailAddress = model.EmailAddress;
             user.CitizenShipNumber = model.CitizenShipNumber;

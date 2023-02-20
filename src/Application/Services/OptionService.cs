@@ -79,7 +79,7 @@ namespace ECom.Application.Services
         {
             var cache = _memoryCache.Get<List<CargoOption>>("cargo_option");
             if (cache is not null) return cache;
-            cache = _unitOfWork.CargoOptionRepository.GetList(x => x.IsValid == true);
+            cache = _unitOfWork.CargoOptionRepository.Get(x => x.IsValid == true).ToList();
             _memoryCache.Set("cargo_option", cache, TimeSpan.FromMinutes(5));
             return cache;
         }
@@ -88,7 +88,7 @@ namespace ECom.Application.Services
         {
             var cache = _memoryCache.Get<List<PaymentOption>>("payment_option");
             if (cache is not null) return cache;
-            cache = _unitOfWork.PaymentOptionRepository.GetList(x => x.IsValid == true);
+            cache = _unitOfWork.PaymentOptionRepository.Get(x => x.IsValid == true).ToList();
             _memoryCache.Set("payment_option", cache, TimeSpan.FromMinutes(5));
             return cache;
         }
@@ -96,7 +96,7 @@ namespace ECom.Application.Services
         {
             var cache = _memoryCache.Get<List<SmtpOption>>("smtp_option");
             if (cache is not null) return cache;
-            cache = _unitOfWork.SmtpOptionRepository.GetList(x => x.IsValid == true);
+            cache = _unitOfWork.SmtpOptionRepository.Get(x => x.IsValid == true).ToList();
             _memoryCache.Set("smtp_option", cache, TimeSpan.FromMinutes(5));
             return cache;
         }

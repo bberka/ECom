@@ -36,7 +36,7 @@ namespace ECom.Application.Services
                 ProductId = productId,
                 UserId = userId,
             };
-            _unitOfWork.FavoriteProductRepository.Add(data);
+            _unitOfWork.FavoriteProductRepository.Insert(data);
             var res = _unitOfWork.Save();
             if (!res)
             {
@@ -70,9 +70,9 @@ namespace ECom.Application.Services
         public List<FavoriteProduct> GetFavoriteProducts(int userId, ushort page, string culture = ConstantMgr.DefaultCulture)
         {
             return _unitOfWork.FavoriteProductRepository
-                .Get(x => x.UserId == userId)
-                .Include(x => x.Product)
-                .ThenInclude(x => x.Images)
+                .Get(x => x.UserId == userId,x =>x.Product)
+                //.Include(x => x.Product)
+                //.ThenInclude(x => x.Images)
                 .ToList();
            
         }
