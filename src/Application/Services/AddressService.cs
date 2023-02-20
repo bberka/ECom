@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Results;
+﻿using EasMe.Result;
+using ECom.Domain.Results;
 
 namespace ECom.Application.Services
 {

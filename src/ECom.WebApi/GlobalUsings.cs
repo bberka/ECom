@@ -12,3 +12,11 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
 
+global using EasMe.Authorization.Filters;
+global using EasMe.Logging;
+global using EasMe.Result;
+global using ECom.Application.Services;
+global using ECom.Domain.Constants;
+global using Ninject.Modules;
+global using ECom.Domain.DTOs.AdminDTOs;
+global using ECom.Domain.DTOs;

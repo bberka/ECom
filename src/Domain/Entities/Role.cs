@@ -21,7 +21,7 @@ namespace ECom.Domain.Entities
         public bool IsValid { get; set; } = true;
 
         //Virtual
-        public virtual HashSet<Permission> Permissions { get; set; } 
+        public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
 
     }
 }

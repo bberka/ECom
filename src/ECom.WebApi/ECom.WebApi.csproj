@@ -48,6 +48,9 @@
     <Reference Include="EasMe.Logging">
       <HintPath>..\..\..\easme-lib\bin\Release\net6.0\EasMe.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="EasMe.Result">
+      <HintPath>E:\Repos\easme-lib\bin\Release\net6.0\EasMe.Result.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using ECom.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace ECom.Infrastructure
 {
@@ -12,11 +13,12 @@ namespace ECom.Infrastructure
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["EComDB"].ConnectionString);
-		}
+
+            optionsBuilder.LogTo(Console.WriteLine,LogLevel.Information);
+        }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RoleConfiguration).Assembly);
-
  
 
 
@@ -32,7 +34,7 @@ namespace ECom.Infrastructure
             //{
             //    context.Database.Migrate();
             //}
-            //if (!created) return;
+            if (!created) return;
             BaseDbFiller.Run();
         }
         public DbSet<Image> Images { get; set; }
@@ -93,6 +95,7 @@ namespace ECom.Infrastructure
 
         public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
         public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+        public DbSet<PermissionRole> PermissionRole { get; set; }
 
 
 

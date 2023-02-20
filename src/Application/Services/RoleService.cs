@@ -15,7 +15,7 @@ public class RoleService : IRoleService
     {
         return _unitOfWork.RoleRepository
             .Get()
-            .Include(x => x.Permissions)
+            //.Include(x => x.Permissions)
             .ToList();
     }
 
@@ -38,9 +38,10 @@ public class RoleService : IRoleService
     {
         var role = _unitOfWork.RoleRepository
             .Get(x => x.Id == roleId)
-            .Include(x => x.Permissions)
+            //.Include(x => x.Permissions)
             .FirstOrDefault();
         if (role is null) return new();
-        return role.Permissions;
+        //return role.Permissions;
+        return new();
     }
 }

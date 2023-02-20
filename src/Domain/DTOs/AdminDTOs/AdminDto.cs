@@ -6,17 +6,19 @@
         {
 
         }
-        public int Id { get; init; }
-        public string EmailAddress { get; init; }
-        public byte TwoFactorType { get; init; } = 0;
+        public int Id { get; set; }
+        public string EmailAddress { get; set; }
+        public byte TwoFactorType { get; set; } = 0;
+        public int RoleId { get; set; }
 
-        [NotMapped]
-        public string RoleName { get; init; }
-        
-        [NotMapped]
-        public string Permissions { get; init; }
-        public int RoleId { get; init; }
-        
+        public string RoleName { get; set; }
+        public string[] Permissions { get; set; }
+
+
+        public string GetPermissionsString()
+        {
+            return string.Join(",", Permissions);
+        }
         public static AdminDto FromEntity(Admin admin)
         {
             return new AdminDto
@@ -24,7 +26,7 @@
                 Id = admin.Id,
                 EmailAddress = admin.EmailAddress,
                 TwoFactorType = admin.TwoFactorType,
-                Permissions = string.Join(",", admin.Role.Permissions.Select(x => x.Name).ToArray()),
+                //Permissions = string.Join(",", admin.Role.Permissions.Select(x => x.Name).ToArray()),
                 RoleName = admin.Role.Name,
                 RoleId = admin.Role.Id
             };

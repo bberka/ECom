@@ -16,7 +16,7 @@ namespace ECom.WebApi.Middlewares
 			string url = context.Request.Path.ToString();
 			if (url.Contains("Admin"))
 			{
-				if (!optionService.GetOptionFromCache().IsAdminOpen)
+				if (!optionService.GetOption().IsAdminOpen)
 				{
 					context.Response.StatusCode = 503;
 					return;
@@ -25,7 +25,7 @@ namespace ECom.WebApi.Middlewares
 			else
 			{
 				var isUserAdmin = context.User?.HasClaim(x => x.Subject?.Name == "AdminOnly");
-				if (!optionService.GetOptionFromCache().IsOpen && isUserAdmin == false)
+				if (!optionService.GetOption().IsOpen && isUserAdmin == false)
 				{
 					context.Response.StatusCode = 503;
 					return;

@@ -45,7 +45,7 @@ namespace ECom.Domain.Entities
         
 
         //virtual
-        public virtual Role Role { get; set; }
+        public Role Role { get; set; } = null!;
         public virtual HashSet<AdminLog> AdminLogs { get; set; }
 
     }

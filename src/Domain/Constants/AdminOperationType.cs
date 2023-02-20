@@ -26,7 +26,6 @@ namespace ECom.Domain.Constants
 
         Image_Upload,
 
-        Option_RefreshCache,
         Option_Get,
         Option_Update,
 

@@ -12,7 +12,7 @@
 		{
             _unitOfWork = unitOfWork;
             _optionService = optionService;
-			_option = _optionService.GetOptionFromCache();
+			_option = _optionService.GetOption();
 		}
 
 		public bool AllowTester(bool isTesterAccount)

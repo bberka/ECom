@@ -4,6 +4,7 @@ using ECom.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230214214300_init_6")]
+    partial class init6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -758,17 +761,25 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
                 {
-                    b.Property<int>("RoleId")
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionsId")
                         .HasColumnType("int");
 
                     b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
-                    b.HasKey("RoleId", "PermissionId");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "PermissionsId");
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("PermissionRole");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("PermissionRoles");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
@@ -1378,6 +1389,21 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("UserLogs");
                 });
 
+            modelBuilder.Entity("PermissionRole", b =>
+                {
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissionsId", "RolesId");
+
+                    b.HasIndex("RolesId");
+
+                    b.ToTable("PermissionRole");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", null)
@@ -1584,13 +1610,13 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Permission", "Permission")
-                        .WithMany("PermissionRoles")
+                        .WithMany()
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ECom.Domain.Entities.Role", "Role")
-                        .WithMany("PermissionRoles")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1709,6 +1735,21 @@ namespace ECom.Infrastructure.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("PermissionRole", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
                 {
                     b.Navigation("AdminLogs");
@@ -1717,11 +1758,6 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
                 {
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
-                {
-                    b.Navigation("PermissionRoles");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
@@ -1733,11 +1769,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("ProductDetails");
 
                     b.Navigation("StockChanges");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("PermissionRoles");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>

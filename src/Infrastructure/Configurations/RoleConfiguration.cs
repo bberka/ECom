@@ -12,8 +12,7 @@ namespace ECom.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            //builder.HasMany<Permission>()
-            //    .WithMany();
+
             
         }
 

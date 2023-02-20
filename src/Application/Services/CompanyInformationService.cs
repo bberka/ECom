@@ -5,27 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ECom.Domain.Results;
+using Microsoft.Extensions.Caching.Memory;
+using Ninject.Activation.Caching;
 
 namespace ECom.Application.Services
 {
 	
 	public class CompanyInformationService : ICompanyInformationService
 	{
+        private readonly IMemoryCache _memoryCache;
         private readonly IUnitOfWork _unitOfWork;
 
         const byte CACHE_REFRESH_INTERVAL_MINS = 1;
-		private readonly EasCache<CompanyInformation?> Cache;
 
-		public CompanyInformationService(IUnitOfWork unitOfWork)
+		public CompanyInformationService(IMemoryCache memoryCache,IUnitOfWork unitOfWork)
 		{
+            _memoryCache = memoryCache;
             _unitOfWork = unitOfWork;
-            Cache = new(GetCompanyInformationNullable, CACHE_REFRESH_INTERVAL_MINS);
 		}
 
-        private CompanyInformation? GetCompanyInformationNullable()
-        {
-            return GetCompanyInformation().Data;
-        }
+     
 		public ResultData<CompanyInformation> GetCompanyInformation()
 		{
             var companyInformation = _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDebug());
@@ -33,8 +32,13 @@ namespace ECom.Application.Services
 			return companyInformation;
 		}
 		public CompanyInformation? GetFromCache()
-		{
-			return Cache.Get();
+        {
+            var cache = _memoryCache.Get<CompanyInformation>("company_info");
+            if(cache is not null) return cache;
+            cache = _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDebug());
+            if(cache is not null) 
+                _memoryCache.Set("company_info", cache, TimeSpan.FromMinutes(5));
+            return cache;
 		}
 
 		public Result UpdateOrAddCompanyInformation(CompanyInformation info)
@@ -51,7 +55,6 @@ namespace ECom.Application.Services
             {
                 return DomainResult.DbInternalErrorResult(2);
             }
-            Cache.Refresh();
             return DomainResult.CompanyInformation.UpdateSuccessResult();
 		}
 	}

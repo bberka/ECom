@@ -20,13 +20,7 @@ namespace ECom.WebApi.Controllers.AdminControllers
             _logService = logService;
         }
 
-        [HttpGet]
-        [HasPermission(AdminOperationType.Option_RefreshCache)]
-        public ActionResult RefreshCache()
-        {
-             _optionService.RefreshCache();
-             return Ok();
-        }
+        
         [HttpGet]
         [HasPermission(AdminOperationType.Option_Get)]
         public ActionResult<Option> GetCurrentOption()

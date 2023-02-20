@@ -23,7 +23,7 @@ namespace ECom.Application.Services
             _optionService = optionService;
             _categoryService = categoryService;
             _imageService = imageService;
-            _option = _optionService.GetOptionFromCache();
+            _option = _optionService.GetOption();
         }
 
         public bool Exists(int id)

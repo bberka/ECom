@@ -13,15 +13,9 @@ namespace ECom.Domain.Abstract
         List<PaymentOption> ListPaymentOptions();
         List<SmtpOption> ListSmtpOptions();
 
-        Option GetOptionFromCache();
-        List<CargoOption> ListCargoOptionsFromCache();
-        List<PaymentOption> ListPaymentOptionsFromCache();
-        List<SmtpOption> ListSmtpOptionsFromCache();
-
         Result UpdateCargoOption(CargoOption option);
         Result UpdateOption(Option option);
         Result UpdatePaymentOption(PaymentOption option);
         Result UpdateSmtpOption(SmtpOption option);
-        public void RefreshCache();
     }
 }

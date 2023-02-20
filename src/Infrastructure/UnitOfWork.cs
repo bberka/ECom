@@ -1,5 +1,4 @@
-﻿using ECom.Domain.Abstract;
-using Ninject.Activation;
+﻿
 
 namespace ECom.Infrastructure;
 
@@ -66,7 +65,7 @@ public class UnitOfWork : IUnitOfWork
         ProductSubCategoryRepository = new EntityRepositoryBase<ProductSubCategory, EComDbContext>(_dbContext);
         ProductVariantRepository = new EntityRepositoryBase<ProductVariant, EComDbContext>(_dbContext);
         RoleRepository = new EntityRepositoryBase<Role, EComDbContext>(_dbContext);
-        //RolePermissionRepository = new EntityRepositoryBase<PermissionRole, EComDbContext>(_dbContext);
+        PermissionRoleRepository = new EntityRepositoryBase<PermissionRole, EComDbContext>(_dbContext);
         SecurityLogRepository = new EntityRepositoryBase<SecurityLog, EComDbContext>(_dbContext);
         ShowCaseImageRepository = new EntityRepositoryBase<ShowCaseImage, EComDbContext>(_dbContext);
         SliderRepository = new EntityRepositoryBase<Slider, EComDbContext>(_dbContext);
@@ -107,7 +106,7 @@ public class UnitOfWork : IUnitOfWork
     public IEntityRepository<ProductSubCategory> ProductSubCategoryRepository { get; }
     public IEntityRepository<ProductVariant> ProductVariantRepository { get; }
     public IEntityRepository<Role> RoleRepository { get; }
-    //public IEntityRepository<PermissionRole> RolePermissionRepository { get; }
+    public IEntityRepository<PermissionRole> PermissionRoleRepository { get; }
     public IEntityRepository<SecurityLog> SecurityLogRepository { get; }
     public IEntityRepository<ShowCaseImage> ShowCaseImageRepository { get; }
     public IEntityRepository<Slider> SliderRepository { get; }
@@ -130,7 +129,6 @@ public class UnitOfWork : IUnitOfWork
                 transaction.Commit();
                 return true;
             }
-           
         }
         catch (Exception ex)
         {

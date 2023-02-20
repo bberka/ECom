@@ -28,12 +28,12 @@ namespace ECom.Application.Services
             var admin = _unitOfWork.AdminRepository
                 .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                //.ThenInclude(x => x.Permissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
-            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
+            //if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         public ResultData<Admin> GetAdmin(int id)
@@ -41,12 +41,12 @@ namespace ECom.Application.Services
             var admin = _unitOfWork.AdminRepository
                 .Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                //.ThenInclude(x => x.Permissions)
                 .FirstOrDefault();
             if (admin is null) return DomainResult.Admin.NotFoundResult(1);
             if (admin.IsValid == false) return DomainResult.Admin.NotValidResult(2);
             if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult(3);
-            if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
+            //if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult(5);
             return admin;
         }
         //public bool HasPermission(int adminId, int permissionId)
@@ -133,13 +133,23 @@ namespace ECom.Application.Services
             var adminResult = _unitOfWork.AdminRepository
                 .Get(x => x.EmailAddress == model.EmailAddress)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
-                .Select(x => new 
+                .ThenInclude(x => x.PermissionRoles)
+                .ThenInclude(x => x.Permission)
+                .Select(x => new
                 {
                     x.Password,
-                    Admin = x
+                    AdminDto = new AdminDto()
+                    {
+                        EmailAddress = x.EmailAddress,
+                        Permissions = x.Role.PermissionRoles.Select(x => x.Permission.Name).ToArray(),
+                        RoleId = x.RoleId,
+                        RoleName = x.Role.Name,
+                        TwoFactorType = x.TwoFactorType,
+                        Id = x.Id,
+                    },
                 })
                 .FirstOrDefault();
+          
             if (adminResult is null)
             {
                 return DomainResult.Admin.NotFoundResult(1);
@@ -148,16 +158,16 @@ namespace ECom.Application.Services
             {
                 return DomainResult.Admin.NotFoundResult(2);
             }
-            if (adminResult.Admin.Role.Permissions.Count == 0)
+
+            if (adminResult.AdminDto.Permissions.Length == 0)
             {
                 return DomainResult.Admin.NotHavePermissionResult(3);
             }
-            if (adminResult.Admin.TwoFactorType != 0)
+            if (adminResult.AdminDto.TwoFactorType != 0)
             {
                 //TODO: two factor
             }
-            
-            return AdminDto.FromEntity(adminResult.Admin);
+            return adminResult.AdminDto;
         }
 
         public List<Permission> GetValidPermissions()
@@ -180,7 +190,7 @@ namespace ECom.Application.Services
             return _unitOfWork.AdminRepository
                 .Get(x => x.Id != adminId)
                 .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
+                //.ThenInclude(x => x.Permissions)
                 .ToList();
         }
 

@@ -1,6 +1,4 @@
 ﻿global using EasMe;
-global using EasMe.EntityFrameworkCore.Abstract;
-global using EasMe.Enums;
 global using EasMe.Extensions;
 global using EasMe.Models;
 global using ECom.Domain.Constants;
@@ -16,3 +14,6 @@ global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using System.Linq;
 global using System.Text;
+global using EasMe.Result;
+global using ECom.Domain.DTOs.CategoryDTOs;
+global using EasMe.EntityFrameworkCore;

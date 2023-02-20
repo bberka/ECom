@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasMe.EntityFrameworkCore.V1;
 
 namespace ECom.Domain.Abstract
 {
@@ -40,7 +41,7 @@ namespace ECom.Domain.Abstract
         IEntityRepository<ProductSubCategory> ProductSubCategoryRepository { get; }
         IEntityRepository<ProductVariant> ProductVariantRepository { get; }
         IEntityRepository<Role> RoleRepository { get; }
-        //IEntityRepository<PermissionRole> RolePermissionRepository { get; }
+        IEntityRepository<PermissionRole> PermissionRoleRepository { get; }
         IEntityRepository<SecurityLog> SecurityLogRepository { get; }
         IEntityRepository<ShowCaseImage> ShowCaseImageRepository { get; }
         IEntityRepository<Slider> SliderRepository { get; }
