@@ -12,8 +12,8 @@ namespace ECom.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Role> builder)
         {
+            builder.Navigation(x => x.PermissionRoles).AutoInclude();
 
-            
         }
 
         

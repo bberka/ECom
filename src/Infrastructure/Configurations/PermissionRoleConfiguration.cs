@@ -22,6 +22,10 @@ namespace ECom.Infrastructure.Configurations
                 .WithMany(x => x.PermissionRoles)
                 .HasForeignKey(x => x.PermissionId);
 
+            builder.Navigation(x => x.Permission).AutoInclude();
+            builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
+
+
             //var permEnumList = CommonLib.GetAdminOperationTypes();
             //var permList  = new List<Permission>();
             //for (int i = 1; i < permEnumList.Length; i++)

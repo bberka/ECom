@@ -12,6 +12,8 @@ namespace ECom.Infrastructure.Configurations
 
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
+            builder.Navigation(x => x.PermissionRoles).AutoInclude();
+
             //var permEnumList = CommonLib.GetAdminOperationTypes();
             //var permList  = new List<Permission>();
             //for (int i = 1; i < permEnumList.Length; i++)

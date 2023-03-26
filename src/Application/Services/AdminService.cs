@@ -131,8 +131,7 @@ namespace ECom.Application.Services
         public ResultData<AdminDto> Login(LoginRequest model)
         {
             var adminResult = _unitOfWork.AdminRepository
-                .Get(x => x.EmailAddress == model.EmailAddress,
-                    x => x.Role)
+                .Get(x => x.EmailAddress == model.EmailAddress)
                 //.ThenInclude(x => x.PermissionRoles)
                 //.ThenInclude(x => x.Permission)
                 .Select(x => new
