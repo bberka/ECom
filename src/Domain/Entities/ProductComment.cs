@@ -9,7 +9,9 @@ public class ProductComment : IEntity
 
   public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-  [MaxLength(1000)] [MinLength(8)] public string Comment { get; set; }
+  [MaxLength(1000)]
+  [MinLength(8)]
+  public string Comment { get; set; }
 
   public byte Star { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using Serilog;
 
 namespace ECom.Domain;
+
 public static class DomainEvents
 {
   public static void OnProcessExit(object? sender, EventArgs e) {

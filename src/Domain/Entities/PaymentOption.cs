@@ -35,22 +35,30 @@ public class PaymentOption : IEntity
   public bool IsValid { get; set; }
 
 
-  [MaxLength(64)] public string Name { get; set; }
+  [MaxLength(64)]
+  public string Name { get; set; }
 
 
   public float Tax { get; set; }
 
 
-  [MaxLength(512)] public string? SecretKey { get; set; }
+  [MaxLength(512)]
+  public string? SecretKey { get; set; }
 
-  [MaxLength(512)] public string? ClientId { get; set; }
+  [MaxLength(512)]
+  public string? ClientId { get; set; }
 
-  [MaxLength(512)] public string? ApiKey { get; set; }
+  [MaxLength(512)]
+  public string? ApiKey { get; set; }
 
-  [MaxLength(512)] public string? Username { get; set; }
+  [MaxLength(512)]
+  public string? Username { get; set; }
 
-  [MaxLength(512)] public string? Password { get; set; }
+  [MaxLength(512)]
+  public string? Password { get; set; }
 
 
-  [MinLength(2)] [MaxLength(4)] public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+  [MinLength(2)]
+  [MaxLength(4)]
+  public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 }

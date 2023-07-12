@@ -25,13 +25,17 @@ public class Address : IEntity
   [MaxLength(ConstantMgr.TitleMaxLength)]
   public string Title { get; set; }
 
-  [MaxLength(64)] public string Town { get; set; }
+  [MaxLength(64)]
+  public string Town { get; set; }
 
-  [MaxLength(32)] public string Country { get; set; }
+  [MaxLength(32)]
+  public string Country { get; set; }
 
-  [MaxLength(32)] public string Provience { get; set; }
+  [MaxLength(32)]
+  public string Provience { get; set; }
 
-  [MaxLength(128)] public string Details { get; set; }
+  [MaxLength(128)]
+  public string Details { get; set; }
 
   [MinLength(ConstantMgr.PhoneNumberMinLength)]
   [MaxLength(ConstantMgr.PhoneNumberMaxLength)]

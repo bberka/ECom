@@ -6,7 +6,6 @@ namespace ECom.Application.Filters;
 
 public class ExceptionHandleFilter : IExceptionFilter
 {
-
   public void OnException(ExceptionContext context) {
     var query = context.HttpContext.Request.QueryString;
     context.HttpContext.Response.StatusCode = 500;

@@ -18,12 +18,9 @@ public static class SwaggerDependencyResolver
       });
       c.SwaggerDoc("User", new OpenApiInfo { Title = "User API", Version = "v1" });
       c.SwaggerDoc("Admin", new OpenApiInfo { Title = "Admin API", Version = "v1" });
-      c.DocInclusionPredicate((groupName, apiDescription) =>
-      {
+      c.DocInclusionPredicate((groupName, apiDescription) => {
         // Filter the API descriptions based on the group name
-        if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) {
-          return true;
-        }
+        if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) return true;
         return false;
       });
       c.AddSecurityRequirement(new OpenApiSecurityRequirement {
@@ -42,6 +39,5 @@ public static class SwaggerDependencyResolver
       });
     });
     return services;
-
   }
 }

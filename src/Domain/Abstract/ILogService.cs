@@ -1,5 +1,4 @@
-﻿
-using Serilog.Events;
+﻿using Serilog.Events;
 
 namespace ECom.Domain.Abstract;
 

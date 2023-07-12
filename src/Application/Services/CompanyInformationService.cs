@@ -22,7 +22,8 @@ public class CompanyInformationService : ICompanyInformationService
   public CompanyInformation? GetFromCache() {
     var cache = _memoryCache.Get<CompanyInformation>("company_info");
     if (cache is not null) return cache;
-    cache = _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDevelopment());
+    cache = _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x =>
+      x.IsRelease == !ConstantMgr.IsDevelopment());
     if (cache is not null)
       _memoryCache.Set("company_info", cache, TimeSpan.FromMinutes(5));
     return cache;

@@ -11,7 +11,8 @@ public class DiscountCoupon : IEntity
   public DateTime EndDate { get; set; }
 
 
-  [Range(0, 100)] public byte DiscountPercent { get; set; }
+  [Range(0, 100)]
+  public byte DiscountPercent { get; set; }
 
   public int DiscountCategoryId { get; set; }
   public virtual Category DiscountCategory { get; set; }

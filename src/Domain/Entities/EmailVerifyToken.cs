@@ -2,7 +2,9 @@
 
 public class EmailVerifyToken : IEntity
 {
-  [Key] [MaxLength(512)] public string Token { get; set; }
+  [Key]
+  [MaxLength(512)]
+  public string Token { get; set; }
 
   [MaxLength(ConstantMgr.EmailMaxLength)]
   [EmailAddress]

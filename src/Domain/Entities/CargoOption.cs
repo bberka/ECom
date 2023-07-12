@@ -18,7 +18,8 @@ public class CargoOption : IEntity
   public int FreeShippingMinCost { get; set; }
 
 
-  [ForeignKey("ImageId")] public int ImageId { get; set; }
+  [ForeignKey("ImageId")]
+  public int ImageId { get; set; }
 
   [JsonIgnore]
   [System.Text.Json.Serialization.JsonIgnore]

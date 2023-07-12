@@ -1,7 +1,7 @@
-﻿using Serilog.ConfigHelper.Enricher.HttpRequestEnrichers;
-using Serilog.ConfigHelper.Enricher;
+﻿using Serilog;
 using Serilog.ConfigHelper;
-using Serilog;
+using Serilog.ConfigHelper.Enricher;
+using Serilog.ConfigHelper.Enricher.HttpRequestEnrichers;
 using Serilog.Formatting.Compact;
 
 namespace ECom.Domain;
@@ -16,6 +16,7 @@ public static class EComLoggerHelper
     AppDomain.CurrentDomain.ProcessExit += DomainEvents.OnProcessExit;
     AppDomain.CurrentDomain.UnhandledException += DomainEvents.OnUnhandledException;
   }
+
   private static LoggerConfiguration GetDefaultConfiguration(bool enableConsoleLogging = false) {
     var config = new LoggerConfiguration()
 #if DEBUG
@@ -36,10 +37,8 @@ public static class EComLoggerHelper
       .Enrich.With(new HttpRequestMethodEnricher())
       .Enrich.With(new HttpRequestQueryStringEnricher())
       .Enrich.With(new HostIpAddressEnricher())
-
       .Enrich.With(new HttpRequestClaimEnricher("AuthorizedUserId", "Id"))
       .Enrich.With(new HttpRequestUserIdentityNameEnricher())
-
       .WriteTo.File(
         new CompactJsonFormatter(),
         LogPath,

@@ -71,7 +71,9 @@ public class User : IEntity
 
   public DateTime? DeletedDate { get; set; } = null;
 
-  [MinLength(2)] [MaxLength(4)] public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+  [MinLength(2)]
+  [MaxLength(4)]
+  public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
 
   //Virtual

@@ -76,7 +76,7 @@ public class EComDbContext : DbContext
   }
 
   public static EComDbContext New() {
-    return new();
+    return new EComDbContext();
   }
 
   public static void EnsureCreatedAndUpdated() {

@@ -2,7 +2,8 @@
 
 public class Option : IEntity
 {
-  [Key] public bool IsRelease { get; set; } = true;
+  [Key]
+  public bool IsRelease { get; set; } = true;
 
   public bool IsOpen { get; set; } = true;
   public bool IsAdminOpen { get; set; } = true;
@@ -12,11 +13,14 @@ public class Option : IEntity
   public bool RequireSpecialCharacterInPassword { get; set; } = false;
   public bool RequireNumberInPassword { get; set; } = false;
 
-  [Range(15, 43200)] public int EmailVerificationTimeoutMinutes { get; set; } = 30;
+  [Range(15, 43200)]
+  public int EmailVerificationTimeoutMinutes { get; set; } = 30;
 
-  [Range(15, 43200)] public int PasswordResetTimeoutMinutes { get; set; } = 30;
+  [Range(15, 43200)]
+  public int PasswordResetTimeoutMinutes { get; set; } = 30;
 
-  [MaxLength(12)] public string SelectedCurrency { get; set; } = "TL";
+  [MaxLength(12)]
+  public string SelectedCurrency { get; set; } = "TL";
 
   public bool ShowStock { get; set; } = false;
   public byte ProductImageLimit { get; set; } = 10;

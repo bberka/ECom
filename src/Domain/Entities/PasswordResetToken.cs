@@ -2,7 +2,9 @@
 
 public class PasswordResetToken : IEntity
 {
-  [Key] [MaxLength(512)] public string Token { get; set; }
+  [Key]
+  [MaxLength(512)]
+  public string Token { get; set; }
 
   public bool IsUsed { get; set; }
   public DateTime RegisterDate { get; set; }

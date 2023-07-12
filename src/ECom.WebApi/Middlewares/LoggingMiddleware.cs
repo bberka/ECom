@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 
-
 namespace ECom.WebApi.Middlewares;
 
 public class LoggingMiddleware
@@ -21,6 +20,7 @@ public class LoggingMiddleware
     var authLogString = "No-Auth";
     if (context.IsUserAuthenticated()) authLogString = $"User({context.GetUserId()})";
     if (context.IsAdminAuthenticated()) authLogString = $"Admin({context.GetAdminId()})";
-    Log.Information("Request Log: {ResponseStatus} {Auth} {TimeElapsed}", responseStatus, authLogString, $"TimeElapsed({timer.ElapsedMilliseconds}ms)");
+    Log.Information("Request Log: {ResponseStatus} {Auth} {TimeElapsed}", responseStatus, authLogString,
+      $"TimeElapsed({timer.ElapsedMilliseconds}ms)");
   }
 }

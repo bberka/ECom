@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Constants;
+﻿using System.Reflection;
+
+namespace ECom.Domain.Constants;
 
 public static class ConstantMgr
 {
@@ -22,10 +24,11 @@ public static class ConstantMgr
   public const CurrencyType DefaultCurrency = CurrencyType.Lira;
 
 
-  public const string VERSION = "v0.0.1";
+  public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ??
+                                          throw new ArgumentNullException(nameof(AssemblyName.Version));
 
   public static bool IsDevelopment() {
-#if DEBUG
+#if DEBUG || RELEASE_TEST
     return true;
 #endif
     return false;

@@ -9,7 +9,8 @@ public class Announcement : IEntity
 
   public int Order { get; set; }
 
-  [MaxLength(128)] public string Message { get; set; }
+  [MaxLength(128)]
+  public string Message { get; set; }
 
   public DateTime RegisterDate { get; set; }
 

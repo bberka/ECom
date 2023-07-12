@@ -10,18 +10,21 @@ public class SmtpOption : IEntity
   public bool IsValid { get; set; } = true;
 
 
-  [MaxLength(255)] public string Host { get; set; }
+  [MaxLength(255)]
+  public string Host { get; set; }
 
 
   [MaxLength(ConstantMgr.EmailMaxLength)]
   [EmailAddress]
   public string Email { get; set; }
 
-  [MaxLength(255)] public string Password { get; set; }
+  [MaxLength(255)]
+  public string Password { get; set; }
 
 
   public bool Ssl { get; set; }
 
 
-  [Range(0, 65535)] public int Port { get; set; }
+  [Range(0, 65535)]
+  public int Port { get; set; }
 }

@@ -12,17 +12,21 @@ public class Order : IEntity
 
   public double? DiscountedPrice { get; set; }
 
-  [MaxLength(64)] public string? Ip { get; set; }
+  [MaxLength(64)]
+  public string? Ip { get; set; }
 
-  [ForeignKey("UserId")] public int UserId { get; set; }
+  [ForeignKey("UserId")]
+  public int UserId { get; set; }
 
   public virtual User User { get; set; }
 
-  [ForeignKey("DiscountCouponId")] public int DiscountCouponId { get; set; }
+  [ForeignKey("DiscountCouponId")]
+  public int DiscountCouponId { get; set; }
 
   public virtual DiscountCoupon DiscountCoupon { get; set; }
 
-  [ForeignKey("ProductId")] public int ProductId { get; set; }
+  [ForeignKey("ProductId")]
+  public int ProductId { get; set; }
 
   public virtual Product Product { get; set; }
 }

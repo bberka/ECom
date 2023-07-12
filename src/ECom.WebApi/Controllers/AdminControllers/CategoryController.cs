@@ -1,5 +1,4 @@
-﻿
-using ECom.Domain.DTOs.CategoryDTOs;
+﻿using ECom.Domain.DTOs.CategoryDTOs;
 
 namespace ECom.WebApi.Controllers.AdminControllers;
 

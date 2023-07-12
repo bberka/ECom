@@ -5,7 +5,7 @@ namespace ECom.Infrastructure;
 internal static class BaseDbFiller
 {
   private static readonly List<CompanyInformation> _companyInformations = new() {
-    new CompanyInformation() {
+    new CompanyInformation {
       CompanyAddress = "Address",
       CompanyName = "ECom.Company",
       ContactEmail = "contact@support.com",
@@ -19,7 +19,7 @@ internal static class BaseDbFiller
       WhatsApp = "5526667788",
       YoutubeLink = "yt.com/company"
     },
-    new CompanyInformation() {
+    new CompanyInformation {
       CompanyAddress = "Address",
       CompanyName = "ECom.Company",
       ContactEmail = "contact@support.com",
@@ -36,7 +36,7 @@ internal static class BaseDbFiller
   };
 
   private static readonly List<User> _users = new() {
-    new User() {
+    new User {
       EmailAddress = "user@mail.com",
       Password = Convert.ToBase64String("123456789".MD5Hash()),
       FirstName = "User",
@@ -44,7 +44,7 @@ internal static class BaseDbFiller
       TwoFactorType = 0,
       LastName = "Resu"
     },
-    new User() {
+    new User {
       EmailAddress = "test@mail.com",
       Password = Convert.ToBase64String("123456789".MD5Hash()),
       FirstName = "User",
@@ -52,7 +52,7 @@ internal static class BaseDbFiller
       TwoFactorType = 0,
       LastName = "Resu"
     },
-    new User() {
+    new User {
       EmailAddress = "qwe@qwe.com",
       Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
       FirstName = "User",
@@ -78,31 +78,31 @@ internal static class BaseDbFiller
   };
 
   private static readonly List<Admin> _admins = new() {
-    new Admin() {
+    new Admin {
       EmailAddress = "owner@mail.com",
       Password = Convert.ToBase64String("123456789".MD5Hash()),
       RoleId = 4,
       TwoFactorType = 0
     },
-    new Admin() {
+    new Admin {
       EmailAddress = "test@owner.com",
       Password = Convert.ToBase64String("123456789".MD5Hash()),
       RoleId = 4,
       TwoFactorType = 0
     },
-    new Admin() {
+    new Admin {
       EmailAddress = "test@admin.com",
       Password = Convert.ToBase64String("123456789".MD5Hash()),
       RoleId = 4,
       TwoFactorType = 0
     },
-    new Admin() {
+    new Admin {
       EmailAddress = "test@mod.com",
       Password = Convert.ToBase64String("123456789".MD5Hash()),
       RoleId = 4,
       TwoFactorType = 0
     },
-    new Admin() {
+    new Admin {
       EmailAddress = "qwe@qwe.com",
       Password = Convert.ToBase64String("qweqweqwe".MD5Hash()),
       RoleId = 4,

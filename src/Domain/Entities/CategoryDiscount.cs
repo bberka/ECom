@@ -10,9 +10,11 @@ public class CategoryDiscount : IEntity
 
   public DateTime EndDate { get; set; }
 
-  [Range(0, 100)] public byte DiscountPercent { get; set; }
+  [Range(0, 100)]
+  public byte DiscountPercent { get; set; }
 
-  [ForeignKey("CategoryId")] public int CategoryId { get; set; }
+  [ForeignKey("CategoryId")]
+  public int CategoryId { get; set; }
 
   //virtual
   public virtual Category Category { get; set; }

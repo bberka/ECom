@@ -3,8 +3,6 @@ using ECom.Application.Validators;
 using ECom.Domain;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.Extensions.Logging;
 
 EComLoggerHelper.Configure(true);
 
@@ -92,4 +90,3 @@ app.MapControllers();
 
 EComDbContext.EnsureCreatedAndUpdated();
 app.Run();
-

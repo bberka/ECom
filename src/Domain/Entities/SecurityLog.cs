@@ -10,18 +10,25 @@ public class SecurityLog : IEntity
 
   public int HttpStatusCodeResponse { get; set; }
 
-  [MaxLength(2000)] public string RequestUrl { get; set; }
+  [MaxLength(2000)]
+  public string RequestUrl { get; set; }
 
 
-  [MaxLength(2000)] public string QueryString { get; set; }
+  [MaxLength(2000)]
+  public string QueryString { get; set; }
 
-  [MaxLength(64)] public string RemoteIpAddress { get; set; }
+  [MaxLength(64)]
+  public string RemoteIpAddress { get; set; }
 
-  [MaxLength(64)] public string? XReal_IpAddress { get; set; }
+  [MaxLength(64)]
+  public string? XReal_IpAddress { get; set; }
 
-  [MaxLength(64)] public string? CFConnecting_IpAddress { get; set; }
+  [MaxLength(64)]
+  public string? CFConnecting_IpAddress { get; set; }
 
-  [MaxLength(512)] public string? UserAgent { get; set; }
+  [MaxLength(512)]
+  public string? UserAgent { get; set; }
 
-  [MaxLength(2000)] public string? Params { get; set; }
+  [MaxLength(2000)]
+  public string? Params { get; set; }
 }

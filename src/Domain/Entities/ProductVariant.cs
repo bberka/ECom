@@ -6,7 +6,8 @@ public class ProductVariant : IEntity
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
 
-  [MaxLength(256)] public string Description { get; set; }
+  [MaxLength(256)]
+  public string Description { get; set; }
 
   public DateTime RegisterDate { get; set; } = DateTime.Now;
 }

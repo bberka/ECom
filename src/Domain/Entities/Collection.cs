@@ -8,7 +8,8 @@ public class Collection : IEntity
 
   public DateTime RegisterDate { get; set; }
 
-  [MaxLength(128)] public string Name { get; set; }
+  [MaxLength(128)]
+  public string Name { get; set; }
 
   public int UserId { get; set; }
 

@@ -1,6 +1,4 @@
-﻿using AspNetCore.Authorization.Extender;
-
-namespace ECom.WebApi.Controllers.AdminControllers;
+﻿namespace ECom.WebApi.Controllers.AdminControllers;
 
 public class OptionController : BaseAdminController
 {

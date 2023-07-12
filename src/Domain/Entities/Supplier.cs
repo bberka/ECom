@@ -12,9 +12,11 @@ public class Supplier : IEntity
   [MaxLength(ConstantMgr.NameMaxLength)]
   public string Name { get; set; }
 
-  [MaxLength(128)] public string Description { get; set; }
+  [MaxLength(128)]
+  public string Description { get; set; }
 
-  [MaxLength(128)] public string CompanyName { get; set; }
+  [MaxLength(128)]
+  public string CompanyName { get; set; }
 
   [MinLength(ConstantMgr.PhoneNumberMinLength)]
   [MaxLength(ConstantMgr.PhoneNumberMaxLength)]

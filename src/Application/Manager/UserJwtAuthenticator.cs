@@ -18,17 +18,16 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
 
 
   public ResultData<UserLoginResponse> Authenticate(LoginRequest model) {
-     UserDto user;
+    UserDto user;
     if (ConstantMgr.IsDevelopment()) {
       user = _debugService.GetUserDto();
     }
     else {
       var loginResult = _userService.Login(model);
-      if (loginResult.IsFailure) {
-        return loginResult.ToResult();
-      }
+      if (loginResult.IsFailure) return loginResult.ToResult();
       user = loginResult.Data!;
     }
+
     var userAsDic = user.AsDictionary();
     var remove = userAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
     foreach (var kvp in remove) userAsDic.Remove(kvp.Key);

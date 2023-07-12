@@ -11,17 +11,25 @@ public class ProductDetail : IEntity
   public string Name { get; set; }
 
 
-  [MaxLength(512)] [MinLength(8)] public string ShortDescription { get; set; }
+  [MaxLength(512)]
+  [MinLength(8)]
+  public string ShortDescription { get; set; }
 
 
-  [MaxLength(10000)] [MinLength(64)] public string DescriptionHTML { get; set; }
+  [MaxLength(10000)]
+  [MinLength(64)]
+  public string DescriptionHTML { get; set; }
 
-  [MaxLength(10000)] [MinLength(32)] public string? TechnicalInformationHTML { get; set; }
+  [MaxLength(10000)]
+  [MinLength(32)]
+  public string? TechnicalInformationHTML { get; set; }
 
   public int ProductId { get; set; }
 
 
-  [MinLength(2)] [MaxLength(4)] public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+  [MinLength(2)]
+  [MaxLength(4)]
+  public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
 
   //virtual
