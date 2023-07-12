@@ -1,31 +1,24 @@
-﻿using System.Net;
-using EasMe.Authorization.Filters;
-using ECom.Domain.Constants;
-using ECom.Domain.DTOs.ProductDTOs;
-using Microsoft.AspNetCore.Authorization;
+﻿using ECom.Domain.DTOs.ProductDTOs;
 
-namespace ECom.WebApi.Controllers.UserControllers
+namespace ECom.WebApi.Controllers.UserControllers;
+
+public class ProductCommentController : BaseUserController
 {
-    public class ProductCommentController : BaseUserController
-    {
-        private readonly IProductService _productService;
-        private readonly ILogService _logService;
+  private readonly ILogService _logService;
+  private readonly IProductService _productService;
 
-        public ProductCommentController(
-            IProductService productService,
-            ILogService logService)
-        {
-            _productService = productService;
-            _logService = logService;
-        }
+  public ProductCommentController(
+    IProductService productService,
+    ILogService logService) {
+    _productService = productService;
+    _logService = logService;
+  }
 
-        [HttpPost]
-        public ActionResult<ResultData<int>> Add([FromBody] AddProductCommentRequest requestModel)
-        {
-            var res = _productService.AddComment(requestModel);
-            _logService.UserLog(res.ToResult(),requestModel.AuthenticatedUserId,"ProductComment.Add",requestModel.ToJsonString());
-            return res.WithoutRv();
-        }
-    
-    }
+  [HttpPost]
+  public ActionResult<ResultData<int>> Add([FromBody] AddProductCommentRequest requestModel) {
+    var res = _productService.AddComment(requestModel);
+    _logService.UserLog(res.ToResult(), requestModel.AuthenticatedUserId, "ProductComment.Add",
+      requestModel.ToJsonString());
+    return res.ToActionResult();
+  }
 }

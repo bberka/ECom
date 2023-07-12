@@ -1,43 +1,30 @@
-﻿
+﻿namespace ECom.WebApi.Controllers.AdminControllers;
 
-
-
-
-
-
-
-namespace ECom.WebApi.Controllers.AdminControllers
+[ApiController]
+[Route("api/Admin/[controller]/[action]")]
+public class AuthController : BaseAdminController
 {
-    [ApiController]
-    [Route("api/Admin/[controller]/[action]")]
-    public class AuthController : Controller
-    {
-		private static readonly IEasLog logger = EasLogFactory.CreateLogger();
-		private readonly IAdminService _adminService;
-		private readonly IOptionService _optionService;
-		private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
-        private readonly ILogService _logService;
+  private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
+  private readonly IAdminService _adminService;
+  private readonly ILogService _logService;
+  private readonly IOptionService _optionService;
 
-        public AuthController(
-			IAdminService adminService,
-			IOptionService optionService,
-			IAdminJwtAuthenticator adminJwtAuthenticator,
-            ILogService logService)
-		{
-			this._adminService = adminService;
-			this._optionService = optionService;
-			this._adminJwtAuthenticator = adminJwtAuthenticator;
-            _logService = logService;
-        }
-		[HttpPost]
-        public ActionResult<ResultData<AdminLoginResponse>> Login([FromBody] LoginRequest model)
-        {
-            var res = _adminJwtAuthenticator.Authenticate(model);
-            var adminId = res.Data?.Admin.Id;
-            _logService.AdminLog(res.ToResult(), adminId, "Auth.Login", model.EmailAddress, model.EncryptedPassword);
-            return res.WithoutRv();
-        }
+  public AuthController(
+    IAdminService adminService,
+    IOptionService optionService,
+    IAdminJwtAuthenticator adminJwtAuthenticator,
+    ILogService logService) {
+    _adminService = adminService;
+    _optionService = optionService;
+    _adminJwtAuthenticator = adminJwtAuthenticator;
+    _logService = logService;
+  }
 
-
-	}
+  [HttpPost]
+  public ActionResult<ResultData<AdminLoginResponse>> Login([FromBody] LoginRequest model) {
+    var res = _adminJwtAuthenticator.Authenticate(model);
+    var adminId = res.Data?.Admin.Id;
+    _logService.AdminLog(res.ToResult(), adminId, "Auth.Login", model.EmailAddress, model.EncryptedPassword);
+    return res.ToActionResult();
+  }
 }

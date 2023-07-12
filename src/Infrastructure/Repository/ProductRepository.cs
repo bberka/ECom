@@ -1,10 +1,7 @@
-﻿using EasMe.EntityFrameworkCore.V2;
+﻿namespace ECom.Infrastructure.Repository;
 
-namespace ECom.Infrastructure.Repository;
-
-public class ProductRepository : GenericRepository<Product,EComDbContext>
+public class ProductRepository : GenericRepository<Product, EComDbContext>
 {
-    public ProductRepository(EComDbContext context) : base(context)
-    {
-    }
+  public ProductRepository(EComDbContext context) : base(context) {
+  }
 }

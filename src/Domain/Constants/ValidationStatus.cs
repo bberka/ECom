@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Constants;
 
-namespace ECom.Domain.Constants
+public enum ValidationStatus
 {
-	public enum ValidationStatus
-	{
-		Valid,
-		Invalid,
-		InProcess,
-		NotHandled
-	}
+  Valid,
+  Invalid,
+  InProcess,
+  NotHandled
 }

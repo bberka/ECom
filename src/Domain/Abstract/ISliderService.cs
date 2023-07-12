@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Abstract;
 
-namespace ECom.Domain.Abstract
+public interface ISliderService
 {
-    public interface ISliderService
-    {
-        ResultData<Slider> Get(int sliderId);
+  ResultData<Slider> Get(int sliderId);
 
-        List<Slider> GetList();
+  List<Slider> GetList();
 
-        Result Update(Slider slider);
-        Result Delete(int sliderId);
-        Result Add(Slider slider);
-    }
+  Result Update(Slider slider);
+  Result Delete(int sliderId);
+  Result Add(Slider slider);
 }

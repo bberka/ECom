@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Constants;
 
-namespace ECom.Domain.Constants
+public enum LanguageType
 {
-    public enum LanguageType
-    {
-        en,
-        tr
-    }
-    
+  en,
+  tr
 }

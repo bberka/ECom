@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
-namespace ECom.WebApi.Controllers.UserControllers
+namespace ECom.WebApi.Controllers.UserControllers;
+
+[AllowAnonymous]
+public class PaymentController : BaseUserController
 {
-    [AllowAnonymous]
-    public class PaymentController : BaseUserController
-    {
-        private readonly IOptionService _optionService;
+  private readonly IOptionService _optionService;
 
-        public PaymentController(IOptionService optionService)
-        {
-            _optionService = optionService;
-        }
-        [HttpGet]
-        public ActionResult<List<PaymentOption>> List()
-        {
-            return _optionService.ListPaymentOptions();
-        }
-    }
+  public PaymentController(IOptionService optionService) {
+    _optionService = optionService;
+  }
+
+  [HttpGet]
+  public ActionResult<List<PaymentOption>> List() {
+    return _optionService.ListPaymentOptions();
+  }
 }

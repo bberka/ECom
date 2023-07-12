@@ -1,22 +1,19 @@
-﻿namespace ECom.Domain.Entities
+﻿namespace ECom.Domain.Entities;
+
+public class ProductComment : IEntity
 {
-    public class ProductComment : IEntity
-	{
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public int Id { get; set; }
-        public DateTime RegisterDate { get; set; } = DateTime.Now;
+  public int Id { get; set; }
 
-        [MaxLength(1000)]
-        [MinLength(8)]
-        public string Comment { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public byte Star { get; set; }
+  [MaxLength(1000)] [MinLength(8)] public string Comment { get; set; }
 
-        //FK
-        public int UserId { get; set; }
-        public int ProductId { get; set; }
-  
-    }
+  public byte Star { get; set; }
+
+  //FK
+  public int UserId { get; set; }
+  public int ProductId { get; set; }
 }

@@ -1,22 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿namespace ECom.Domain.Entities;
 
-namespace ECom.Domain.Entities
+public class SubCategory : IEntity
 {
-	public class SubCategory : IEntity
-	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public int Id { get; set; }
 
-		public bool IsValid { get; set; }
+  public bool IsValid { get; set; }
 
-        [MinLength(ConstantMgr.NameMinLength)]
-        [MaxLength(ConstantMgr.NameMaxLength)]
-		public string Name { get; set; }
+  [MinLength(ConstantMgr.NameMinLength)]
+  [MaxLength(ConstantMgr.NameMaxLength)]
+  public string Name { get; set; }
 
-		public int CategoryId { get; set; }
-	}
+  public int CategoryId { get; set; }
 }

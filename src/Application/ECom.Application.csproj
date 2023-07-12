@@ -1,41 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.4.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="EasMe" Version="4.0.2" />
+		<PackageReference Include="EasMe.Result" Version="2.1.1" />
+		<PackageReference Include="AspNetCore.Authorization.Extender" Version="2.0.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
+		<PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Domain\ECom.Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure\ECom.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="EasMe">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.Authorization">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Authorization.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.EntityFrameworkCore">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.Logging">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.Result">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Result.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Domain\ECom.Domain.csproj" />
+		<ProjectReference Include="..\Infrastructure\ECom.Infrastructure.csproj" />
+	</ItemGroup>
 
 </Project>

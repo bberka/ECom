@@ -1,48 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Entities;
 
-namespace ECom.Domain.Entities
+public class SecurityLog : IEntity
 {
-    public class SecurityLog : IEntity
-	{
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public long Id { get; set; }
 
-        public DateTime RegisterDate { get; set; } = DateTime.Now;
+  public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public int HttpStatusCodeResponse { get; set; }
+  public int HttpStatusCodeResponse { get; set; }
 
-        [MaxLength(2000)]
-        public string RequestUrl { get; set; }
+  [MaxLength(2000)] public string RequestUrl { get; set; }
 
 
-        [MaxLength(2000)]
-        public string QueryString { get; set; }
+  [MaxLength(2000)] public string QueryString { get; set; }
 
-        [MaxLength(64)]
-        public string RemoteIpAddress { get; set; }
+  [MaxLength(64)] public string RemoteIpAddress { get; set; }
 
-        [MaxLength(64)]
-        public string? XReal_IpAddress { get; set; }
+  [MaxLength(64)] public string? XReal_IpAddress { get; set; }
 
-        [MaxLength(64)]
-        public string? CFConnecting_IpAddress { get; set; }
+  [MaxLength(64)] public string? CFConnecting_IpAddress { get; set; }
 
-        [MaxLength(512)]
-        public string? UserAgent { get; set; }
+  [MaxLength(512)] public string? UserAgent { get; set; }
 
-        [MaxLength(2000)]
-        public string? Params { get; set; }
-
-
-
-
-
-    }
+  [MaxLength(2000)] public string? Params { get; set; }
 }

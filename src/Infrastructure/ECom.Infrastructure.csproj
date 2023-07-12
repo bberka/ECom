@@ -7,14 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
+	  <PackageReference Include="EasMe" Version="4.0.2" />
+	  <PackageReference Include="EasMe.Result" Version="2.1.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -24,24 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\ECom.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="EasMe">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.Authorization">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Authorization.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.EntityFrameworkCore">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.Logging">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="EasMe.Result">
-      <HintPath>..\..\..\..\build\easme\Release\net6.0\EasMe.Result.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

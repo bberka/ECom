@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ECom.Domain.Abstract
+namespace ECom.Domain.Abstract;
+
+public interface IImageService
 {
-    public interface IImageService
-    {
-        ResultData<int> UploadImage(IFormFile file);
+  ResultData<int> UploadImage(IFormFile file);
 
-        string GetImageBase64String(int id);
+  string GetImageBase64String(int id);
 
-        ResultData<Image> GetImage(int id);
-    }
+  ResultData<Image> GetImage(int id);
 }

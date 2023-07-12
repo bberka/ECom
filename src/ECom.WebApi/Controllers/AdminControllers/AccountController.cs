@@ -1,43 +1,32 @@
-﻿using EasMe.Authorization.Filters;
-using ECom.Domain.Constants;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-using ECom.Domain.DTOs.AdminDTOs;
-using ECom.Domain.DTOs;
+﻿namespace ECom.WebApi.Controllers.AdminControllers;
 
-namespace ECom.WebApi.Controllers.AdminControllers
+public class AccountController : BaseAdminController
 {
-    public class AccountController : BaseAdminController
-    {
-        private readonly IAdminService _adminService;
-        private readonly ILogService _logService;
+  private readonly IAdminService _adminService;
+  private readonly ILogService _logService;
 
-        public AccountController(
-            IAdminService adminService,
-            ILogService logService)
-        {
-            this._adminService = adminService;
-            _logService = logService;
-        }
-        [HttpGet]
-        public ActionResult<AdminDto> Get()
-        {
-            var admin = HttpContext.GetAdmin();
-            return admin;
-            //var res = _adminService.GetAdmin(adminId).WithoutRv();
-            //_logService.AdminLog(res.ToResult(),adminId,"Account.Get");
-            //return res;
-        }
+  public AccountController(
+    IAdminService adminService,
+    ILogService logService) {
+    _adminService = adminService;
+    _logService = logService;
+  }
 
-        
-        [HttpPost]
-        public ActionResult<Result> ChangePassword(ChangePasswordRequest model)
-        {
-            var res = _adminService.ChangePassword(model).WithoutRv();
-            _logService.AdminLog(res, model.AuthenticatedAdminId, "Account.ChangePassword",model.EncryptedOldPassword,model.EncryptedNewPassword);
-            return res;
-        }
+  [HttpGet]
+  public ActionResult<AdminDto> Get() {
+    var admin = HttpContext.GetAdmin();
+    return admin;
+    //var res = _adminService.GetAdmin(adminId).ToActionResult();
+    //_logService.AdminLog(res.ToResult(),adminId,"Account.Get");
+    //return res;
+  }
 
 
-    }
+  [HttpPost]
+  public ActionResult<Result> ChangePassword(ChangePasswordRequest model) {
+    var res = _adminService.ChangePassword(model);
+    _logService.AdminLog(res, model.AuthenticatedAdminId, "Account.ChangePassword", model.EncryptedOldPassword,
+      model.EncryptedNewPassword);
+    return res.ToActionResult();
+  }
 }

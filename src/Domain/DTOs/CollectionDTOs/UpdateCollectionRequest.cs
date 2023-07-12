@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.DTOs.CollectionDTOs;
 
-namespace ECom.Domain.DTOs.CollectionDTOs
+public class UpdateCollectionRequest : AuthRequestModelBase
 {
-    public class UpdateCollectionRequest : AuthRequestModelBase
-    {
-        public int CollectionId { get; set; }
-        public string CollectionName { get; set; }
-    }
+  public int CollectionId { get; set; }
+  public string CollectionName { get; set; }
 }

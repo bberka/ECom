@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Entities;
 
-namespace ECom.Domain.Entities
+public class DiscountCoupon : IEntity
 {
-	public class DiscountCoupon : IEntity
-	{
-		[Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-		public DateTime RegisterDate { get; set; } = DateTime.Now;
-		
-		public DateTime EndDate { get; set; }
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public int Id { get; set; }
 
-		
-		[Range(0, 100)]
-		public byte DiscountPercent { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public int DiscountCategoryId { get; set; }
-        public virtual Category DiscountCategory { get; set; }
+  public DateTime EndDate { get; set; }
 
-    }
+
+  [Range(0, 100)] public byte DiscountPercent { get; set; }
+
+  public int DiscountCategoryId { get; set; }
+  public virtual Category DiscountCategory { get; set; }
 }

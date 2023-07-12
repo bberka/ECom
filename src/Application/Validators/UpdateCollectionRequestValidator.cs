@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECom.Domain.DTOs.CollectionDTOs;
+﻿using ECom.Domain.DTOs.CollectionDTOs;
 
-namespace ECom.Application.Validators
+namespace ECom.Application.Validators;
+
+public class UpdateCollectionRequestValidator : AbstractValidator<UpdateCollectionRequest>,
+  IValidator<UpdateCollectionRequest>
 {
-    public class UpdateCollectionRequestValidator : AbstractValidator<UpdateCollectionRequest>, IValidator<UpdateCollectionRequest>
-    {
-        public UpdateCollectionRequestValidator()
-        {
-            RuleFor(x => x.CollectionName)
-                .MinimumLength(3)
-                .MaximumLength(32);
+  public UpdateCollectionRequestValidator() {
+    RuleFor(x => x.CollectionName)
+      .MinimumLength(3)
+      .MaximumLength(32);
 
-            RuleFor(x => x.CollectionId)
-                .GreaterThan(0);
-        }
-    }
+    RuleFor(x => x.CollectionId)
+      .GreaterThan(0);
+  }
 }

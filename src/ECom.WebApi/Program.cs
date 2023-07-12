@@ -1,14 +1,15 @@
-using EasMe.Logging;
 using ECom.Application.DependencyResolvers;
 using ECom.Application.Validators;
-using ECom.Domain.Lib;
+using ECom.Domain;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.Extensions.Logging;
 
-EasLogFactory.ConfigureTraceDefault(true);
+EComLoggerHelper.Configure(true);
+
 
 var builder = WebApplication.CreateBuilder(args);
-AppDomain.CurrentDomain.AddUnexpectedExceptionHandling();
 
 
 builder.Services.AddControllersConfigured();
@@ -24,25 +25,38 @@ builder.Services.AddDataBaseAccessServices();
 builder.Services.AddBusinessLogicServices();
 
 
-
 ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
 builder.Services.AddBusinessValidators();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddBusinessAuthenticators();
 builder.Services.AddAutoMapperConfigured();
+//builder.Services
+//  .AddHttpLogging(options => {
+//    options.LoggingFields = HttpLoggingFields.All;
+//    options.RequestBodyLogLimit = 4096;
+//    options.ResponseBodyLogLimit = 4096;
+//    options.MediaTypeOptions.Clear();
+//    options.MediaTypeOptions.AddText("application/json");
+//  });
 
 var app = builder.Build();
 
 #region Default
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c => {
+  // Configure the Swagger endpoint for each group
+  c.SwaggerEndpoint("/swagger/User/swagger.json", "User API v1.0");
+  c.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API v1.0");
 
-if (app.Environment.IsDevelopment())
-{
+  // Set the default Swagger UI route
+  c.RoutePrefix = "swagger";
+});
+//app.UseSwaggerUI();
+//app.UseHttpLogging();
 
-
+if (app.Environment.IsDevelopment()) {
 }
 
 //app.UseHttpsRedirection();
@@ -56,11 +70,11 @@ app.UseRouting();
 #region Custom Middlewares
 
 app.UseCors(x => x
-       .AllowAnyMethod()
-       .AllowAnyHeader()
-       .AllowCredentials()
-       //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins seperated with comma
-       .SetIsOriginAllowed(origin => true));// Allow any origin  
+  .AllowAnyMethod()
+  .AllowAnyHeader()
+  .AllowCredentials()
+  //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins seperated with comma
+  .SetIsOriginAllowed(origin => true)); // Allow any origin  
 
 app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<MaintenanceCheckMiddleware>();
@@ -76,8 +90,6 @@ app.UseResponseCaching();
 app.MapControllers();
 
 
-
 EComDbContext.EnsureCreatedAndUpdated();
 app.Run();
 
-EasLogFactory.StaticLogger.Info("Exiting...");

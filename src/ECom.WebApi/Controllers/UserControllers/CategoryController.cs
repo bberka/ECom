@@ -1,24 +1,19 @@
-﻿using EasMe.Authorization.Filters;
-using ECom.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 
-namespace ECom.WebApi.Controllers.UserControllers
+namespace ECom.WebApi.Controllers.UserControllers;
+
+[AllowAnonymous]
+public class CategoryController : BaseUserController
 {
-    [AllowAnonymous]
-    public class CategoryController : BaseUserController
-    {
-        private readonly ICategoryService _service;
-        public CategoryController(ICategoryService service)
-        {
-            _service = service;
-        }
-        [HttpGet]
-        [ResponseCache(Duration = 60)]
-        public ActionResult<List<Category>> List()
-        {
-            return _service.ListCategories();
-        }
+  private readonly ICategoryService _service;
 
-	}
+  public CategoryController(ICategoryService service) {
+    _service = service;
+  }
+
+  [HttpGet]
+  [ResponseCache(Duration = 60)]
+  public ActionResult<List<Category>> List() {
+    return _service.ListCategories();
+  }
 }

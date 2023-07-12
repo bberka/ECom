@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.DTOs.CategoryDTOs;
 
-namespace ECom.Domain.DTOs.CategoryDTOs
+public class UpdateCategoryRequest : AuthRequestModelBase
 {
-    public class UpdateCategoryRequest : AuthRequestModelBase
-    {
-        public int CategoryId { get; set; }
-        public string Name { get; set; }
-        public string Culture { get; set; }
-        public bool IsValid { get; set; }
-    }
+  public int CategoryId { get; set; }
+  public string Name { get; set; }
+  public string Culture { get; set; }
+  public bool IsValid { get; set; }
 }

@@ -1,20 +1,13 @@
-﻿using ECom.Domain.Constants;
-using ECom.Domain.Lib;
+﻿using ECom.Domain.Lib;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
-namespace ECom.WebApi.Controllers.UserControllers
+namespace ECom.WebApi.Controllers.UserControllers;
+
+[AllowAnonymous]
+public class LanguageController : BaseUserController
 {
-    [AllowAnonymous]
-    public class LanguageController : BaseUserController
-	{
-		
-		[HttpGet]
-		public ActionResult<string[]> List()
-        {
-            return CommonLib.GetCultureNames();
-		}
-
-        
-    }
+  [HttpGet]
+  public ActionResult<string[]> List() {
+    return CommonLib.GetCultureNames();
+  }
 }

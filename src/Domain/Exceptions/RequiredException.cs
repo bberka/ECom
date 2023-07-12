@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Exceptions;
 
-namespace ECom.Domain.Exceptions
+public class RequiredException : CustomException
 {
-    public class RequiredException : CustomException
-    {
-        public RequiredException(string propertyName) : base(propertyName)
-        {
-
-        }
-    }
+  public RequiredException(string propertyName) : base(propertyName) {
+  }
 }

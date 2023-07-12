@@ -1,18 +1,11 @@
-﻿using EasMe;
-using EasMe.Logging;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Microsoft.AspNetCore.Authorization;
 
-namespace ECom.WebApi.Controllers
+namespace ECom.WebApi.Controllers;
+
+[ApiController]
+[Route("api/[controller]/[action]")]
+[Authorize(Policy = "UserOnly")]
+[ApiExplorerSettings(GroupName = "User")]
+public class BaseUserController : Controller
 {
-    [ApiController]
-    [Route("api/[controller]/[action]")]
-    [Authorize(Policy = "UserOnly")]
-    public class BaseUserController : Controller
-    {
-        //protected readonly EasLog logger = EasLogFactory.CreateLogger(nameof(BaseUserController));
-
-        
-    }
 }

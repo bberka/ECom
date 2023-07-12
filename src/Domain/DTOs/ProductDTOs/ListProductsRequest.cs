@@ -1,8 +1,7 @@
-﻿namespace ECom.Domain.DTOs.ProductDTOs
+﻿namespace ECom.Domain.DTOs.ProductDTOs;
+
+public class ListProductsRequest
 {
-    public class ListProductsRequest
-    {
-        public int Page { get; set; }
-        public OrderByType OrderByType { get; set; } = OrderByType.Recommended;
-    }
+  public int Page { get; set; }
+  public OrderByType OrderByType { get; set; } = OrderByType.Recommended;
 }

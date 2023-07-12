@@ -1,10 +1,7 @@
-﻿using EasMe.EntityFrameworkCore.V2;
-
-namespace ECom.Infrastructure.Repository;
+﻿namespace ECom.Infrastructure.Repository;
 
 public class ProductSubCategoryRepository : GenericRepository<ProductSubCategory, EComDbContext>
 {
-    public ProductSubCategoryRepository(EComDbContext context) : base(context)
-    {
-    }
+  public ProductSubCategoryRepository(EComDbContext context) : base(context) {
+  }
 }   

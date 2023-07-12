@@ -1,19 +1,15 @@
 ﻿using ECom.Domain.DTOs.ProductDTOs;
-using FluentValidation;
 
-namespace ECom.Application.Validators
+namespace ECom.Application.Validators;
+
+public class ListProductsByCategoryRequestValidator : AbstractValidator<ListProductsByCategoryRequest>,
+  IValidator<ListProductsByCategoryRequest>
 {
-    public class ListProductsByCategoryRequestValidator : AbstractValidator<ListProductsByCategoryRequest>, IValidator<ListProductsByCategoryRequest>
-	{
-		public ListProductsByCategoryRequestValidator()
-		{
-			RuleFor(x => x.Page)
-                .GreaterThan(0);
+  public ListProductsByCategoryRequestValidator() {
+    RuleFor(x => x.Page)
+      .GreaterThan(0);
 
-            RuleFor(x => x.CategoryId)
-                .GreaterThan(0);
-
-        }
-
-	}
+    RuleFor(x => x.CategoryId)
+      .GreaterThan(0);
+  }
 }

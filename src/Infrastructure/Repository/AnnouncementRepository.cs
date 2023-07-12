@@ -1,10 +1,7 @@
-﻿using EasMe.EntityFrameworkCore.V2;
+﻿namespace ECom.Infrastructure.Repository;
 
-namespace ECom.Infrastructure.Repository;
-
-public class AnnouncementRepository : GenericRepository<Announcement,EComDbContext>
+public class AnnouncementRepository : GenericRepository<Announcement, EComDbContext>
 {
-    public AnnouncementRepository(EComDbContext context) : base(context)
-    {
-    }
+  public AnnouncementRepository(EComDbContext context) : base(context) {
+  }
 }

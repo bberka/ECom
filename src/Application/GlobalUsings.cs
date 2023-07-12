@@ -1,7 +1,5 @@
 ﻿global using EasMe;
-global using EasMe.Authorization;
 global using EasMe.Extensions;
-global using EasMe.Logging;
 global using EasMe.Models;
 global using ECom.Application.Services;
 global using ECom.Domain.Abstract;
@@ -19,7 +17,6 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Security.Claims;
 global using System.Threading.Tasks;
-
 global using ECom.Domain.Entities;
 global using System.Collections.Generic;
 global using System.IdentityModel.Tokens.Jwt;

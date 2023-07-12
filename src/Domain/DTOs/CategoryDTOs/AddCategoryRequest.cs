@@ -1,10 +1,8 @@
-﻿namespace ECom.Domain.DTOs.CategoryDTOs
+﻿namespace ECom.Domain.DTOs.CategoryDTOs;
+
+public class AddCategoryRequest : AuthRequestModelBase
 {
-    public class AddCategoryRequest : AuthRequestModelBase
-    {
+  public string Name { get; set; }
 
-        public string Name { get; set; }
-
-        public string Culture { get; set; }
-    }
+  public string Culture { get; set; }
 }

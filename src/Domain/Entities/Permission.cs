@@ -1,29 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Entities;
 
-namespace ECom.Domain.Entities
+public class Permission : IEntity
 {
-	public class Permission : IEntity
-	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+  [Key]
+  public int Id { get; set; }
+  
+  [MaxLength(32)] public string Name { get; set; }
 
-		
-		[MaxLength(32)]
-		public string Name { get; set; }
+  [MaxLength(32)] public string? Memo { get; set; }
 
-        [MaxLength(32)]
-        public string? Memo { get; set; }
+  public bool IsValid { get; set; }
 
-		public bool IsValid { get; set; }
-
-        public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
-
-    }
+  public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
 }

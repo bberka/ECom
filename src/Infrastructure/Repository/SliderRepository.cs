@@ -1,8 +1,7 @@
 ﻿namespace ECom.Infrastructure.Repository;
 
-public class SliderRepository : GenericRepository<Slider,EComDbContext>
+public class SliderRepository : GenericRepository<Slider, EComDbContext>
 {
-    public SliderRepository(EComDbContext context) : base(context)
-    {
-    }
+  public SliderRepository(EComDbContext context) : base(context) {
+  }
 }

@@ -1,52 +1,51 @@
-﻿
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using ECom.Domain.DTOs.AdminDTOs;
+namespace ECom.Domain.Entities;
 
-namespace ECom.Domain.Entities
+public class Admin : IEntity
 {
-    public class Admin : IEntity
-	{
+  [Key]
+  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public int Id { get; set; }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public DateTime RegisterDate { get; set; } = DateTime.Now;
+  public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public bool IsValid { get; set; } = true;
+  public bool IsValid { get; set; } = true;
 
 
-        [MaxLength(64)]
-        [Newtonsoft.Json.JsonIgnore,JsonIgnore,IgnoreDataMember]
-        public string Password { get; set; }
+  [MaxLength(64)]
+  [JsonIgnore]
+  [System.Text.Json.Serialization.JsonIgnore]
+  [IgnoreDataMember]
+  public string Password { get; set; }
 
-        [MaxLength(ConstantMgr.EmailMaxLength)]
-        [EmailAddress]
-        public string EmailAddress { get; set; }
+  [MaxLength(ConstantMgr.EmailMaxLength)]
+  [EmailAddress]
+  public string EmailAddress { get; set; }
 
 
-        [MaxLength(255)]
-        [Newtonsoft.Json.JsonIgnore, JsonIgnore, IgnoreDataMember]
-        public string? TwoFactorKey { get; set; }
+  [MaxLength(255)]
+  [JsonIgnore]
+  [System.Text.Json.Serialization.JsonIgnore]
+  [IgnoreDataMember]
+  public string? TwoFactorKey { get; set; }
 
-        /// <summary>
-        /// 0: None
-        /// 1: Email
-        /// 2: Phone
-        /// 3: Authy
-        /// </summary>
-        public byte TwoFactorType { get; set; } = 0;
-        
-        
-        public DateTime? DeletedDate { get; set; }
+  /// <summary>
+  ///   0: None
+  ///   1: Email
+  ///   2: Phone
+  ///   3: Authy
+  /// </summary>
+  public byte TwoFactorType { get; set; } = 0;
 
-        public int RoleId { get; set; }
-        
 
-        //virtual
-        public Role Role { get; set; } = null!;
-        public virtual HashSet<AdminLog> AdminLogs { get; set; }
+  public DateTime? DeletedDate { get; set; }
 
-    }
+  public int RoleId { get; set; }
+
+
+  //virtual
+  public Role Role { get; set; } = null!;
+  public virtual HashSet<AdminLog> AdminLogs { get; set; }
 }

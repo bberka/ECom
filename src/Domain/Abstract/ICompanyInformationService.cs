@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECom.Domain.Abstract;
 
-namespace ECom.Domain.Abstract
+public interface ICompanyInformationService
 {
-    public interface ICompanyInformationService
-    {
-        ResultData<CompanyInformation> GetCompanyInformation();
-        CompanyInformation? GetFromCache();
-        Result UpdateOrAddCompanyInformation(CompanyInformation info);
-
-    }
+  ResultData<CompanyInformation> GetCompanyInformation();
+  CompanyInformation? GetFromCache();
+  Result UpdateOrAddCompanyInformation(CompanyInformation info);
 }

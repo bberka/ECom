@@ -1,7 +1,6 @@
-﻿namespace ECom.Domain.Abstract
+﻿namespace ECom.Domain.Abstract;
+
+public interface ILocalization
 {
-    public interface ILocalization
-    {
-        public string Get(string key);
-    }
+  public string Get(string key);
 }
