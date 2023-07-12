@@ -1,6 +1,7 @@
 ﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(ProductId), nameof(CollectionId))]
+[Table("CollectionProducts", Schema = "ECPrivate")]
 public class CollectionProduct : IEntity
 {
   public DateTime RegisterDate { get; set; } = DateTime.Now;

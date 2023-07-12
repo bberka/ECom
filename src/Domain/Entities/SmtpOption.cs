@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("SmtpOptions", Schema = "ECOption")]
 public class SmtpOption : IEntity
 {
   [Key]

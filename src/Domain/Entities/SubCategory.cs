@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("SubCategories", Schema = "ECPrivate")]
 public class SubCategory : IEntity
 {
   [Key]

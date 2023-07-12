@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("EmailVerifyTokens", Schema = "ECPrivate")]
 public class EmailVerifyToken : IEntity
 {
   [Key]

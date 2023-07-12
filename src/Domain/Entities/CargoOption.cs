@@ -2,6 +2,7 @@
 
 namespace ECom.Domain.Entities;
 
+[Table("CargoOptions", Schema = "ECOption")]
 public class CargoOption : IEntity
 {
   [Key]

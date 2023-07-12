@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("ShowCaseImages", Schema = "ECPrivate")]
 public class ShowCaseImage : IEntity
 {
   [Key]

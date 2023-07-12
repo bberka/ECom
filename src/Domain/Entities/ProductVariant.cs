@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("ProductVariants", Schema = "ECPrivate")]
 public class ProductVariant : IEntity
 {
   [Key]

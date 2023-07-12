@@ -1,6 +1,7 @@
 ﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(UserId), nameof(ProductId))]
+[Table("FavoriteProducts", Schema = "ECPrivate")]
 public class FavoriteProduct : IEntity
 {
   public DateTime RegisterDate { get; set; } = DateTime.Now;

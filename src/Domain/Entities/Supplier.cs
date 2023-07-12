@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("Suppliers", Schema = "ECPrivate")]
 public class Supplier : IEntity
 {
   [Key]

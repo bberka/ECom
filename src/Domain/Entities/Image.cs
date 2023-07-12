@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("Images", Schema = "ECPrivate")]
 public class Image : IEntity
 {
   [Key]

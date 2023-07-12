@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("Permissions",Schema = "ECOperation")]
 public class Permission : IEntity
 {
   [Key]

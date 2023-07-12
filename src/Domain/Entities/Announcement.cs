@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("Announcements", Schema = "ECPrivate")]
 public class Announcement : IEntity
 {
   [Key]

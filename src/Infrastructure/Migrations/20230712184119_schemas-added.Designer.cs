@@ -4,6 +4,7 @@ using ECom.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230712184119_schemas-added")]
+    partial class schemasadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +86,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses", "ECPrivate");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
@@ -127,7 +130,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Admins", "ECOperation");
+                    b.ToTable("Admins", "Operation");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.AdminLog", b =>
@@ -190,7 +193,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("AdminId");
 
-                    b.ToTable("AdminLogs", "ECLog");
+                    b.ToTable("AdminLogs", "Log");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Announcement", b =>
@@ -217,7 +220,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Announcements", "ECPrivate");
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
@@ -245,7 +248,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("CargoOptions", "ECOption");
+                    b.ToTable("CargoOptions", "Option");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
@@ -269,7 +272,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Carts", "ECPrivate");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
@@ -295,7 +298,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", "ECPrivate");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.CategoryDiscount", b =>
@@ -322,7 +325,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("CategoryDiscounts", "ECPrivate");
+                    b.ToTable("CategoryDiscounts");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Collection", b =>
@@ -348,7 +351,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Collections", "ECPrivate");
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.CollectionProduct", b =>
@@ -366,7 +369,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("CollectionId");
 
-                    b.ToTable("CollectionProducts", "ECPrivate");
+                    b.ToTable("CollectionProducts");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.CompanyInformation", b =>
@@ -432,7 +435,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("IsRelease");
 
-                    b.ToTable("CompanyInformations", "ECPrivate");
+                    b.ToTable("CompanyInformations");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
@@ -459,7 +462,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("DiscountCategoryId");
 
-                    b.ToTable("DiscountCoupons", "ECPrivate");
+                    b.ToTable("DiscountCoupons");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountNotify", b =>
@@ -474,7 +477,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DiscountNotifies", "ECPrivate");
+                    b.ToTable("DiscountNotifies");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.EmailVerifyToken", b =>
@@ -504,7 +507,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EmailVerifyTokens", "ECPrivate");
+                    b.ToTable("EmailVerifyTokens");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.FavoriteProduct", b =>
@@ -522,7 +525,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("FavoriteProducts", "ECPrivate");
+                    b.ToTable("FavoriteProducts");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Image", b =>
@@ -554,7 +557,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Images", "ECPrivate");
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
@@ -605,7 +608,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("IsRelease");
 
-                    b.ToTable("Options", "ECOption");
+                    b.ToTable("Options", "Option");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
@@ -646,7 +649,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", "ECPrivate");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.PasswordResetToken", b =>
@@ -671,7 +674,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PasswordResetTokens", "ECPrivate");
+                    b.ToTable("PasswordResetTokens");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.PaymentOption", b =>
@@ -728,7 +731,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentOptions", "ECOption");
+                    b.ToTable("PaymentOptions", "Option");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
@@ -753,7 +756,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions", "ECOperation");
+                    b.ToTable("Permissions", "Operation");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
@@ -768,7 +771,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("PermissionRoles", "ECOperation");
+                    b.ToTable("PermissionRoles", "Operation");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
@@ -804,7 +807,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductVariantId");
 
-                    b.ToTable("Products", "ECPrivate");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
@@ -838,7 +841,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProductComments", "ECPrivate");
+                    b.ToTable("ProductComments");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
@@ -880,7 +883,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductDetails", "ECPrivate");
+                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
@@ -910,7 +913,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductShowCases", "ECPrivate");
+                    b.ToTable("ProductShowCases");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductSubCategory", b =>
@@ -923,7 +926,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("ProductId", "SubCategoryId");
 
-                    b.ToTable("ProductSubCategories", "ECPrivate");
+                    b.ToTable("ProductSubCategories");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductVariant", b =>
@@ -944,7 +947,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductVariants", "ECPrivate");
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
@@ -965,7 +968,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "ECOperation");
+                    b.ToTable("Roles", "Operation");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SecurityLog", b =>
@@ -1015,7 +1018,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SecurityLogs", "ECLog");
+                    b.ToTable("SecurityLogs", "Log");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ShowCaseImage", b =>
@@ -1045,7 +1048,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("ShowCaseImages", "ECPrivate");
+                    b.ToTable("ShowCaseImages");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Slider", b =>
@@ -1087,7 +1090,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Sliders", "ECPrivate");
+                    b.ToTable("Sliders");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SmtpOption", b =>
@@ -1124,7 +1127,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SmtpOptions", "ECOption");
+                    b.ToTable("SmtpOptions", "Option");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.StockChange", b =>
@@ -1170,7 +1173,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StockChanges", "ECPrivate");
+                    b.ToTable("StockChanges");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SubCategory", b =>
@@ -1196,7 +1199,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("SubCategories", "ECPrivate");
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>
@@ -1237,7 +1240,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers", "ECPrivate");
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.User", b =>
@@ -1312,7 +1315,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "ECPrivate");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
@@ -1375,7 +1378,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogs", "ECLog");
+                    b.ToTable("UserLogs", "Log");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>

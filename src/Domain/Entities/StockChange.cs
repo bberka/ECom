@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace ECom.Domain.Entities;
 
+[Table("StockChanges", Schema = "ECPrivate")]
 public class StockChange : IEntity
 {
   [Key]

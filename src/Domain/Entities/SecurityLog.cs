@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("SecurityLogs", Schema = "ECLog")]
 public class SecurityLog : IEntity
 {
   [Key]

@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("Orders", Schema = "ECPrivate")]
 public class Order : IEntity
 {
   [Key]

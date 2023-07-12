@@ -4,6 +4,7 @@ using ECom.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    partial class EComDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230712184610_schemas-edited")]
+    partial class schemasedited
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -504,7 +507,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EmailVerifyTokens", "ECPrivate");
+                    b.ToTable("EmailVerifyToken", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.FavoriteProduct", b =>
@@ -605,7 +608,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("IsRelease");
 
-                    b.ToTable("Options", "ECOption");
+                    b.ToTable("Options", "Option");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>

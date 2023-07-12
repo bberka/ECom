@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("DiscountCoupons", Schema = "ECPrivate")]
 public class DiscountCoupon : IEntity
 {
   [Key]

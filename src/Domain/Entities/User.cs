@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace ECom.Domain.Entities;
 
+[Table("Users", Schema = "ECPrivate")]
 public class User : IEntity
 {
   [Key]

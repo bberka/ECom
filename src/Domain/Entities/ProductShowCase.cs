@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("ProductShowCases", Schema = "ECPrivate")]
 public class ProductShowCase : IEntity
 {
   [Key]

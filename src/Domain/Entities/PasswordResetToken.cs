@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("PasswordResetTokens", Schema = "ECPrivate")]
 public class PasswordResetToken : IEntity
 {
   [Key]

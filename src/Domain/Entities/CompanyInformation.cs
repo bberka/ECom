@@ -2,6 +2,7 @@
 
 namespace ECom.Domain.Entities;
 
+[Table("CompanyInformations", Schema = "ECPrivate")]
 public class CompanyInformation : IEntity
 {
   [Key]

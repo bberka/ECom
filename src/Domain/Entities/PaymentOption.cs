@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("PaymentOptions", Schema = "ECOption")]
 public class PaymentOption : IEntity
 {
   [Key]

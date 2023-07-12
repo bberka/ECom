@@ -1,5 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
+[Table("Sliders", Schema = "ECPrivate")]
 public class Slider : IEntity
 {
   [Key]

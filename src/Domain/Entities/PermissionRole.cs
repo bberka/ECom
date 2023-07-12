@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
-//[PrimaryKey(nameof(RoleId),nameof(PermissionId))]
+[Table("PermissionRoles", Schema = "ECOperation")]
 public class PermissionRole : IEntity
 {
   public int RoleId { get; set; }

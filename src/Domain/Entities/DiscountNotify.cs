@@ -1,6 +1,7 @@
 ﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(UserId), nameof(ProductId))]
+[Table("DiscountNotifies", Schema = "ECPrivate")]
 public class DiscountNotify : IEntity
 {
   public int UserId { get; set; }
