@@ -626,6 +626,11 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
+                    b.Property<byte>("OrderStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((byte)0);
+
                     b.Property<double>("OriginalPrice")
                         .HasColumnType("float");
 
@@ -854,7 +859,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
-                    b.Property<string>("DescriptionHTML")
+                    b.Property<string>("DescriptionMarkdown")
                         .IsRequired()
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
@@ -872,7 +877,7 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<string>("TechnicalInformationHTML")
+                    b.Property<string>("TechnicalInformationMarkdown")
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 

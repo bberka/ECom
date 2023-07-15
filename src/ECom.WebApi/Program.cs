@@ -1,7 +1,7 @@
 using ECom.Application.DependencyResolvers;
+using ECom.Application.Middlewares;
 using ECom.Application.Validators;
 using ECom.Domain;
-using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 

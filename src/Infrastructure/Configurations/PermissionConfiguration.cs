@@ -8,7 +8,7 @@ internal class PermissionConfiguration : IEntityTypeConfiguration<Permission>
     builder.Navigation(x => x.PermissionRoles).AutoInclude();
 
     //var permEnumList = CommonLib.GetAdminOperationTypes();
-    //var permList  = new List<Permission>();
+    //var permList  = new ListProducts<Permission>();
     //for (int i = 1; i < permEnumList.Length; i++)
     //{
     //    var str = permEnumList[i];

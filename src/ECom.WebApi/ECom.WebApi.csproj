@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
     <PackageReference Include="Ardalis.ApiEndpoints.CodeAnalyzers" Version="4.1.0" />
     <PackageReference Include="Ardalis.ApiEndpoints.Swashbuckle" Version="4.1.0" />
     <PackageReference Include="AspNetCore.Authorization.Extender" Version="2.0.1" />
-    <PackageReference Include="EasMe" Version="4.0.2" />
+    <PackageReference Include="EasMe" Version="4.0.3" />
     <PackageReference Include="EasMe.Result" Version="2.1.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
@@ -37,12 +37,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\ECom.Application.csproj" />
     <ProjectReference Include="..\Domain\ECom.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Endpoints\Product\Comment\" />
-    <Folder Include="Endpoints\Product\Favorite\" />
-    <Folder Include="Endpoints\Product\Collection\" />
   </ItemGroup>
 
 </Project>

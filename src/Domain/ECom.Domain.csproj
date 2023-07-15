@@ -11,7 +11,7 @@
 		<Folder Include="Properties\" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EasMe" Version="4.0.2" />
+		<PackageReference Include="EasMe" Version="4.0.3" />
 		<PackageReference Include="EasMe.Result" Version="2.1.1" />
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

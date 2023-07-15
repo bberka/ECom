@@ -21,5 +21,4 @@ global using AspNetCore.Authorization.Extender;
 global using Serilog;
 global using Ardalis.ApiEndpoints;
 global using ECom.Application.Services;
-global using ECom.WebApi.Attributes;
 global using Microsoft.AspNetCore.Authorization;

@@ -2,7 +2,7 @@
 
 public enum RoleType
 {
-  User,
+  None,
   Support,
   Moderator,
   Admin,

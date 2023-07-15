@@ -78,7 +78,7 @@ public static class DomainResult
     }
 
     public static Result ChangePasswordSuccessResult() {
-      return Result.Success("Admin.ChangePasswordEndpoint");
+      return Result.Success("Admin.ChangePassword");
     }
 
     public static Result UpdateSuccessResult() {
