@@ -25,7 +25,7 @@ public class AccountController : BaseAdminController
   [HttpPost]
   public ActionResult<Result> ChangePassword(ChangePasswordRequest model) {
     var res = _adminService.ChangePassword(model);
-    _logService.AdminLog(res, model.AuthenticatedAdminId, "Account.ChangePassword", model.EncryptedOldPassword,
+    _logService.AdminLog(res, model.AuthenticatedAdminId, "Account.ChangePasswordEndpoint", model.EncryptedOldPassword,
       model.EncryptedNewPassword);
     return res.ToActionResult();
   }

@@ -1,7 +1,6 @@
 ﻿namespace ECom.WebApi.Controllers.AdminControllers;
 
-[ApiController]
-[Route("api/Admin/[controller]/[action]")]
+
 public class AuthController : BaseAdminController
 {
   private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;

@@ -3,6 +3,7 @@ using ECom.Application.Validators;
 using ECom.Domain;
 using ECom.WebApi.Middlewares;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 EComLoggerHelper.Configure(true);
 
@@ -15,7 +16,9 @@ builder.Services.AddSessionConfigured();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddResponseCaching();
 builder.Services.AddSwaggerConfigured();
-
+builder.Services.AddSwaggerGen(c => {
+  c.EnableAnnotations();
+});
 builder.Services.AddCors();
 builder.Services.AddAuthorizationConfigured();
 
@@ -43,14 +46,16 @@ var app = builder.Build();
 #region Default
 
 app.UseSwagger();
-app.UseSwaggerUI(c => {
-  // Configure the Swagger endpoint for each group
-  c.SwaggerEndpoint("/swagger/User/swagger.json", "User API v1.0");
-  c.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API v1.0");
+app.UseSwaggerUI(
+//  c => {
+//  // Configure the Swagger endpoint for each group
+//  c.SwaggerEndpoint("/swagger/User/swagger.json", "User API v1.0");
+//  c.SwaggerEndpoint("/swagger/Admin/swagger.json", "Admin API v1.0");
 
-  // Set the default Swagger UI route
-  c.RoutePrefix = "swagger";
-});
+//  // Set the default Swagger UI route
+//  c.RoutePrefix = "swagger";
+//}
+  );
 //app.UseSwaggerUI();
 //app.UseHttpLogging();
 

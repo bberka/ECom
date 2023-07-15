@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.ApiEndpoints" Version="4.1.0" />
+    <PackageReference Include="Ardalis.ApiEndpoints.CodeAnalyzers" Version="4.1.0" />
+    <PackageReference Include="Ardalis.ApiEndpoints.Swashbuckle" Version="4.1.0" />
     <PackageReference Include="AspNetCore.Authorization.Extender" Version="2.0.1" />
     <PackageReference Include="EasMe" Version="4.0.2" />
     <PackageReference Include="EasMe.Result" Version="2.1.1" />
@@ -34,6 +37,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\ECom.Application.csproj" />
     <ProjectReference Include="..\Domain\ECom.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Endpoints\Product\Comment\" />
+    <Folder Include="Endpoints\Product\Favorite\" />
+    <Folder Include="Endpoints\Product\Collection\" />
   </ItemGroup>
 
 </Project>

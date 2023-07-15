@@ -38,6 +38,7 @@ public static class SwaggerDependencyResolver
         }
       });
     });
+    
     return services;
   }
 }
