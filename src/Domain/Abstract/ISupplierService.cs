@@ -2,11 +2,11 @@
 
 public interface ISupplierService
 {
-  List<Supplier> ListSuppliers();
+  List<Supplier> GetSuppliers();
 
   bool Exists(int id);
 
-  CustomResult<Supplier> Get(int id);
-  CustomResult Update(Supplier supplier);
-  CustomResult Delete(int id);
+  CustomResult<Supplier> GetSupplier(int id);
+  CustomResult UpdateSupplier(Supplier supplier);
+  CustomResult DeleteSupplier(int id);
 }

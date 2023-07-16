@@ -22,7 +22,7 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 #if !DEBUG
             var admin = _debugService.GetAdminDto();
 #else
-    var loginResult = _adminService.Login(model);
+    var loginResult = _adminService.AdminLogin(model);
     if (!loginResult.Status) return loginResult.ToResult();
 
     var admin = loginResult.Data;

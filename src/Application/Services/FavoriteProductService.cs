@@ -17,8 +17,8 @@ public class FavoriteProductService : IFavoriteProductService
     _userService = userService;
   }
 
-  public CustomResult AddProduct(int userId, int productId) {
-    var userExist = _userService.Exists(userId);
+  public CustomResult AddFavoriteProduct(int userId, int productId) {
+    var userExist = _userService.UserExists(userId);
     if (!userExist) return DomainResult.NotFound(nameof(User));
     var productExist = _productService.Exists(productId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
@@ -29,19 +29,19 @@ public class FavoriteProductService : IFavoriteProductService
     };
     _unitOfWork.FavoriteProductRepository.Insert(data);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(AddProduct));
+    if (!res) return DomainResult.DbInternalError(nameof(AddFavoriteProduct));
     return DomainResult.OkAdded(nameof(FavoriteProduct));
   }
 
-  public CustomResult RemoveProduct(int userId, int productId) {
-    var userExist = _userService.Exists(userId);
+  public CustomResult RemoveFavoriteProduct(int userId, int productId) {
+    var userExist = _userService.UserExists(userId);
     if (!userExist) return DomainResult.NotFound(nameof(User));
     var favProduct =
       _unitOfWork.FavoriteProductRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (favProduct is null) return DomainResult.NotFound(nameof(FavoriteProduct));
     _unitOfWork.FavoriteProductRepository.Delete(favProduct);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(RemoveProduct));
+    if (!res) return DomainResult.DbInternalError(nameof(RemoveFavoriteProduct));
 
     return DomainResult.OkRemoved(nameof(FavoriteProduct));
   }

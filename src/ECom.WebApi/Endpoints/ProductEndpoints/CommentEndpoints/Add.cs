@@ -20,7 +20,7 @@ public class Add : EndpointBaseSync.WithRequest<AddProductCommentRequest>.WithRe
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Add),"Adds product comment")]
   public override CustomResult Handle(AddProductCommentRequest request) {
-    var res = _productService.AddComment(request);
+    var res = _productService.AddProductComment(request);
     _logService.UserLog(res.ToResult(), request.AuthenticatedUserId, "ProductComment.Add",request.ToJsonString());
     return res;
   }

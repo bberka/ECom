@@ -18,7 +18,7 @@ public class StockChangeService : IStockChangeService
     _productService = productService;
   }
 
-  public CustomResult Add(AddStockChangeRequest model) {
+  public CustomResult AddStockChange(AddStockChangeRequest model) {
     var productExist = _productService.Exists(model.ProductId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
     var supplierExist = _supplierService.Exists(model.SupplierId);
@@ -33,7 +33,7 @@ public class StockChangeService : IStockChangeService
     };
     _unitOfWork.StockChangeRepository.Insert(stockChange);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(Add));
+    if (!res) return DomainResult.DbInternalError(nameof(AddStockChange));
     return DomainResult.OkAdded(nameof(StockChange));
   }
 

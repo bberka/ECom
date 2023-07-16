@@ -84,7 +84,7 @@ public class AdminService : IAdminService
     return admin;
   }
 
-  public CustomResult<AdminDto> Login(LoginRequest model) {
+  public CustomResult<AdminDto> AdminLogin(LoginRequest model) {
     var adminResult = GetAdminDto(model.EmailAddress);
     if (!adminResult.Status) return adminResult;
     var admin = adminResult.Data!;
@@ -100,11 +100,11 @@ public class AdminService : IAdminService
     return _unitOfWork.AdminRepository.Any(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true);
   }
 
-  public bool Exists(int id) {
+  public bool AdminExists(int id) {
     return _unitOfWork.AdminRepository.Any(x => x.Id == id);
   }
 
-  public bool Exists(string email) {
+  public bool AdminExists(string email) {
     return _unitOfWork.AdminRepository.Any(x => x.EmailAddress == email);
   }
 

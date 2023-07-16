@@ -19,7 +19,7 @@ public class Remove : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
   [EndpointSwaggerOperation(typeof(Remove),"Removes product from favorite list")]
   public override CustomResult Handle(int id) {
     var userId = HttpContext.GetUserId();
-    var res = _favoriteProductService.RemoveProduct(userId, id);
+    var res = _favoriteProductService.RemoveFavoriteProduct(userId, id);
     _logService.UserLog(res, userId, "FavoriteProduct.Remove", id);
     return res;
   }

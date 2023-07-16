@@ -54,7 +54,7 @@ public interface IProductService
   /// </returns>
   List<ProductComment> GetProductComments(int productId, ushort page);
 
-  CustomResult<int> AddComment(AddProductCommentRequest model);
+  CustomResult<int> AddProductComment(AddProductCommentRequest model);
 
   //CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId);
   //ListProducts<ProductDetail>? GetProductDetails(long productNo);

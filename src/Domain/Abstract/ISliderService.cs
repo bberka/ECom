@@ -2,11 +2,11 @@
 
 public interface ISliderService
 {
-  CustomResult<Slider> Get(int sliderId);
+  CustomResult<Slider> GetSlider(int sliderId);
 
-  List<Slider> GetList();
+  List<Slider> GetSliders();
 
-  CustomResult Update(Slider slider);
-  CustomResult Delete(int sliderId);
-  CustomResult Add(Slider slider);
+  CustomResult UpdateSlider(Slider slider);
+  CustomResult DeleteSlider(int sliderId);
+  CustomResult AddSlider(Slider slider);
 }

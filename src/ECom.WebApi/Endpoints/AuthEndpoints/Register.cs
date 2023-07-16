@@ -18,7 +18,7 @@ public class Register : EndpointBaseSync.WithRequest<RegisterUserRequest>.WithRe
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Register), "Register a new user")]
   public override CustomResult Handle(RegisterUserRequest request) {
-    var res = _userService.Register(request);
+    var res = _userService.RegisterUser(request);
     _logService.UserLog(res, null, "Auth.Register", request.EmailAddress);
     return res;
   }

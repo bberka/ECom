@@ -18,15 +18,15 @@ public class UserService : IUserService
     _validationService = validationService;
   }
 
-  public CustomResult Register(RegisterUserRequest model) {
+  public CustomResult RegisterUser(RegisterUserRequest model) {
     var user = model.ToUserEntity();
     _unitOfWork.UserRepository.Insert(user);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(Register));
+    if (!res) return DomainResult.DbInternalError(nameof(RegisterUser));
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public CustomResult<UserDto> Login(LoginRequest model) {
+  public CustomResult<UserDto> LoginUser(LoginRequest model) {
     var userResult = GetUser(model.EmailAddress);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
@@ -66,7 +66,7 @@ public class UserService : IUserService
   }
 
 
-  public bool Exists(string email) {
+  public bool UserExists(string email) {
     return _unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
   }
 
@@ -83,7 +83,7 @@ public class UserService : IUserService
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public CustomResult Update(UpdateUserRequest model) {
+  public CustomResult UpdateUser(UpdateUserRequest model) {
     var userId = model.AuthenticatedUserId;
     if (userId < 1) throw new InvalidOperationException("UserNo can not be negative");
     var user = _unitOfWork.UserRepository.GetById(userId);
@@ -96,11 +96,11 @@ public class UserService : IUserService
     user.LastName = model.LastName;
     _unitOfWork.UserRepository.Update(user);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(Update));
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateUser));
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public bool Exists(int id) {
+  public bool UserExists(int id) {
     return _unitOfWork.UserRepository.Any(x => x.Id == id);
   }
 }

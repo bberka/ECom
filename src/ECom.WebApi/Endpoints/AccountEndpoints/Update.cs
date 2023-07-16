@@ -18,7 +18,7 @@ public class Update : EndpointBaseSync.WithRequest<UpdateUserRequest>.WithResult
   [EndpointSwaggerOperation(typeof(Update))]
   public override CustomResult Handle(UpdateUserRequest request) {
     var userId = request.AuthenticatedUserId;
-    var res = _userService.Update(request);
+    var res = _userService.UpdateUser(request);
     _logService.UserLog(res, userId, "Account.Update", request.ToJsonString());
     return res;
   }

@@ -58,7 +58,7 @@ public class ProductService : IProductService
       .ToList();
   }
 
-  public CustomResult<int> AddComment(AddProductCommentRequest model) {
+  public CustomResult<int> AddProductComment(AddProductCommentRequest model) {
     var productResult = GetProduct(model.ProductId);
     if (!productResult.Status) return productResult.ToResult();
     //TODO: Check if user purchased the product
@@ -71,7 +71,7 @@ public class ProductService : IProductService
     };
     _unitOfWork.ProductCommentRepository.Insert(comment);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(AddComment));
+    if (!res) return DomainResult.DbInternalError(nameof(AddProductComment));
     return DomainResult.OkAdded(nameof(ProductComment));
   }
 

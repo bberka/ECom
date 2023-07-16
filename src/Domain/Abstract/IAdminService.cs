@@ -10,10 +10,10 @@ public interface IAdminService
   CustomResult<Admin> GetAdmin(string email);
   CustomResult<AdminDto> GetAdminDto(int id);
   CustomResult<AdminDto> GetAdminDto(string email);
-  bool Exists(int id);
-  bool Exists(string email);
+  bool AdminExists(int id);
+  bool AdminExists(string email);
   bool IsValidAdminAccount(int id);
-  CustomResult<AdminDto> Login(LoginRequest model);
+  CustomResult<AdminDto> AdminLogin(LoginRequest model);
   CustomResult AddAdmin(AddAdminRequest admin);
   CustomResult ChangePassword(ChangePasswordRequest model);
 

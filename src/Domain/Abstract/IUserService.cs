@@ -5,12 +5,12 @@ namespace ECom.Domain.Abstract;
 
 public interface IUserService
 {
-  bool Exists(string email);
-  bool Exists(int id);
+  bool UserExists(string email);
+  bool UserExists(int id);
   CustomResult<User> GetUser(string email);
   CustomResult<User> GetUser(int id);
-  CustomResult<UserDto> Login(LoginRequest model);
-  CustomResult Register(RegisterUserRequest model);
+  CustomResult<UserDto> LoginUser(LoginRequest model);
+  CustomResult RegisterUser(RegisterUserRequest model);
   CustomResult ChangePassword(ChangePasswordRequest model);
-  CustomResult Update(UpdateUserRequest model);
+  CustomResult UpdateUser(UpdateUserRequest model);
 }

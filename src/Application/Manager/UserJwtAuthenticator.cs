@@ -23,7 +23,7 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
       user = _debugService.GetUserDto();
     }
     else {
-      var loginResult = _userService.Login(model);
+      var loginResult = _userService.LoginUser(model);
       if (!loginResult) return loginResult.ToResult();
       user = loginResult.Data!;
     }

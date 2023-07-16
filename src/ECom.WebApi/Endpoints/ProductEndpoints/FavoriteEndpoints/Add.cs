@@ -19,7 +19,7 @@ public class Add : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
   [EndpointSwaggerOperation(typeof(Add),"Adds product to favorite list")]
   public override CustomResult Handle(int id) {
     var userId = HttpContext.GetUserId();
-    var res = _favoriteProductService.AddProduct(userId, id);
+    var res = _favoriteProductService.AddFavoriteProduct(userId, id);
     _logService.UserLog(res, userId, "FavoriteProduct.Add", id);
     return res;
   }
