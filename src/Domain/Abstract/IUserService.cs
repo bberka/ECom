@@ -7,10 +7,10 @@ public interface IUserService
 {
   bool Exists(string email);
   bool Exists(int id);
-  ResultData<User> GetUser(string email);
-  ResultData<User> GetUser(int id);
-  ResultData<UserDto> Login(LoginRequest model);
-  Result Register(RegisterUserRequest model);
-  Result ChangePassword(ChangePasswordRequest model);
-  Result Update(UpdateUserRequest model);
+  CustomResult<User> GetUser(string email);
+  CustomResult<User> GetUser(int id);
+  CustomResult<UserDto> Login(LoginRequest model);
+  CustomResult Register(RegisterUserRequest model);
+  CustomResult ChangePassword(ChangePasswordRequest model);
+  CustomResult Update(UpdateUserRequest model);
 }

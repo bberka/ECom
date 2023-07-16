@@ -2,35 +2,45 @@
 
 public enum AdminOperationType
 {
-  Admin_Update,
-  Admin_Delete,
-  Admin_GetOrList,
-  Admin_Add,
+  AdminUpdate,
+  AdminDelete,
+  AdminGet,
+  AdminGetAll,
+  AdminAdd,
 
-  Announcement_Update,
-  Announcement_Delete,
+  AnnouncementUpdate,
+  AnnouncementDelete,
+  AnnouncementAdd,
+  AnnouncementEnable,
+  AnnouncementDisable,
 
-  Category_Add,
-  Category_Update,
-  Category_Delete,
+
+  CategoryAdd,
+  CategoryUpdate,
+  CategoryDelete,
 
 
-  CompanyInfo_AddOrUpdate,
+  CompanyInfoAdd,
+  CompanyInfoUpdate,
 
-  Image_Upload,
+  ImageUpload,
 
-  Option_Get,
-  Option_Update,
+  OptionGet,
+  OptionUpdate,
 
-  CargoOption_Get,
-  CargoOption_Update,
-  CargoOption_Delete,
+  CargoOptionGet,
+  CargoOptionUpdate,
+  CargoOptionDelete,
 
-  PaymentOption_Get,
-  PaymentOption_Update,
-  PaymentOption_Delete,
+  PaymentOptionGet,
+  PaymentOptionUpdate,
+  PaymentOptionDelete,
 
-  SmtpOption_Get,
-  SmtpOption_Update,
-  SmtpOption_Delete
+  SmtpOptionGet,
+  SmtpOptionUpdate,
+  SmtpOptionDelete,
+  CategoryEnable,
+  CategoryDisable,
+  SubCategoryEnable,
+  SubCategoryDisable
 }

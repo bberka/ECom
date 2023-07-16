@@ -11,7 +11,7 @@ public class ListProducts
     _logService = logService;
   }
   //[HttpGet]
-  //public ActionResult<ResultData<ListProducts<CollectionProduct>>> GetProducts(int id, ushort page,
+  //public ActionResult<CustomResult<ListProducts<CollectionProduct>>> GetProducts(int id, ushort page,
   //  string culture = ConstantMgr.DefaultCulture) {
   //  var userId = HttpContext.GetUserId();
   //  var res = _collectionService.GetCollectionProducts(userId, id, page, culture);

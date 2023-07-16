@@ -20,7 +20,7 @@ public class AuthController : BaseAdminController
   }
 
   [HttpPost]
-  public ActionResult<ResultData<AdminLoginResponse>> Login([FromBody] LoginRequest model) {
+  public ActionResult<CustomResult<AdminLoginResponse>> Login([FromBody] LoginRequest model) {
     var res = _adminJwtAuthenticator.Authenticate(model);
     var adminId = res.Data?.Admin.Id;
     _logService.AdminLog(res.ToResult(), adminId, "Auth.Login", model.EmailAddress, model.EncryptedPassword);

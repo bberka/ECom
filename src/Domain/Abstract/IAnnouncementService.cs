@@ -3,8 +3,9 @@
 public interface IAnnouncementService
 {
   List<Announcement> ListAnnouncements();
-  Result DeleteAnnouncement(uint id);
-  Result EnableOrDisable(uint id);
-  Result UpdateAnnouncement(Announcement data);
-  Result AddAnnouncement(Announcement data);
+  CustomResult DeleteAnnouncement(uint id);
+  CustomResult EnableAnnouncement(uint id);
+  CustomResult DisableAnnouncement(uint id);
+  CustomResult UpdateAnnouncement(Announcement data);
+  CustomResult AddAnnouncement(Announcement data);
 }

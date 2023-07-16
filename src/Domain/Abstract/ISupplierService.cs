@@ -6,7 +6,7 @@ public interface ISupplierService
 
   bool Exists(int id);
 
-  ResultData<Supplier> Get(int id);
-  Result Update(Supplier supplier);
-  Result Delete(int id);
+  CustomResult<Supplier> Get(int id);
+  CustomResult Update(Supplier supplier);
+  CustomResult Delete(int id);
 }

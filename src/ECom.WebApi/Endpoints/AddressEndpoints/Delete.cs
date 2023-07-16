@@ -6,7 +6,7 @@ namespace ECom.WebApi.Endpoints.AddressEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(Delete))]
-public class Delete : EndpointBaseSync.WithRequest<int>.WithResult<Result>
+public class Delete : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
 {
   private readonly ILogService _logService;
   private readonly IAddressService _addressService;
@@ -17,7 +17,7 @@ public class Delete : EndpointBaseSync.WithRequest<int>.WithResult<Result>
   }
   [HttpDelete]
   [EndpointSwaggerOperation(typeof(Delete),"Deletes an address")]
-  public override Result Handle(int id) {
+  public override CustomResult Handle(int id) {
     var userId = HttpContext.GetUserId();
     var res = _addressService.DeleteAddress(userId, id);
     _logService.UserLog(res, userId, "Address.Delete");

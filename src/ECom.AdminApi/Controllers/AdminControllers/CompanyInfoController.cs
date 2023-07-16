@@ -13,11 +13,11 @@ public class CompanyInfoController : BaseAdminController
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.CompanyInfo_AddOrUpdate)]
-  public ActionResult<Result> AddOrUpdate(CompanyInformation companyInformation) {
+  [RequirePermission(AdminOperationType.CompanyInfoAdd)]
+  public ActionResult<CustomResult> AddOrUpdate(CompanyInformation companyInformation) {
     var adminId = HttpContext.GetAdminId();
     var res = _companyInformationService.UpdateOrAddCompanyInformation(companyInformation);
     _logService.AdminLog(res, adminId, "CompanyInformation.UpdateOrAdd", companyInformation.ToJsonString());
-    return res.ToActionResult();
+    return res;
   }
 }

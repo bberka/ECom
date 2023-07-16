@@ -1,41 +1,43 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class CompanyInformationService : ICompanyInformationService
 {
   private const byte CACHE_REFRESH_INTERVAL_MINS = 1;
   private readonly IMemoryCache _memoryCache;
   private readonly IUnitOfWork _unitOfWork;
-
+  private const string CACHE_KEY = "company_info";
   public CompanyInformationService(IMemoryCache memoryCache, IUnitOfWork unitOfWork) {
     _memoryCache = memoryCache;
     _unitOfWork = unitOfWork;
   }
 
 
-  public ResultData<CompanyInformation> GetCompanyInformation() {
+  public CustomResult<CompanyInformation> GetCompanyInformation() {
     var companyInformation =
       _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDevelopment());
-    if (companyInformation is null) return DomainResult.CompanyInformation.NotFoundResult();
+    if (companyInformation is null) return DomainResult.NotFound(nameof(CompanyInformation));
     return companyInformation;
   }
 
   public CompanyInformation? GetFromCache() {
-    var cache = _memoryCache.Get<CompanyInformation>("company_info");
+    var cache = _memoryCache.Get<CompanyInformation>(CACHE_KEY);
     if (cache is not null) return cache;
     cache = _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x =>
       x.IsRelease == !ConstantMgr.IsDevelopment());
     if (cache is not null)
-      _memoryCache.Set("company_info", cache, TimeSpan.FromMinutes(5));
+      _memoryCache.Set(CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
 
-  public Result UpdateOrAddCompanyInformation(CompanyInformation info) {
+  public CustomResult UpdateOrAddCompanyInformation(CompanyInformation info) {
     info.IsRelease = !ConstantMgr.IsDevelopment();
     var current = _unitOfWork.CompanyInformationRepository.GetFirstOrDefault(x => x.IsRelease == info.IsRelease);
     if (current != null) _unitOfWork.CompanyInformationRepository.Delete(current);
     _unitOfWork.CompanyInformationRepository.Insert(info);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.CompanyInformation.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateOrAddCompanyInformation));
+    return DomainResult.OkUpdated(nameof(CompanyInformation));
   }
 }

@@ -5,5 +5,5 @@ namespace ECom.Domain.Abstract;
 
 public interface IUserJwtAuthenticator
 {
-  public ResultData<UserLoginResponse> Authenticate(LoginRequest model);
+  public CustomResult<UserLoginResponse> Authenticate(LoginRequest model);
 }

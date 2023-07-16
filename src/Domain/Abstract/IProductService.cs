@@ -6,7 +6,7 @@ public interface IProductService
 {
   bool Exists(int id);
 
-  ResultData<Product> GetProduct(long productNo);
+  CustomResult<Product> GetProduct(long productNo);
 
   /// <summary>
   /// </summary>
@@ -54,9 +54,9 @@ public interface IProductService
   /// </returns>
   List<ProductComment> GetProductComments(int productId, ushort page);
 
-  ResultData<int> AddComment(AddProductCommentRequest model);
+  CustomResult<int> AddComment(AddProductCommentRequest model);
 
-  //ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId);
+  //CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId);
   //ListProducts<ProductDetail>? GetProductDetails(long productNo);
   //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
   //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);

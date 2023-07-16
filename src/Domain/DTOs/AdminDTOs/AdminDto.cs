@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.DTOs.AdminDTOs;
+﻿using System.Text.Json.Serialization;
+
+namespace ECom.Domain.DTOs.AdminDTOs;
 
 public class AdminDto
 {
@@ -10,7 +12,20 @@ public class AdminDto
   public string RoleName { get; set; }
   public string[] Permissions { get; set; }
 
+  [NotMapped]
+  [JsonIgnore]
+  [Newtonsoft.Json.JsonIgnore]
+  public string Password { get; set; }
 
+  [NotMapped]
+  [JsonIgnore]
+  [Newtonsoft.Json.JsonIgnore]
+  public bool IsValid { get; set; }
+
+  [NotMapped]
+  [JsonIgnore]
+  [Newtonsoft.Json.JsonIgnore]
+  public DateTime? DeletedDate { get; set; }
   public string GetPermissionsString() {
     return string.Join(",", Permissions);
   }

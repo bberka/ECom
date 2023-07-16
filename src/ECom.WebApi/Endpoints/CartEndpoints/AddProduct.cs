@@ -1,11 +1,11 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.Results;
+using ECom.Domain;
 
 namespace ECom.WebApi.Endpoints.CartEndpoints;
 
 [AllowAnonymous]
 [EndpointRoute(typeof(AddProduct))]
-public class AddProduct : EndpointBaseSync.WithRequest<int>.WithResult<Result>
+public class AddProduct : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
 {
   private readonly ICartService _cartService;
   private readonly ILogService _logService;
@@ -17,7 +17,7 @@ public class AddProduct : EndpointBaseSync.WithRequest<int>.WithResult<Result>
 
   [HttpPost]
   [EndpointSwaggerOperation(typeof(AddProduct),"Adds product to cart")]
-  public override Result Handle(int id) {
+  public override CustomResult Handle(int id) {
     if(HttpContext.IsUserAuthenticated()) {
       var userId = HttpContext.GetUserId();
       var res = _cartService.AddOrIncreaseProduct(userId, id);
@@ -25,6 +25,6 @@ public class AddProduct : EndpointBaseSync.WithRequest<int>.WithResult<Result>
       return res;
     }
     HttpContext.AddOrIncreaseInCart(id);
-    return DomainResult.Cart.AddProductSuccessResult();
+    return DomainResult.OkAdded(nameof(Cart));
   }
 }

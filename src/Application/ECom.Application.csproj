@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="EasMe" Version="4.0.3" />
-		<PackageReference Include="EasMe.Result" Version="2.1.1" />
 		<PackageReference Include="AspNetCore.Authorization.Extender" Version="2.0.0" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />

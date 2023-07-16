@@ -3,13 +3,15 @@
 public interface ICategoryService
 {
   bool CategoryExists(int categoryId);
-  Result DeleteCategory(uint id);
-  Result DeleteSubCategory(uint id);
-  Result EnableOrDisableCategory(uint id);
-  Result EnableOrDisableSubCategory(uint id);
+  CustomResult DeleteCategory(uint id);
+  CustomResult DeleteSubCategory(uint id);
+  CustomResult EnableCategory(uint id);
+  CustomResult DisableCategory(uint id);
+  CustomResult EnableSubCategory(uint id);
+  CustomResult DisableSubCategory(uint id);
   List<Category> ListCategories();
-  Result UpdateCategory(UpdateCategoryRequest model);
-  Result UpdateSubCategory(SubCategory model);
-  Result AddCategory(AddCategoryRequest model);
-  Result AddSubCategory(AddSubCategoryRequest model);
+  CustomResult UpdateCategory(UpdateCategoryRequest model);
+  CustomResult UpdateSubCategory(SubCategory model);
+  CustomResult AddCategory(AddCategoryRequest model);
+  CustomResult AddSubCategory(AddSubCategoryRequest model);
 }

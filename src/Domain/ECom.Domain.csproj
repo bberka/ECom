@@ -12,13 +12,13 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="EasMe" Version="4.0.3" />
-		<PackageReference Include="EasMe.Result" Version="2.1.1" />
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="EasMe.EntityFrameworkCore" Version="3.0.1" />
 		<PackageReference Include="FluentValidation" Version="11.6.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.9" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
 		<PackageReference Include="Ninject" Version="3.3.6" />

@@ -20,7 +20,6 @@ global using System.Threading.Tasks;
 global using ECom.Domain.Entities;
 global using System.Collections.Generic;
 global using System.IdentityModel.Tokens.Jwt;
-global using EasMe.Result;
-global using ECom.Domain.Results;
+global using ECom.Domain;
 global using Microsoft.Extensions.Caching.Memory;
 global using Ninject.Activation.Caching;

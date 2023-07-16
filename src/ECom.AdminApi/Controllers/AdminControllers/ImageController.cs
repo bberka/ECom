@@ -9,8 +9,8 @@ public class ImageController : BaseAdminController
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.Image_Upload)]
-  public ActionResult<ResultData<int>> UploadImage(IFormFile file) {
+  [RequirePermission(AdminOperationType.ImageUpload)]
+  public ActionResult<CustomResult<int>> UploadImage(IFormFile file) {
     if (file is null) return BadRequest();
     var res = _imageService.UploadImage(file);
     return res.ToActionResult();

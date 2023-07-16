@@ -18,54 +18,54 @@ public class OptionController : BaseAdminController
 
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.Option_Get)]
+  [RequirePermission(AdminOperationType.OptionGet)]
   public ActionResult<Option> GetCurrentOption() {
     return _optionService.GetOption();
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.CargoOption_Get)]
+  [RequirePermission(AdminOperationType.CargoOptionGet)]
   public ActionResult<List<CargoOption>> ListCargoOptions() {
     return _optionService.ListCargoOptions();
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.PaymentOption_Get)]
+  [RequirePermission(AdminOperationType.PaymentOptionGet)]
   public ActionResult<List<PaymentOption>> ListPaymentOptions() {
     return _optionService.ListPaymentOptions();
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.SmtpOption_Get)]
+  [RequirePermission(AdminOperationType.SmtpOptionGet)]
   public ActionResult<List<SmtpOption>> ListSmtpOptions() {
     return _optionService.ListSmtpOptions();
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.Option_Update)]
-  public ActionResult<Result> Update([FromBody] Option option) {
+  [RequirePermission(AdminOperationType.OptionUpdate)]
+  public ActionResult<CustomResult> Update([FromBody] Option option) {
     var res = _optionService.UpdateOption(option);
     return res.ToActionResult();
   }
 
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.CargoOption_Update)]
-  public ActionResult<Result> UpdateCargoOption([FromBody] CargoOption option) {
+  [RequirePermission(AdminOperationType.CargoOptionUpdate)]
+  public ActionResult<CustomResult> UpdateCargoOption([FromBody] CargoOption option) {
     var res = _optionService.UpdateCargoOption(option);
     return res.ToActionResult();
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.PaymentOption_Update)]
-  public ActionResult<Result> UpdatePaymentOption([FromBody] PaymentOption option) {
+  [RequirePermission(AdminOperationType.PaymentOptionUpdate)]
+  public ActionResult<CustomResult> UpdatePaymentOption([FromBody] PaymentOption option) {
     var res = _optionService.UpdatePaymentOption(option);
     return res.ToActionResult();
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.SmtpOption_Update)]
-  public ActionResult<Result> UpdateSmtpOption([FromBody] SmtpOption option) {
+  [RequirePermission(AdminOperationType.SmtpOptionUpdate)]
+  public ActionResult<CustomResult> UpdateSmtpOption([FromBody] SmtpOption option) {
     var res = _optionService.UpdateSmtpOption(option);
     return res.ToActionResult();
   }

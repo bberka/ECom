@@ -4,8 +4,8 @@ public interface IRoleService
 {
   List<Role> GetRolesWithPermissions();
 
-  ResultData<Role> GetRole(int roleId);
+  CustomResult<Role> GetRole(int roleId);
 
-  ResultData<Role> GetRoleByName(string roleName);
+  CustomResult<Role> GetRoleByName(string roleName);
   HashSet<Permission> GetRolePermissions(int roleId);
 }

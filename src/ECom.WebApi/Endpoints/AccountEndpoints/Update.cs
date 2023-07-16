@@ -5,7 +5,7 @@ namespace ECom.WebApi.Endpoints.AccountEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(Update))]
-public class Update : EndpointBaseSync.WithRequest<UpdateUserRequest>.WithResult<Result>
+public class Update : EndpointBaseSync.WithRequest<UpdateUserRequest>.WithResult<CustomResult>
 {
   private readonly IUserService _userService;
   private readonly ILogService _logService;
@@ -16,7 +16,7 @@ public class Update : EndpointBaseSync.WithRequest<UpdateUserRequest>.WithResult
   }
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Update))]
-  public override Result Handle(UpdateUserRequest request) {
+  public override CustomResult Handle(UpdateUserRequest request) {
     var userId = request.AuthenticatedUserId;
     var res = _userService.Update(request);
     _logService.UserLog(res, userId, "Account.Update", request.ToJsonString());

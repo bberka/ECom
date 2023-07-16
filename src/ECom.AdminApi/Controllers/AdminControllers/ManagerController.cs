@@ -16,24 +16,32 @@ public class ManagerController : BaseAdminController
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.Admin_GetOrList)]
+  [RequirePermission(AdminOperationType.AdminGet)]
   public ActionResult<List<Admin>> List() {
     var adminId = HttpContext.GetAdminId();
     return _adminService.ListOtherAdmins(adminId);
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.Admin_Update)]
-  public ActionResult<Result> EnableOrDisable([FromBody] int adminId) {
+  [RequirePermission(AdminOperationType.AdminUpdate)]
+  public ActionResult<CustomResult> Disable([FromBody] int adminId) {
     var authorizedAdminId = HttpContext.GetAdminId();
-    var res = _adminService.EnableOrDisableAdmin(authorizedAdminId, adminId);
-    _logService.AdminLog(res, authorizedAdminId, "Manager.EnableOrDisable", adminId);
+    var res = _adminService.DisableAdmin(authorizedAdminId, adminId);
+    _logService.AdminLog(res, authorizedAdminId, "Manager.Disable", adminId);
+    return res.ToActionResult();
+  }
+  [HttpPost]
+  [RequirePermission(AdminOperationType.AdminUpdate)]
+  public ActionResult<CustomResult> Enable([FromBody] int adminId) {
+    var authorizedAdminId = HttpContext.GetAdminId();
+    var res = _adminService.EnableAdmin(authorizedAdminId, adminId);
+    _logService.AdminLog(res, authorizedAdminId, "Manager.Enable", adminId);
     return res.ToActionResult();
   }
 
   [HttpDelete]
-  [RequirePermission(AdminOperationType.Admin_Delete)]
-  public ActionResult<Result> Delete([FromBody] int adminId) {
+  [RequirePermission(AdminOperationType.AdminDelete)]
+  public ActionResult<CustomResult> Delete([FromBody] int adminId) {
     var authorizedAdminId = HttpContext.GetAdminId();
     var res = _adminService.DeleteAdmin(authorizedAdminId, adminId);
     _logService.AdminLog(res, authorizedAdminId, "Manager.Delete", adminId);
@@ -41,8 +49,8 @@ public class ManagerController : BaseAdminController
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.Admin_Add)]
-  public ActionResult<Result> Add([FromBody] AddAdminRequest model) {
+  [RequirePermission(AdminOperationType.AdminAdd)]
+  public ActionResult<CustomResult> Add([FromBody] AddAdminRequest model) {
     var res = _adminService.AddAdmin(model);
     _logService.AdminLog(res, model.AuthenticatedAdminId, "Manager.Add", model.ToJsonString());
     return res.ToActionResult();

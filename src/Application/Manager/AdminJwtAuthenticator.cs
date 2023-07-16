@@ -18,12 +18,12 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
   }
 
 
-  public ResultData<AdminLoginResponse> Authenticate(LoginRequest model) {
+  public CustomResult<AdminLoginResponse> Authenticate(LoginRequest model) {
 #if !DEBUG
             var admin = _debugService.GetAdminDto();
 #else
     var loginResult = _adminService.Login(model);
-    if (!loginResult.IsSuccess) return loginResult.ToResult();
+    if (!loginResult.Status) return loginResult.ToResult();
 
     var admin = loginResult.Data;
 #endif

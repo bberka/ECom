@@ -5,5 +5,5 @@ namespace ECom.Domain.Abstract;
 
 public interface IAdminJwtAuthenticator
 {
-  public ResultData<AdminLoginResponse> Authenticate(LoginRequest model);
+  public CustomResult<AdminLoginResponse> Authenticate(LoginRequest model);
 }

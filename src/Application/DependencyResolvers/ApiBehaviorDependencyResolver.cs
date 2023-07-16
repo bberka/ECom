@@ -9,12 +9,16 @@ public static class ApiBehaviorDependencyResolver
     services.AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); }).ConfigureApiBehaviorOptions(
       options => {
         options.InvalidModelStateResponseFactory = c => {
+          var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
           var errors = c.ModelState.Values
             .Where(v => v.Errors.Count > 0)
             .SelectMany(v => v.Errors)
-            .Select(v => v.ErrorMessage)
+            .Select(v => new ValidationError() {
+              Message = v.ErrorMessage,
+              Exception = v.Exception
+            })
             .ToArray();
-          return new BadRequestObjectResult(Result.Warn("ValidationError", errors));
+          return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName,errors));
         };
       });
     services.AddEndpointsApiExplorer();

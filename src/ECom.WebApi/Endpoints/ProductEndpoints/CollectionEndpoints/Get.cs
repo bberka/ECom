@@ -1,10 +1,11 @@
 ﻿using ECom.Application.Attributes;
 
+
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(Get))]
-public class Get : EndpointBaseSync.WithRequest<int>.WithResult<ResultData<Domain.Entities.Collection>>
+public class Get : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult<Domain.Entities.Collection>>
 {
   private readonly ICollectionService _collectionService;
   private readonly ILogService _logService;
@@ -15,7 +16,7 @@ public class Get : EndpointBaseSync.WithRequest<int>.WithResult<ResultData<Domai
   }
   [HttpGet]
   [EndpointSwaggerOperation(typeof(Get),"Gets product collection")]
-  public override ResultData<Domain.Entities.Collection> Handle(int id) {
+  public override CustomResult<Domain.Entities.Collection> Handle(int id) {
     var userId = HttpContext.GetUserId();
     var res = _collectionService.GetCollection(userId, id);
     _logService.UserLog(res.ToResult(), userId, "Collection.Get", id);

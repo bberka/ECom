@@ -5,7 +5,7 @@ namespace ECom.WebApi.Endpoints.AuthEndpoints;
 
 [AllowAnonymous]
 [EndpointRoute(typeof(Register))]
-public class Register : EndpointBaseSync.WithRequest<RegisterUserRequest>.WithResult<Result>
+public class Register : EndpointBaseSync.WithRequest<RegisterUserRequest>.WithResult<CustomResult>
 {
   private readonly IUserService _userService;
   private readonly ILogService _logService;
@@ -17,7 +17,7 @@ public class Register : EndpointBaseSync.WithRequest<RegisterUserRequest>.WithRe
 
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Register), "Register a new user")]
-  public override Result Handle(RegisterUserRequest request) {
+  public override CustomResult Handle(RegisterUserRequest request) {
     var res = _userService.Register(request);
     _logService.UserLog(res, null, "Auth.Register", request.EmailAddress);
     return res;

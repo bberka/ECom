@@ -1,4 +1,6 @@
-﻿using ECom.Domain.DTOs.AdminDTOs;
+﻿using ECom.Domain;
+using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -18,42 +20,81 @@ public class AdminService : IAdminService
   }
 
 
-  public ResultData<Admin> GetAdmin(string email) {
+  public CustomResult<Admin> GetAdmin(string email) {
     var admin = _unitOfWork.AdminRepository
       .Get(x => x.EmailAddress == email && !x.DeletedDate.HasValue && x.IsValid == true)
       .Include(x => x.Role)
       .FirstOrDefault();
-    if (admin is null) return DomainResult.Admin.NotFoundResult();
-    if (admin.IsValid == false) return DomainResult.Admin.NotValidResult();
-    if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult();
-    //if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult();
+    if (admin is null) return DomainResult.NotFound(nameof(Admin));
+    if (admin.IsValid == false) return DomainResult.Invalid(nameof(Admin));
+    if (admin.DeletedDate.HasValue) return DomainResult.Deleted(nameof(Admin));
+    //if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermission();
     return admin;
   }
 
-  public ResultData<Admin> GetAdmin(int id) {
+  public CustomResult<AdminDto> GetAdminDto(int id) {
+    var adminQuery = _unitOfWork.AdminRepository
+      .Get(x => x.Id == id)
+      .Select(x => new AdminDto {
+        EmailAddress = x.EmailAddress,
+        Permissions = x.Role.PermissionRoles.Select(y => y.Permission.Name).ToArray(),
+        RoleId = x.RoleId,
+        RoleName = x.Role.Name,
+        TwoFactorType = x.TwoFactorType,
+        Id = x.Id,
+        Password = x.Password,
+        IsValid = x.IsValid,
+        DeletedDate = x.DeletedDate,
+      })
+      .FirstOrDefault();
+    if (adminQuery is null) return DomainResult.NotFound(nameof(Admin));
+    if (adminQuery.IsValid == false) return DomainResult.Invalid(nameof(Admin));
+    if (adminQuery.DeletedDate.HasValue) return DomainResult.Deleted(nameof(Admin));
+    return adminQuery;
+  }
+
+  public CustomResult<AdminDto> GetAdminDto(string email) {
+    var adminQuery = _unitOfWork.AdminRepository
+      .Get(x => x.EmailAddress == email)
+      .Select(x => new AdminDto {
+        EmailAddress = x.EmailAddress,
+        Permissions = x.Role.PermissionRoles.Select(y => y.Permission.Name).ToArray(),
+        RoleId = x.RoleId,
+        RoleName = x.Role.Name,
+        TwoFactorType = x.TwoFactorType,
+        Id = x.Id,
+        Password = x.Password,
+        IsValid = x.IsValid,
+        DeletedDate = x.DeletedDate,
+      })
+      .FirstOrDefault();
+    if (adminQuery is null) return DomainResult.NotFound(nameof(Admin));
+    if (adminQuery.IsValid == false) return DomainResult.Invalid(nameof(Admin));
+    if (adminQuery.DeletedDate.HasValue) return DomainResult.Deleted(nameof(Admin));
+    return adminQuery;
+  }
+
+  public CustomResult<Admin> GetAdmin(int id) {
     var admin = _unitOfWork.AdminRepository.Get(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true)
       .Include(x => x.Role)
       .FirstOrDefault();
-    if (admin is null) return DomainResult.Admin.NotFoundResult();
-    if (admin.IsValid == false) return DomainResult.Admin.NotValidResult();
-    if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult();
-    //if (admin.Role.Permissions.Count == 0) return DomainResult.Admin.NotHavePermissionResult();
+    if (admin is null) return DomainResult.NotFound(nameof(Admin));
+    if (admin.IsValid == false) return DomainResult.Invalid(nameof(Admin));
+    if (admin.DeletedDate.HasValue) return DomainResult.Deleted(nameof(Admin));
     return admin;
   }
-  //public bool HasPermission(int adminId, int permissionId)
-  //{
-  //    var isValid = IsValidPermission(permissionId);
-  //    if(!isValid) return false;
 
-  //    var roleId = _unitOfWork.AdminRepository
-  //        .Get(x => x.Id == adminId && !x.DeletedDate.HasValue && x.IsValid == true)
-  //        .Include(x => x.Role)
-  //        .Select(x => x.RoleId)
-  //        .FirstOrDefault(0);
-  //    if (roleId == 0) return false;
-  //    return _unitOfWork.RolePermissionRepository.Any(x => x.RoleId == roleId && x.PermissionId == permissionId);
-  //}
-
+  public CustomResult<AdminDto> Login(LoginRequest model) {
+    var adminResult = GetAdminDto(model.EmailAddress);
+    if (!adminResult.Status) return adminResult;
+    var admin = adminResult.Data!;
+    if (!admin.Password.Equals(model.EncryptedPassword,StringComparison.Ordinal)) return DomainResult.NotFound("Account");
+    if (admin.Permissions.Length == 0) return DomainResult.None(nameof(Permission));
+    if (admin.TwoFactorType != 0) {
+      //TODO: two factor authentication
+    }
+    return admin;
+  }
 
   public bool IsValidAdminAccount(int id) {
     return _unitOfWork.AdminRepository.Any(x => x.Id == id && !x.DeletedDate.HasValue && x.IsValid == true);
@@ -71,12 +112,11 @@ public class AdminService : IAdminService
     return _unitOfWork.AdminRepository.Get().ToList();
   }
 
-  public Result AddAdmin(AddAdminRequest admin) {
+  public CustomResult AddAdmin(AddAdminRequest admin) {
     _unitOfWork.AdminRepository.Insert(admin.ToAdminEntity());
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-
-    return DomainResult.Admin.AddSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddAdmin));
+    return DomainResult.OkAdded(nameof(Admin));
   }
 
   public int GetAdminRoleId(int adminId) {
@@ -87,45 +127,18 @@ public class AdminService : IAdminService
   }
 
 
-  public Result ChangePassword(ChangePasswordRequest model) {
+  public CustomResult ChangePassword(ChangePasswordRequest model) {
     var admin = _unitOfWork.AdminRepository.GetById(model.AuthenticatedAdminId);
-    if (admin is null) return DomainResult.Admin.NotFoundResult();
-    if (admin.Password != model.EncryptedOldPassword) return DomainResult.Base.PasswordWrongResult();
+    if (admin is null) return DomainResult.NotFound(nameof(Admin));
+    if (admin.Password != model.EncryptedOldPassword) return DomainResult.WrongPassword();
     admin.Password = model.EncryptedNewPassword;
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Admin.ChangePasswordSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
+    return DomainResult.OkUpdated("Password");
   }
 
-  public ResultData<AdminDto> Login(LoginRequest model) {
-    var adminResult = _unitOfWork.AdminRepository
-      .Get(x => x.EmailAddress == model.EmailAddress)
-      //.ThenInclude(x => x.PermissionRoles)
-      //.ThenInclude(x => x.Permission)
-      .Select(x => new {
-        x.Password,
-        AdminDto = new AdminDto {
-          EmailAddress = x.EmailAddress,
-          Permissions = x.Role.PermissionRoles.Select(x => x.Permission.Name).ToArray(),
-          RoleId = x.RoleId,
-          RoleName = x.Role.Name,
-          TwoFactorType = x.TwoFactorType,
-          Id = x.Id
-        }
-      })
-      .FirstOrDefault();
 
-    if (adminResult is null) return DomainResult.Admin.NotFoundResult();
-    if (adminResult.Password != model.EncryptedPassword) return DomainResult.Admin.NotFoundResult();
-
-    if (adminResult.AdminDto.Permissions.Length == 0) return DomainResult.Admin.NotHavePermissionResult();
-    if (adminResult.AdminDto.TwoFactorType != 0) {
-      //TODO: two factor
-    }
-
-    return adminResult.AdminDto;
-  }
 
   public List<Permission> GetValidPermissions() {
     return _unitOfWork.PermissionRepository.Get(x => x.IsValid == true).ToList();
@@ -146,27 +159,36 @@ public class AdminService : IAdminService
       .ToList();
   }
 
-  public Result EnableOrDisableAdmin(int authorAdminId, int adminId) {
+  public CustomResult EnableAdmin(int authorAdminId, int adminId) {
     //TODO: maybe check admin permissions here as well
     var admin = _unitOfWork.AdminRepository.GetById(adminId);
-    if (admin is null) return DomainResult.Admin.NotFoundResult();
+    if (admin is null) return DomainResult.NotFound(nameof(Admin));
     admin.IsValid = !admin.IsValid;
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Admin.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(EnableAdmin));
+    return DomainResult.OkUpdated(nameof(Admin));
   }
 
-  public Result DeleteAdmin(int authorAdminId, int adminId) {
+  public CustomResult DisableAdmin(int authorAdminId, int adminId) {
+    //TODO: maybe check admin permissions here as well
     var admin = _unitOfWork.AdminRepository.GetById(adminId);
-    if (admin is null) return DomainResult.Admin.NotFoundResult();
+    if (admin is null) return DomainResult.NotFound(nameof(Admin));
+    admin.IsValid = !admin.IsValid;
+    _unitOfWork.AdminRepository.Update(admin);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(DisableAdmin));
+    return DomainResult.OkUpdated(nameof(Admin));
+  }
 
-    if (admin.DeletedDate.HasValue) return DomainResult.Admin.DeletedResult();
+  public CustomResult DeleteAdmin(int authorAdminId, int adminId) {
+    var admin = _unitOfWork.AdminRepository.GetById(adminId);
+    if (admin is null) return DomainResult.NotFound(nameof(Admin));
+    if (admin.DeletedDate.HasValue) return DomainResult.Deleted(nameof(Admin));
     admin.DeletedDate = DateTime.Now;
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-
-    return DomainResult.Admin.DeleteSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(DeleteAdmin));
+    return DomainResult.OkDeleted(nameof(Admin));
   }
 }

@@ -5,7 +5,7 @@ namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(Update))]
-public class Update : EndpointBaseSync.WithRequest<UpdateCollectionRequest>.WithResult<Result>
+public class Update : EndpointBaseSync.WithRequest<UpdateCollectionRequest>.WithResult<CustomResult>
 {
 
   private readonly ICollectionService _collectionService;
@@ -17,7 +17,7 @@ public class Update : EndpointBaseSync.WithRequest<UpdateCollectionRequest>.With
   }
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Update),"Updates product collection")]
-  public override Result Handle(UpdateCollectionRequest request) {
+  public override CustomResult Handle(UpdateCollectionRequest request) {
     var res = _collectionService.UpdateCollection(request);
     _logService.UserLog(res, request.AuthenticatedUserId, "Collection.Update", request.ToJsonString());
     return res;

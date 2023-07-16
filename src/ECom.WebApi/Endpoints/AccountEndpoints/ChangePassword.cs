@@ -4,7 +4,7 @@ namespace ECom.WebApi.Endpoints.AccountEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(ChangePassword))]
-public class ChangePassword : EndpointBaseSync.WithRequest<ChangePasswordRequest>.WithResult<Result>
+public class ChangePassword : EndpointBaseSync.WithRequest<ChangePasswordRequest>.WithResult<CustomResult>
 {
   private readonly ILogService _logService;
   private readonly IUserService _userService;
@@ -15,7 +15,7 @@ public class ChangePassword : EndpointBaseSync.WithRequest<ChangePasswordRequest
   }
   [HttpPost]
   [EndpointSwaggerOperation(typeof(ChangePassword),"Changes user password")]
-  public override Result Handle(ChangePasswordRequest request) {
+  public override CustomResult Handle(ChangePasswordRequest request) {
     var res = _userService.ChangePassword(request);
     _logService.UserLog(res, request.AuthenticatedUserId, "Account.ChangePassword", request.EncryptedOldPassword,request.EncryptedNewPassword);
     return res;

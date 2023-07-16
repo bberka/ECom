@@ -1,4 +1,5 @@
-﻿using ECom.Domain.DTOs.CategoryDTOs;
+﻿using ECom.Domain;
+using ECom.Domain.DTOs.CategoryDTOs;
 using ECom.Domain.Lib;
 
 namespace ECom.Application.Services;
@@ -11,6 +12,8 @@ public class CategoryService : ICategoryService
     _unitOfWork = unitOfWork;
   }
 
+
+
   public List<Category> ListCategories() {
     return _unitOfWork.CategoryRepository
       .Get(x => x.IsValid == true)
@@ -18,73 +21,101 @@ public class CategoryService : ICategoryService
       .ToList();
   }
 
-  public Result EnableOrDisableCategory(uint id) {
-    var category = _unitOfWork.CategoryRepository.GetById((int)id);
-    if (category == null) return DomainResult.Category.NotFoundResult();
-    category.IsValid = !category.IsValid;
-    _unitOfWork.CategoryRepository.Update(category);
-    var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Category.UpdateSuccessResult();
-  }
 
-  public Result UpdateCategory(UpdateCategoryRequest model) {
+
+  public CustomResult UpdateCategory(UpdateCategoryRequest model) {
     var data = _unitOfWork.CategoryRepository.GetFirstOrDefault(x => x.Id == model.CategoryId);
-    if (data is null) return DomainResult.Category.NotFoundResult();
-    if (!CommonLib.IsCultureValid(model.Culture)) return DomainResult.Language.NotValidResult();
+    if (data is null) return DomainResult.NotFound(nameof(Category));
+    if (!CommonLib.IsCultureValid(model.Culture)) return DomainResult.Invalid(nameof(Category.Culture));
     data.IsValid = model.IsValid;
     data.Name = model.Name;
     data.Culture = model.Culture;
     _unitOfWork.CategoryRepository.Update(data);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Category.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateCategory));
+    return DomainResult.OkUpdated(nameof(Category));
   }
 
-  public Result UpdateSubCategory(SubCategory model) {
+  public CustomResult UpdateSubCategory(SubCategory model) {
     var category = _unitOfWork.CategoryRepository.GetById(model.CategoryId);
-    if (category is null) return DomainResult.Category.NotFoundResult();
-
-    if (!category.IsValid) return DomainResult.Category.NotValidResult();
+    if (category is null) return DomainResult.NotFound(nameof(Category));
+    if (!category.IsValid) return DomainResult.Invalid(nameof(Category));
     var subCategory = _unitOfWork.SubCategoryRepository.GetById(model.Id);
-    if (subCategory is null) return DomainResult.SubCategory.NotFoundResult();
-    if (!subCategory.IsValid) return DomainResult.SubCategory.NotValidResult();
+    if (subCategory is null) return DomainResult.NotFound(nameof(SubCategory));
+    if (!subCategory.IsValid) return DomainResult.Invalid(nameof(SubCategory));
     _unitOfWork.SubCategoryRepository.Update(model);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.SubCategory.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateSubCategory));
+    return DomainResult.OkUpdated("SubCategory");
   }
 
-  public Result DeleteCategory(uint id) {
+  public CustomResult DeleteCategory(uint id) {
     var category = _unitOfWork.CategoryRepository.GetById((int)id);
-    if (category is null) return DomainResult.Category.NotFoundResult();
+    if (category is null) return DomainResult.NotFound(nameof(Category));
     category.IsValid = false;
     _unitOfWork.CategoryRepository.Update(category);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Category.DeleteSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(DeleteCategory));
+    return DomainResult.OkDeleted(nameof(Category));
   }
 
-  public Result EnableOrDisableSubCategory(uint id) {
-    var category = _unitOfWork.SubCategoryRepository.GetById((int)id);
-    if (category == null) return DomainResult.SubCategory.NotFoundResult();
-    category.IsValid = !category.IsValid;
-    _unitOfWork.SubCategoryRepository.Update(category);
-    var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.SubCategory.UpdateSuccessResult();
-  }
 
-  public Result DeleteSubCategory(uint id) {
+
+  public CustomResult DeleteSubCategory(uint id) {
     var category = _unitOfWork.SubCategoryRepository.GetById((int)id);
-    if (category == null) return DomainResult.SubCategory.NotFoundResult();
+    if (category == null) return DomainResult.NotFound(nameof(SubCategory));
     _unitOfWork.SubCategoryRepository.Delete(category);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.SubCategory.DeleteSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(DeleteSubCategory));
+    return DomainResult.OkDeleted(nameof(SubCategory));
   }
 
-  public Result AddCategory(AddCategoryRequest model) {
+
+  public CustomResult EnableCategory(uint id) {
+    var category = _unitOfWork.CategoryRepository.GetById((int)id);
+    if (category == null) return DomainResult.NotFound(nameof(Category));
+    if (category.IsValid) return DomainResult.AlreadyEnabled(nameof(Category));
+    category.IsValid = true;
+    _unitOfWork.CategoryRepository.Update(category);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(EnableCategory));
+    return DomainResult.OkUpdated(nameof(Category));
+  }
+
+  public CustomResult DisableCategory(uint id) {
+    var category = _unitOfWork.CategoryRepository.GetById((int)id);
+    if (category == null) return DomainResult.NotFound(nameof(Category));
+    if (!category.IsValid) return DomainResult.AlreadyDisabled(nameof(Category));
+    category.IsValid = false;
+    _unitOfWork.CategoryRepository.Update(category);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(EnableCategory));
+    return DomainResult.OkUpdated(nameof(Category));
+  }
+
+  public CustomResult DisableSubCategory(uint id) {
+    var category = _unitOfWork.SubCategoryRepository.GetById((int)id);
+    if (category == null) return DomainResult.NotFound(nameof(SubCategory));
+    if(!category.IsValid) return DomainResult.AlreadyDisabled(nameof(SubCategory));
+    category.IsValid = false;
+    _unitOfWork.SubCategoryRepository.Update(category);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(DisableSubCategory));
+    return DomainResult.OkUpdated(nameof(SubCategory));
+  }
+
+  public CustomResult EnableSubCategory(uint id) {
+    var category = _unitOfWork.SubCategoryRepository.GetById((int)id);
+    if (category == null) return DomainResult.NotFound(nameof(SubCategory));
+    if (category.IsValid) return DomainResult.AlreadyEnabled(nameof(SubCategory));
+    category.IsValid = true;
+    _unitOfWork.SubCategoryRepository.Update(category);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(EnableSubCategory));
+    return DomainResult.OkUpdated(nameof(SubCategory));
+  }
+
+  public CustomResult AddCategory(AddCategoryRequest model) {
     var category = new Category {
       Culture = model.Culture,
       IsValid = true,
@@ -92,13 +123,13 @@ public class CategoryService : ICategoryService
     };
     _unitOfWork.CategoryRepository.Insert(category);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Category.AddSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddCategory));
+    return DomainResult.OkAdded(nameof(Category));
   }
 
-  public Result AddSubCategory(AddSubCategoryRequest model) {
+  public CustomResult AddSubCategory(AddSubCategoryRequest model) {
     var categoryExists = CategoryExists(model.CategoryId);
-    if (!categoryExists) return DomainResult.Category.NotFoundResult();
+    if (!categoryExists) return DomainResult.NotFound(nameof(SubCategory));
     var subCategory = new SubCategory {
       Name = model.Name,
       IsValid = true,
@@ -106,8 +137,8 @@ public class CategoryService : ICategoryService
     };
     _unitOfWork.SubCategoryRepository.Insert(subCategory);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.SubCategory.AddSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddCategory));
+    return DomainResult.OkAdded(nameof(SubCategory));
   }
 
   public bool CategoryExists(int categoryId) {

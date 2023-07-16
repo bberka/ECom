@@ -3,9 +3,9 @@
 public interface IAddressService
 {
   public List<Address> GetUserAddresses(int userId);
-  public Result UpdateAddress(int userId, Address address);
-  public Result DeleteAddress(int userId, int id);
-  public Result AddAddress(int userId, Address address);
-  public ResultData<Address> GetAddress(int userId, int addressId);
-  public ResultData<Address> GetAddress(int addressId);
+  public CustomResult UpdateAddress(int userId, Address address);
+  public CustomResult DeleteAddress(int userId, int id);
+  public CustomResult AddAddress(int userId, Address address);
+  public CustomResult<Address> GetAddress(int userId, int addressId);
+  public CustomResult<Address> GetAddress(int addressId);
 }

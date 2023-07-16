@@ -2,7 +2,7 @@
 
 public interface IFavoriteProductService
 {
-  Result AddProduct(int userId, int productId);
-  Result RemoveProduct(int userId, int productId);
+  CustomResult AddProduct(int userId, int productId);
+  CustomResult RemoveProduct(int userId, int productId);
   List<FavoriteProduct> GetFavoriteProducts(int userId, ushort page, string culture = ConstantMgr.DefaultCulture);
 }

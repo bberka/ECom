@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class RoleService : IRoleService
 {
@@ -15,15 +17,15 @@ public class RoleService : IRoleService
       .ToList();
   }
 
-  public ResultData<Role> GetRole(int roleId) {
+  public CustomResult<Role> GetRole(int roleId) {
     var role = _unitOfWork.RoleRepository.GetById(roleId);
-    if (role is null) return DomainResult.Role.NotFoundResult();
+    if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
 
-  public ResultData<Role> GetRoleByName(string roleName) {
+  public CustomResult<Role> GetRoleByName(string roleName) {
     var role = _unitOfWork.RoleRepository.GetFirstOrDefault(x => x.Name == roleName);
-    if (role is null) return DomainResult.Role.NotFoundResult();
+    if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
 

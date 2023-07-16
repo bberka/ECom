@@ -1,4 +1,5 @@
-﻿using ECom.Domain.DTOs.ProductDTOs;
+﻿using ECom.Domain;
+using ECom.Domain.DTOs.ProductDTOs;
 
 namespace ECom.Application.Services;
 
@@ -27,11 +28,11 @@ public class ProductService : IProductService
     return _unitOfWork.ProductRepository.Any(x => x.Id == id);
   }
 
-  public ResultData<Product> GetProduct(long productNo) {
+  public CustomResult<Product> GetProduct(long productNo) {
     var product = _unitOfWork.ProductRepository.GetFirstOrDefault(x => x.Id == productNo);
-    if (product is null) return DomainResult.Product.NotFoundResult();
-    if (!product.IsValid) return DomainResult.Product.NotValidResult();
-    if (product.DeleteDate.HasValue) return DomainResult.Product.DeletedResult();
+    if (product is null) return DomainResult.NotFound(nameof(Product));
+    if (!product.IsValid) return DomainResult.Invalid(nameof(Product));
+    if (product.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Product));
     return product;
   }
 
@@ -57,9 +58,9 @@ public class ProductService : IProductService
       .ToList();
   }
 
-  public ResultData<int> AddComment(AddProductCommentRequest model) {
+  public CustomResult<int> AddComment(AddProductCommentRequest model) {
     var productResult = GetProduct(model.ProductId);
-    if (productResult.IsFailure) return productResult.ToResult();
+    if (!productResult.Status) return productResult.ToResult();
     //TODO: Check if user purchased the product
     var comment = new ProductComment {
       ProductId = model.ProductId,
@@ -70,25 +71,25 @@ public class ProductService : IProductService
     };
     _unitOfWork.ProductCommentRepository.Insert(comment);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.ProductComment.AddSuccessResult(comment.Id);
+    if (!res) return DomainResult.DbInternalError(nameof(AddComment));
+    return DomainResult.OkAdded(nameof(ProductComment));
   }
 
-  //public ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId)
+  //public CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId)
   //{
   //    var productComment = _productCommentRepo.Find(commentId);
   //    if (productComment is null)
   //    {
-  //        return DomainResult.ProductComment.NotFoundResult();
+  //        return DomainResult.ProductComment.NotFound();
   //    }
   //    if (productComment.UserId != userId)
   //    {
-  //        return DomainResult.User.NotAuthorizedResult();
+  //        return DomainResult.User.NotAuthorized();
   //    }
   //    var imageResult = _imageService.UploadImage(file);
   //    if (imageResult.IsFailure)
   //    {
-  //        return DomainResult.DbInternalErrorResult();
+  //        return DomainResult.DbInternalError();
   //    }
 
   //    var commentImage = new ProductCommentImage()
@@ -100,7 +101,7 @@ public class ProductService : IProductService
   //    var commentImageResult = _productCommentImageRepo.Add(commentImage);
   //    if (!commentImageResult)
   //    {
-  //        return DomainResult.DbInternalErrorResult();
+  //        return DomainResult.DbInternalError();
   //    }
   //    return DomainResult.ProductCommentImage.AddSuccessResult(commentId);
   //}

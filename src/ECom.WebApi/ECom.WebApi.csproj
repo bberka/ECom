@@ -23,7 +23,6 @@
     <PackageReference Include="Ardalis.ApiEndpoints.Swashbuckle" Version="4.1.0" />
     <PackageReference Include="AspNetCore.Authorization.Extender" Version="2.0.1" />
     <PackageReference Include="EasMe" Version="4.0.3" />
-    <PackageReference Include="EasMe.Result" Version="2.1.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">

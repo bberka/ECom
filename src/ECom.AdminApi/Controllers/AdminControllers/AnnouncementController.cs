@@ -12,30 +12,23 @@ public class AnnouncementController : BaseAdminController
     _logService = logService;
   }
 
-  [HttpPost]
-  [RequirePermission(AdminOperationType.Announcement_Update)]
-  public ActionResult<Result> Update([FromBody] Announcement data) {
-    var adminId = HttpContext.GetAdminId();
-    var res = _announcementService.UpdateAnnouncement(data);
-    _logService.AdminLog(res, adminId, "Announcement.Update", data.ToJsonString());
-    return res.ToActionResult();
-  }
+
 
   [HttpDelete]
-  [RequirePermission(AdminOperationType.Announcement_Delete)]
-  public ActionResult<Result> Delete([FromBody] uint id) {
+  [RequirePermission(AdminOperationType.AnnouncementDelete)]
+  public ActionResult<CustomResult> Delete([FromBody] uint id) {
     var adminId = HttpContext.GetAdminId();
     var res = _announcementService.DeleteAnnouncement(id);
     _logService.AdminLog(res, adminId, "Announcement.Delete", id);
-    return res.ToActionResult();
+    return res;
   }
 
   [HttpPut]
-  [RequirePermission(AdminOperationType.Announcement_Update)]
-  public ActionResult<Result> EnableOrDisable([FromBody] uint id) {
+  [RequirePermission(AdminOperationType.AnnouncementUpdate)]
+  public ActionResult<CustomResult> Enable([FromBody] uint id) {
     var adminId = HttpContext.GetAdminId();
-    var res = _announcementService.EnableOrDisable(id);
+    var res = _announcementService.EnableAnnouncement(id);
     _logService.AdminLog(res, adminId, "Announcement.Update", id);
-    return res.ToActionResult();
+    return res;
   }
 }
