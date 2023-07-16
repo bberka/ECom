@@ -1,6 +1,4 @@
-﻿using ECom.Domain.Entities;
-
-namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubEndpoints;
+﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubCategoryEndpoints;
 
 [EndpointRoute(typeof(Update))]
 public class Update : EndpointBaseSync.WithRequest<SubCategory>.WithResult<CustomResult>

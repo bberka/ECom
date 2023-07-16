@@ -1,4 +1,4 @@
-﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubEndpoints;
+﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubCategoryEndpoints;
 
 [EndpointRoute(typeof(Enable))]
 public class Enable : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult>

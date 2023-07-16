@@ -3,7 +3,7 @@
 namespace ECom.AdminApi.Endpoints.OptionEndpoints;
 
 [EndpointRoute(typeof(UpdateCompanyInfo))]
-public class UpdateCompanyInfo : EndpointBaseSync.WithRequest<CompanyInformation>.WithResult<CompanyInformation>
+public class UpdateCompanyInfo : EndpointBaseSync.WithRequest<CompanyInformation>.WithResult<CustomResult>
 {
   private readonly ICompanyInformationService _companyInformationService;
   private readonly ILogService _logService;
@@ -17,7 +17,7 @@ public class UpdateCompanyInfo : EndpointBaseSync.WithRequest<CompanyInformation
   [HttpPost]
   [RequirePermission(AdminOperationType.CompanyInfoAdd)]
   [EndpointSwaggerOperation(typeof(UpdateCompanyInfo),"Updates company information")]
-  public override CompanyInformation Handle(CompanyInformation request)
+  public override CustomResult Handle(CompanyInformation request)
   {
     var adminId = HttpContext.GetAdminId();
     var res = _companyInformationService.UpdateOrAddCompanyInformation(request);

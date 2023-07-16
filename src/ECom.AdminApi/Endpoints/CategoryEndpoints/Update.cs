@@ -3,7 +3,7 @@
 namespace ECom.AdminApi.Endpoints.CategoryEndpoints;
 
 [EndpointRoute(typeof(Update))]
-public class Update
+public class Update : EndpointBaseSync.WithRequest<UpdateCategoryRequest>.WithResult<CustomResult>
 {
   private readonly ICategoryService _categoryService;
   private readonly ILogService _logService;
@@ -17,9 +17,10 @@ public class Update
 
   [HttpPost]
   [RequirePermission(AdminOperationType.CategoryUpdate)]
-  public ActionResult<CustomResult> Update([FromBody] UpdateCategoryRequest model) {
-    var res = _categoryService.UpdateCategory(model);
-    _logService.AdminLog(res, model.AuthenticatedAdminId, "Category.Update", model.ToJsonString());
-    return res.ToActionResult();
+  [EndpointSwaggerOperation(typeof(Update),"Updates category")]
+  public override CustomResult Handle(UpdateCategoryRequest request) {
+    var res = _categoryService.UpdateCategory(request);
+    _logService.AdminLog(res, request.AuthenticatedAdminId, "Category.Update", request.ToJsonString());
+    return res;
   }
 }

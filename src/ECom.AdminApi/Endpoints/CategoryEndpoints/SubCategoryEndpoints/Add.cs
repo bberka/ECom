@@ -1,6 +1,6 @@
 ﻿using ECom.Domain.DTOs.CategoryDTOs;
 
-namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubEndpoints;
+namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubCategoryEndpoints;
 
 [EndpointRoute(typeof(Add))]
 public class Add : EndpointBaseSync.WithRequest<AddSubCategoryRequest>.WithResult<CustomResult>

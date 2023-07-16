@@ -6,7 +6,7 @@ public class Login : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<Custo
   private readonly IAdminJwtAuthenticator _adminJwtAuthenticator;
   private readonly ILogService _logService;
 
-  public Login(IAdminJwtAuthenticator adminJwtAuthenticator,ILogService logService"")
+  public Login(IAdminJwtAuthenticator adminJwtAuthenticator,ILogService logService)
   {
     _adminJwtAuthenticator = adminJwtAuthenticator;
     _logService = logService;

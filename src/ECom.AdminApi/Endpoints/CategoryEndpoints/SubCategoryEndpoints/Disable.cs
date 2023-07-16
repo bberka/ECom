@@ -1,4 +1,4 @@
-﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubEndpoints;
+﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubCategoryEndpoints;
 
 [EndpointRoute(typeof(Disable))]
 public class Disable : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult>

@@ -14,7 +14,7 @@ public class UpdateSmtpOption : EndpointBaseSync.WithRequest<SmtpOption>.WithRes
 
   [HttpPost]
   [RequirePermission(AdminOperationType.SmtpOptionUpdate)]
-  [EndpointSwaggerOperation(typeof(UpdateSmtpOption),"Updates smtp option""")]
+  [EndpointSwaggerOperation(typeof(UpdateSmtpOption),"Updates smtp option")]
   public override CustomResult Handle(SmtpOption request)
   {
     var res = _optionService.UpdateSmtpOption(request);
