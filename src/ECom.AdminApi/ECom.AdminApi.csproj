@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\AnnouncementEndpoints\" />
+    <Folder Include="Endpoints\CategoryEndpoints\SubEndpoints\" />
     <Folder Include="Endpoints\ManagerEndpoints\" />
     <Folder Include="Endpoints\ImageEndpoints\" />
     <Folder Include="Endpoints\AuthEndpoints\" />

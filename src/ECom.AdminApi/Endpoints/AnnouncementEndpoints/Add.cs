@@ -2,6 +2,7 @@
 
 namespace ECom.AdminApi.Endpoints.AnnouncementEndpoints;
 
+[EndpointRoute(typeof(Add))]
 public class Add : EndpointBaseSync.WithRequest<Announcement>.WithResult<CustomResult>
 {
   private readonly IAnnouncementService _announcementService;

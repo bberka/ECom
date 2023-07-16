@@ -18,7 +18,11 @@ public enum AdminOperationType
   CategoryAdd,
   CategoryUpdate,
   CategoryDelete,
+  CategoryEnable,
+  CategoryDisable,
 
+  SubCategoryEnable,
+  SubCategoryDisable,
 
   CompanyInfoAdd,
   CompanyInfoUpdate,
@@ -39,8 +43,6 @@ public enum AdminOperationType
   SmtpOptionGet,
   SmtpOptionUpdate,
   SmtpOptionDelete,
-  CategoryEnable,
-  CategoryDisable,
-  SubCategoryEnable,
-  SubCategoryDisable
+
+
 }
