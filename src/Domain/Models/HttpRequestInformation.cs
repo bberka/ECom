@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.Models;
 
-public class HttpRequestData
+public class HttpRequestInformation
 {
   public string IpAddress {
     get {

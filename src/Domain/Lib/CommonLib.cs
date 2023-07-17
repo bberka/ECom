@@ -12,9 +12,7 @@ public static class CommonLib
   }
 
   public static bool IsCultureValid(string cultureName) {
-    if (cultureName == null) return false;
-    if (cultureName.Length < 2) return false;
-    if (cultureName.Length > 4) return false;
+    if (string.IsNullOrEmpty(cultureName)) return false;
     if (!GetCultureNames().Contains(cultureName)) return false;
     return true;
   }
