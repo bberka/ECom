@@ -29,12 +29,13 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 #endif
 
 
-    var adminAsDic = admin.AsDictionary();
+    var adminAsDic = admin.AsDictionary()!;
     var remove = adminAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
     foreach (var kvp in remove) adminAsDic.Remove(kvp.Key);
     adminAsDic.Add("AdminOnly", "true");
     adminAsDic.Add(ClaimTypes.Role, admin.RoleName);
     adminAsDic.Add(ExtClaimTypes.EndPointPermissions, admin.Permissions.ToList().CreatePermissionString());
+
     var expireMinutes = JwtOption.This.TokenExpireMinutes;
     var date = DateTime.UtcNow.AddMinutes(expireMinutes);
     var token = _jwtManager.GenerateToken(adminAsDic, date);

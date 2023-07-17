@@ -1,10 +1,18 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using ECom.Application.SetupMiddleware;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 
-namespace ECom.Application.DependencyResolvers;
+namespace ECom.Application.Setup;
 
-public static class SwaggerDependencyResolver
+public class SwaggerSetup : IApplicationSetup, IBuilderServiceSetup
 {
-  public static IServiceCollection AddSwaggerConfigured(this IServiceCollection services) {
+  public void InitializeApplication(WebApplication app) {
+    app.UseSwagger();
+    app.UseSwaggerUI();
+  }
+
+  public void InitializeServices(IServiceCollection services, ConfigurationManager configuration, ConfigureHostBuilder host) {
     services.AddSwaggerGen(c => {
       c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECom.WebApi", Version = "v1" });
       c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
@@ -38,7 +46,8 @@ public static class SwaggerDependencyResolver
         }
       });
     });
-    
-    return services;
+    services.AddSwaggerGen(c => {
+      c.EnableAnnotations();
+    });
   }
 }

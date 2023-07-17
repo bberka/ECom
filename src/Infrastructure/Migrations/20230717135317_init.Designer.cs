@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20230715202618_init")]
+    [Migration("20230717135317_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -131,6 +131,38 @@ namespace ECom.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Admins", "ECOperation");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmailAddress = "owner@mail.com",
+                            IsValid = true,
+                            Password = "25f9e794323b453885f5181f1b624d0b",
+                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 1,
+                            TwoFactorType = (byte)0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmailAddress = "admin@mail.com",
+                            IsValid = true,
+                            Password = "25f9e794323b453885f5181f1b624d0b",
+                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 2,
+                            TwoFactorType = (byte)0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EmailAddress = "mod@admin.com",
+                            IsValid = true,
+                            Password = "25f9e794323b453885f5181f1b624d0b",
+                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 3,
+                            TwoFactorType = (byte)0
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.AdminLog", b =>
@@ -277,26 +309,20 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Culture")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
+                    b.Property<string>("NameKey")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("ParentNameKey")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.HasKey("Id");
+                    b.HasKey("NameKey");
+
+                    b.HasIndex("NameKey", "ParentNameKey");
 
                     b.ToTable("Categories", "ECPrivate");
                 });
@@ -312,6 +338,10 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CategoryNameKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<byte>("DiscountPercent")
                         .HasColumnType("tinyint");
 
@@ -323,7 +353,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryNameKey");
 
                     b.ToTable("CategoryDiscounts", "ECPrivate");
                 });
@@ -436,6 +466,38 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("IsRelease");
 
                     b.ToTable("CompanyInformations", "ECPrivate");
+
+                    b.HasData(
+                        new
+                        {
+                            IsRelease = true,
+                            CompanyAddress = "Address",
+                            CompanyName = "ECom.Company",
+                            ContactEmail = "contact@support.com",
+                            Description = "Company Description",
+                            DomainUrl = "www.company.com",
+                            FacebookLink = "facebook.com/company",
+                            InstagramLink = "instagram.com/company",
+                            PhoneNumber = "5526667788",
+                            WebApiUrl = "api.company.com",
+                            WhatsApp = "5526667788",
+                            YoutubeLink = "yt.com/company"
+                        },
+                        new
+                        {
+                            IsRelease = false,
+                            CompanyAddress = "Address",
+                            CompanyName = "ECom.Company",
+                            ContactEmail = "contact@support.com",
+                            Description = "Company Description",
+                            DomainUrl = "www.company.com",
+                            FacebookLink = "facebook.com/company",
+                            InstagramLink = "instagram.com/company",
+                            PhoneNumber = "5526667788",
+                            WebApiUrl = "api.company.com",
+                            WhatsApp = "5526667788",
+                            YoutubeLink = "yt.com/company"
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
@@ -449,6 +511,10 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<int>("DiscountCategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("DiscountCategoryNameKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<byte>("DiscountPercent")
                         .HasColumnType("tinyint");
 
@@ -460,7 +526,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiscountCategoryId");
+                    b.HasIndex("DiscountCategoryNameKey");
 
                     b.ToTable("DiscountCoupons", "ECPrivate");
                 });
@@ -550,14 +616,42 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("Images", "ECPrivate");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.LocalizationString", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<byte>("Language")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Key", "Language");
+
+                    b.ToTable("LocalizationStrings", "ECPrivate");
+
+                    b.HasData(
+                        new
+                        {
+                            Key = "hello",
+                            Language = (byte)0,
+                            Value = "Hello"
+                        },
+                        new
+                        {
+                            Key = "hello",
+                            Language = (byte)1,
+                            Value = "Merhaba"
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
@@ -609,6 +703,42 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("IsRelease");
 
                     b.ToTable("Options", "ECOption");
+
+                    b.HasData(
+                        new
+                        {
+                            IsRelease = true,
+                            EmailVerificationTimeoutMinutes = 30,
+                            IsAdminOpen = true,
+                            IsOpen = true,
+                            PagingProductCount = (byte)20,
+                            PasswordResetTimeoutMinutes = 30,
+                            ProductCommentImageLimit = (byte)5,
+                            ProductImageLimit = (byte)10,
+                            RequireLowerCaseInPassword = false,
+                            RequireNumberInPassword = false,
+                            RequireSpecialCharacterInPassword = false,
+                            RequireUpperCaseInPassword = false,
+                            SelectedCurrency = "Lira",
+                            ShowStock = false
+                        },
+                        new
+                        {
+                            IsRelease = false,
+                            EmailVerificationTimeoutMinutes = 30,
+                            IsAdminOpen = true,
+                            IsOpen = true,
+                            PagingProductCount = (byte)20,
+                            PasswordResetTimeoutMinutes = 30,
+                            ProductCommentImageLimit = (byte)5,
+                            ProductImageLimit = (byte)10,
+                            RequireLowerCaseInPassword = false,
+                            RequireNumberInPassword = false,
+                            RequireSpecialCharacterInPassword = false,
+                            RequireUpperCaseInPassword = false,
+                            SelectedCurrency = "Lira",
+                            ShowStock = false
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
@@ -762,6 +892,194 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions", "ECOperation");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsValid = true,
+                            Name = "AdminUpdate"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsValid = true,
+                            Name = "AdminDelete"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsValid = true,
+                            Name = "AdminGet"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsValid = true,
+                            Name = "AdminGetAll"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsValid = true,
+                            Name = "AdminAdd"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsValid = true,
+                            Name = "AnnouncementUpdate"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsValid = true,
+                            Name = "AnnouncementDelete"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsValid = true,
+                            Name = "AnnouncementAdd"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsValid = true,
+                            Name = "AnnouncementEnable"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsValid = true,
+                            Name = "AnnouncementDisable"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsValid = true,
+                            Name = "CategoryAdd"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsValid = true,
+                            Name = "CategoryUpdate"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IsValid = true,
+                            Name = "CategoryDelete"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            IsValid = true,
+                            Name = "CategoryEnable"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            IsValid = true,
+                            Name = "CategoryDisable"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            IsValid = true,
+                            Name = "SubCategoryEnable"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            IsValid = true,
+                            Name = "SubCategoryDisable"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            IsValid = true,
+                            Name = "CompanyInfoAdd"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            IsValid = true,
+                            Name = "CompanyInfoUpdate"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            IsValid = true,
+                            Name = "ImageUpload"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            IsValid = true,
+                            Name = "OptionGet"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            IsValid = true,
+                            Name = "OptionUpdate"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            IsValid = true,
+                            Name = "CargoOptionGet"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            IsValid = true,
+                            Name = "CargoOptionUpdate"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            IsValid = true,
+                            Name = "CargoOptionDelete"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            IsValid = true,
+                            Name = "PaymentOptionGet"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            IsValid = true,
+                            Name = "PaymentOptionUpdate"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            IsValid = true,
+                            Name = "PaymentOptionDelete"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            IsValid = true,
+                            Name = "SmtpOptionGet"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            IsValid = true,
+                            Name = "SmtpOptionUpdate"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            IsValid = true,
+                            Name = "SmtpOptionDelete"
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
@@ -777,6 +1095,163 @@ namespace ECom.Infrastructure.Migrations
                     b.HasIndex("PermissionId");
 
                     b.ToTable("PermissionRoles", "ECOperation");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 11
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 12
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 14
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 15
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 16
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 17
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 18
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 19
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 20
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 21
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 22
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 23
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 24
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 25
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 26
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 27
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 28
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 29
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 30
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 31
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
@@ -813,6 +1288,19 @@ namespace ECom.Infrastructure.Migrations
                     b.HasIndex("ProductVariantId");
 
                     b.ToTable("Products", "ECPrivate");
+                });
+
+            modelBuilder.Entity("ECom.Domain.Entities.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "SubCategoryId");
+
+                    b.ToTable("ProductCategories", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
@@ -891,6 +1379,21 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductDetails", "ECPrivate");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "ImageId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("ProductImages", "ECPrivate");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
                 {
                     b.Property<int>("Id")
@@ -919,19 +1422,6 @@ namespace ECom.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductShowCases", "ECPrivate");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ProductSubCategory", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "SubCategoryId");
-
-                    b.ToTable("ProductSubCategories", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductVariant", b =>
@@ -974,6 +1464,26 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", "ECOperation");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsValid = true,
+                            Name = "Owner"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsValid = true,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsValid = true,
+                            Name = "Moderator"
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SecurityLog", b =>
@@ -1181,32 +1691,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("StockChanges", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.SubCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("SubCategories", "ECPrivate");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>
                 {
                     b.Property<int>("Id")
@@ -1321,6 +1805,36 @@ namespace ECom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", "ECPrivate");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Culture = "tr",
+                            EmailAddress = "debug@mail.com",
+                            FirstName = "User",
+                            IsEmailVerified = false,
+                            IsValid = true,
+                            LastName = "Last",
+                            Password = "25f9e794323b453885f5181f1b624d0b",
+                            PhoneNumber = "5525553344",
+                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TwoFactorType = (byte)0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Culture = "tr",
+                            EmailAddress = "debug2@mail.com",
+                            FirstName = "User",
+                            IsEmailVerified = false,
+                            IsValid = true,
+                            LastName = "Last",
+                            Password = "25f9e794323b453885f5181f1b624d0b",
+                            PhoneNumber = "5525553344",
+                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TwoFactorType = (byte)0
+                        });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
@@ -1447,7 +1961,7 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoryNameKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1488,7 +2002,7 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Category", "DiscountCategory")
                         .WithMany()
-                        .HasForeignKey("DiscountCategoryId")
+                        .HasForeignKey("DiscountCategoryNameKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1542,13 +2056,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Image", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Product", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
@@ -1643,6 +2150,25 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
+                {
+                    b.HasOne("ECom.Domain.Entities.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Product", "Product")
@@ -1701,15 +2227,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.SubCategory", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Category", null)
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.User", null)
@@ -1722,11 +2239,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("AdminLogs");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("SubCategories");
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
                 {
                     b.Navigation("PermissionRoles");
@@ -1734,11 +2246,11 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("ProductComments");
 
                     b.Navigation("ProductDetails");
+
+                    b.Navigation("ProductImages");
 
                     b.Navigation("StockChanges");
                 });

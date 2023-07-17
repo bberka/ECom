@@ -27,7 +27,7 @@ public interface IUnitOfWork : IDisposable
   IGenericRepository<ProductComment> ProductCommentRepository { get; }
   IGenericRepository<ProductDetail> ProductDetailRepository { get; }
   IGenericRepository<ProductShowCase> ProductShowCaseRepository { get; }
-  IGenericRepository<ProductSubCategory> ProductSubCategoryRepository { get; }
+  IGenericRepository<ProductCategory> ProductCategoryRepository { get; }
   IGenericRepository<ProductVariant> ProductVariantRepository { get; }
   IGenericRepository<Role> RoleRepository { get; }
   IGenericRepository<PermissionRole> PermissionRoleRepository { get; }
@@ -36,7 +36,8 @@ public interface IUnitOfWork : IDisposable
   IGenericRepository<Slider> SliderRepository { get; }
   IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
   IGenericRepository<StockChange> StockChangeRepository { get; }
-  IGenericRepository<SubCategory> SubCategoryRepository { get; }
+  IGenericRepository<LocalizationString> LocalizationStringRepository { get; }
+  //IGenericRepository<SubCategory> SubCategoryRepository { get; }
   IGenericRepository<Supplier> SupplierRepository { get; }
   IGenericRepository<User> UserRepository { get; }
   IGenericRepository<UserLog> UserLogRepository { get; }

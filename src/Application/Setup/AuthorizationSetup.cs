@@ -1,14 +1,18 @@
 ﻿using System.Text;
+using ECom.Application.Manager;
+using ECom.Application.SetupMiddleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ECom.Application.DependencyResolvers;
+namespace ECom.Application.Setup;
 
-public static class AuthorizationDependencyResolver
+public class AuthorizationSetup : IBuilderServiceSetup, IApplicationSetup
 {
-  public static IServiceCollection AddAuthorizationConfigured(this IServiceCollection services) {
+
+  public void InitializeServices(IServiceCollection services, ConfigurationManager configuration, ConfigureHostBuilder host) {
     services.Configure<CookiePolicyOptions>(options => {
       options.CheckConsentNeeded = context => true;
       options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -21,9 +25,8 @@ public static class AuthorizationDependencyResolver
         op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
       })
       .AddJwtBearer("Bearer", token => {
-#if DEBUG
-        token.RequireHttpsMetadata = false;
-#endif
+        if(ConstantMgr.IsDevelopment())
+          token.RequireHttpsMetadata = false;
         token.SaveToken = true;
         token.TokenValidationParameters = new TokenValidationParameters {
           ValidateIssuerSigningKey = true,
@@ -40,6 +43,13 @@ public static class AuthorizationDependencyResolver
       options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
       options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
     });
-    return services;
+    services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
+    services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();
+  }
+
+  [InitializeOrder(int.MaxValue)]
+  public void InitializeApplication(WebApplication app) {
+    app.UseAuthentication();
+    app.UseAuthorization();
   }
 }

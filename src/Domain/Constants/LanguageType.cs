@@ -1,8 +1,7 @@
 ﻿namespace ECom.Domain.Constants;
 
-public enum LanguageType
+public enum LanguageType : byte
 {
-  auto,
-  en,
-  tr
+  English,
+  Turkish,
 }

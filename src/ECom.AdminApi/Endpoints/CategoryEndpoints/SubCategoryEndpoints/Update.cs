@@ -16,11 +16,11 @@ public class Update : EndpointBaseSync.WithRequest<SubCategory>.WithResult<Custo
   [HttpPost]
   [RequirePermission(AdminOperationType.CategoryUpdate)]
   [EndpointSwaggerOperation(typeof(Update))]
-  public override CustomResult Handle(SubCategory request)
-  {
-    var adminId = HttpContext.GetAdminId();
-    var res = _categoryService.UpdateSubCategory(request);
-    _logService.AdminLog(res, adminId, "SubCategory.Update", request.ToJsonString());
-    return res;
+  public override CustomResult Handle(SubCategory request) {
+    throw new NotImplementedException();
+    //var adminId = HttpContext.GetAdminId();
+    //var res = _categoryService.UpdateSubCategory(request);
+    //_logService.AdminLog(res, adminId, "SubCategory.Update", request.ToJsonString());
+    //return res;
   }
 }

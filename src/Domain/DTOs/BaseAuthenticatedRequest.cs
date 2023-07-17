@@ -1,13 +1,15 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Net;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http;
+using AspNetCore.Authorization.Extender;
 
 namespace ECom.Domain.DTOs;
 
 /// <summary>
 ///   Base class for Api Requests with Authorization and Authentication
 /// </summary>
-public abstract class AuthRequestModelBase
+public abstract class BaseAuthenticatedRequest
 {
   /// <summary>
   ///   UserId received from current HttpContext.
@@ -19,6 +21,7 @@ public abstract class AuthRequestModelBase
   [JsonIgnore]
   [Newtonsoft.Json.JsonIgnore]
   [IgnoreDataMember]
+  [NotMapped]
   public int AuthenticatedUserId {
     get {
       var context = new HttpContextAccessor().HttpContext;
@@ -39,6 +42,7 @@ public abstract class AuthRequestModelBase
   [JsonIgnore]
   [Newtonsoft.Json.JsonIgnore]
   [IgnoreDataMember]
+  [NotMapped]
   public int AuthenticatedAdminId {
     get {
       var context = new HttpContextAccessor().HttpContext;
@@ -46,6 +50,20 @@ public abstract class AuthRequestModelBase
         if (context.IsAdminAuthenticated())
           return context.GetAdminId();
       return -1;
+    }
+  }
+
+  [JsonIgnore]
+  [Newtonsoft.Json.JsonIgnore]
+  [IgnoreDataMember]
+  [NotMapped]
+  public List<string> AdminPermissions {
+    get {
+      var context = new HttpContextAccessor().HttpContext;
+      if (context is null) return new();
+      if (!context.IsAdminAuthenticated()) return new();
+      var permissions = context.User.GetPermissions();
+      return permissions;
     }
   }
 }

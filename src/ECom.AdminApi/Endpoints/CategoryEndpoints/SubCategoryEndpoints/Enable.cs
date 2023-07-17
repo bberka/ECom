@@ -18,9 +18,11 @@ public class Enable : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult
   [EndpointSwaggerOperation(typeof(Enable),"Enables sub category")]
   public override CustomResult Handle([FromBody] uint id)
   {
-    var adminId = HttpContext.GetAdminId();
-    var res = _categoryService.EnableSubCategory(id);
-    _logService.AdminLog(res, adminId, "SubCategory.Enable", id);
-    return res;
+    throw new NotImplementedException();
+
+    //var adminId = HttpContext.GetAdminId();
+    //var res = _categoryService.EnableSubCategory(id);
+    //_logService.AdminLog(res, adminId, "SubCategory.Enable", id);
+    //return res;
   }
 }

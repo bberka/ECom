@@ -3,7 +3,7 @@
 namespace ECom.AdminApi.Endpoints.CategoryEndpoints.SubCategoryEndpoints;
 
 [EndpointRoute(typeof(Add))]
-public class Add : EndpointBaseSync.WithRequest<AddSubCategoryRequest>.WithResult<CustomResult>
+public class Add : EndpointBaseSync.WithRequest<AddOrUpdateCategoryRequest>.WithResult<CustomResult>
 {
   private readonly ICategoryService _categoryService;
   private readonly ILogService _logService;
@@ -18,10 +18,12 @@ public class Add : EndpointBaseSync.WithRequest<AddSubCategoryRequest>.WithResul
   [HttpPost]
   [RequirePermission(AdminOperationType.CategoryAdd)]
   [EndpointSwaggerOperation(typeof(Add),"Adds sub category to a main category")]
-  public override CustomResult Handle(AddSubCategoryRequest request)
+  public override CustomResult Handle(AddOrUpdateCategoryRequest request)
   {
-    var res = _categoryService.AddSubCategory(request);
-    _logService.AdminLog(res, request.AuthenticatedAdminId, "SubCategory.Add", request.ToJsonString());
-    return res;
+    throw new NotImplementedException();
+
+    //var res = _categoryService.AddSubCategory(request);
+    //_logService.AdminLog(res, request.AuthenticatedAdminId, "SubCategory.Add", request.ToJsonString());
+    //return res;
   }
 }

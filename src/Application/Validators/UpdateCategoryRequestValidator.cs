@@ -2,18 +2,17 @@
 
 namespace ECom.Application.Validators;
 
-public class UpdateCategoryRequestValidator : AbstractValidator<UpdateCategoryRequest>,
-  IValidator<UpdateCategoryRequest>
+public class UpdateCategoryRequestValidator : AbstractValidator<AddOrUpdateCategoryRequest>,
+  IValidator<AddOrUpdateCategoryRequest>
 {
   public UpdateCategoryRequestValidator() {
     RuleFor(x => x.Name)
       .MinimumLength(3)
       .MinimumLength(64);
 
-    RuleFor(x => x.Culture)
-      .Length(4);
+    RuleFor(x => x.Name)
+      .Length(2);
 
-    RuleFor(x => x.CategoryId)
-      .GreaterThan(0);
+
   }
 }

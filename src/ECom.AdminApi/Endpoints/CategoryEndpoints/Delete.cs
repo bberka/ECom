@@ -1,7 +1,7 @@
 ﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints;
 
 [EndpointRoute(typeof(Delete))]
-public class Delete : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult>
+public class Delete : EndpointBaseSync.WithRequest<string>.WithResult<CustomResult>
 {
   private readonly ICategoryService _categoryService;
   private readonly ILogService _logService;
@@ -16,11 +16,11 @@ public class Delete : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult
   [HttpDelete]
   [RequirePermission(AdminOperationType.CategoryDelete)]
   [EndpointSwaggerOperation(typeof(Delete))]
-  public override CustomResult Handle([FromBody] uint id)
+  public override CustomResult Handle([FromBody] string key)
   {
     var adminId = HttpContext.GetAdminId();
-    var res = _categoryService.DeleteCategory(id);
-    _logService.AdminLog(res, adminId, "Category.Delete", id);
+    var res = _categoryService.DeleteCategory(key);
+    _logService.AdminLog(res, adminId, "Category.Delete", key);
     return res;
   }
 }

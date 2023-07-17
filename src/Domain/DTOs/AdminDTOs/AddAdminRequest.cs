@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace ECom.Domain.DTOs.AdminDTOs;
 
-public class AddAdminRequest : AuthRequestModelBase
+public class AddAdminRequest : BaseAuthenticatedRequest
 {
   public string EmailAddress { get; set; }
 

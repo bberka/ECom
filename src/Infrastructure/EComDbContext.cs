@@ -15,7 +15,7 @@ public class EComDbContext : DbContext
 
   public DbSet<ProductDetail> ProductDetails { get; set; }
 
-  //public DbSet<ProductImage> ProductImages { get; set; }
+  public DbSet<ProductImage> ProductImages { get; set; }
   public DbSet<ProductVariant> ProductVariants { get; set; }
   public DbSet<ProductComment> ProductComments { get; set; }
 
@@ -25,8 +25,9 @@ public class EComDbContext : DbContext
 
 
   public DbSet<Category> Categories { get; set; }
-  public DbSet<SubCategory> SubCategories { get; set; }
-  public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
+  public DbSet<LocalizationString> LocalizationStrings { get; set; }
+  //public DbSet<SubCategory> SubCategories { get; set; }
+  public DbSet<ProductCategory> ProductSubCategories { get; set; }
 
 
   public DbSet<UserLog> UserLogs { get; set; }
@@ -75,19 +76,19 @@ public class EComDbContext : DbContext
     modelBuilder.ApplyConfigurationsFromAssembly(typeof(RoleConfiguration).Assembly);
   }
 
-  public static EComDbContext New() {
-    return new EComDbContext();
-  }
 
   public static void EnsureCreatedAndUpdated() {
     var context = new EComDbContext();
     var created = context.Database.EnsureCreated();
-    //var missingMigrations = context.Database.GetAppliedMigrations().ToList();
-    //if (missingMigrations.Count > 0)
-    //{
-    //    context.Database.Migrate();
+    //if (created) {
+    //  context.Database.ExecuteSqlRaw("ALTER DATABASE ECom SET READ_COMMITTED_SNAPSHOT ON;");
     //}
-    if (!created) return;
-    BaseDbFiller.Run();
+    try {
+      context.Database.Migrate();
+    } catch {
+      //ignored
+    }
+    context.Dispose();
+
   }
 }

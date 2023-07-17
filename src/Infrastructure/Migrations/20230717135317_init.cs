@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ECom.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -45,15 +47,13 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NameKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                    ParentNameKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.NameKey);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,6 +79,36 @@ namespace ECom.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanyInformations", x => x.IsRelease);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Culture = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LocalizationStrings",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Key = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Language = table.Column<byte>(type: "tinyint", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocalizationStrings", x => new { x.Key, x.Language });
                 });
 
             migrationBuilder.CreateTable(
@@ -147,7 +177,7 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSubCategories",
+                name: "ProductCategories",
                 schema: "ECPrivate",
                 columns: table => new
                 {
@@ -156,7 +186,7 @@ namespace ECom.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSubCategories", x => new { x.ProductId, x.SubCategoryId });
+                    table.PrimaryKey("PK_ProductCategories", x => new { x.ProductId, x.SubCategoryId });
                 });
 
             migrationBuilder.CreateTable(
@@ -288,17 +318,18 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryNameKey = table.Column<string>(type: "nvarchar(64)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoryDiscounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryDiscounts_Categories_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_CategoryDiscounts_Categories_CategoryNameKey",
+                        column: x => x.CategoryNameKey,
                         principalSchema: "ECPrivate",
                         principalTable: "Categories",
-                        principalColumn: "Id",
+                        principalColumn: "NameKey",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -312,39 +343,93 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    DiscountCategoryId = table.Column<int>(type: "int", nullable: false)
+                    DiscountCategoryId = table.Column<int>(type: "int", nullable: false),
+                    DiscountCategoryNameKey = table.Column<string>(type: "nvarchar(64)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DiscountCoupons", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DiscountCoupons_Categories_DiscountCategoryId",
-                        column: x => x.DiscountCategoryId,
+                        name: "FK_DiscountCoupons_Categories_DiscountCategoryNameKey",
+                        column: x => x.DiscountCategoryNameKey,
                         principalSchema: "ECPrivate",
                         principalTable: "Categories",
-                        principalColumn: "Id",
+                        principalColumn: "NameKey",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubCategories",
-                schema: "ECPrivate",
+                name: "CargoOptions",
+                schema: "ECOption",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FreeShippingMinCost = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubCategories", x => x.Id);
+                    table.PrimaryKey("PK_CargoOptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubCategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_CargoOptions_Images_ImageId",
+                        column: x => x.ImageId,
                         principalSchema: "ECPrivate",
-                        principalTable: "Categories",
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShowCaseImages",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    Order = table.Column<byte>(type: "tinyint", nullable: false),
+                    ShowCaseType = table.Column<byte>(type: "tinyint", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShowCaseImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShowCaseImages_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalSchema: "ECPrivate",
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sliders",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Alt = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sliders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sliders_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalSchema: "ECPrivate",
+                        principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -648,29 +733,6 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
-                schema: "ECPrivate",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Culture = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Images_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 schema: "ECPrivate",
                 columns: table => new
@@ -763,6 +825,33 @@ namespace ECom.Infrastructure.Migrations
                     table.PrimaryKey("PK_ProductDetails", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "ECPrivate",
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductImages",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductImages", x => new { x.ProductId, x.ImageId });
+                    table.ForeignKey(
+                        name: "FK_ProductImages_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalSchema: "ECPrivate",
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductImages_Products_ProductId",
                         column: x => x.ProductId,
                         principalSchema: "ECPrivate",
                         principalTable: "Products",
@@ -896,80 +985,144 @@ namespace ECom.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "CargoOptions",
+            migrationBuilder.InsertData(
+                schema: "ECPrivate",
+                table: "CompanyInformations",
+                columns: new[] { "IsRelease", "CompanyAddress", "CompanyName", "ContactEmail", "Description", "DomainUrl", "FacebookLink", "FavIcoImageId", "InstagramLink", "LogoImageId", "PhoneNumber", "WebApiUrl", "WhatsApp", "YoutubeLink" },
+                values: new object[,]
+                {
+                    { false, "Address", "ECom.Company", "contact@support.com", "Company Description", "www.company.com", "facebook.com/company", null, "instagram.com/company", null, "5526667788", "api.company.com", "5526667788", "yt.com/company" },
+                    { true, "Address", "ECom.Company", "contact@support.com", "Company Description", "www.company.com", "facebook.com/company", null, "instagram.com/company", null, "5526667788", "api.company.com", "5526667788", "yt.com/company" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "ECPrivate",
+                table: "LocalizationStrings",
+                columns: new[] { "Key", "Language", "Value" },
+                values: new object[,]
+                {
+                    { "hello", (byte)0, "Hello" },
+                    { "hello", (byte)1, "Merhaba" }
+                });
+
+            migrationBuilder.InsertData(
                 schema: "ECOption",
-                columns: table => new
+                table: "Options",
+                columns: new[] { "IsRelease", "EmailVerificationTimeoutMinutes", "IsAdminOpen", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "SelectedCurrency", "ShowStock" },
+                values: new object[,]
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FreeShippingMinCost = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CargoOptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CargoOptions_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    { false, 30, true, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, "Lira", false },
+                    { true, 30, true, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, "Lira", false }
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ShowCaseImages",
-                schema: "ECPrivate",
-                columns: table => new
+            migrationBuilder.InsertData(
+                schema: "ECOperation",
+                table: "Permissions",
+                columns: new[] { "Id", "IsValid", "Memo", "Name" },
+                values: new object[,]
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Order = table.Column<byte>(type: "tinyint", nullable: false),
-                    ShowCaseType = table.Column<byte>(type: "tinyint", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShowCaseImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShowCaseImages_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    { 1, true, null, "AdminUpdate" },
+                    { 2, true, null, "AdminDelete" },
+                    { 3, true, null, "AdminGet" },
+                    { 4, true, null, "AdminGetAll" },
+                    { 5, true, null, "AdminAdd" },
+                    { 6, true, null, "AnnouncementUpdate" },
+                    { 7, true, null, "AnnouncementDelete" },
+                    { 8, true, null, "AnnouncementAdd" },
+                    { 9, true, null, "AnnouncementEnable" },
+                    { 10, true, null, "AnnouncementDisable" },
+                    { 11, true, null, "CategoryAdd" },
+                    { 12, true, null, "CategoryUpdate" },
+                    { 13, true, null, "CategoryDelete" },
+                    { 14, true, null, "CategoryEnable" },
+                    { 15, true, null, "CategoryDisable" },
+                    { 16, true, null, "SubCategoryEnable" },
+                    { 17, true, null, "SubCategoryDisable" },
+                    { 18, true, null, "CompanyInfoAdd" },
+                    { 19, true, null, "CompanyInfoUpdate" },
+                    { 20, true, null, "ImageUpload" },
+                    { 21, true, null, "OptionGet" },
+                    { 22, true, null, "OptionUpdate" },
+                    { 23, true, null, "CargoOptionGet" },
+                    { 24, true, null, "CargoOptionUpdate" },
+                    { 25, true, null, "CargoOptionDelete" },
+                    { 26, true, null, "PaymentOptionGet" },
+                    { 27, true, null, "PaymentOptionUpdate" },
+                    { 28, true, null, "PaymentOptionDelete" },
+                    { 29, true, null, "SmtpOptionGet" },
+                    { 30, true, null, "SmtpOptionUpdate" },
+                    { 31, true, null, "SmtpOptionDelete" }
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Sliders",
+            migrationBuilder.InsertData(
+                schema: "ECOperation",
+                table: "Roles",
+                columns: new[] { "Id", "IsValid", "Name" },
+                values: new object[,]
+                {
+                    { 1, true, "Owner" },
+                    { 2, true, "Admin" },
+                    { 3, true, "Moderator" }
+                });
+
+            migrationBuilder.InsertData(
                 schema: "ECPrivate",
-                columns: table => new
+                table: "Users",
+                columns: new[] { "Id", "CitizenShipNumber", "Culture", "DeletedDate", "EmailAddress", "FirstName", "IsEmailVerified", "IsValid", "LastName", "OAuthKey", "OAuthType", "Password", "PhoneNumber", "RegisterDate", "TaxNumber", "TwoFactorKey", "TwoFactorType" },
+                values: new object[,]
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Alt = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Order = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
-                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
-                },
-                constraints: table =>
+                    { 1, null, "tr", null, "debug@mail.com", "User", false, true, "Last", null, null, "25f9e794323b453885f5181f1b624d0b", "5525553344", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, (byte)0 },
+                    { 2, null, "tr", null, "debug2@mail.com", "User", false, true, "Last", null, null, "25f9e794323b453885f5181f1b624d0b", "5525553344", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, (byte)0 }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "ECOperation",
+                table: "Admins",
+                columns: new[] { "Id", "DeletedDate", "EmailAddress", "IsValid", "Password", "RegisterDate", "RoleId", "TwoFactorKey", "TwoFactorType" },
+                values: new object[,]
                 {
-                    table.PrimaryKey("PK_Sliders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sliders_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    { 1, null, "owner@mail.com", true, "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, null, (byte)0 },
+                    { 2, null, "admin@mail.com", true, "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, null, (byte)0 },
+                    { 3, null, "mod@admin.com", true, "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, null, (byte)0 }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "ECOperation",
+                table: "PermissionRoles",
+                columns: new[] { "PermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 1 },
+                    { 5, 1 },
+                    { 6, 1 },
+                    { 7, 1 },
+                    { 8, 1 },
+                    { 9, 1 },
+                    { 10, 1 },
+                    { 11, 1 },
+                    { 12, 1 },
+                    { 13, 1 },
+                    { 14, 1 },
+                    { 15, 1 },
+                    { 16, 1 },
+                    { 17, 1 },
+                    { 18, 1 },
+                    { 19, 1 },
+                    { 20, 1 },
+                    { 21, 1 },
+                    { 22, 1 },
+                    { 23, 1 },
+                    { 24, 1 },
+                    { 25, 1 },
+                    { 26, 1 },
+                    { 27, 1 },
+                    { 28, 1 },
+                    { 29, 1 },
+                    { 30, 1 },
+                    { 31, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1003,10 +1156,16 @@ namespace ECom.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryDiscounts_CategoryId",
+                name: "IX_Categories_NameKey_ParentNameKey",
+                schema: "ECPrivate",
+                table: "Categories",
+                columns: new[] { "NameKey", "ParentNameKey" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryDiscounts_CategoryNameKey",
                 schema: "ECPrivate",
                 table: "CategoryDiscounts",
-                column: "CategoryId");
+                column: "CategoryNameKey");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CollectionProducts_CollectionId",
@@ -1021,10 +1180,10 @@ namespace ECom.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiscountCoupons_DiscountCategoryId",
+                name: "IX_DiscountCoupons_DiscountCategoryNameKey",
                 schema: "ECPrivate",
                 table: "DiscountCoupons",
-                column: "DiscountCategoryId");
+                column: "DiscountCategoryNameKey");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiscountNotifies_ProductId",
@@ -1042,12 +1201,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "IX_FavoriteProducts_ProductId",
                 schema: "ECPrivate",
                 table: "FavoriteProducts",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_ProductId",
-                schema: "ECPrivate",
-                table: "Images",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -1099,6 +1252,12 @@ namespace ECom.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductImages_ImageId",
+                schema: "ECPrivate",
+                table: "ProductImages",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductVariantId",
                 schema: "ECPrivate",
                 table: "Products",
@@ -1139,12 +1298,6 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 table: "StockChanges",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubCategories_CategoryId",
-                schema: "ECPrivate",
-                table: "SubCategories",
-                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogs_UserId",
@@ -1201,6 +1354,10 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
+                name: "LocalizationStrings",
+                schema: "ECPrivate");
+
+            migrationBuilder.DropTable(
                 name: "Options",
                 schema: "ECOption");
 
@@ -1221,6 +1378,10 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOperation");
 
             migrationBuilder.DropTable(
+                name: "ProductCategories",
+                schema: "ECPrivate");
+
+            migrationBuilder.DropTable(
                 name: "ProductComments",
                 schema: "ECPrivate");
 
@@ -1229,11 +1390,11 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
-                name: "ProductShowCases",
+                name: "ProductImages",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
-                name: "ProductSubCategories",
+                name: "ProductShowCases",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
@@ -1254,10 +1415,6 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "StockChanges",
-                schema: "ECPrivate");
-
-            migrationBuilder.DropTable(
-                name: "SubCategories",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
@@ -1285,6 +1442,10 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
+                name: "Products",
+                schema: "ECPrivate");
+
+            migrationBuilder.DropTable(
                 name: "Suppliers",
                 schema: "ECPrivate");
 
@@ -1298,10 +1459,6 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories",
-                schema: "ECPrivate");
-
-            migrationBuilder.DropTable(
-                name: "Products",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(

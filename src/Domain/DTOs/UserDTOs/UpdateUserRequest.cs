@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.DTOs.UserDTOs;
 
-public class UpdateUserRequest : AuthRequestModelBase
+public class UpdateUserRequest : BaseAuthenticatedRequest
 {
   public string EmailAddress { get; set; }
   public string FirstName { get; set; }

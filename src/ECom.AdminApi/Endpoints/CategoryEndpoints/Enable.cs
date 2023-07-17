@@ -1,7 +1,7 @@
 ﻿namespace ECom.AdminApi.Endpoints.CategoryEndpoints;
 
 [EndpointRoute(typeof(Enable))]
-public class Enable : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult>
+public class Enable : EndpointBaseSync.WithRequest<string>.WithResult<CustomResult>
 {
   private readonly ICategoryService _categoryService;
   private readonly ILogService _logService;
@@ -16,11 +16,11 @@ public class Enable : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult
   [HttpPut]
   [RequirePermission(AdminOperationType.CategoryEnable)]
   [EndpointSwaggerOperation(typeof(Enable),"Enables category")]
-  public override CustomResult Handle(uint request)
+  public override CustomResult Handle(string key)
   {
     var adminId = HttpContext.GetAdminId();
-    var res = _categoryService.EnableCategory(request);
-    _logService.AdminLog(res, adminId, "Category.Enable", request);
+    var res = _categoryService.EnableCategory(key);
+    _logService.AdminLog(res, adminId, "Category.Enable", key);
     return res;
   }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.DTOs.AdminDTOs;
 
-public class UpdateAdminAccountRequest : AuthRequestModelBase
+public class UpdateAdminAccountRequest : BaseAuthenticatedRequest
 {
   public string EmailAddress { get; set; }
 }

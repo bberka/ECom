@@ -1,5 +1,6 @@
 ﻿using ECom.Domain;
 using ECom.Domain.DTOs.CollectionDTOs;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace ECom.Application.Services;
 
@@ -26,7 +27,7 @@ public class CollectionService : ICollectionService
   public CustomResult DeleteCollection(int userId, int collectionId) {
     var collectionResult = GetCollection(userId, collectionId);
     if (!collectionResult.Status) return collectionResult;
-    var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId);
+    var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId).Include(x =>x.Collection);
     if (collectionProducts.Any()) _unitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
     _unitOfWork.CollectionRepository.Delete(collectionId);
     var res = _unitOfWork.Save();

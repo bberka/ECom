@@ -18,9 +18,11 @@ public class Disable : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResul
   [EndpointSwaggerOperation(typeof(Disable))]
   public override CustomResult Handle([FromBody] uint id)
   {
-    var adminId = HttpContext.GetAdminId();
-    var res = _categoryService.EnableSubCategory(id);
-    _logService.AdminLog(res, adminId, "SubCategory.Disable", id);
-    return res;
+    throw new NotImplementedException();
+
+    //var adminId = HttpContext.GetAdminId();
+    //var res = _categoryService.EnableSubCategory(id);
+    //_logService.AdminLog(res, adminId, "SubCategory.Disable", id);
+    //return res;
   }
 }

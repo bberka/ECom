@@ -1,8 +1,8 @@
 ﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(ProductId), nameof(SubCategoryId))]
-[Table("ProductSubCategories", Schema = "ECPrivate")]
-public class ProductSubCategory : IEntity
+[Table("ProductCategories", Schema = "ECPrivate")]
+public class ProductCategory : IEntity
 {
   [ForeignKey(nameof(Product))]
   public int ProductId { get; set; }

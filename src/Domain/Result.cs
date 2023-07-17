@@ -135,14 +135,10 @@ public class CustomResult<T>
     };
   }
 
-  public static CustomResult<T> WithTranslation(LanguageType language = LanguageType.auto) {
-    if (LanguageType.auto == language) {
+  public static CustomResult<T> WithTranslation(LanguageType? language = null) {
+    if (language is null) {
       var context = new HttpContextAccessor().HttpContext;
-      if (context != null) {
-        language = context.Request.Headers["Accept-Language"].ToString().StartsWith("tr") ? LanguageType.tr : LanguageType.en;
-      }
-      else
-        language = LanguageType.en;
+      language = context.Request.GetLanguageType();
     }
     throw new NotImplementedException();
   }

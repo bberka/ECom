@@ -16,8 +16,8 @@ public class AutoMapperProfiles : Profile
 
     CreateMap<RegisterUserRequest, User>();
     CreateMap<AddCollectionRequest, Collection>();
-    CreateMap<AddCategoryRequest, Category>();
-    CreateMap<AddSubCategoryRequest, SubCategory>();
+    CreateMap<AddOrUpdateCategoryRequest, Category>();
+    //CreateMap<AddSubCategoryRequest, SubCategory>();
     CreateMap<AddAdminRequest, Admin>();
     CreateMap<AddProductCommentRequest, ProductComment>();
     CreateMap<AddStockChangeRequest, StockChange>();

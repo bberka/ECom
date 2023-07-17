@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.DTOs.ProductDTOs;
 
-public class AddProductCommentRequest : AuthRequestModelBase
+public class AddProductCommentRequest : BaseAuthenticatedRequest
 {
   public string Comment { get; set; }
 

@@ -1,10 +1,14 @@
-﻿namespace ECom.Application.DependencyResolvers;
+﻿using ECom.Application.SetupMiddleware;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 
-public static class SessionDependencyResolver
+namespace ECom.Application.Setup;
+
+public class SessionSetup : IBuilderServiceSetup
 {
   private const int SessionTimeOutSeconds = int.MaxValue;
 
-  public static IServiceCollection AddSessionConfigured(this IServiceCollection services) {
+  public void InitializeServices(IServiceCollection services, ConfigurationManager configuration, ConfigureHostBuilder host) {
     services.AddSession(options => {
       options.IdleTimeout = TimeSpan.FromSeconds(SessionTimeOutSeconds);
       options.Cookie.HttpOnly = true;
@@ -15,7 +19,5 @@ public static class SessionDependencyResolver
     services.AddMemoryCache();
     services.AddDataProtection();
     services.AddDistributedMemoryCache();
-
-    return services;
   }
 }

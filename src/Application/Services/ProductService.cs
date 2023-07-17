@@ -116,7 +116,7 @@ public class ProductService : IProductService
         x => x.OrderByDescending(y => y.RegisterDate))
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
-      .Include(x => x.Images)
+      .Include(x => x.ProductImages)
       .ToList();
   }
 
@@ -128,7 +128,7 @@ public class ProductService : IProductService
         x => x.OrderByDescending(y => y.RegisterDate))
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
-      .Include(x => x.Images)
+      .Include(x => x.ProductImages)
       .ToList()
       .ToList();
   }

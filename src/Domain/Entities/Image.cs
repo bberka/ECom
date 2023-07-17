@@ -15,4 +15,6 @@ public class Image : IEntity
   [MaxLength(2)]
   [MinLength(2)]
   public string Culture { get; set; }
+
+  //public virtual List<Product>? Products { get; set; }
 }

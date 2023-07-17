@@ -2,7 +2,7 @@
 
 public enum AdminOperationType
 {
-  AdminUpdate,
+  AdminUpdate = 1,
   AdminDelete,
   AdminGet,
   AdminGetAll,
