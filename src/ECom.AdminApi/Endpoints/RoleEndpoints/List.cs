@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.RoleDTOs;
+﻿using ECom.Domain.DTOs.RoleDto;
 
 namespace ECom.AdminApi.Endpoints.RoleEndpoints;
 

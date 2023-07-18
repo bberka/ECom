@@ -1,7 +1,6 @@
 ﻿global using EasMe.EntityFrameworkCore;
 global using EasMe.Extensions;
 global using ECom.Domain.Constants;
-global using ECom.Domain.DTOs.CategoryDTOs;
 global using ECom.Domain.Entities;
 global using ECom.Domain.Exceptions;
 global using ECom.Domain.Extensions;

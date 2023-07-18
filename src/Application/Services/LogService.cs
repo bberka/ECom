@@ -60,8 +60,9 @@ public class LogService : ILogService
           XReal_IpAddress = data?.XRealIpAddress,
           UserAgent = data?.UserAgent ?? "-",
           Params = string.Join("|", parameters),
-          ResultErrors = string.Join("|", result.ValidationErrors.Select(x => x.Message)),
-          ErrorCode = $"{result.Message.Name}.{result.Message.Error}|{string.Join(":",result.Message.Params)}",
+          //ResultErrors = string.Join("|", result.ValidationErrors.Select(x => x.Message)),
+          ErrorCode = result.ErrorCode,
+          //ErrorCode = $"{result.Message.Name}.{result.Message.Error}|{string.Join(":",result.Message.Params)}",
           Rv = 0
         };
         unitOfWork.AdminLogRepository.Insert(log);
@@ -93,8 +94,9 @@ public class LogService : ILogService
           XReal_IpAddress = data?.XRealIpAddress,
           UserAgent = data?.UserAgent ?? "-",
           Params = string.Join("|", parameters),
-          ResultErrors = string.Join("|", result.ValidationErrors.Select(x => x.Message)),
-          ErrorCode = $"{result.Message.Name}.{result.Message.Error}|{string.Join(":", result.Message.Params)}",
+          //ResultErrors = string.Join("|", result.ValidationErrors.Select(x => x.Message)),
+          ErrorCode = result.ErrorCode,
+          //ErrorCode = $"{result.Message.Name}.{result.Message.Error}|{string.Join(":", result.Message.Params)}",
           Rv = 0
         };
         unitOfWork.UserLogRepository.Insert(log);

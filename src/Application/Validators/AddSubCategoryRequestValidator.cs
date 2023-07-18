@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.CategoryDTOs;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 //public class AddSubCategoryRequestValidator : AbstractValidator<AddSubCategoryRequest>,
 //  IValidator<AddSubCategoryRequest>

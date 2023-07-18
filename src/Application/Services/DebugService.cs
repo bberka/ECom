@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ECom.Domain.DTOs.AdminDTOs;
-using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs.AdminDto;
+using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Application.Services;
 

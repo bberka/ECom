@@ -1,4 +1,6 @@
-﻿namespace ECom.AdminApi.Endpoints.AuthEndpoints;
+﻿using ECom.Domain.DTOs.AdminDto;
+
+namespace ECom.AdminApi.Endpoints.AuthEndpoints;
 
 [EndpointRoute(typeof(Login))]
 public class Login : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<CustomResult<AdminLoginResponse>>

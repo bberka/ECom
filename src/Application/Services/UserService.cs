@@ -1,5 +1,5 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs.UserDto;
 using ECom.Domain.Extensions;
 
 namespace ECom.Application.Services;

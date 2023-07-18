@@ -102,9 +102,6 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -134,7 +131,6 @@ namespace ECom.Infrastructure.Migrations
                         {
                             Id = 1,
                             EmailAddress = "owner@mail.com",
-                            IsValid = true,
                             Password = "25f9e794323b453885f5181f1b624d0b",
                             RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1,
@@ -144,7 +140,6 @@ namespace ECom.Infrastructure.Migrations
                         {
                             Id = 2,
                             EmailAddress = "admin@mail.com",
-                            IsValid = true,
                             Password = "25f9e794323b453885f5181f1b624d0b",
                             RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2,
@@ -154,7 +149,6 @@ namespace ECom.Infrastructure.Migrations
                         {
                             Id = 3,
                             EmailAddress = "mod@admin.com",
-                            IsValid = true,
                             Password = "25f9e794323b453885f5181f1b624d0b",
                             RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 3,
@@ -901,181 +895,199 @@ namespace ECom.Infrastructure.Migrations
                         {
                             Id = 2,
                             IsValid = true,
-                            Name = "AdminDelete"
+                            Name = "AdminDisable"
                         },
                         new
                         {
                             Id = 3,
                             IsValid = true,
-                            Name = "AdminGet"
+                            Name = "AdminEnable"
                         },
                         new
                         {
                             Id = 4,
                             IsValid = true,
-                            Name = "AdminGetAll"
+                            Name = "AdminDelete"
                         },
                         new
                         {
                             Id = 5,
                             IsValid = true,
-                            Name = "AdminAdd"
+                            Name = "AdminGet"
                         },
                         new
                         {
                             Id = 6,
                             IsValid = true,
-                            Name = "AnnouncementUpdate"
+                            Name = "AdminGetAll"
                         },
                         new
                         {
                             Id = 7,
                             IsValid = true,
-                            Name = "AnnouncementDelete"
+                            Name = "AdminCreate"
                         },
                         new
                         {
                             Id = 8,
                             IsValid = true,
-                            Name = "AnnouncementAdd"
+                            Name = "AnnouncementUpdate"
                         },
                         new
                         {
                             Id = 9,
                             IsValid = true,
-                            Name = "AnnouncementEnable"
+                            Name = "AnnouncementDelete"
                         },
                         new
                         {
                             Id = 10,
                             IsValid = true,
-                            Name = "AnnouncementDisable"
+                            Name = "AnnouncementAdd"
                         },
                         new
                         {
                             Id = 11,
                             IsValid = true,
-                            Name = "CategoryAdd"
+                            Name = "AnnouncementEnable"
                         },
                         new
                         {
                             Id = 12,
                             IsValid = true,
-                            Name = "CategoryUpdate"
+                            Name = "AnnouncementDisable"
                         },
                         new
                         {
                             Id = 13,
                             IsValid = true,
-                            Name = "CategoryDelete"
+                            Name = "CategoryAdd"
                         },
                         new
                         {
                             Id = 14,
                             IsValid = true,
-                            Name = "CategoryEnable"
+                            Name = "CategoryUpdate"
                         },
                         new
                         {
                             Id = 15,
                             IsValid = true,
-                            Name = "CategoryDisable"
+                            Name = "CategoryDelete"
                         },
                         new
                         {
                             Id = 16,
                             IsValid = true,
-                            Name = "SubCategoryEnable"
+                            Name = "CategoryEnable"
                         },
                         new
                         {
                             Id = 17,
                             IsValid = true,
-                            Name = "SubCategoryDisable"
+                            Name = "CategoryDisable"
                         },
                         new
                         {
                             Id = 18,
                             IsValid = true,
-                            Name = "CompanyInfoAdd"
+                            Name = "SubCategoryEnable"
                         },
                         new
                         {
                             Id = 19,
                             IsValid = true,
-                            Name = "CompanyInfoUpdate"
+                            Name = "SubCategoryDisable"
                         },
                         new
                         {
                             Id = 20,
                             IsValid = true,
-                            Name = "ImageUpload"
+                            Name = "CompanyInfoAdd"
                         },
                         new
                         {
                             Id = 21,
                             IsValid = true,
-                            Name = "OptionGet"
+                            Name = "CompanyInfoUpdate"
                         },
                         new
                         {
                             Id = 22,
                             IsValid = true,
-                            Name = "OptionUpdate"
+                            Name = "ImageUpload"
                         },
                         new
                         {
                             Id = 23,
                             IsValid = true,
-                            Name = "CargoOptionGet"
+                            Name = "OptionGet"
                         },
                         new
                         {
                             Id = 24,
                             IsValid = true,
-                            Name = "CargoOptionUpdate"
+                            Name = "OptionUpdate"
                         },
                         new
                         {
                             Id = 25,
                             IsValid = true,
-                            Name = "CargoOptionDelete"
+                            Name = "CargoOptionGet"
                         },
                         new
                         {
                             Id = 26,
                             IsValid = true,
-                            Name = "PaymentOptionGet"
+                            Name = "CargoOptionUpdate"
                         },
                         new
                         {
                             Id = 27,
                             IsValid = true,
-                            Name = "PaymentOptionUpdate"
+                            Name = "CargoOptionDelete"
                         },
                         new
                         {
                             Id = 28,
                             IsValid = true,
-                            Name = "PaymentOptionDelete"
+                            Name = "PaymentOptionGet"
                         },
                         new
                         {
                             Id = 29,
                             IsValid = true,
-                            Name = "SmtpOptionGet"
+                            Name = "PaymentOptionUpdate"
                         },
                         new
                         {
                             Id = 30,
                             IsValid = true,
-                            Name = "SmtpOptionUpdate"
+                            Name = "PaymentOptionDelete"
                         },
                         new
                         {
                             Id = 31,
                             IsValid = true,
+                            Name = "SmtpOptionGet"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            IsValid = true,
+                            Name = "SmtpOptionUpdate"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            IsValid = true,
                             Name = "SmtpOptionDelete"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            IsValid = true,
+                            Name = "AdminRecoverAccount"
                         });
                 });
 
@@ -1248,6 +1260,21 @@ namespace ECom.Infrastructure.Migrations
                         {
                             RoleId = 1,
                             PermissionId = 31
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 32
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 33
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 34
                         });
                 });
 

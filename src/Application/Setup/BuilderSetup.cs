@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ECom.Application.Validators;
-using ECom.Domain.DTOs.AdminDTOs;
-using ECom.Domain.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Http;
 using ECom.Domain.Lib;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using ECom.Application.SharedEndpoints.OptionEndpoints;
+using ECom.Domain.DTOs.AdminDto;
+using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Application.Setup;
 
@@ -23,6 +24,7 @@ public static class BuilderSetup
     builder.Services.AddControllers(x => {
       x.Filters.Add(new ExceptionHandleFilter());
 
+
     }).ConfigureApiBehaviorOptions(
       options => {
         options.InvalidModelStateResponseFactory = c => {
@@ -30,14 +32,13 @@ public static class BuilderSetup
           var errors = c.ModelState.Values
             .Where(v => v.Errors.Count > 0)
             .SelectMany(v => v.Errors)
-            .Select(v => new ValidationError() {
-              Message = v.ErrorMessage,
-              Exception = v.Exception
-            })
+            .Select(v => v.ErrorMessage)
             .ToArray();
-          return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName, errors));
+          return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName, errors.FirstOrDefault()));
         };
       });
+    var assembly = typeof(GetCargoInfo).Assembly;
+    builder.Services.AddControllers().AddApplicationPart(assembly).AddControllersAsServices();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddResponseCaching();

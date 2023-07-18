@@ -1,5 +1,5 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.CollectionDTOs;
+using ECom.Domain.DTOs.CollectionDto;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace ECom.Application.Services;

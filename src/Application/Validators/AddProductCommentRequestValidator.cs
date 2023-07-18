@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.ProductDTOs;
+﻿using ECom.Domain.DTOs.ProductDto;
 
 namespace ECom.Application.Validators;
 

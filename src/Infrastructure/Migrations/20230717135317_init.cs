@@ -1025,7 +1025,7 @@ namespace ECom.Infrastructure.Migrations
                     { 2, true, null, "AdminDelete" },
                     { 3, true, null, "AdminGet" },
                     { 4, true, null, "AdminGetAll" },
-                    { 5, true, null, "AdminAdd" },
+                    { 5, true, null, "AdminCreate" },
                     { 6, true, null, "AnnouncementUpdate" },
                     { 7, true, null, "AnnouncementDelete" },
                     { 8, true, null, "AnnouncementAdd" },

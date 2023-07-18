@@ -1,5 +1,5 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.ProductDTOs;
+using ECom.Domain.DTOs.ProductDto;
 
 namespace ECom.Application.Services;
 
@@ -98,7 +98,7 @@ public class ProductService : IProductService
   //        RegisterDate = DateTime.Now,
   //        ProductCommentId = commentId
   //    };
-  //    var commentImageResult = _productCommentImageRepo.Add(commentImage);
+  //    var commentImageResult = _productCommentImageRepo.Create(commentImage);
   //    if (!commentImageResult)
   //    {
   //        return DomainResult.DbInternalError();

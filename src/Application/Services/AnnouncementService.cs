@@ -1,4 +1,5 @@
 ﻿using ECom.Domain;
+using ECom.Domain.DTOs.AnnouncementDto;
 
 namespace ECom.Application.Services;
 
@@ -10,17 +11,22 @@ public class AnnouncementService : IAnnouncementService
     _unitOfWork = unitOfWork;
   }
 
-  public CustomResult UpdateAnnouncement(Announcement data) {
-    if (!_unitOfWork.AnnouncementRepository.Any(x => x.Id == data.Id))
-      return DomainResult.NotFound(nameof(Announcement));
-    _unitOfWork.AnnouncementRepository.Update(data);
+  public CustomResult UpdateAnnouncement(UpdateAnnouncementRequest data) {
+    var dbData = _unitOfWork.AnnouncementRepository.GetById(data.Id);
+    if (dbData is null) return DomainResult.NotFound(nameof(Announcement));
+    dbData.Order = data.Order;
+    dbData.Message = data.Message;
+    dbData.IsValid = data.IsValid;
+    _unitOfWork.AnnouncementRepository.Update(dbData);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateAnnouncement));
     return DomainResult.OkUpdated(nameof(Announcement));
   }
 
-  public CustomResult AddAnnouncement(Announcement data) {
-    _unitOfWork.AnnouncementRepository.Insert(data);
+  public CustomResult AddAnnouncement(AddAnnouncementRequest data) {
+    var existsSameMessage = _unitOfWork.AnnouncementRepository.Any(x => x.Message == data.Message);
+    if (existsSameMessage) return DomainResult.AlreadyExists(nameof(Announcement));
+    _unitOfWork.AnnouncementRepository.Insert(data.ToEntity());
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddAnnouncement));
     return DomainResult.OkAdded(nameof(Announcement));

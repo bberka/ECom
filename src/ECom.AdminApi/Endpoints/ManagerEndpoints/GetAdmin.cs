@@ -2,7 +2,7 @@
 
 [Authorize(Roles = "Owner")]
 [EndpointRoute(typeof(GetAdmin))]
-public class GetAdmin :EndpointBaseSync.WithRequest<GetAdminRequest>.WithResult<CustomResult<Admin>>
+public class GetAdmin :EndpointBaseSync.WithRequest<int>.WithResult<CustomResult<Admin>>
 {
   private readonly IAdminService _adminService;
   private readonly ILogService _logService;
@@ -13,9 +13,10 @@ public class GetAdmin :EndpointBaseSync.WithRequest<GetAdminRequest>.WithResult<
   }
   [HttpGet]
   [EndpointSwaggerOperation(typeof(GetAdmin),"Gets admin")]
-  public override CustomResult<Admin> Handle([FromRoute] GetAdminRequest request) {
-    var adminResult = _adminService.GetAdmin(request.Id);
-    _logService.AdminLog(adminResult,request.AuthenticatedAdminId,"Admin.Get",request.Id);
+  public override CustomResult<Admin> Handle([FromQuery] int id ) {
+    var authAdmin = HttpContext.GetAdminId();
+    var adminResult = _adminService.GetAdmin(id);
+    _logService.AdminLog(adminResult, authAdmin,"Admin.Get", id);
     return adminResult;
   }
 }

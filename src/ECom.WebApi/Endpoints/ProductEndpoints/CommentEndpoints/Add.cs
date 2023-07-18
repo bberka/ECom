@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.DTOs.ProductDTOs;
+using ECom.Domain.DTOs.ProductDto;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CommentEndpoints;
 

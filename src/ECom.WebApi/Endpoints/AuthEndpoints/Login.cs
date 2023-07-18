@@ -1,6 +1,6 @@
 ﻿using ECom.Application.Attributes;
 using ECom.Domain;
-using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.WebApi.Endpoints.AuthEndpoints;
 
@@ -20,7 +20,7 @@ public class Login : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<Custo
   public override CustomResult<UserLoginResponse> Handle(LoginRequest request) {
     var res = _userJwtAuthenticator.Authenticate(request);
     var userId = res.Data?.User.Id;
-    _logService.UserLog(res.ToResult(), userId, "Auth.Login", request.EmailAddress, request.EncryptedPassword);
+    _logService.UserLog(res.ToResult(), userId, "Auth.Login", request.EmailAddress);
     return res;
   }
 }

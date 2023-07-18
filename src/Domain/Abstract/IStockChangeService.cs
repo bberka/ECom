@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.StockChangeDTOs;
+﻿using ECom.Domain.DTOs.StockChangeDto;
 
 namespace ECom.Domain.Abstract;
 

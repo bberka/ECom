@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.CategoryDTOs;
+﻿using ECom.Domain.DTOs.CategoryDto;
 
 namespace ECom.AdminApi.Endpoints.CategoryEndpoints;
 
@@ -20,7 +20,7 @@ public class Add : EndpointBaseSync.WithRequest<AddOrUpdateCategoryRequest>.With
   public override CustomResult Handle(AddOrUpdateCategoryRequest request)
   {
     var res = _categoryService.AddCategory(request);
-    _logService.AdminLog(res, request.AuthenticatedAdminId, "Category.Add", request.ToJsonString());
+    _logService.AdminLog(res, request.AuthenticatedAdminId, "Category.Create", request.ToJsonString());
     return res;
   }
 

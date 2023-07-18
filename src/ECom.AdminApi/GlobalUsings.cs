@@ -5,7 +5,6 @@ global using ECom.Application.Attributes;
 global using ECom.Domain.Abstract;
 global using ECom.Domain.Constants;
 global using ECom.Domain.DTOs;
-global using ECom.Domain.DTOs.AdminDTOs;
 global using ECom.Domain.Entities;
 global using ECom.Domain.Extensions;
 global using ECom.Infrastructure;

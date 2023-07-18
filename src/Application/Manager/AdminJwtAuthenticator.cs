@@ -1,5 +1,5 @@
 ﻿using AspNetCore.Authorization.Extender;
-using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs.AdminDto;
 
 namespace ECom.Application.Manager;
 

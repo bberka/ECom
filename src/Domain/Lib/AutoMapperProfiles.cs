@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using ECom.Domain.DTOs.AdminDTOs;
-using ECom.Domain.DTOs.CollectionDTOs;
-using ECom.Domain.DTOs.ProductDTOs;
-using ECom.Domain.DTOs.RoleDTOs;
-using ECom.Domain.DTOs.StockChangeDTOs;
-using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs.AdminDto;
+using ECom.Domain.DTOs.CategoryDto;
+using ECom.Domain.DTOs.CollectionDto;
+using ECom.Domain.DTOs.ProductDto;
+using ECom.Domain.DTOs.RoleDto;
+using ECom.Domain.DTOs.StockChangeDto;
+using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Domain.Lib;
 

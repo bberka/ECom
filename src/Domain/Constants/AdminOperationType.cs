@@ -3,10 +3,12 @@
 public enum AdminOperationType
 {
   AdminUpdate = 1,
+  AdminDisable ,
+  AdminEnable ,
   AdminDelete,
   AdminGet,
   AdminGetAll,
-  AdminAdd,
+  AdminCreate,
 
   AnnouncementUpdate,
   AnnouncementDelete,
@@ -45,4 +47,5 @@ public enum AdminOperationType
   SmtpOptionDelete,
 
 
+  AdminRecoverAccount
 }

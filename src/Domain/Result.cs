@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog.Events;
 
 namespace ECom.Domain;
@@ -15,26 +16,26 @@ public enum CustomResultLevel
   Critical
 }
 
-public class ValidationError
-{
-  public string? PropertyName { get; init; }
-  public string Message { get; init; }
+//public class ValidationError
+//{
+//  public string? PropertyName { get; init; }
+//  public string Message { get; init; }
 
-  [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-  [System.Text.Json.Serialization.JsonIgnore]
-  public Exception? Exception { get; init; }
-}
+//  [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+//  [System.Text.Json.Serialization.JsonIgnore]
+//  public Exception? Exception { get; init; }
+//}
 public class CustomResult : CustomResult<CustomResult>
 {
   public CustomResult<T> ToGenericResult<T>(T data) {
     return new CustomResult<T> {
       Status = this.Status,
-      Message = this.Message,
+      ErrorCode = this.ErrorCode,
       Data = data,
       Level = this.Level,
       Exception = this.Exception,
       TranslatedMessage = this.TranslatedMessage,
-      ValidationErrors = this.ValidationErrors
+      //ValidationErrors = this.ValidationErrors
     };
   }
   public new ActionResult<CustomResult> ToActionResult() {
@@ -64,11 +65,17 @@ public class CustomResult<T>
   }
 
   public bool Status { get; internal init; } = false;
-  public OperationMessage Message { get; internal init; }
-  public ValidationError[] ValidationErrors { get; internal init; }  
+  //public string Name { get; internal init; }
+  public string ErrorCode { get; internal init; }
+  public string[] Params { get; internal init; }
 
   [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
   public string? TranslatedMessage { get; internal init; }
+
+
+  //public ValidationError[] ValidationErrors { get; internal init; }  
+
+
   [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
   public T? Data { get; internal init; }
   public CustomResultLevel Level { get; internal init; } = CustomResultLevel.Auto;
@@ -81,7 +88,7 @@ public class CustomResult<T>
   public static CustomResult<T> Ok(string name, string error, T? data = default) {
     return new CustomResult<T> {
       Status = true,
-      Message = OperationMessage.Create(name, error),
+      ErrorCode = $"{name}.{error}",
       Exception = null,
       Data = data
     };
@@ -89,31 +96,32 @@ public class CustomResult<T>
   public static CustomResult<T> Ok(T? data = default) {
     return new CustomResult<T> {
       Status = true,
-      Message = OperationMessage.Create(data?.GetType().Name ?? "N/A", "Success"),
+      ErrorCode = $"{data?.GetType().Name}.Success",
       Data = data,
       Level = CustomResultLevel.Info
     };
   }
 
-  public static CustomResult<T> ValidationError(string name, ValidationError[] errors) {
-    return new CustomResult<T> {
-      Status = false,
-      Message = OperationMessage.Create(name, "ValidationError"),
-      Level = CustomResultLevel.Warning,
-      ValidationErrors = errors
-    };
-  }
+  //public static CustomResult<T> ValidationError(string name, ValidationError[] errors) {
+  //  return new CustomResult<T> {
+  //    Status = false,
+  //    ErrorCode = $"{name}.{error}",
+
+  //    Level = CustomResultLevel.Warning,
+  //    ValidationErrors = errors
+  //  };
+  //}
   public static CustomResult<T> Warn(string name, string error) {
     return new CustomResult<T> {
       Status = false,
-      Message = OperationMessage.Create(name, error),
+      ErrorCode = $"{name}.{error}",
       Level = CustomResultLevel.Warning,
     };
   }
   public static CustomResult<T> Error(string name, string error) {
     return new CustomResult<T> {
       Status = false,
-      Message = OperationMessage.Create(name, error),
+      ErrorCode = $"{name}.{error}",
       Level = CustomResultLevel.Error,
     };
   }
@@ -121,15 +129,24 @@ public class CustomResult<T>
   public static CustomResult<T> Critical(string name, string error) {
     return new CustomResult<T> {
       Status = false,
-      Message = OperationMessage.Create(name, error),
+      ErrorCode = $"{name}.{error}",
       Level = CustomResultLevel.Critical,
     };
   }
 
+  public static CustomResult<T> Validation(string name, string message) {
+    return new CustomResult<T> {
+      Status = false,
+      ErrorCode = $"{name}.ValidationError",
+      TranslatedMessage = message,
+      Level = CustomResultLevel.Warning,
+    };
+
+  }
   public static CustomResult<T> Critical(Exception? exception, string name) {
     return new CustomResult<T> {
       Status = false,
-      Message = OperationMessage.Create(name, "Exception"),
+      ErrorCode = $"{name}.Exception",
       Level = CustomResultLevel.Critical,
       Exception = exception
     };
@@ -161,10 +178,10 @@ public class CustomResult<T>
   public CustomResult ToResult(){
     return new CustomResult {
       Status = Status,
-      Message = Message,
+      ErrorCode = ErrorCode,
       Level = Level,
       Exception = Exception,
-      ValidationErrors = ValidationErrors,
+      //ValidationErrors = ValidationErrors,
       TranslatedMessage = TranslatedMessage
     };
   }
@@ -173,11 +190,11 @@ public class CustomResult<T>
   public static implicit operator CustomResult(CustomResult<T> value) {
     return new CustomResult {
       Status = value.Status,
-      Message = value.Message,
+      ErrorCode = value.ErrorCode,
       Data = null,
       Level = value.Level,
       Exception = value.Exception,
-      ValidationErrors = value.ValidationErrors,
+      //ValidationErrors = value.ValidationErrors,
       TranslatedMessage = value.TranslatedMessage
 
     };
@@ -190,10 +207,9 @@ public class CustomResult<T>
     if(value.Status) throw new Exception("Cannot convert success result to generic result");
     return new CustomResult<T> {
       Status = value.Status,
-      Message = value.Message,
+      ErrorCode = value.ErrorCode,
       Level = value.Level,
       Exception = value.Exception,
-      ValidationErrors = value.ValidationErrors,
       TranslatedMessage = value.TranslatedMessage
     };
   }
@@ -203,14 +219,14 @@ public class CustomResult<T>
     if (status) {
       return new CustomResult<T> {
         Status = true,
-        Message = OperationMessage.Create(typeName, "Success"),
+        ErrorCode = $"{typeName}.Success",
         Data = data,
         Level = CustomResultLevel.Info
       };
     }
     return new CustomResult<T> {
       Status = false,
-      Message = OperationMessage.Create(typeName, "NotFound"),
+      ErrorCode = $"{typeName}.Success",
       Level = CustomResultLevel.Warning,
     };
   }

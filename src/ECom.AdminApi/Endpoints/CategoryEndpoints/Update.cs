@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.CategoryDTOs;
+﻿using ECom.Domain.DTOs.CategoryDto;
 
 namespace ECom.AdminApi.Endpoints.CategoryEndpoints;
 

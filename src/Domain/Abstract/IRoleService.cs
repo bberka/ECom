@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.RoleDTOs;
+﻿using ECom.Domain.DTOs.RoleDto;
 
 namespace ECom.Domain.Abstract;
 
@@ -10,4 +10,6 @@ public interface IRoleService
 
   CustomResult<Role> GetRoleByName(string roleName);
   HashSet<Permission> GetRolePermissions(int roleId);
+
+  bool RoleExists(int roleId);
 }

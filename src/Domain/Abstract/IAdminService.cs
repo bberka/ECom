@@ -1,5 +1,5 @@
 ﻿using ECom.Domain.DTOs;
-using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs.AdminDto;
 
 namespace ECom.Domain.Abstract;
 
@@ -23,8 +23,8 @@ public interface IAdminService
   List<Permission> GetValidPermissions();
   List<Permission> GetInvalidPermissions();
   bool IsValidPermission(int permissionId);
-  List<Admin> ListOtherAdmins(int adminId);
-  CustomResult EnableAdmin(int authorAdminId, int adminId);
-  CustomResult DisableAdmin(int authorAdminId, int adminId);
+  List<AdminDto> ListOtherAdmins(int adminId);
   CustomResult DeleteAdmin(int authorAdminId, int adminId);
+  CustomResult UpdateAdmin(int authorAdminId, UpdateAdminAccountRequest request);
+  CustomResult RecoverAdmin(int authorAdminId, int id);
 }

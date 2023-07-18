@@ -11,12 +11,13 @@ public static class DomainResult
   public static CustomResult OkRemoved(string name) => CustomResult.Ok(name, "Removed");
   public static CustomResult OkDeleted(string name) => CustomResult.Ok(name, "Deleted");
   public static CustomResult OkCleared(string name) => CustomResult.Ok(name, "Cleared");
+  public static CustomResult OkNotChanged(string name) => CustomResult.Ok(name, "NotChanged");
 
   #endregion
 
   #region WARNINGS
 
-  public static CustomResult Validation(string name,params ValidationError[] validationErrors) => CustomResult.ValidationError(name, validationErrors);
+  public static CustomResult Validation(string name,string message) => CustomResult.Validation(name, message);
   public static CustomResult Deleted(string name) => CustomResult.Warn(name, "Deleted");
   public static CustomResult Invalid(string name) => CustomResult.Warn(name, "Invalid");
   public static CustomResult EmptyTable(string name) => CustomResult.Warn(name, "EmptyTable");
@@ -46,4 +47,7 @@ public static class DomainResult
 
   public static CustomResult Exception(Exception exception, string name) => CustomResult.Critical(exception, name);
 
+  public static CustomResult NotDeleted(string name)  => CustomResult.Warn(name, "NotDeleted");
+
+  public static CustomResult NotChanged(string name) => CustomResult.Warn(name, "NotChanged");
 }

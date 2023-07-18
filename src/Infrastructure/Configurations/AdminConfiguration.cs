@@ -17,7 +17,6 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
       TwoFactorType = 0,
       Id = 1,
       DeletedDate = null,
-      IsValid = true,
       RegisterDate = ConstantMgr.DefaultDateTime,
       TwoFactorKey = null,
 
@@ -29,7 +28,6 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
       TwoFactorType = 0,
       Id = 2,
       DeletedDate = null,
-      IsValid = true,
       RegisterDate = ConstantMgr.DefaultDateTime,
       TwoFactorKey = null,
     },
@@ -40,7 +38,6 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
       TwoFactorType = 0,
       Id = 3,
       DeletedDate = null,
-      IsValid = true,
       RegisterDate = ConstantMgr.DefaultDateTime,
       TwoFactorKey = null,
     }

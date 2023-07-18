@@ -23,3 +23,7 @@ global using System.IdentityModel.Tokens.Jwt;
 global using ECom.Domain;
 global using Microsoft.Extensions.Caching.Memory;
 global using Ninject.Activation.Caching;
+global using Ardalis.ApiEndpoints;
+global using ECom.Application.Attributes;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;

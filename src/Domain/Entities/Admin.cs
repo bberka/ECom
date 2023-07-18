@@ -13,7 +13,7 @@ public class Admin : IEntity
 
   public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-  public bool IsValid { get; set; } = true;
+  //public bool IsValid { get; set; } = true;
 
 
   [MaxLength(64)]
@@ -50,6 +50,8 @@ public class Admin : IEntity
 
 
   public DateTime? DeletedDate { get; set; }
+
+  public bool IsDeleted => DeletedDate.HasValue;
 
   public int RoleId { get; set; }
 

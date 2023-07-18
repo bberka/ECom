@@ -1,8 +1,10 @@
-﻿namespace ECom.AdminApi.Endpoints.ManagerEndpoints;
+﻿using ECom.Domain.DTOs.AdminDto;
+
+namespace ECom.AdminApi.Endpoints.ManagerEndpoints;
 
 [EndpointRoute(typeof(GetAdmins))]
 [Authorize(Roles = "Owner")]
-public class GetAdmins : EndpointBaseSync.WithoutRequest.WithResult<List<Admin>>
+public class GetAdmins : EndpointBaseSync.WithoutRequest.WithResult<List<AdminDto>>
 {
   private readonly IAdminService _adminService;
   private readonly ILogService _logService;
@@ -14,7 +16,7 @@ public class GetAdmins : EndpointBaseSync.WithoutRequest.WithResult<List<Admin>>
   [HttpGet]
   [RequirePermission(AdminOperationType.AdminGet)]
   [EndpointSwaggerOperation(typeof(GetAdmins),"Gets all admins except the authenticated admin")]
-  public override List<Admin> Handle()
+  public override List<AdminDto> Handle()
   {
     var adminId = HttpContext.GetAdminId();
     return _adminService.ListOtherAdmins(adminId);

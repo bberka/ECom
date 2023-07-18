@@ -1,5 +1,5 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.RoleDTOs;
+using ECom.Domain.DTOs.RoleDto;
 
 namespace ECom.Application.Services;
 
@@ -39,5 +39,10 @@ public class RoleService : IRoleService
     if (role is null) return new HashSet<Permission>();
     //return role.Permissions;
     return new HashSet<Permission>();
+  }
+
+  public bool RoleExists(int roleId) {
+    if(roleId < 1) return false;
+    return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
   }
 }

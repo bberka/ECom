@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.DTOs.CollectionDTOs;
+using ECom.Domain.DTOs.CollectionDto;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 

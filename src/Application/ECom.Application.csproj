@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Ardalis.ApiEndpoints" Version="4.1.0" />
 		<PackageReference Include="AspNetCore.Authorization.Extender" Version="2.0.1" />
 		<PackageReference Include="EasMe" Version="4.0.3" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />

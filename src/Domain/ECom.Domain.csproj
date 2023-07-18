@@ -8,8 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="DTOs\LocalizationStringDTOs\" />
-		<Folder Include="DTOs\RoleDTOs\" />
+		<Folder Include="DTOs\LocalizationStringDto\" />
+		<Folder Include="DTOs\AnnouncementDto\" />
+		<Folder Include="DTOs\RoleDto\" />
 		<Folder Include="Properties\" />
 	</ItemGroup>
 	<ItemGroup>

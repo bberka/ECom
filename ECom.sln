@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Api", "4. Api", "{5731EA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.WebApi", "src\ECom.WebApi\ECom.WebApi.csproj", "{FCAE455D-D1D3-49A3-AB07-87C7CE527893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.AdminApi", "src\ECom.AdminApi\ECom.AdminApi.csproj", "{62E69CD0-8131-482B-BB8E-025F62C18933}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.AdminApi", "src\ECom.AdminApi\ECom.AdminApi.csproj", "{62E69CD0-8131-482B-BB8E-025F62C18933}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
