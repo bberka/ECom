@@ -22,7 +22,7 @@ const AppMenu = () => {
           label: "Product",
           items: [
             {
-              label: "Products",
+              label: "Product List",
               to: "/product/list",
             },
             {
@@ -32,31 +32,14 @@ const AppMenu = () => {
           ],
         },
         {
-          label: "Category",
-          items: [
-            {
-              label: "Categories",
-              to: "/category/list",
-            },
-            {
-              label: "Add Category",
-              to: "/category/add",
-            },
-          ],
+          label: "Categories",
+          to: "/categories",
         },
         {
-          label: "Announcement",
-          items: [
-            {
-              label: "Announcements",
-              to: "/announcement/list",
-            },
-            {
-              label: "Add Announcement",
-              to: "/announcement/add",
-            },
-          ],
+          label: "Announcements",
+          to: "/announcements",
         },
+        
         {
           label: "Option",
           items: [
@@ -79,31 +62,19 @@ const AppMenu = () => {
           ],
         },
         {
+          label: "Images",
+          to: "/images",
+        },
+        {
           label: "Admins",
           icon: "pi pi-fw pi-user",
-          to: "/admin/list",
-        },
-
-        {
-          label: "Crud",
-          icon: "pi pi-fw pi-pencil",
-          to: "/pages/crud",
+          to: "/admins",
         },
         {
-          label: "Timeline",
-          icon: "pi pi-fw pi-calendar",
-          to: "/pages/timeline",
-        },
-        {
-          label: "Not Found",
-          icon: "pi pi-fw pi-exclamation-circle",
-          to: "/pages/notfound",
-        },
-        {
-          label: "Empty",
-          icon: "pi pi-fw pi-circle-off",
-          to: "/pages/empty",
-        },
+          label: "Roles",
+          to: "/roles",
+        }
+       
       ],
     },
     {

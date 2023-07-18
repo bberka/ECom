@@ -17,9 +17,8 @@ import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 
 
-
-import { ManagerService } from "../../service/service";
-import * as Utils from "../../service/util";
+import { ManagerService } from "../service/service";
+import * as Utils from "../service/util";
 
 const Crud = () => {
   let emptyAdmin = {
