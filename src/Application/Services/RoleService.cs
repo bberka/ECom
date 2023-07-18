@@ -1,4 +1,5 @@
 ﻿using ECom.Domain;
+using ECom.Domain.DTOs.RoleDTOs;
 
 namespace ECom.Application.Services;
 
@@ -10,10 +11,10 @@ public class RoleService : IRoleService
     _unitOfWork = unitOfWork;
   }
 
-  public List<Role> GetRolesWithPermissions() {
+  public List<RoleDto> GetRolesWithPermissions() {
     return _unitOfWork.RoleRepository
       .Get()
-      //.Include(x => x.Permissions)
+      .Select(x => new RoleDto(x))
       .ToList();
   }
 

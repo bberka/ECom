@@ -15,11 +15,11 @@ public class DeleteAdminAccount : EndpointBaseSync.WithRequest<int>.WithResult<C
   [HttpDelete]
   [RequirePermission(AdminOperationType.AdminDelete)]
   [EndpointSwaggerOperation(typeof(DeleteAdminAccount),"Deletes admin account")]
-  public override CustomResult Handle([FromBody] int adminId)
+  public override CustomResult Handle( int id)
   {
     var authorizedAdminId = HttpContext.GetAdminId();
-    var res = _adminService.DeleteAdmin(authorizedAdminId, adminId);
-    _logService.AdminLog(res, authorizedAdminId, "Manager.Delete", adminId);
+    var res = _adminService.DeleteAdmin(authorizedAdminId, id);
+    _logService.AdminLog(res, authorizedAdminId, "Manager.Delete", id);
     return res;
   }
 }

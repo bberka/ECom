@@ -1,7 +1,9 @@
-﻿namespace ECom.AdminApi.Endpoints.RoleEndpoints;
+﻿using ECom.Domain.DTOs.RoleDTOs;
+
+namespace ECom.AdminApi.Endpoints.RoleEndpoints;
 
 [EndpointRoute(typeof(List))]
-public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Role>>
+public class List : EndpointBaseSync.WithoutRequest.WithResult<List<RoleDto>>
 {
   private readonly IRoleService _roleService;
 
@@ -11,7 +13,7 @@ public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Role>>
 
   [HttpGet]
   [EndpointSwaggerOperation(typeof(List),"Gets roles with permissions included")]
-  public override List<Role> Handle()
+  public override List<RoleDto> Handle()
   {
     return _roleService.GetRolesWithPermissions();
   }

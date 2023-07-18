@@ -1,18 +1,22 @@
-using ECom.AdminApi.Setup;
 using ECom.Application.Setup;
-using ECom.Application.SetupMiddleware;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 EComLoggerHelper.Configure(true);
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.UseBuilderSetup(typeof(ApplicationDefaultSetup).Assembly);
-builder.UseBuilderSetup(typeof(AdminAuthorizationSetup).Assembly);
+builder.Setup();
 
+builder.Services.AddControllers(config => {
+  var policy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+  config.Filters.Add(new AuthorizeFilter(policy));
+});
 
 var app = builder.Build();
 
-app.UseApplicationSetup(typeof(ApplicationDefaultSetup).Assembly);
+app.Setup();
 
 app.Run();

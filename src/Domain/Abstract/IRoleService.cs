@@ -1,8 +1,10 @@
-﻿namespace ECom.Domain.Abstract;
+﻿using ECom.Domain.DTOs.RoleDTOs;
+
+namespace ECom.Domain.Abstract;
 
 public interface IRoleService
 {
-  List<Role> GetRolesWithPermissions();
+  List<RoleDto> GetRolesWithPermissions();
 
   CustomResult<Role> GetRole(int roleId);
 

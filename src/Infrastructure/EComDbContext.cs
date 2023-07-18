@@ -6,6 +6,7 @@ namespace ECom.Infrastructure;
 
 public class EComDbContext : DbContext
 {
+
   public DbSet<Image> Images { get; set; }
 
   public DbSet<StockChange> StockChanges { get; set; }

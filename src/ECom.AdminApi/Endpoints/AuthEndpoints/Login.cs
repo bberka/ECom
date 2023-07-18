@@ -17,7 +17,7 @@ public class Login : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<Custo
   {
     var res = _adminJwtAuthenticator.Authenticate(request);
     var adminId = res.Data?.Admin.Id;
-    _logService.AdminLog(res.ToResult(), adminId, "Auth.Login", request.EmailAddress, request.EncryptedPassword);
+    _logService.AdminLog(res.ToResult(), adminId, "Auth.Login", request.EmailAddress);
     return res;
   }
 }

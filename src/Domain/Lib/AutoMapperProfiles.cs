@@ -2,6 +2,7 @@
 using ECom.Domain.DTOs.AdminDTOs;
 using ECom.Domain.DTOs.CollectionDTOs;
 using ECom.Domain.DTOs.ProductDTOs;
+using ECom.Domain.DTOs.RoleDTOs;
 using ECom.Domain.DTOs.StockChangeDTOs;
 using ECom.Domain.DTOs.UserDTOs;
 
@@ -21,5 +22,8 @@ public class AutoMapperProfiles : Profile
     CreateMap<AddAdminRequest, Admin>();
     CreateMap<AddProductCommentRequest, ProductComment>();
     CreateMap<AddStockChangeRequest, StockChange>();
+    CreateMap<RoleDto, Role>();
+    CreateMap<PermissionDto, PermissionRole>();
+    CreateMap<PermissionDto, Permission>();
   }
 }

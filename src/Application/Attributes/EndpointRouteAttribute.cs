@@ -10,7 +10,7 @@ public class EndpointRouteAttribute : Attribute, IRouteTemplateProvider
   private const bool UseToLower = true;
   private const string Endpoints = "Endpoints";
   private const string Endpoint = "Endpoint";
-  public const string DefaultPrefix = "api";
+  public const string DefaultPrefix = "api/v0.1.0";
 
   public EndpointRouteAttribute(Type callingClassType) {
     var controllerName = CreateFoldersArray(callingClassType.Namespace);

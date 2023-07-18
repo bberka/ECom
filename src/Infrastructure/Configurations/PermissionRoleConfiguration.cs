@@ -16,7 +16,7 @@ internal class PermissionRoleConfiguration : IEntityTypeConfiguration<Permission
       .HasForeignKey(x => x.PermissionId);
 
     builder.Navigation(x => x.Permission).AutoInclude();
-    builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
+    //builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
 
 
 

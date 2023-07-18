@@ -1,6 +1,7 @@
 ﻿using ECom.Domain;
 using ECom.Domain.DTOs.AdminDTOs;
 using ECom.Domain.Entities;
+using ECom.Domain.Extensions;
 
 namespace ECom.Application.Services;
 
@@ -88,7 +89,8 @@ public class AdminService : IAdminService
     var adminResult = GetAdminDto(model.EmailAddress);
     if (!adminResult.Status) return adminResult;
     var admin = adminResult.Data!;
-    if (!admin.Password.Equals(model.EncryptedPassword,StringComparison.Ordinal)) return DomainResult.NotFound("Account");
+    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
+    if (!admin.Password.Equals(encryptedPassword,StringComparison.Ordinal)) return DomainResult.NotFound(nameof(Admin));
     if (admin.Permissions.Length == 0) return DomainResult.None(nameof(Permission));
     if (admin.TwoFactorType != 0) {
       //TODO: two factor authentication
@@ -184,7 +186,7 @@ public class AdminService : IAdminService
   public CustomResult DeleteAdmin(int authorAdminId, int adminId) {
     var admin = _unitOfWork.AdminRepository.GetById(adminId);
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
-    if (admin.DeletedDate.HasValue) return DomainResult.Deleted(nameof(Admin));
+    if (admin.DeletedDate.HasValue) return DomainResult.AlreadyDeleted(nameof(Admin));
     admin.DeletedDate = DateTime.Now;
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();

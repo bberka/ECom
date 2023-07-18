@@ -1,16 +1,16 @@
 using ECom.Application.Setup;
-using ECom.Application.SetupMiddleware;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 EComLoggerHelper.Configure(true);
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Setup();
 
-builder.UseBuilderSetup(typeof(ApplicationDefaultSetup).Assembly);
+
 
 var app = builder.Build();
 
-app.UseApplicationSetup(typeof(ApplicationDefaultSetup).Assembly);
-
+app.Setup();
 app.Run();

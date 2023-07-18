@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ECom.Domain.Entities;
 
@@ -39,6 +40,13 @@ public class Admin : IEntity
   ///   3: Authy
   /// </summary>
   public byte TwoFactorType { get; set; } = 0;
+
+  [JsonConverter(typeof(StringEnumConverter))]
+  [NotMapped]
+  public TwoFactorType TwoFactor {
+    get => (TwoFactorType)TwoFactorType;
+    set => TwoFactorType = (byte)value;
+  } 
 
 
   public DateTime? DeletedDate { get; set; }

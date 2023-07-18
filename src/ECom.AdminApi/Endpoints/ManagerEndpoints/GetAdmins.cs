@@ -5,9 +5,11 @@
 public class GetAdmins : EndpointBaseSync.WithoutRequest.WithResult<List<Admin>>
 {
   private readonly IAdminService _adminService;
-  public GetAdmins(IAdminService adminService)
-  {
+  private readonly ILogService _logService;
+
+  public GetAdmins(IAdminService adminService, ILogService logService) {
     _adminService = adminService;
+    _logService = logService;
   }
   [HttpGet]
   [RequirePermission(AdminOperationType.AdminGet)]

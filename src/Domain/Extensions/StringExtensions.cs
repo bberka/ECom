@@ -3,6 +3,6 @@
 public static class StringExtensions
 {
   public static string ToEncryptedText(this string str) {
-    return str.MD5Hash().ToBase64String();
+    return str.MD5Hash().ToHexString();
   }
 }

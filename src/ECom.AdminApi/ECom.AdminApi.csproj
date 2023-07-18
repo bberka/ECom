@@ -28,7 +28,6 @@
     <Folder Include="Endpoints\AuthEndpoints\" />
     <Folder Include="Endpoints\ProductEndpoints\" />
     <Folder Include="Endpoints\RoleEndpoints\" />
-    <Folder Include="Setup\" />
   </ItemGroup>
 
   <ItemGroup>

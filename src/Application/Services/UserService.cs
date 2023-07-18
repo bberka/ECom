@@ -1,5 +1,6 @@
 ﻿using ECom.Domain;
 using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.Extensions;
 
 namespace ECom.Application.Services;
 
@@ -29,8 +30,9 @@ public class UserService : IUserService
   public CustomResult<UserDto> LoginUser(LoginRequest model) {
     var userResult = GetUser(model.EmailAddress);
     if (!userResult.Status) return userResult.ToResult();
-    var user = userResult.Data;
-    if (user?.Password != model.EncryptedPassword) return DomainResult.NotFound(nameof(User));
+    var user = userResult.Data!;
+    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
+    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal)) return DomainResult.NotFound(nameof(User)); //Or invalid password
     if (user.TwoFactorType != 0) {
       //TODO: implement two factor
     }
