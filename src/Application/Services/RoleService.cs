@@ -1,4 +1,7 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+using ECom.Domain.DTOs.RoleDto;
+
+namespace ECom.Application.Services;
 
 public class RoleService : IRoleService
 {
@@ -8,22 +11,22 @@ public class RoleService : IRoleService
     _unitOfWork = unitOfWork;
   }
 
-  public List<Role> GetRolesWithPermissions() {
+  public List<RoleDto> GetRolesWithPermissions() {
     return _unitOfWork.RoleRepository
       .Get()
-      //.Include(x => x.Permissions)
+      .Select(x => new RoleDto(x))
       .ToList();
   }
 
-  public ResultData<Role> GetRole(int roleId) {
+  public CustomResult<Role> GetRole(int roleId) {
     var role = _unitOfWork.RoleRepository.GetById(roleId);
-    if (role is null) return DomainResult.Role.NotFoundResult();
+    if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
 
-  public ResultData<Role> GetRoleByName(string roleName) {
+  public CustomResult<Role> GetRoleByName(string roleName) {
     var role = _unitOfWork.RoleRepository.GetFirstOrDefault(x => x.Name == roleName);
-    if (role is null) return DomainResult.Role.NotFoundResult();
+    if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
 
@@ -36,5 +39,10 @@ public class RoleService : IRoleService
     if (role is null) return new HashSet<Permission>();
     //return role.Permissions;
     return new HashSet<Permission>();
+  }
+
+  public bool RoleExists(int roleId) {
+    if(roleId < 1) return false;
+    return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
   }
 }

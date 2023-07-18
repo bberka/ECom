@@ -2,7 +2,7 @@
 
 public interface ICompanyInformationService
 {
-  ResultData<CompanyInformation> GetCompanyInformation();
+  CustomResult<CompanyInformation> GetCompanyInformation();
   CompanyInformation? GetFromCache();
-  Result UpdateOrAddCompanyInformation(CompanyInformation info);
+  CustomResult UpdateOrAddCompanyInformation(CompanyInformation info);
 }

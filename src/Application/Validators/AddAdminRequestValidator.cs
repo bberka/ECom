@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.AdminDTOs;
+﻿using ECom.Domain.DTOs.AdminDto;
 
 namespace ECom.Application.Validators;
 
@@ -15,8 +15,9 @@ public class AddAdminRequestValidator : AbstractValidator<AddAdminRequest>, IVal
     RuleFor(x => x.RoleId)
       .GreaterThan(0);
 
-    RuleFor(x => x.EmailAddress)
-      .Must(validationService.NotUsedEmail_Admin)
-      .WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
+
+    //RuleFor(x => x.EmailAddress)
+    //  .Must(validationService.NotUsedEmail_Admin)
+    //  .WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
   }
 }

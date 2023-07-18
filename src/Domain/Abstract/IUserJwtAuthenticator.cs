@@ -1,9 +1,9 @@
 ﻿using ECom.Domain.DTOs;
-using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Domain.Abstract;
 
 public interface IUserJwtAuthenticator
 {
-  public ResultData<UserLoginResponse> Authenticate(LoginRequest model);
+  public CustomResult<UserLoginResponse> Authenticate(LoginRequest model);
 }

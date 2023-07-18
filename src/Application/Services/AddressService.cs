@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class AddressService : IAddressService
 {
@@ -13,51 +15,51 @@ public class AddressService : IAddressService
   }
 
 
-  public Result DeleteAddress(int userId, int id) {
+  public CustomResult DeleteAddress(int userId, int id) {
     var addressResult = GetAddress(userId, id);
-    if (addressResult.IsFailure) return addressResult.ToResult();
+    if (!addressResult.Status) return addressResult;
     var address = addressResult.Data;
-    if (address is null) return DomainResult.Address.NotFoundResult();
-    if (address.DeleteDate.HasValue) return DomainResult.Address.AlreadyDeletedResult();
+    if (address is null) return DomainResult.NotFound(nameof(Address));
+    if (address.DeleteDate.HasValue) return DomainResult.AlreadyDeleted(nameof(Address));
     address.DeleteDate = DateTime.Now;
     _unitOfWork.AddressRepository.Update(address);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Address.DeleteSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateAddress));
+    return DomainResult.OkDeleted(nameof(Address));
   }
 
   public List<Address> GetUserAddresses(int userId) {
     return _unitOfWork.AddressRepository.Get(x => x.UserId == userId && !x.DeleteDate.HasValue).ToList();
   }
 
-  public Result UpdateAddress(int userId, Address data) {
+  public CustomResult UpdateAddress(int userId, Address data) {
     var addressResult = GetAddress(userId, data.Id);
-    if (addressResult.IsFailure) return addressResult.ToResult();
-    var address = addressResult.Data;
-    if (address.DeleteDate.HasValue) return DomainResult.Address.DeletedResult();
+    if (!addressResult.Status) return addressResult;
+    var address = addressResult.Data!;
+    if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
     _unitOfWork.AddressRepository.Update(data);
-    if (!_unitOfWork.Save()) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Address.UpdateSuccessResult();
+    if (!_unitOfWork.Save()) return DomainResult.DbInternalError(nameof(UpdateAddress));
+    return DomainResult.OkUpdated(nameof(Address));
   }
 
-  public Result AddAddress(int userId, Address address) {
+  public CustomResult AddAddress(int userId, Address address) {
     _unitOfWork.AddressRepository.Insert(address);
-    if (!_unitOfWork.Save()) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Address.AddSuccessResult();
+    if (!_unitOfWork.Save()) return DomainResult.DbInternalError(nameof(AddAddress));
+    return DomainResult.OkAdded(nameof(Address));
   }
 
-  public ResultData<Address> GetAddress(int addressId) {
+  public CustomResult<Address> GetAddress(int addressId) {
     var address = _unitOfWork.AddressRepository.GetById(addressId);
-    if (address is null) return DomainResult.Address.NotFoundResult();
-    if (address.DeleteDate.HasValue) return DomainResult.Address.DeletedResult();
+    if (address is null) return DomainResult.NotFound(nameof(Address));
+    if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
     return address;
   }
 
-  public ResultData<Address> GetAddress(int userId, int addressId) {
+  public CustomResult<Address> GetAddress(int userId, int addressId) {
     var addressResult = GetAddress(addressId);
-    if (addressResult.IsFailure) return addressResult.ToResult();
+    if (!addressResult.Status) return addressResult;
     var isAuthorized = addressResult.Data?.UserId == userId;
-    if (isAuthorized == false) return DomainResult.User.NotAuthorizedResult();
+    if (isAuthorized == false) return DomainResult.Unauthorized();
     return addressResult.Data;
   }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.DTOs;
 
-public class ChangePasswordRequest : AuthRequestModelBase
+public class ChangePasswordRequest : BaseAuthenticatedRequest
 {
   public string OldPassword { get; set; }
   public string EncryptedOldPassword => Convert.ToBase64String(OldPassword.MD5Hash());

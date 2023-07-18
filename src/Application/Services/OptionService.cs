@@ -1,4 +1,7 @@
-﻿namespace ECom.Application.Services;
+﻿using System.Xml;
+using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class OptionService : IOptionService
 {
@@ -6,6 +9,9 @@ public class OptionService : IOptionService
   private readonly IMemoryCache _memoryCache;
   private readonly IUnitOfWork _unitOfWork;
 
+  private const string PAYMENT_OPTION_CACHE_KEY = "payment_option";
+  private const string CARGO_OPTION_CACHE_KEY = "cargo_option";
+  private const string SMTP_OPTION_CACHE_KEY = "smtp_option";
 
   public OptionService(IMemoryCache memoryCache, IUnitOfWork unitOfWork) {
     _memoryCache = memoryCache;
@@ -13,33 +19,33 @@ public class OptionService : IOptionService
   }
 
 
-  public Result UpdateOption(Option option) {
+  public CustomResult UpdateOption(Option option) {
     _unitOfWork.OptionRepository.Update(option);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateOption));
     _memoryCache.Set("option", option, TimeSpan.FromMinutes(5));
-    return DomainResult.Option.UpdateSuccessResult();
+    return DomainResult.OkUpdated(nameof(Option));
   }
 
-  public Result UpdateCargoOption(CargoOption option) {
+  public CustomResult UpdateCargoOption(CargoOption option) {
     _unitOfWork.CargoOptionRepository.Update(option);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.CargoOption.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateCargoOption));
+    return DomainResult.OkUpdated(nameof(UpdateCargoOption));
   }
 
-  public Result UpdatePaymentOption(PaymentOption option) {
+  public CustomResult UpdatePaymentOption(PaymentOption option) {
     _unitOfWork.PaymentOptionRepository.Update(option);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.PaymentOption.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdatePaymentOption));
+    return DomainResult.OkUpdated(nameof(PaymentOption));
   }
 
-  public Result UpdateSmtpOption(SmtpOption option) {
+  public CustomResult UpdateSmtpOption(SmtpOption option) {
     _unitOfWork.SmtpOptionRepository.Update(option);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.SmtpOption.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateSmtpOption));
+    return DomainResult.OkUpdated(nameof(SmtpOption));
   }
 
 
@@ -54,26 +60,27 @@ public class OptionService : IOptionService
 
 
   public List<CargoOption> ListCargoOptions() {
-    var cache = _memoryCache.Get<List<CargoOption>>("cargo_option");
+    var cache = _memoryCache.Get<List<CargoOption>>(CARGO_OPTION_CACHE_KEY);
     if (cache is not null) return cache;
     cache = _unitOfWork.CargoOptionRepository.Get(x => x.IsValid == true).ToList();
-    _memoryCache.Set("cargo_option", cache, TimeSpan.FromMinutes(5));
+    _memoryCache.Set(CARGO_OPTION_CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
 
   public List<PaymentOption> ListPaymentOptions() {
-    var cache = _memoryCache.Get<List<PaymentOption>>("payment_option");
+    var cache = _memoryCache.Get<List<PaymentOption>>(PAYMENT_OPTION_CACHE_KEY);
     if (cache is not null) return cache;
     cache = _unitOfWork.PaymentOptionRepository.Get(x => x.IsValid == true).ToList();
-    _memoryCache.Set("payment_option", cache, TimeSpan.FromMinutes(5));
+    _memoryCache.Set(PAYMENT_OPTION_CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
 
+
   public List<SmtpOption> ListSmtpOptions() {
-    var cache = _memoryCache.Get<List<SmtpOption>>("smtp_option");
+    var cache = _memoryCache.Get<List<SmtpOption>>(SMTP_OPTION_CACHE_KEY);
     if (cache is not null) return cache;
     cache = _unitOfWork.SmtpOptionRepository.Get(x => x.IsValid == true).ToList();
-    _memoryCache.Set("smtp_option", cache, TimeSpan.FromMinutes(5));
+    _memoryCache.Set(SMTP_OPTION_CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
 }

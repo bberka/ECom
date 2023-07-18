@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class FavoriteProductService : IFavoriteProductService
 {
@@ -15,11 +17,11 @@ public class FavoriteProductService : IFavoriteProductService
     _userService = userService;
   }
 
-  public Result AddProduct(int userId, int productId) {
-    var userExist = _userService.Exists(userId);
-    if (!userExist) return DomainResult.User.NotFoundResult();
+  public CustomResult AddFavoriteProduct(int userId, int productId) {
+    var userExist = _userService.UserExists(userId);
+    if (!userExist) return DomainResult.NotFound(nameof(User));
     var productExist = _productService.Exists(productId);
-    if (!productExist) return DomainResult.Product.NotFoundResult();
+    if (!productExist) return DomainResult.NotFound(nameof(Product));
     var data = new FavoriteProduct {
       RegisterDate = DateTime.Now,
       ProductId = productId,
@@ -27,21 +29,21 @@ public class FavoriteProductService : IFavoriteProductService
     };
     _unitOfWork.FavoriteProductRepository.Insert(data);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.FavoriteProduct.AddSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddFavoriteProduct));
+    return DomainResult.OkAdded(nameof(FavoriteProduct));
   }
 
-  public Result RemoveProduct(int userId, int productId) {
-    var userExist = _userService.Exists(userId);
-    if (!userExist) return DomainResult.User.NotFoundResult();
+  public CustomResult RemoveFavoriteProduct(int userId, int productId) {
+    var userExist = _userService.UserExists(userId);
+    if (!userExist) return DomainResult.NotFound(nameof(User));
     var favProduct =
       _unitOfWork.FavoriteProductRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
-    if (favProduct is null) return DomainResult.FavoriteProduct.NotFoundResult();
+    if (favProduct is null) return DomainResult.NotFound(nameof(FavoriteProduct));
     _unitOfWork.FavoriteProductRepository.Delete(favProduct);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
+    if (!res) return DomainResult.DbInternalError(nameof(RemoveFavoriteProduct));
 
-    return DomainResult.FavoriteProduct.RemoveSuccessResult();
+    return DomainResult.OkRemoved(nameof(FavoriteProduct));
   }
 
   public List<FavoriteProduct>

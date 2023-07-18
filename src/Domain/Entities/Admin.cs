@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ECom.Domain.Entities;
 
@@ -12,7 +13,7 @@ public class Admin : IEntity
 
   public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-  public bool IsValid { get; set; } = true;
+  //public bool IsValid { get; set; } = true;
 
 
   [MaxLength(64)]
@@ -40,8 +41,17 @@ public class Admin : IEntity
   /// </summary>
   public byte TwoFactorType { get; set; } = 0;
 
+  [JsonConverter(typeof(StringEnumConverter))]
+  [NotMapped]
+  public TwoFactorType TwoFactor {
+    get => (TwoFactorType)TwoFactorType;
+    set => TwoFactorType = (byte)value;
+  } 
+
 
   public DateTime? DeletedDate { get; set; }
+
+  public bool IsDeleted => DeletedDate.HasValue;
 
   public int RoleId { get; set; }
 

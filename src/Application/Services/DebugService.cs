@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ECom.Domain.DTOs.AdminDTOs;
-using ECom.Domain.DTOs.UserDTOs;
+using ECom.Domain.DTOs.AdminDto;
+using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Application.Services;
 
@@ -30,6 +30,7 @@ public class DebugService : IDebugService
     return _unitOfWork.AdminRepository
       .Get(x => x.RoleId == 1)
       .Include(x => x.Role)
+      .ThenInclude(x => x.PermissionRoles)
       .Single();
   }
 

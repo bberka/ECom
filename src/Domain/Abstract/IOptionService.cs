@@ -7,8 +7,8 @@ public interface IOptionService
   List<PaymentOption> ListPaymentOptions();
   List<SmtpOption> ListSmtpOptions();
 
-  Result UpdateCargoOption(CargoOption option);
-  Result UpdateOption(Option option);
-  Result UpdatePaymentOption(PaymentOption option);
-  Result UpdateSmtpOption(SmtpOption option);
+  CustomResult UpdateCargoOption(CargoOption option);
+  CustomResult UpdateOption(Option option);
+  CustomResult UpdatePaymentOption(PaymentOption option);
+  CustomResult UpdateSmtpOption(SmtpOption option);
 }

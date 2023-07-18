@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.UserDTOs;
+﻿using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Application.Manager;
 
@@ -17,14 +17,14 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
   }
 
 
-  public ResultData<UserLoginResponse> Authenticate(LoginRequest model) {
+  public CustomResult<UserLoginResponse> Authenticate(LoginRequest model) {
     UserDto user;
     if (ConstantMgr.IsDevelopment()) {
       user = _debugService.GetUserDto();
     }
     else {
-      var loginResult = _userService.Login(model);
-      if (loginResult.IsFailure) return loginResult.ToResult();
+      var loginResult = _userService.LoginUser(model);
+      if (!loginResult) return loginResult.ToResult();
       user = loginResult.Data!;
     }
 

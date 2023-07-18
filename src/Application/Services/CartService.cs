@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class CartService : ICartService
 {
@@ -15,11 +17,9 @@ public class CartService : ICartService
     _productService = productService;
   }
 
-  public Result AddOrIncreaseProduct(int userId, int productId) {
-    var userExist = _userService.Exists(userId);
-    if (!userExist) return DomainResult.User.NotFoundResult();
+  public CustomResult AddOrIncreaseProduct(int userId, int productId) {
     var productExist = _productService.Exists(productId);
-    if (!productExist) return DomainResult.Product.NotFoundResult();
+    if (!productExist) return DomainResult.NotFound(nameof(Product));
     var existing = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (existing != null) {
       existing.Count++;
@@ -37,14 +37,13 @@ public class CartService : ICartService
     }
 
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-
-    return DomainResult.Cart.AddProductSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddOrIncreaseProduct));
+    return DomainResult.OkAdded(nameof(Cart));
   }
 
-  public Result RemoveOrDecreaseProduct(int userId, int productId) {
+  public CustomResult RemoveOrDecreaseProduct(int userId, int productId) {
     var exist = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
-    if (exist is null) return DomainResult.Cart.NotFoundResult();
+    if (exist is null) return DomainResult.NotFound(nameof(Cart));
     if (exist.Count > 1) {
       exist.Count--;
       _unitOfWork.CartRepository.Update(exist);
@@ -54,9 +53,9 @@ public class CartService : ICartService
     }
 
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
+    if (!res) return DomainResult.DbInternalError(nameof(RemoveOrDecreaseProduct));
 
-    return DomainResult.Cart.RemoveProductSuccessResult();
+    return DomainResult.OkRemoved(nameof(Cart));
   }
 
   public int GetBasketProductCount(int userId) {
@@ -67,11 +66,11 @@ public class CartService : ICartService
     return _unitOfWork.CartRepository.Get(x => x.UserId == userId).ToList();
   }
 
-  public Result Clear(int userId) {
+  public CustomResult ClearCartProducts(int userId) {
     var list = _unitOfWork.CartRepository.Get(x => x.UserId == userId);
     _unitOfWork.CartRepository.DeleteRange(list);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Cart.ClearSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(ClearCartProducts));
+    return DomainResult.OkCleared(nameof(Cart));
   }
 }

@@ -1,5 +1,5 @@
-﻿using ECom.Domain.DTOs.AdminDTOs;
-using ECom.Domain.DTOs.UserDTOs;
+﻿using ECom.Domain.DTOs.AdminDto;
+using ECom.Domain.DTOs.UserDto;
 using Microsoft.AspNetCore.Http;
 
 namespace ECom.Domain.Extensions;

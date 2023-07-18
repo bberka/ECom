@@ -1,22 +1,19 @@
 ﻿namespace ECom.Domain.Entities;
 
+
 [Table("Categories", Schema = "ECPrivate")]
+[PrimaryKey(nameof(NameKey))]
+[Index(nameof(NameKey),nameof(ParentNameKey))]
 public class Category : IEntity
 {
-  [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
-
-  public bool IsValid { get; set; }
+  public bool IsValid { get; set; } = true;
 
   [MinLength(ConstantMgr.NameMinLength)]
   [MaxLength(ConstantMgr.NameMaxLength)]
-  public string Name { get; set; }
+  public string NameKey { get; set; }
 
-  [MinLength(2)]
-  [MaxLength(4)]
-  public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+  [MinLength(ConstantMgr.NameMinLength)]
+  [MaxLength(ConstantMgr.NameMaxLength)]
+  public string? ParentNameKey { get; set; }
 
-  //Virtual
-  public virtual List<SubCategory> SubCategories { get; set; }
 }

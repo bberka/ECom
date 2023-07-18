@@ -16,21 +16,20 @@ internal class PermissionRoleConfiguration : IEntityTypeConfiguration<Permission
       .HasForeignKey(x => x.PermissionId);
 
     builder.Navigation(x => x.Permission).AutoInclude();
-    builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
+    //builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
 
 
-    //var permEnumList = CommonLib.GetAdminOperationTypes();
-    //var permList  = new List<Permission>();
-    //for (int i = 1; i < permEnumList.Length; i++)
-    //{
-    //    var str = permEnumList[i];
-    //    permList.Add(new Permission()
-    //    {
-    //        Id = i,
-    //        IsValid = true,
-    //        Name = str
-    //    });
-    //}
-    //builder.HasData(permList);
+
+    var names = Enum.GetValues(typeof(AdminOperationType));
+    var permissions = new List<PermissionRole>();
+    foreach (var name in names) {
+      permissions.Add(new PermissionRole() {
+        PermissionId = (int)name,
+        RoleId = 1
+      });
+    }
+
+    builder.HasData(permissions);
+  
   }
 }

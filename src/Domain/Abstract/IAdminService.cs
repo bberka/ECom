@@ -1,19 +1,21 @@
 ﻿using ECom.Domain.DTOs;
-using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs.AdminDto;
 
 namespace ECom.Domain.Abstract;
 
 public interface IAdminService
 {
   List<Admin> GetAdmins();
-  ResultData<Admin> GetAdmin(int id);
-  ResultData<Admin> GetAdmin(string email);
-  bool Exists(int id);
-  bool Exists(string email);
+  CustomResult<Admin> GetAdmin(int id);
+  CustomResult<Admin> GetAdmin(string email);
+  CustomResult<AdminDto> GetAdminDto(int id);
+  CustomResult<AdminDto> GetAdminDto(string email);
+  bool AdminExists(int id);
+  bool AdminExists(string email);
   bool IsValidAdminAccount(int id);
-  ResultData<AdminDto> Login(LoginRequest model);
-  Result AddAdmin(AddAdminRequest admin);
-  Result ChangePassword(ChangePasswordRequest model);
+  CustomResult<AdminDto> AdminLogin(LoginRequest model);
+  CustomResult AddAdmin(AddAdminRequest admin);
+  CustomResult ChangePassword(ChangePasswordRequest model);
 
   int GetAdminRoleId(int adminId);
 
@@ -21,7 +23,8 @@ public interface IAdminService
   List<Permission> GetValidPermissions();
   List<Permission> GetInvalidPermissions();
   bool IsValidPermission(int permissionId);
-  List<Admin> ListOtherAdmins(int adminId);
-  Result EnableOrDisableAdmin(int authorAdminId, int adminId);
-  Result DeleteAdmin(int authorAdminId, int adminId);
+  List<AdminDto> ListOtherAdmins(int adminId);
+  CustomResult DeleteAdmin(int authorAdminId, int adminId);
+  CustomResult UpdateAdmin(int authorAdminId, UpdateAdminAccountRequest request);
+  CustomResult RecoverAdmin(int authorAdminId, int id);
 }

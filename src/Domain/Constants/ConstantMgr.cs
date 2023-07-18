@@ -4,6 +4,7 @@ namespace ECom.Domain.Constants;
 
 public static class ConstantMgr
 {
+  public static readonly DateTime DefaultDateTime = new DateTime(1900, 1, 1);
   public const byte StringMinLength = 3;
 
   public const byte NameMinLength = 3;

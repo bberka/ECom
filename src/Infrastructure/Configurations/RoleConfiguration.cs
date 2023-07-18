@@ -6,5 +6,23 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
   public void Configure(EntityTypeBuilder<Role> builder) {
     builder.Navigation(x => x.PermissionRoles).AutoInclude();
+    builder.HasData(_roles);
   }
+  private static readonly List<Role> _roles = new() {
+    new Role {
+      IsValid = true,
+      Name = "Owner",
+      Id = 1
+    },
+    new Role {
+      IsValid = true,
+      Name = "Admin",
+      Id = 2,
+    },
+    new Role {
+      IsValid = true,
+      Name = "Moderator",
+      Id = 3,
+    }
+  };
 }

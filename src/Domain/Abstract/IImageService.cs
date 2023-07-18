@@ -4,9 +4,9 @@ namespace ECom.Domain.Abstract;
 
 public interface IImageService
 {
-  ResultData<int> UploadImage(IFormFile file);
+  CustomResult<int> UploadImage(IFormFile file);
 
   string GetImageBase64String(int id);
 
-  ResultData<Image> GetImage(int id);
+  CustomResult<Image> GetImage(int id);
 }

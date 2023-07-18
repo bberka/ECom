@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain;
+
+namespace ECom.Application.Services;
 
 public class SliderService : ISliderService
 {
@@ -8,41 +10,41 @@ public class SliderService : ISliderService
     _unitOfWork = unitOfWork;
   }
 
-  public ResultData<Slider> Get(int sliderId) {
+  public CustomResult<Slider> GetSlider(int sliderId) {
     var slider = _unitOfWork.SliderRepository.GetById(sliderId);
-    if (slider is null) return DomainResult.Slider.NotFoundResult();
-    if (slider.DeleteDate.HasValue) return DomainResult.Slider.DeletedResult();
+    if (slider is null) return DomainResult.NotFound(nameof(Slider));
+    if (slider.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Slider));
     return slider;
   }
 
-  public List<Slider> GetList() {
+  public List<Slider> GetSliders() {
     return _unitOfWork.SliderRepository.Get(x => !x.DeleteDate.HasValue).ToList();
   }
 
-  public Result Update(Slider slider) {
+  public CustomResult UpdateSlider(Slider slider) {
     var exists = _unitOfWork.SliderRepository.Any(x => x.Id == slider.Id && !x.DeleteDate.HasValue);
-    if (!exists) return DomainResult.Slider.NotFoundResult();
+    if (!exists) return DomainResult.NotFound(nameof(Slider));
     _unitOfWork.SliderRepository.Update(slider);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Slider.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateSlider));
+    return DomainResult.OkUpdated(nameof(Slider));
   }
 
-  public Result Delete(int sliderId) {
-    var sliderResult = Get(sliderId);
-    if (sliderResult.IsFailure) return sliderResult.ToResult();
-    var slider = sliderResult.Data;
+  public CustomResult DeleteSlider(int sliderId) {
+    var sliderResult = GetSlider(sliderId);
+    if (!sliderResult.Status) return sliderResult.ToResult();
+    var slider = sliderResult.Data!;
     slider.DeleteDate = DateTime.Now;
     _unitOfWork.SliderRepository.Update(slider);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Slider.DeleteSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(DeleteSlider));
+    return DomainResult.Deleted(nameof(Slider));
   }
 
-  public Result Add(Slider slider) {
+  public CustomResult AddSlider(Slider slider) {
     _unitOfWork.SliderRepository.Insert(slider);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.Slider.AddSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddSlider));
+    return DomainResult.OkAdded(nameof(Slider));
   }
 }

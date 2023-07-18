@@ -2,9 +2,9 @@
 
 public interface ICartService
 {
-  Result AddOrIncreaseProduct(int userId, int productId);
+  CustomResult AddOrIncreaseProduct(int userId, int productId);
   int GetBasketProductCount(int userId);
   List<Cart> ListBasketProducts(int userId);
-  Result RemoveOrDecreaseProduct(int userId, int productId);
-  Result Clear(int userId);
+  CustomResult RemoveOrDecreaseProduct(int userId, int productId);
+  CustomResult ClearCartProducts(int userId);
 }

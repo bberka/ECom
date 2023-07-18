@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
   public UnitOfWork() {
     _disposed = false;
     _dbContext = new EComDbContext();
+    LocalizationStringRepository = new LocalizationStringRepository(_dbContext);
     AddressRepository = new AddressRepository(_dbContext);
     AdminRepository = new AdminRepository(_dbContext);
     AdminLogRepository = new AdminLogRepository(_dbContext);
@@ -35,7 +36,7 @@ public class UnitOfWork : IUnitOfWork
     ProductCommentRepository = new ProductCommentRepository(_dbContext);
     ProductDetailRepository = new ProductDetailRepository(_dbContext);
     ProductShowCaseRepository = new ProductShowCaseRepository(_dbContext);
-    ProductSubCategoryRepository = new ProductSubCategoryRepository(_dbContext);
+    ProductCategoryRepository = new ProductCategoryRepository(_dbContext);
     ProductVariantRepository = new ProductVariantRepository(_dbContext);
     RoleRepository = new RoleRepository(_dbContext);
     PermissionRoleRepository = new PermissionRoleRepository(_dbContext);
@@ -75,7 +76,7 @@ public class UnitOfWork : IUnitOfWork
   public IGenericRepository<ProductComment> ProductCommentRepository { get; }
   public IGenericRepository<ProductDetail> ProductDetailRepository { get; }
   public IGenericRepository<ProductShowCase> ProductShowCaseRepository { get; }
-  public IGenericRepository<ProductSubCategory> ProductSubCategoryRepository { get; }
+  public IGenericRepository<ProductCategory> ProductCategoryRepository { get; }
   public IGenericRepository<ProductVariant> ProductVariantRepository { get; }
   public IGenericRepository<Role> RoleRepository { get; }
   public IGenericRepository<PermissionRole> PermissionRoleRepository { get; }
@@ -84,6 +85,7 @@ public class UnitOfWork : IUnitOfWork
   public IGenericRepository<Slider> SliderRepository { get; }
   public IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
   public IGenericRepository<StockChange> StockChangeRepository { get; }
+  public IGenericRepository<LocalizationString> LocalizationStringRepository { get; }
   public IGenericRepository<SubCategory> SubCategoryRepository { get; }
   public IGenericRepository<Supplier> SupplierRepository { get; }
   public IGenericRepository<User> UserRepository { get; }

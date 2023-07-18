@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ECom.Domain;
+using Microsoft.AspNetCore.Http;
 
 namespace ECom.Application.Services;
 
@@ -11,9 +12,9 @@ public class ImageService : IImageService
     _unitOfWork = unitOfWork;
   }
 
-  public ResultData<Image> GetImage(int id) {
+  public CustomResult<Image> GetImage(int id) {
     var image = _unitOfWork.ImageRepository.GetById(id);
-    if (image is null) return DomainResult.Image.NotFoundResult();
+    if (image is null) return DomainResult.NotFound(nameof(Image));
     return image;
   }
 
@@ -27,7 +28,7 @@ public class ImageService : IImageService
     return $"data:image/jpg;base64,{imageBase64Data}";
   }
 
-  public ResultData<int> UploadImage(IFormFile file) {
+  public CustomResult<int> UploadImage(IFormFile file) {
     var img = new Image();
     var ms = new MemoryStream();
     file.CopyTo(ms);
@@ -35,7 +36,7 @@ public class ImageService : IImageService
     img.Name = file.FileName;
     _unitOfWork.ImageRepository.Insert(img);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UploadImage));
     return img.Id;
   }
 }

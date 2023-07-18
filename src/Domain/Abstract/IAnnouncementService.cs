@@ -1,10 +1,13 @@
-﻿namespace ECom.Domain.Abstract;
+﻿using ECom.Domain.DTOs.AnnouncementDto;
+
+namespace ECom.Domain.Abstract;
 
 public interface IAnnouncementService
 {
   List<Announcement> ListAnnouncements();
-  Result DeleteAnnouncement(uint id);
-  Result EnableOrDisable(uint id);
-  Result UpdateAnnouncement(Announcement data);
-  Result AddAnnouncement(Announcement data);
+  CustomResult DeleteAnnouncement(uint id);
+  //CustomResult EnableAnnouncement(uint id);
+  //CustomResult DisableAnnouncement(uint id);
+  CustomResult UpdateAnnouncement(UpdateAnnouncementRequest data);
+  CustomResult AddAnnouncement(AddAnnouncementRequest data);
 }

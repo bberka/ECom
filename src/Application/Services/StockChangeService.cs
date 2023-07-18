@@ -1,4 +1,5 @@
-﻿using ECom.Domain.DTOs.StockChangeDTOs;
+﻿using ECom.Domain;
+using ECom.Domain.DTOs.StockChangeDto;
 
 namespace ECom.Application.Services;
 
@@ -17,11 +18,11 @@ public class StockChangeService : IStockChangeService
     _productService = productService;
   }
 
-  public Result Add(AddStockChangeRequest model) {
+  public CustomResult AddStockChange(AddStockChangeRequest model) {
     var productExist = _productService.Exists(model.ProductId);
-    if (!productExist) return DomainResult.Product.NotFoundResult();
+    if (!productExist) return DomainResult.NotFound(nameof(Product));
     var supplierExist = _supplierService.Exists(model.SupplierId);
-    if (!supplierExist) return DomainResult.Supplier.NotFoundResult();
+    if (!supplierExist) return DomainResult.NotFound(nameof(Supplier));
     var stockChange = new StockChange {
       ProductId = model.ProductId,
       Cost = model.Cost,
@@ -32,11 +33,11 @@ public class StockChangeService : IStockChangeService
     };
     _unitOfWork.StockChangeRepository.Insert(stockChange);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.StockChange.AddSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(AddStockChange));
+    return DomainResult.OkAdded(nameof(StockChange));
   }
 
-  public Result DecreaseStockOnOrder(int productId, int quantity) {
+  public CustomResult DecreaseStockOnOrder(int productId, int quantity) {
     throw new NotImplementedException();
   }
 
@@ -44,11 +45,11 @@ public class StockChangeService : IStockChangeService
     throw new NotImplementedException();
   }
 
-  public ResultData<List<StockChange>> GetProductStockChanges(int productId) {
+  public CustomResult<List<StockChange>> GetProductStockChanges(int productId) {
     throw new NotImplementedException();
   }
 
-  public ResultData<List<StockChange>> GetSupplierStockChanges(int supplierId) {
+  public CustomResult<List<StockChange>> GetSupplierStockChanges(int supplierId) {
     throw new NotImplementedException();
   }
 }

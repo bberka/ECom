@@ -1,5 +1,5 @@
 ﻿using AspNetCore.Authorization.Extender;
-using ECom.Domain.DTOs.AdminDTOs;
+using ECom.Domain.DTOs.AdminDto;
 
 namespace ECom.Application.Manager;
 
@@ -18,23 +18,30 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
   }
 
 
-  public ResultData<AdminLoginResponse> Authenticate(LoginRequest model) {
-#if !DEBUG
-            var admin = _debugService.GetAdminDto();
-#else
-    var loginResult = _adminService.Login(model);
-    if (!loginResult.IsSuccess) return loginResult.ToResult();
+  public CustomResult<AdminLoginResponse> Authenticate(LoginRequest model) {
+    AdminDto admin;
+    //if (ConstantMgr.IsDevelopment())
+    //  admin = _debugService.GetAdminDto();
+    //else {
+     
+    //}
 
-    var admin = loginResult.Data;
-#endif
-
-
-    var adminAsDic = admin.AsDictionary();
+    var loginResult = _adminService.AdminLogin(model);
+    if (!loginResult.Status) return loginResult.ToResult();
+    admin = loginResult.Data!;
+    var adminAsDic = admin.AsDictionary()!;
     var remove = adminAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
     foreach (var kvp in remove) adminAsDic.Remove(kvp.Key);
     adminAsDic.Add("AdminOnly", "true");
     adminAsDic.Add(ClaimTypes.Role, admin.RoleName);
-    adminAsDic.Add(ExtClaimTypes.EndPointPermissions, admin.Permissions.ToList().CreatePermissionString());
+    if (ConstantMgr.IsDevelopment()) {
+      adminAsDic.Add(ExtClaimTypes.AllPermissions, "true");
+    }
+    else {
+      adminAsDic.Add(ExtClaimTypes.EndPointPermissions, admin.Permissions.ToList().CreatePermissionString());
+
+    }
+
     var expireMinutes = JwtOption.This.TokenExpireMinutes;
     var date = DateTime.UtcNow.AddMinutes(expireMinutes);
     var token = _jwtManager.GenerateToken(adminAsDic, date);

@@ -5,10 +5,8 @@ public class Option : IEntity
 {
   [Key]
   public bool IsRelease { get; set; } = true;
-
   public bool IsOpen { get; set; } = true;
   public bool IsAdminOpen { get; set; } = true;
-  public byte PagingProductCount { get; set; } = 20;
   public bool RequireUpperCaseInPassword { get; set; } = false;
   public bool RequireLowerCaseInPassword { get; set; } = false;
   public bool RequireSpecialCharacterInPassword { get; set; } = false;
@@ -21,9 +19,10 @@ public class Option : IEntity
   public int PasswordResetTimeoutMinutes { get; set; } = 30;
 
   [MaxLength(12)]
-  public string SelectedCurrency { get; set; } = "TL";
+  public string SelectedCurrency { get; set; } = "Lira";
 
   public bool ShowStock { get; set; } = false;
+  public byte PagingProductCount { get; set; } = 20;
   public byte ProductImageLimit { get; set; } = 10;
   public byte ProductCommentImageLimit { get; set; } = 5;
 }

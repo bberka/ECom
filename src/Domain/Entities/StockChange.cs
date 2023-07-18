@@ -14,7 +14,7 @@ public class StockChange : IEntity
 
   /// <summary>
   ///   0: Decrease
-  ///   1: Add
+  ///   1: Create
   /// </summary>
   public bool Type { get; set; }
 

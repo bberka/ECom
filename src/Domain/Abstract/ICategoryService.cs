@@ -1,15 +1,19 @@
-﻿namespace ECom.Domain.Abstract;
+﻿using ECom.Domain.DTOs.CategoryDto;
+
+namespace ECom.Domain.Abstract;
 
 public interface ICategoryService
 {
-  bool CategoryExists(int categoryId);
-  Result DeleteCategory(uint id);
-  Result DeleteSubCategory(uint id);
-  Result EnableOrDisableCategory(uint id);
-  Result EnableOrDisableSubCategory(uint id);
+  bool CategoryExists(string key);
+  CustomResult DeleteCategory(string key);
+  //CustomResult DeleteSubCategory(uint id);
+  CustomResult EnableCategory(string key);
+  CustomResult DisableCategory(string key);
+  //CustomResult EnableSubCategory(uint id);
+  //CustomResult DisableSubCategory(uint id);
   List<Category> ListCategories();
-  Result UpdateCategory(UpdateCategoryRequest model);
-  Result UpdateSubCategory(SubCategory model);
-  Result AddCategory(AddCategoryRequest model);
-  Result AddSubCategory(AddSubCategoryRequest model);
+  CustomResult UpdateCategory(AddOrUpdateCategoryRequest model);
+  //CustomResult UpdateSubCategory(SubCategory model);
+  CustomResult AddCategory(AddOrUpdateCategoryRequest model);
+  //CustomResult AddSubCategory(AddSubCategoryRequest model);
 }

@@ -6,19 +6,20 @@ internal class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 {
   public void Configure(EntityTypeBuilder<Permission> builder) {
     builder.Navigation(x => x.PermissionRoles).AutoInclude();
+    var enumValues = Enum.GetValues(typeof(AdminOperationType));
+    var permissions = new List<Permission>();
 
-    //var permEnumList = CommonLib.GetAdminOperationTypes();
-    //var permList  = new List<Permission>();
-    //for (int i = 1; i < permEnumList.Length; i++)
-    //{
-    //    var str = permEnumList[i];
-    //    permList.Add(new Permission()
-    //    {
-    //        Id = i,
-    //        IsValid = true,
-    //        Name = str
-    //    });
-    //}
-    //builder.HasData(permList);
+    foreach (var value in enumValues) {
+      permissions.Add(new Permission {
+        Name = value.ToString(),
+        Id = (int)value,
+        IsValid = true,
+        Memo = null,
+      });
+    }
+
+    builder.HasData(permissions);
   }
+
+ 
 }

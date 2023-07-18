@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.ProductDTOs;
+﻿using ECom.Domain.DTOs.ProductDto;
 
 namespace ECom.Domain.Abstract;
 
@@ -6,7 +6,7 @@ public interface IProductService
 {
   bool Exists(int id);
 
-  ResultData<Product> GetProduct(long productNo);
+  CustomResult<Product> GetProduct(long productNo);
 
   /// <summary>
   /// </summary>
@@ -54,18 +54,18 @@ public interface IProductService
   /// </returns>
   List<ProductComment> GetProductComments(int productId, ushort page);
 
-  ResultData<int> AddComment(AddProductCommentRequest model);
+  CustomResult<int> AddProductComment(AddProductCommentRequest model);
 
-  //ResultData<int> AddCommentImage(IFormFile file, int userId,int commentId);
-  //List<ProductDetail>? GetProductDetails(long productNo);
+  //CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId);
+  //ListProducts<ProductDetail>? GetProductDetails(long productNo);
   //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
   //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
   //Product? GetProductSingle(long productNo);
   //ProductVariant? GetVariant(int id);
-  //List<Product> GetVariantProducts(int variantId);
-  //List<ProductVariant> GetVariants();
+  //ListProducts<Product> GetVariantProducts(int variantId);
+  //ListProducts<ProductVariant> GetVariants();
   //ProductVariant GetVariantSingle(int id);
-  //List<Product> ListProductsBaseByCategory(ListProductsByCategoryRequestModel model);
-  //List<ProductSimpleResponseModel> ListProductsSimpleViewModel(ListProductsRequestModel model);
-  //List<ProductSimpleResponseModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryRequestModel model);
+  //ListProducts<Product> ListProductsBaseByCategory(ListProductsByCategoryRequestModel model);
+  //ListProducts<ProductSimpleResponseModel> ListProductsSimpleViewModel(ListProductsRequestModel model);
+  //ListProducts<ProductSimpleResponseModel> ListProductsSimpleViewModelByCategory(ListProductsByCategoryRequestModel model);
 }

@@ -1,4 +1,6 @@
-﻿using ECom.Domain.DTOs.UserDTOs;
+﻿using ECom.Domain;
+using ECom.Domain.DTOs.UserDto;
+using ECom.Domain.Extensions;
 
 namespace ECom.Application.Services;
 
@@ -17,19 +19,20 @@ public class UserService : IUserService
     _validationService = validationService;
   }
 
-  public Result Register(RegisterUserRequest model) {
+  public CustomResult RegisterUser(RegisterUserRequest model) {
     var user = model.ToUserEntity();
     _unitOfWork.UserRepository.Insert(user);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.User.RegisterSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(RegisterUser));
+    return DomainResult.OkUpdated(nameof(User));
   }
 
-  public ResultData<UserDto> Login(LoginRequest model) {
+  public CustomResult<UserDto> LoginUser(LoginRequest model) {
     var userResult = GetUser(model.EmailAddress);
-    if (userResult.IsFailure) return userResult.ToResult();
-    var user = userResult.Data;
-    if (user?.Password != model.EncryptedPassword) return DomainResult.User.NotFoundResult();
+    if (!userResult.Status) return userResult.ToResult();
+    var user = userResult.Data!;
+    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
+    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal)) return DomainResult.NotFound(nameof(User)); //Or invalid password
     if (user.TwoFactorType != 0) {
       //TODO: implement two factor
     }
@@ -48,45 +51,45 @@ public class UserService : IUserService
     return userNecessary;
   }
 
-  public ResultData<User> GetUser(string email) {
+  public CustomResult<User> GetUser(string email) {
     var user = _unitOfWork.UserRepository.GetFirstOrDefault(x => x.EmailAddress == email);
-    if (user is null) return DomainResult.User.NotFoundResult();
-    if (!user.IsValid) return DomainResult.User.NotValidResult();
-    if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult();
+    if (user is null) return DomainResult.NotFound(nameof(User));
+    if (!user.IsValid) return DomainResult.Invalid(nameof(User));
+    if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
     return user;
   }
 
-  public ResultData<User> GetUser(int id) {
+  public CustomResult<User> GetUser(int id) {
     var user = _unitOfWork.UserRepository.GetById(id);
-    if (user is null) return DomainResult.User.NotFoundResult();
-    if (user.IsValid == false) return DomainResult.User.NotValidResult();
-    if (user.DeletedDate.HasValue) return DomainResult.User.DeletedResult();
+    if (user is null) return DomainResult.NotFound(nameof(User));
+    if (!user.IsValid) return DomainResult.Invalid(nameof(User));
+    if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
     return user;
   }
 
 
-  public bool Exists(string email) {
+  public bool UserExists(string email) {
     return _unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
   }
 
 
-  public Result ChangePassword(ChangePasswordRequest model) {
+  public CustomResult ChangePassword(ChangePasswordRequest model) {
     var userResult = GetUser(model.AuthenticatedUserId);
-    if (userResult.IsFailure) return userResult.ToResult();
+    if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
-    if (user.Password != model.EncryptedOldPassword) return DomainResult.Base.PasswordWrongResult();
+    if (user.Password != model.EncryptedOldPassword) return DomainResult.NotFound("User");
     user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
     _unitOfWork.UserRepository.Update(user);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.User.ChangePasswordSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
+    return DomainResult.OkUpdated(nameof(User));
   }
 
-  public Result Update(UpdateUserRequest model) {
+  public CustomResult UpdateUser(UpdateUserRequest model) {
     var userId = model.AuthenticatedUserId;
-    if (userId < 1) return DomainResult.User.NotFoundResult();
+    if (userId < 1) throw new InvalidOperationException("UserNo can not be negative");
     var user = _unitOfWork.UserRepository.GetById(userId);
-    if (user is null) return DomainResult.User.NotFoundResult();
+    if (user is null) return DomainResult.NotFound(nameof(User));
     user.EmailAddress = model.EmailAddress;
     user.CitizenShipNumber = model.CitizenShipNumber;
     user.PhoneNumber = model.PhoneNumber;
@@ -95,11 +98,11 @@ public class UserService : IUserService
     user.LastName = model.LastName;
     _unitOfWork.UserRepository.Update(user);
     var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalErrorResult();
-    return DomainResult.User.UpdateSuccessResult();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateUser));
+    return DomainResult.OkUpdated(nameof(User));
   }
 
-  public bool Exists(int id) {
+  public bool UserExists(int id) {
     return _unitOfWork.UserRepository.Any(x => x.Id == id);
   }
 }
