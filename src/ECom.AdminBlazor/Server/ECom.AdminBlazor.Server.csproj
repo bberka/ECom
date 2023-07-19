@@ -13,12 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\ECom.Application.csproj" />
-    <ProjectReference Include="..\Client\ECom.AdminBlazor.Client.csproj" />
-    <ProjectReference Include="..\Shared\ECom.AdminBlazor.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Endpoints\ProductEndpoints\" />
   </ItemGroup>
 
 

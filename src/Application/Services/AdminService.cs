@@ -89,8 +89,8 @@ public class AdminService : IAdminService
     return _unitOfWork.AdminRepository.Any(x => x.EmailAddress == email);
   }
 
-  public List<Admin> GetAdmins() {
-    return _unitOfWork.AdminRepository.Get().ToList();
+  public List<AdminDto> GetAdmins() {
+    return _unitOfWork.AdminRepository.Get().Select(x => Admin.ToDto(x)).ToList();
   }
 
   public CustomResult AddAdmin(AddAdminRequest admin) {

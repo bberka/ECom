@@ -4,7 +4,7 @@ namespace ECom.Domain.Abstract;
 
 public interface IAdminService
 {
-  List<Admin> GetAdmins();
+  List<AdminDto> GetAdmins();
   CustomResult<Admin> GetAdmin(int id);
   CustomResult<Admin> GetAdmin(string email);
   CustomResult<AdminDto> GetAdminDto(int id);

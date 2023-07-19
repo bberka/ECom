@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ECom.Shared\ECom.Shared.csproj" />
-    <ProjectReference Include="..\Shared\ECom.AdminBlazor.Shared.csproj" />
   </ItemGroup>
 
 </Project>

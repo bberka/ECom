@@ -1,4 +1,6 @@
 using ECom.Application.Setup;
+using ECom.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
 EComLoggerHelper.Configure(true);

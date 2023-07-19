@@ -1,0 +1,111 @@
+﻿@inherits LayoutComponentBase
+
+<RadzenDialog />
+<RadzenNotification />
+<RadzenContextMenu />
+<RadzenTooltip />
+
+
+<RadzenLayout>
+  <RadzenHeader>
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+      <RadzenSidebarToggle Click="@ToggleSideBar" />
+      <RadzenLabel Text="ECOM" />
+    </RadzenStack>
+  </RadzenHeader>
+
+  <RadzenSidebar @bind-Expanded="@_sideBarExpanded">
+
+
+    <RadzenStack AlignItems="AlignItems.Center">
+
+      <RadzenPanelMenu Style="width: 100%" Multiple="false">
+        <RadzenPanelMenuItem Text="@Lang.Get("dashboard")" Path="Dashboard" Icon="home" />
+
+        <RadzenPanelMenuItem Text="@Lang.Get("management")" Icon="account_box">
+          <RadzenPanelMenuItem Text="@Lang.Get("admins")" Path="Admins" />
+          <RadzenPanelMenuItem Text="@Lang.Get("roles_and_permissions")" Path="Roles" />
+        </RadzenPanelMenuItem>
+
+        <RadzenPanelMenuItem Text="@Lang.Get("categories")" />
+        <RadzenPanelMenuItem Text="@Lang.Get("announcements")" />
+
+        <RadzenPanelMenuItem Text="@Lang.Get("image_management")">
+          <RadzenPanelMenuItem Text="@Lang.Get("image_list")" Path="Images" />
+          <RadzenPanelMenuItem Text="@Lang.Get("upload_image")" Path="UploadImage" />
+        </RadzenPanelMenuItem>
+
+        <RadzenPanelMenuItem Text="@Lang.Get("options")">
+          <RadzenPanelMenuItem Text="@Lang.Get("base_option")" Path="options/base" />
+          <RadzenPanelMenuItem Text="@Lang.Get("smtp_option")" Path="options/smtp" />
+          <RadzenPanelMenuItem Text="@Lang.Get("payment_option")" Path="options/payment" />
+          <RadzenPanelMenuItem Text="@Lang.Get("cargo_option")" Path="options/cargo" />
+          <RadzenPanelMenuItem Text="@Lang.Get("company_info")" Path="options/company" />
+        </RadzenPanelMenuItem>
+
+
+        <RadzenPanelMenuItem Text="Inputs" Icon="payment">
+          <RadzenPanelMenuItem Text="CheckBox" Path="checkbox" Icon="check_circle"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="TextBox" Path="textbox" Icon="input"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="TextArea" Path="textarea" Icon="description"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Password" Path="password" Icon="payment"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Numeric" Path="numeric" Icon="aspect_ratio"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DatePicker" Path="datepicker" Icon="date_range"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Data" Icon="save">
+          <RadzenPanelMenuItem Text="DataGrid" Path="datagrid" Icon="grid_on"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DataList" Path="datalist" Icon="list"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DropDown" Path="dropdown" Icon="dns"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DropDownDataGrid" Path="dropdown-datagrid" Icon="receipt"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="ListBox" Path="listbox" Icon="view_list"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="TemplateForm" Path="templateform" Icon="line_style"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Containers" Icon="account_box">
+          <RadzenPanelMenuItem Text="Tabs" Path="tabs" Icon="tab"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Panel" Path="panel" Icon="content_paste"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Fieldset" Path="fieldset" Icon="account_balance_wallet"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Card" Path="card" Icon="line_style"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="More">
+          <RadzenPanelMenuItem Text="Item1"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Item2"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="More items">
+            <RadzenPanelMenuItem Text="More sub items">
+              <RadzenPanelMenuItem Text="Item3"></RadzenPanelMenuItem>
+              <RadzenPanelMenuItem Text="Item4"></RadzenPanelMenuItem>
+            </RadzenPanelMenuItem>
+          </RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+      </RadzenPanelMenu>
+
+    </RadzenStack>
+
+
+
+    <div class="rz-p-4">
+    </div>
+  </RadzenSidebar>
+  <RadzenBody>
+    <div class="rz-p-4">
+      @Body
+    </div>
+  </RadzenBody>
+  <RadzenFooter>
+    <RadzenLabel Text="© 2022 - Today by ZDK Network. All Rights Reserved" />
+
+  </RadzenFooter>
+</RadzenLayout>
+
+
+@code {
+  bool _sideBarExpanded = true;
+
+  private void ToggleSideBar() {
+    _sideBarExpanded = !_sideBarExpanded;
+  }
+
+
+
+}
+
+
