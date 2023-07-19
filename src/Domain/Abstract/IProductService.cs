@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.ProductDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 
@@ -54,7 +54,7 @@ public interface IProductService
   /// </returns>
   List<ProductComment> GetProductComments(int productId, ushort page);
 
-  CustomResult<int> AddProductComment(AddProductCommentRequest model);
+  CustomResult<int> AddProductComment(int userId,AddProductCommentRequest model);
 
   //CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId);
   //ListProducts<ProductDetail>? GetProductDetails(long productNo);

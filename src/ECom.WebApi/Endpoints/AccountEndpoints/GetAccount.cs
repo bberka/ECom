@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.DTOs.UserDto;
+using ECom.Shared.DTOs.UserDto;
 
 namespace ECom.WebApi.Endpoints.AccountEndpoints;
 
@@ -8,7 +8,7 @@ namespace ECom.WebApi.Endpoints.AccountEndpoints;
 public class GetAccount : EndpointBaseSync.WithoutRequest.WithResult<UserDto>
 {
   [HttpGet]
-  [EndpointSwaggerOperation(typeof(GetAccount),"Gets authenticated user account information")]
+  [EndpointSwaggerOperation(typeof(GetAccount), "Gets authenticated user account information")]
   public override UserDto Handle() {
     var user = HttpContext.GetUser();
     return user;

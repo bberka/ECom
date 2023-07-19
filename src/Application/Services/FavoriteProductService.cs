@@ -1,4 +1,5 @@
-﻿using ECom.Domain;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 

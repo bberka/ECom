@@ -1,6 +1,6 @@
 ﻿namespace ECom.Domain.Entities;
 
-[Table("Permissions",Schema = "ECOperation")]
+[Table("Permissions", Schema = "ECOperation")]
 public class Permission : IEntity
 {
   [Key]
@@ -15,4 +15,13 @@ public class Permission : IEntity
   public bool IsValid { get; set; }
 
   public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
+
+  public static PermissionDto ToDto(Permission permission) {
+    return new PermissionDto() {
+      Id = permission.Id,
+      Name = permission.Name,
+      Memo = permission.Memo,
+      IsValid = permission.IsValid,
+    };
+  }
 }

@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Abstract;
+﻿using ECom.Domain.Entities;
+
+namespace ECom.Domain.Abstract;
 
 public interface IUnitOfWork : IDisposable
 {
@@ -36,7 +38,9 @@ public interface IUnitOfWork : IDisposable
   IGenericRepository<Slider> SliderRepository { get; }
   IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
   IGenericRepository<StockChange> StockChangeRepository { get; }
+
   IGenericRepository<LocalizationString> LocalizationStringRepository { get; }
+
   //IGenericRepository<SubCategory> SubCategoryRepository { get; }
   IGenericRepository<Supplier> SupplierRepository { get; }
   IGenericRepository<User> UserRepository { get; }

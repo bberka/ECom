@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECom.Infrastructure.Configurations;
 
 public class CompanyInformationConfiguration : IEntityTypeConfiguration<CompanyInformation>
 {
-  public void Configure(EntityTypeBuilder<CompanyInformation> builder) {
-    builder.HasData(_companyInformations);
-  }
   private static readonly List<CompanyInformation> _companyInformations = new() {
     new CompanyInformation {
       CompanyAddress = "Address",
@@ -20,7 +18,7 @@ public class CompanyInformationConfiguration : IEntityTypeConfiguration<CompanyI
       PhoneNumber = "5526667788",
       WebApiUrl = "api.company.com",
       WhatsApp = "5526667788",
-      YoutubeLink = "yt.com/company",
+      YoutubeLink = "yt.com/company"
     },
     new CompanyInformation {
       CompanyAddress = "Address",
@@ -37,4 +35,8 @@ public class CompanyInformationConfiguration : IEntityTypeConfiguration<CompanyI
       YoutubeLink = "yt.com/company"
     }
   };
+
+  public void Configure(EntityTypeBuilder<CompanyInformation> builder) {
+    builder.HasData(_companyInformations);
+  }
 }

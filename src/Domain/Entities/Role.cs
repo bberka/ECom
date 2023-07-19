@@ -15,4 +15,15 @@ public class Role : IEntity
 
   //Virtual
   public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
+
+  public static RoleDto ToDto(Role role) {
+    return new RoleDto() {
+      Id = role.Id,
+    Name = role.Name,
+    IsValid = role.IsValid,
+    Permissions = role.PermissionRoles.Select(pr => Permission.ToDto(pr.Permission)).ToList(),
+  };
+
+}
+
 }

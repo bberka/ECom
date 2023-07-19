@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECom.Infrastructure.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-  public void Configure(EntityTypeBuilder<User> builder) {
-    builder.HasData(_users);
-  }
   private static readonly List<User> _users = new() {
     new User {
       EmailAddress = "debug@mail.com",
@@ -25,7 +24,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
       IsEmailVerified = false,
       OAuthKey = null,
       OAuthType = null,
-      TaxNumber = null,
+      TaxNumber = null
     },
     new User {
       EmailAddress = "debug2@mail.com",
@@ -44,8 +43,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
       IsEmailVerified = false,
       OAuthKey = null,
       OAuthType = null,
-      TaxNumber = null,
-    },
-   
+      TaxNumber = null
+    }
   };
+
+  public void Configure(EntityTypeBuilder<User> builder) {
+    builder.HasData(_users);
+  }
 }

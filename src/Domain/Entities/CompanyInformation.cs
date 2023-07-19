@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("CompanyInformations", Schema = "ECPrivate")]
 public class CompanyInformation : IEntity

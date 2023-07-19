@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ECom.Shared.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ECom.Domain.Extensions;
 
@@ -36,10 +37,7 @@ public static class HttpContextExtensions
   public static LanguageType GetLanguageType(this HttpRequest? request) {
     if (request == null) return LanguageType.English;
     var acceptLanguage = request.Headers["Accept-Language"].ToString();
-    if (acceptLanguage.Contains("tr")) {
-      return LanguageType.Turkish;
-    }
+    if (acceptLanguage.Contains("tr")) return LanguageType.Turkish;
     return LanguageType.English;
-
   }
 }

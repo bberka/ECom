@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.UserDto;
+﻿using ECom.Shared.Constants;
 
 namespace ECom.Application.Validators;
 

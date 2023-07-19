@@ -9,6 +9,7 @@ public class GetBase64Image : EndpointBaseSync.WithRequest<int>.WithResult<strin
   public GetBase64Image(IImageService imageService) {
     _imageService = imageService;
   }
+
   [HttpGet]
   [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "id" })]
   [EndpointSwaggerOperation(typeof(GetBase64Image), "Gets image base 64 string")]

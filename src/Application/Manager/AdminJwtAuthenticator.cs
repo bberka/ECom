@@ -1,5 +1,6 @@
 ﻿using AspNetCore.Authorization.Extender;
-using ECom.Domain.DTOs.AdminDto;
+using ECom.Domain;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Manager;
 
@@ -23,7 +24,7 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
     //if (ConstantMgr.IsDevelopment())
     //  admin = _debugService.GetAdminDto();
     //else {
-     
+
     //}
 
     var loginResult = _adminService.AdminLogin(model);
@@ -34,13 +35,10 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
     foreach (var kvp in remove) adminAsDic.Remove(kvp.Key);
     adminAsDic.Add("AdminOnly", "true");
     adminAsDic.Add(ClaimTypes.Role, admin.RoleName);
-    if (ConstantMgr.IsDevelopment()) {
+    if (ConstantMgr.IsDevelopment())
       adminAsDic.Add(ExtClaimTypes.AllPermissions, "true");
-    }
-    else {
+    else
       adminAsDic.Add(ExtClaimTypes.EndPointPermissions, admin.Permissions.ToList().CreatePermissionString());
-
-    }
 
     var expireMinutes = JwtOption.This.TokenExpireMinutes;
     var date = DateTime.UtcNow.AddMinutes(expireMinutes);

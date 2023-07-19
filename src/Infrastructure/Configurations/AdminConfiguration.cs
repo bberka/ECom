@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECom.Infrastructure.Configurations;
 
 public class AdminConfiguration : IEntityTypeConfiguration<Admin>
 {
-  public void Configure(EntityTypeBuilder<Admin> builder) {
-    builder.Navigation(x => x.Role).AutoInclude();
-    builder.HasData(_admins);
-
-  }
   private static readonly List<Admin> _admins = new() {
     new Admin {
       EmailAddress = "owner@mail.com",
@@ -18,8 +15,7 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
       Id = 1,
       DeletedDate = null,
       RegisterDate = ConstantMgr.DefaultDateTime,
-      TwoFactorKey = null,
-
+      TwoFactorKey = null
     },
     new Admin {
       EmailAddress = "admin@mail.com",
@@ -29,7 +25,7 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
       Id = 2,
       DeletedDate = null,
       RegisterDate = ConstantMgr.DefaultDateTime,
-      TwoFactorKey = null,
+      TwoFactorKey = null
     },
     new Admin {
       EmailAddress = "mod@admin.com",
@@ -39,8 +35,12 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
       Id = 3,
       DeletedDate = null,
       RegisterDate = ConstantMgr.DefaultDateTime,
-      TwoFactorKey = null,
+      TwoFactorKey = null
     }
-
   };
+
+  public void Configure(EntityTypeBuilder<Admin> builder) {
+    builder.Navigation(x => x.Role).AutoInclude();
+    builder.HasData(_admins);
+  }
 }

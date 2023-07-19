@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Services;
+﻿using ECom.Domain.Entities;
+
+namespace ECom.Application.Services;
 
 public class ValidationService : IValidationService
 {

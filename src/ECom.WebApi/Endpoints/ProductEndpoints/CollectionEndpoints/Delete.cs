@@ -15,7 +15,7 @@ public class Delete : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
   }
 
   [HttpDelete]
-  [EndpointSwaggerOperation(typeof(Delete),"Deletes product collection")]
+  [EndpointSwaggerOperation(typeof(Delete), "Deletes product collection")]
   public override CustomResult Handle(int id) {
     var userId = HttpContext.GetUserId();
     var res = _collectionService.DeleteCollection(userId, id);

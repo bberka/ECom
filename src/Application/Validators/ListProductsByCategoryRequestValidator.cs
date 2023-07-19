@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.ProductDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class ListProductsByCategoryRequestValidator : AbstractValidator<ListProductsByCategoryRequest>,
   IValidator<ListProductsByCategoryRequest>

@@ -1,6 +1,5 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.UserDto;
-using ECom.Domain.Extensions;
+using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -19,8 +18,10 @@ public class UserService : IUserService
     _validationService = validationService;
   }
 
+
+
   public CustomResult RegisterUser(RegisterUserRequest model) {
-    var user = model.ToUserEntity();
+    var user = User.FromRegisterRequest(model);
     _unitOfWork.UserRepository.Insert(user);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(RegisterUser));
@@ -32,7 +33,8 @@ public class UserService : IUserService
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data!;
     var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
-    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal)) return DomainResult.NotFound(nameof(User)); //Or invalid password
+    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal))
+      return DomainResult.NotFound(nameof(User)); //Or invalid password
     if (user.TwoFactorType != 0) {
       //TODO: implement two factor
     }
@@ -73,20 +75,20 @@ public class UserService : IUserService
   }
 
 
-  public CustomResult ChangePassword(ChangePasswordRequest model) {
-    var userResult = GetUser(model.AuthenticatedUserId);
+  public CustomResult ChangePassword(int userId, ChangePasswordRequest model) {
+    var userResult = GetUser(userId);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
-    if (user.Password != model.EncryptedOldPassword) return DomainResult.NotFound("User");
-    user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
+    var encryptedPassword = model.NewPassword.ToEncryptedText();
+    if (user.Password != encryptedPassword) return DomainResult.NotFound("User");
+    user.Password = encryptedPassword;
     _unitOfWork.UserRepository.Update(user);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public CustomResult UpdateUser(UpdateUserRequest model) {
-    var userId = model.AuthenticatedUserId;
+  public CustomResult UpdateUser(int userId, UpdateUserRequest model) {
     if (userId < 1) throw new InvalidOperationException("UserNo can not be negative");
     var user = _unitOfWork.UserRepository.GetById(userId);
     if (user is null) return DomainResult.NotFound(nameof(User));

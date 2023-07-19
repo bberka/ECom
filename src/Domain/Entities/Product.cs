@@ -6,6 +6,7 @@ public class Product : IEntity
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
+
   public bool IsValid { get; set; }
   public DateTime RegisterDate { get; set; } = DateTime.Now;
   public DateTime? DeleteDate { get; set; }

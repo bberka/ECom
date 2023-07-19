@@ -1,5 +1,4 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.RoleDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -14,7 +13,7 @@ public class RoleService : IRoleService
   public List<RoleDto> GetRolesWithPermissions() {
     return _unitOfWork.RoleRepository
       .Get()
-      .Select(x => new RoleDto(x))
+      .Select(x => Role.ToDto(x))
       .ToList();
   }
 
@@ -42,7 +41,7 @@ public class RoleService : IRoleService
   }
 
   public bool RoleExists(int roleId) {
-    if(roleId < 1) return false;
+    if (roleId < 1) return false;
     return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
   }
 }

@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.AdminDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class AddAdminRequestValidator : AbstractValidator<AddAdminRequest>, IValidator<AddAdminRequest>
 {

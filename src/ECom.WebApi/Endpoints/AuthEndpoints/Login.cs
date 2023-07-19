@@ -1,6 +1,6 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain;
-using ECom.Domain.DTOs.UserDto;
+using ECom.Shared.DTOs;
+using ECom.Shared.DTOs.UserDto;
 
 namespace ECom.WebApi.Endpoints.AuthEndpoints;
 
@@ -8,13 +8,14 @@ namespace ECom.WebApi.Endpoints.AuthEndpoints;
 [EndpointRoute(typeof(Login))]
 public class Login : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<CustomResult<UserLoginResponse>>
 {
-  private readonly IUserJwtAuthenticator _userJwtAuthenticator;
   private readonly ILogService _logService;
+  private readonly IUserJwtAuthenticator _userJwtAuthenticator;
 
-  public Login(IUserJwtAuthenticator userJwtAuthenticator,ILogService logService) {
+  public Login(IUserJwtAuthenticator userJwtAuthenticator, ILogService logService) {
     _userJwtAuthenticator = userJwtAuthenticator;
     _logService = logService;
   }
+
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Login), "Login a user")]
   public override CustomResult<UserLoginResponse> Handle(LoginRequest request) {

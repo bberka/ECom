@@ -1,4 +1,5 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Entities;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.FavoriteEndpoints;
 
@@ -15,8 +16,9 @@ public class List : EndpointBaseSync.WithRequest<ushort>.WithResult<List<Favorit
     _favoriteProductService = favoriteProductService;
     _logService = logService;
   }
+
   [HttpGet]
-  [EndpointSwaggerOperation(typeof(List),"Lists favorite products")]
+  [EndpointSwaggerOperation(typeof(List), "Lists favorite products")]
   public override List<FavoriteProduct> Handle(ushort page) {
     var userId = HttpContext.GetUserId();
     var res = _favoriteProductService.GetFavoriteProducts(userId, page);

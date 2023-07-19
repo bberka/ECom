@@ -1,7 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("Users", Schema = "ECPrivate")]
 public class User : IEntity
@@ -94,4 +91,22 @@ public class User : IEntity
   public virtual int TotalLoginCount => UserLogs?
     .Where(x => x.OperationName == "Auth.Login" && x.Rv == 0 && x.Params.Contains(EmailAddress))
     .Count() ?? 0;
+
+  public static User FromRegisterRequest(RegisterUserRequest request) {
+    return new User {
+      CitizenShipNumber = request.CitizenshipNumber,
+      RegisterDate = DateTime.Now,
+      DeletedDate = null,
+      EmailAddress = request.EmailAddress,
+      PhoneNumber = request.PhoneNumber,
+      Password = request.Password.ToEncryptedText(),
+      IsEmailVerified = false,
+      IsValid = true,
+      TaxNumber = request.TaxNumber,
+      TwoFactorType = 0,
+      Culture = "en",
+      FirstName = request.FirstName,
+      LastName = request.LastName
+    };
+  }
 }

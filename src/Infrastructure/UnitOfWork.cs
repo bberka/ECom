@@ -1,4 +1,5 @@
-﻿using ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
+using ECom.Infrastructure.Repository;
 
 namespace ECom.Infrastructure;
 
@@ -51,6 +52,8 @@ public class UnitOfWork : IUnitOfWork
     UserLogRepository = new UserLogRepository(_dbContext);
   }
 
+  public IGenericRepository<SubCategory> SubCategoryRepository { get; }
+
   public IGenericRepository<Address> AddressRepository { get; }
   public IGenericRepository<Admin> AdminRepository { get; }
   public IGenericRepository<AdminLog> AdminLogRepository { get; }
@@ -86,7 +89,6 @@ public class UnitOfWork : IUnitOfWork
   public IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
   public IGenericRepository<StockChange> StockChangeRepository { get; }
   public IGenericRepository<LocalizationString> LocalizationStringRepository { get; }
-  public IGenericRepository<SubCategory> SubCategoryRepository { get; }
   public IGenericRepository<Supplier> SupplierRepository { get; }
   public IGenericRepository<User> UserRepository { get; }
   public IGenericRepository<UserLog> UserLogRepository { get; }

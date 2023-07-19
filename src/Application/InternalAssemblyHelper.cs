@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
+﻿using System.Text;
 
 namespace ECom.Application;
 
@@ -18,18 +17,23 @@ internal static class InternalAssemblyHelper
     if (controller.Equals(Endpoints, StringComparison.OrdinalIgnoreCase)) return Array.Empty<string>();
     return controller.Trim('/').Split("/").Select(x => x.RemoveText(Endpoints)).ToArray();
   }
-  internal static string ConvertDotsToSlash(string? str) => str?.Replace(".", "/") ?? "";
+
+  internal static string ConvertDotsToSlash(string? str) {
+    return str?.Replace(".", "/") ?? "";
+  }
 
   internal static string CreateActionName(string baseActionName, string[] folders) {
-    var actionName = baseActionName?.RemoveText(Endpoint).RemoveText("/") ?? throw new ArgumentNullException(nameof(baseActionName));
-    if (RemoveControllerNameFromActionName) {
+    var actionName = baseActionName?.RemoveText(Endpoint).RemoveText("/") ??
+                     throw new ArgumentNullException(nameof(baseActionName));
+    if (RemoveControllerNameFromActionName)
       foreach (var folder in folders) {
         if (folder.Length == 0) continue;
         actionName = actionName.Replace(folder, "", StringComparison.OrdinalIgnoreCase);
       }
-    }
+
     return actionName;
   }
+
   internal static string BuildRoute(string[] folders, string actionName, params string[] prefixes) {
     var sb = new StringBuilder();
     sb.Append("/");

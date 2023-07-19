@@ -1,4 +1,4 @@
-﻿using ECom.Domain.DTOs.RoleDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 

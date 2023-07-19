@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.CategoryDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class UpdateCategoryRequestValidator : AbstractValidator<AddOrUpdateCategoryRequest>,
   IValidator<AddOrUpdateCategoryRequest>
@@ -12,7 +10,5 @@ public class UpdateCategoryRequestValidator : AbstractValidator<AddOrUpdateCateg
 
     RuleFor(x => x.Name)
       .Length(2);
-
-
   }
 }

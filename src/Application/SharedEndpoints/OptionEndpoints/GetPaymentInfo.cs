@@ -1,7 +1,4 @@
-﻿using Ardalis.ApiEndpoints;
-using ECom.Application.Attributes;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.SharedEndpoints.OptionEndpoints;
 
@@ -9,17 +6,15 @@ namespace ECom.Application.SharedEndpoints.OptionEndpoints;
 [EndpointRoute(typeof(GetPaymentInfo))]
 public class GetPaymentInfo : EndpointBaseSync.WithoutRequest.WithResult<List<PaymentOption>>
 {
-    private readonly IOptionService _optionService;
+  private readonly IOptionService _optionService;
 
-    public GetPaymentInfo(IOptionService optionService)
-    {
-        _optionService = optionService;
-    }
-    [HttpGet]
-    [EndpointSwaggerOperation(typeof(GetPaymentInfo), "Gets payment information")]
-    public override List<PaymentOption> Handle()
-    {
-        return _optionService.ListPaymentOptions();
+  public GetPaymentInfo(IOptionService optionService) {
+    _optionService = optionService;
+  }
 
-    }
+  [HttpGet]
+  [EndpointSwaggerOperation(typeof(GetPaymentInfo), "Gets payment information")]
+  public override List<PaymentOption> Handle() {
+    return _optionService.ListPaymentOptions();
+  }
 }

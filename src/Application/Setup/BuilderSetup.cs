@@ -1,18 +1,16 @@
-﻿using ECom.Application.Filters;
+﻿using System.Text;
+using ECom.Application.Filters;
 using ECom.Application.Manager;
+using ECom.Application.SharedEndpoints.OptionEndpoints;
+using ECom.Application.Validators;
+using ECom.Domain;
+using ECom.Domain.Lib;
+using ECom.Shared.Constants;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using ECom.Application.Validators;
-using Microsoft.AspNetCore.Http;
-using ECom.Domain.Lib;
-using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
-using ECom.Application.SharedEndpoints.OptionEndpoints;
-using ECom.Domain.DTOs.AdminDto;
-using ECom.Domain.DTOs.UserDto;
 
 namespace ECom.Application.Setup;
 
@@ -21,11 +19,7 @@ public static class BuilderSetup
   private const int SessionTimeOutSeconds = int.MaxValue;
 
   public static WebApplicationBuilder Setup(this WebApplicationBuilder builder) {
-    builder.Services.AddControllers(x => {
-      x.Filters.Add(new ExceptionHandleFilter());
-
-
-    }).ConfigureApiBehaviorOptions(
+    builder.Services.AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); }).ConfigureApiBehaviorOptions(
       options => {
         options.InvalidModelStateResponseFactory = c => {
           var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
@@ -61,7 +55,7 @@ public static class BuilderSetup
     });
 
     builder.Services
-     .AddAuthentication(op => {
+      .AddAuthentication(op => {
         op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -119,9 +113,7 @@ public static class BuilderSetup
         }
       });
     });
-    builder.Services.AddSwaggerGen(c => {
-      c.EnableAnnotations();
-    });
+    builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
     builder.Services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
     builder.Services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();

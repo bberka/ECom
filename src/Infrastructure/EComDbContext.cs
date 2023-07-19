@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using ECom.Domain.Entities;
 using ECom.Infrastructure.Configurations;
 using Microsoft.Extensions.Logging;
 
@@ -6,7 +7,6 @@ namespace ECom.Infrastructure;
 
 public class EComDbContext : DbContext
 {
-
   public DbSet<Image> Images { get; set; }
 
   public DbSet<StockChange> StockChanges { get; set; }
@@ -26,7 +26,9 @@ public class EComDbContext : DbContext
 
 
   public DbSet<Category> Categories { get; set; }
+
   public DbSet<LocalizationString> LocalizationStrings { get; set; }
+
   //public DbSet<SubCategory> SubCategories { get; set; }
   public DbSet<ProductCategory> ProductSubCategories { get; set; }
 
@@ -86,10 +88,11 @@ public class EComDbContext : DbContext
     //}
     try {
       context.Database.Migrate();
-    } catch {
+    }
+    catch {
       //ignored
     }
-    context.Dispose();
 
+    context.Dispose();
   }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Serilog;
-using System.Diagnostics;
+﻿using ECom.Shared.Constants;
 
 namespace ECom.Application.Middlewares;
 
@@ -24,13 +22,14 @@ public class DebugUserAuthenticationMiddleware
       await _next(context);
       return;
     }
+
     var hasBearer = context.Request.Headers.TryGetValue("Authorization", out var bearer);
     if (!hasBearer) {
       var hasTokenInSession = context.Session.TryGetValue("user_debug_token", out var tokenInSession);
       if (!hasTokenInSession) {
         var adminResult = _userService.GetUser(1);
         if (adminResult.Status) {
-          var tokenResult = _userJwtAuthenticator.Authenticate(new LoginRequest() {
+          var tokenResult = _userJwtAuthenticator.Authenticate(new LoginRequest {
             Password = adminResult.Data.Password,
             EmailAddress = adminResult.Data.EmailAddress,
             IsHashed = true
@@ -45,7 +44,6 @@ public class DebugUserAuthenticationMiddleware
       else {
         context.Request.Headers.Add("Authorization", $"Bearer {tokenInSession}");
       }
-
     }
   }
 }

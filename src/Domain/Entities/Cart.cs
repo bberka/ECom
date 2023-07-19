@@ -1,8 +1,10 @@
-﻿namespace ECom.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(UserId), nameof(ProductId))]
 [Table("Carts", Schema = "ECPrivate")]
-
 public class Cart : IEntity
 {
   public DateTime RegisterDate { get; set; } = DateTime.MaxValue;

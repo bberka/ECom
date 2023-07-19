@@ -1,9 +1,10 @@
-﻿namespace ECom.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace ECom.Domain.Entities;
 
 [Table("Categories", Schema = "ECPrivate")]
 [PrimaryKey(nameof(NameKey))]
-[Index(nameof(NameKey),nameof(ParentNameKey))]
+[Index(nameof(NameKey), nameof(ParentNameKey))]
 public class Category : IEntity
 {
   public bool IsValid { get; set; } = true;
@@ -15,5 +16,4 @@ public class Category : IEntity
   [MinLength(ConstantMgr.NameMinLength)]
   [MaxLength(ConstantMgr.NameMaxLength)]
   public string? ParentNameKey { get; set; }
-
 }

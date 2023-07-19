@@ -1,5 +1,5 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.ProductDto;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 
@@ -58,7 +58,7 @@ public class ProductService : IProductService
       .ToList();
   }
 
-  public CustomResult<int> AddProductComment(AddProductCommentRequest model) {
+  public CustomResult<int> AddProductComment(int userId, AddProductCommentRequest model) {
     var productResult = GetProduct(model.ProductId);
     if (!productResult.Status) return productResult.ToResult();
     //TODO: Check if user purchased the product
@@ -66,7 +66,7 @@ public class ProductService : IProductService
       ProductId = model.ProductId,
       Comment = model.Comment,
       RegisterDate = DateTime.Now,
-      UserId = model.AuthenticatedUserId,
+      UserId = userId,
       Star = model.Star
     };
     _unitOfWork.ProductCommentRepository.Insert(comment);

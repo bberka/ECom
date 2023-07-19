@@ -25,13 +25,10 @@ public class Order : IEntity
   public int DiscountCouponId { get; set; }
 
   public virtual DiscountCoupon DiscountCoupon { get; set; }
-  public OrderStatus OrderStatus { get; private set; } = OrderStatus.Pending;
+  public OrderStatus OrderStatus { get; } = OrderStatus.Pending;
 
   [ForeignKey("ProductId")]
   public int ProductId { get; set; }
 
   public virtual Product Product { get; set; }
-
-
-  
 }

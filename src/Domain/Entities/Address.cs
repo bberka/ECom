@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace ECom.Domain.Entities;
 
@@ -11,8 +13,8 @@ public class Address : IEntity
 
   public DateTime RegisterDate { get; set; }
 
+  [System.Text.Json.Serialization.JsonIgnore]
   [JsonIgnore]
-  [Newtonsoft.Json.JsonIgnore]
   public DateTime? DeleteDate { get; set; }
 
   [MinLength(ConstantMgr.NameMinLength)]

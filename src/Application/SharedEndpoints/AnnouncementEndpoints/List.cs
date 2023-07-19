@@ -1,8 +1,10 @@
-﻿namespace ECom.Application.SharedEndpoints.AnnouncementEndpoints;
+﻿using ECom.Domain.Entities;
+
+namespace ECom.Application.SharedEndpoints.AnnouncementEndpoints;
 
 [AllowAnonymous]
 [EndpointRoute(typeof(List))]
-public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Domain.Entities.Announcement>>
+public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Announcement>>
 {
   private readonly IAnnouncementService _announcementService;
 
@@ -13,7 +15,7 @@ public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Domain.Entit
   [HttpGet]
   [ResponseCache(Duration = 60)]
   [EndpointSwaggerOperation(typeof(List), "List all announcements")]
-  public override List<Domain.Entities.Announcement> Handle() {
+  public override List<Announcement> Handle() {
     return _announcementService.ListAnnouncements();
   }
 }

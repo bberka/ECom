@@ -16,4 +16,24 @@ public class Announcement : IEntity
   public DateTime RegisterDate { get; set; }
 
   public bool IsValid { get; set; }
+
+  public static Announcement FromDto(AddAnnouncementRequest request) {
+    return new Announcement {
+      Order = request.Order,
+      Message = request.Message,
+      RegisterDate = DateTime.Now,
+      IsValid = true
+    };
+  }
+
+  public static Announcement FromDto(UpdateAnnouncementRequest request) {
+    return new Announcement {
+      Order = request.Order,
+      Message = request.Message,
+      RegisterDate = DateTime.Now,
+      IsValid = true,
+      Id = request.Id
+    };
+  }
+
 }

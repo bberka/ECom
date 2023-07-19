@@ -1,16 +1,14 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.AdminDto;
 using ECom.Domain.Entities;
-using ECom.Domain.Extensions;
 
 namespace ECom.Application.Services;
 
 public class AdminService : IAdminService
 {
   private readonly IOptionService _optionService;
+  private readonly IRoleService _roleService;
   private readonly IUnitOfWork _unitOfWork;
   private readonly IValidationService _validationService;
-  private readonly IRoleService _roleService;
 
   public AdminService(
     IUnitOfWork unitOfWork,
@@ -38,7 +36,7 @@ public class AdminService : IAdminService
   public CustomResult<AdminDto> GetAdminDto(int id) {
     var adminQuery = _unitOfWork.AdminRepository
       .Get(x => x.Id == id)
-      .Select(x => AdminDto.FromEntity(x))
+      .Select(x => Admin.ToDto(x))
       .FirstOrDefault();
     if (adminQuery is null) return DomainResult.NotFound(nameof(Admin));
     if (adminQuery.DeletedDate.HasValue) return DomainResult.Invalid(nameof(Admin));
@@ -48,7 +46,7 @@ public class AdminService : IAdminService
   public CustomResult<AdminDto> GetAdminDto(string email) {
     var adminQuery = _unitOfWork.AdminRepository
       .Get(x => x.EmailAddress == email)
-      .Select(x => AdminDto.FromEntity(x))
+      .Select(x => Admin.ToDto(x))
       .FirstOrDefault();
     if (adminQuery is null) return DomainResult.NotFound(nameof(Admin));
     if (adminQuery.DeletedDate.HasValue) return DomainResult.Invalid(nameof(Admin));
@@ -69,11 +67,13 @@ public class AdminService : IAdminService
     if (!adminResult.Status) return adminResult;
     var admin = adminResult.Data!;
     var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
-    if (!admin.Password.Equals(encryptedPassword,StringComparison.OrdinalIgnoreCase)) return DomainResult.NotFound(nameof(Admin));
+    if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
+      return DomainResult.NotFound(nameof(Admin));
     if (admin.Permissions.Length == 0) return DomainResult.None(nameof(Permission));
     if (admin.TwoFactorType != 0) {
       //TODO: two factor authentication
     }
+
     return admin;
   }
 
@@ -98,7 +98,7 @@ public class AdminService : IAdminService
     if (!roleExist) return DomainResult.NotFound(nameof(Role));
     var adminExist = AdminExists(admin.EmailAddress);
     if (adminExist) return DomainResult.AlreadyExists(nameof(Admin.EmailAddress));
-    _unitOfWork.AdminRepository.Insert(admin.ToAdminEntity());
+    _unitOfWork.AdminRepository.Insert(Admin.FromDto(admin));
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddAdmin));
     return DomainResult.OkAdded(nameof(Admin));
@@ -112,17 +112,17 @@ public class AdminService : IAdminService
   }
 
 
-  public CustomResult ChangePassword(ChangePasswordRequest model) {
-    var admin = _unitOfWork.AdminRepository.GetById(model.AuthenticatedAdminId);
+  public CustomResult ChangePassword(int adminId, ChangePasswordRequest model) {
+    var admin = _unitOfWork.AdminRepository.GetById(adminId);
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
-    if (admin.Password != model.EncryptedOldPassword) return DomainResult.WrongPassword();
-    admin.Password = model.EncryptedNewPassword;
+    var password = model.NewPassword.ToEncryptedText();
+    if (admin.Password != password) return DomainResult.WrongPassword();
+    admin.Password = password;
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
     return DomainResult.OkUpdated("Password");
   }
-
 
 
   public List<Permission> GetValidPermissions() {
@@ -141,11 +141,9 @@ public class AdminService : IAdminService
     return _unitOfWork.AdminRepository
       .Get(x => x.Id != adminId)
       .Include(x => x.Role)
-      .Select(x => AdminDto.FromEntity(x))
+      .Select(x => Admin.ToDto(x))
       .ToList();
   }
-
-
 
 
   public CustomResult DeleteAdmin(int authorAdminId, int adminId) {
@@ -169,22 +167,23 @@ public class AdminService : IAdminService
       admin.Password = request.Password.ToEncryptedText();
       isAllSame = isAllSame && admin.Password == tempPass;
     }
+
     if (isAllSame) return DomainResult.OkNotChanged(nameof(Admin));
     if (admin.EmailAddress != request.EmailAddress) {
       var adminExist = AdminExists(request.EmailAddress);
       if (adminExist) return DomainResult.AlreadyExists(nameof(Admin));
       admin.EmailAddress = request.EmailAddress;
     }
+
     var roleExist = _roleService.RoleExists(request.RoleId);
     if (!roleExist) return DomainResult.NotFound(nameof(Role));
-    
+
     admin.RoleId = request.RoleId;
-    
+
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateAdmin));
     return DomainResult.OkUpdated(nameof(Admin));
-    
   }
 
   public CustomResult RecoverAdmin(int authorAdminId, int id) {

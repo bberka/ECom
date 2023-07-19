@@ -5,6 +5,7 @@ public class Option : IEntity
 {
   [Key]
   public bool IsRelease { get; set; } = true;
+
   public bool IsOpen { get; set; } = true;
   public bool IsAdminOpen { get; set; } = true;
   public bool RequireUpperCaseInPassword { get; set; } = false;

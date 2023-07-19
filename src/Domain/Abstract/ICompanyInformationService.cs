@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Abstract;
+﻿using ECom.Domain.Entities;
+
+namespace ECom.Domain.Abstract;
 
 public interface ICompanyInformationService
 {

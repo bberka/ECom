@@ -1,17 +1,18 @@
-﻿using System.Xml;
-using ECom.Domain;
+﻿using ECom.Domain.Entities;
+using ECom.Domain.Exceptions;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 
 public class OptionService : IOptionService
 {
   private const byte CACHE_REFRESH_INTERVAL_MINS = 10;
-  private readonly IMemoryCache _memoryCache;
-  private readonly IUnitOfWork _unitOfWork;
 
   private const string PAYMENT_OPTION_CACHE_KEY = "payment_option";
   private const string CARGO_OPTION_CACHE_KEY = "cargo_option";
   private const string SMTP_OPTION_CACHE_KEY = "smtp_option";
+  private readonly IMemoryCache _memoryCache;
+  private readonly IUnitOfWork _unitOfWork;
 
   public OptionService(IMemoryCache memoryCache, IUnitOfWork unitOfWork) {
     _memoryCache = memoryCache;

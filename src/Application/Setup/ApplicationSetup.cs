@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ECom.Application.Manager;
 using ECom.Application.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
@@ -31,22 +30,17 @@ public static class ApplicationSetup
     app.UseSwaggerUI();
     app.MapControllers();
     var callingAssembly = Assembly.GetCallingAssembly();
-    var isAdminApi = callingAssembly.FullName!.Contains("AdminApi");
+    var isAdminApi = callingAssembly.FullName!.Contains("AdminBlazor.Server");
     var isWebApi = callingAssembly.FullName!.Contains("WebApi");
-    if (isAdminApi) {
+    if (isAdminApi)
       app.UseMiddleware<DebugAdminAuthenticationMiddleware>();
-    }
-    else if (isWebApi) {
-      app.UseMiddleware<DebugUserAuthenticationMiddleware>();
-    }
-
+    else if (isWebApi) app.UseMiddleware<DebugUserAuthenticationMiddleware>();
 
 
     app.UseAuthentication();
     app.UseAuthorization();
 
 
- 
     app.UseMiddleware<LoggingMiddleware>();
     app.UseMiddleware<MaintenanceCheckMiddleware>();
 

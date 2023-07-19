@@ -12,7 +12,7 @@ public class UserLog : IEntity
   public int Severity { get; set; }
 
   [MaxLength(32)]
-  public string OperationName { get; set; }
+  public string OperationName { get; set; } = null!;
 
   [MaxLength(64)]
   public string ErrorCode { get; set; } = "None";
@@ -20,7 +20,7 @@ public class UserLog : IEntity
   public int Rv { get; set; } = -1;
 
   [MaxLength(32)]
-  public string RemoteIpAddress { get; set; }
+  public string RemoteIpAddress { get; set; } = null!;
 
   [MaxLength(32)]
   public string? XReal_IpAddress { get; set; }

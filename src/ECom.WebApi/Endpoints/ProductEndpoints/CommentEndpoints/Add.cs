@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.DTOs.ProductDto;
+using ECom.Shared.DTOs.ProductDto;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CommentEndpoints;
 
@@ -7,7 +7,6 @@ namespace ECom.WebApi.Endpoints.ProductEndpoints.CommentEndpoints;
 [EndpointRoute(typeof(Add))]
 public class Add : EndpointBaseSync.WithRequest<AddProductCommentRequest>.WithResult<CustomResult>
 {
-  
   private readonly ILogService _logService;
   private readonly IProductService _productService;
 
@@ -17,12 +16,13 @@ public class Add : EndpointBaseSync.WithRequest<AddProductCommentRequest>.WithRe
     _productService = productService;
     _logService = logService;
   }
+
   [HttpPost]
-  [EndpointSwaggerOperation(typeof(Add),"Adds product comment")]
+  [EndpointSwaggerOperation(typeof(Add), "Adds product comment")]
   public override CustomResult Handle(AddProductCommentRequest request) {
-    var res = _productService.AddProductComment(request);
-    _logService.UserLog(res.ToResult(), request.AuthenticatedUserId, "ProductComment.Add",request.ToJsonString());
+    var authId = HttpContext.GetUserId();
+    var res = _productService.AddProductComment(authId, request);
+    _logService.UserLog(res.ToResult(), authId, "ProductComment.Add", request.ToJsonString());
     return res;
   }
-
 }

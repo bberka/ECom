@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.StockChangeDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class AddStockChangeRequestValidator : AbstractValidator<AddStockChangeRequest>,
   IValidator<AddStockChangeRequest>

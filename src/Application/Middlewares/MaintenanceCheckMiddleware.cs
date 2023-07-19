@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace ECom.Application.Middlewares;
+﻿namespace ECom.Application.Middlewares;
 
 public class MaintenanceCheckMiddleware
 {

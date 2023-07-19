@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.CategoryDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class CategoryUpdateRequestValidator : AbstractValidator<AddOrUpdateCategoryRequest>
 {
@@ -8,6 +6,5 @@ public class CategoryUpdateRequestValidator : AbstractValidator<AddOrUpdateCateg
     RuleFor(x => x.Name)
       .MinimumLength(3)
       .MinimumLength(64);
-  
   }
 }

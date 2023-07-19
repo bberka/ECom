@@ -1,5 +1,4 @@
-﻿using ECom.Domain.DTOs;
-using ECom.Domain.DTOs.UserDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 
@@ -11,6 +10,6 @@ public interface IUserService
   CustomResult<User> GetUser(int id);
   CustomResult<UserDto> LoginUser(LoginRequest model);
   CustomResult RegisterUser(RegisterUserRequest model);
-  CustomResult ChangePassword(ChangePasswordRequest model);
-  CustomResult UpdateUser(UpdateUserRequest model);
+  CustomResult ChangePassword(int userId, ChangePasswordRequest model);
+  CustomResult UpdateUser(int userId, UpdateUserRequest model);
 }

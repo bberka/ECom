@@ -1,5 +1,4 @@
-﻿using ECom.Domain.DTOs;
-using ECom.Domain.DTOs.AdminDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 
@@ -15,7 +14,7 @@ public interface IAdminService
   bool IsValidAdminAccount(int id);
   CustomResult<AdminDto> AdminLogin(LoginRequest model);
   CustomResult AddAdmin(AddAdminRequest admin);
-  CustomResult ChangePassword(ChangePasswordRequest model);
+  CustomResult ChangePassword(int authId, ChangePasswordRequest model);
 
   int GetAdminRoleId(int adminId);
 

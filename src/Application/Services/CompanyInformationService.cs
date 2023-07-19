@@ -1,13 +1,15 @@
-﻿using ECom.Domain;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 
 public class CompanyInformationService : ICompanyInformationService
 {
   private const byte CACHE_REFRESH_INTERVAL_MINS = 1;
+  private const string CACHE_KEY = "company_info";
   private readonly IMemoryCache _memoryCache;
   private readonly IUnitOfWork _unitOfWork;
-  private const string CACHE_KEY = "company_info";
+
   public CompanyInformationService(IMemoryCache memoryCache, IUnitOfWork unitOfWork) {
     _memoryCache = memoryCache;
     _unitOfWork = unitOfWork;

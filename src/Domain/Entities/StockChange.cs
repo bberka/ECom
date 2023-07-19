@@ -1,7 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("StockChanges", Schema = "ECPrivate")]
 public class StockChange : IEntity

@@ -1,5 +1,4 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.AnnouncementDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -26,7 +25,7 @@ public class AnnouncementService : IAnnouncementService
   public CustomResult AddAnnouncement(AddAnnouncementRequest data) {
     var existsSameMessage = _unitOfWork.AnnouncementRepository.Any(x => x.Message == data.Message);
     if (existsSameMessage) return DomainResult.AlreadyExists(nameof(Announcement));
-    _unitOfWork.AnnouncementRepository.Insert(data.ToEntity());
+    _unitOfWork.AnnouncementRepository.Insert(Announcement.FromDto(data));
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddAnnouncement));
     return DomainResult.OkAdded(nameof(Announcement));
@@ -40,28 +39,29 @@ public class AnnouncementService : IAnnouncementService
     return DomainResult.OkDeleted(nameof(Announcement));
   }
 
+  public List<Announcement> ListAnnouncements() {
+    return _unitOfWork.AnnouncementRepository.Get().ToList();
+  }
+
   public CustomResult EnableAnnouncement(uint id) {
     var data = _unitOfWork.AnnouncementRepository.GetById((int)id);
     if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    if(data.IsValid) return DomainResult.AlreadyEnabled(nameof(Announcement));
+    if (data.IsValid) return DomainResult.AlreadyEnabled(nameof(Announcement));
     data.IsValid = true;
     _unitOfWork.AnnouncementRepository.Update(data);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(EnableAnnouncement));
     return DomainResult.OkUpdated(nameof(Announcement));
   }
+
   public CustomResult DisableAnnouncement(uint id) {
     var data = _unitOfWork.AnnouncementRepository.GetById((int)id);
     if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    if(!data.IsValid) return DomainResult.AlreadyDisabled(nameof(Announcement));
+    if (!data.IsValid) return DomainResult.AlreadyDisabled(nameof(Announcement));
     data.IsValid = false;
     _unitOfWork.AnnouncementRepository.Update(data);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DisableAnnouncement));
     return DomainResult.OkUpdated(nameof(Announcement));
-  }
-
-  public List<Announcement> ListAnnouncements() {
-    return _unitOfWork.AnnouncementRepository.Get().ToList();
   }
 }

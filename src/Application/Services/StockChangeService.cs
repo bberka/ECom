@@ -1,5 +1,4 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.StockChangeDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 

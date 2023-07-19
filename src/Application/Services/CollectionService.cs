@@ -1,6 +1,5 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.CollectionDto;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 
@@ -12,10 +11,10 @@ public class CollectionService : ICollectionService
     _unitOfWork = unitOfWork;
   }
 
-  public CustomResult CreateCollection(AddCollectionRequest model) {
+  public CustomResult CreateCollection(int userId, AddCollectionRequest model) {
     var clc = new Collection {
       RegisterDate = DateTime.Now,
-      UserId = model.AuthenticatedUserId,
+      UserId = userId,
       Name = model.Name
     };
     _unitOfWork.CollectionRepository.Insert(clc);
@@ -27,7 +26,8 @@ public class CollectionService : ICollectionService
   public CustomResult DeleteCollection(int userId, int collectionId) {
     var collectionResult = GetCollection(userId, collectionId);
     if (!collectionResult.Status) return collectionResult;
-    var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId).Include(x =>x.Collection);
+    var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId)
+      .Include(x => x.Collection);
     if (collectionProducts.Any()) _unitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
     _unitOfWork.CollectionRepository.Delete(collectionId);
     var res = _unitOfWork.Save();
@@ -64,8 +64,8 @@ public class CollectionService : ICollectionService
     return _unitOfWork.CollectionRepository.Get(x => x.UserId == userId).ToList();
   }
 
-  public CustomResult UpdateCollection(UpdateCollectionRequest model) {
-    var collectionResult = GetCollection(model.AuthenticatedUserId, model.CollectionId);
+  public CustomResult UpdateCollection(int userId, UpdateCollectionRequest model) {
+    var collectionResult = GetCollection(userId, model.CollectionId);
     if (!collectionResult.Status) return collectionResult;
     collectionResult.Data!.Name = model.CollectionName;
     _unitOfWork.CollectionRepository.Update(collectionResult.Data);

@@ -1,5 +1,4 @@
-﻿using ECom.Domain;
-using Microsoft.AspNetCore.Http;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 

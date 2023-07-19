@@ -1,9 +1,4 @@
-﻿using ECom.Domain.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using Serilog.Events;
-using System.Linq;
-using Serilog;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 

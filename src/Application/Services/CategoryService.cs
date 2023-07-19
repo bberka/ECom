@@ -1,13 +1,11 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.CategoryDto;
-using ECom.Domain.Lib;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
 public class CategoryService : ICategoryService
 {
-  private readonly IUnitOfWork _unitOfWork;
   private readonly ILocalizationService _localizationService;
+  private readonly IUnitOfWork _unitOfWork;
 
   public CategoryService(IUnitOfWork unitOfWork, ILocalizationService localizationService) {
     _unitOfWork = unitOfWork;
@@ -15,13 +13,11 @@ public class CategoryService : ICategoryService
   }
 
 
-
   public List<Category> ListCategories() {
     return _unitOfWork.CategoryRepository
       .Get(x => x.IsValid == true)
       .ToList();
   }
-
 
 
   public CustomResult UpdateCategory(AddOrUpdateCategoryRequest model) {
@@ -64,7 +60,6 @@ public class CategoryService : ICategoryService
     if (!res) return DomainResult.DbInternalError(nameof(DeleteCategory));
     return DomainResult.OkDeleted(nameof(Category));
   }
-
 
 
   //public CustomResult DeleteSubCategory(uint id) {
@@ -125,7 +120,7 @@ public class CategoryService : ICategoryService
     var category = new Category {
       NameKey = model.NameKey,
       ParentNameKey = model.ParentNameKey,
-      IsValid = true,
+      IsValid = true
     };
     _unitOfWork.CategoryRepository.Insert(category);
     var res = _unitOfWork.Save();

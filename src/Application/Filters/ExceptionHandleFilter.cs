@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ECom.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Serilog;
 
 namespace ECom.Application.Filters;
 

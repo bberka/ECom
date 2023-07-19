@@ -1,4 +1,4 @@
-﻿using ECom.Domain;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 

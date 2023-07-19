@@ -28,6 +28,7 @@ public class ProductDetail : IEntity
   [MinLength(2)]
   [MaxLength(4)]
   public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+
   //virtual
   public virtual Product Product { get; set; }
 }

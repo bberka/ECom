@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ECom.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace ECom.Domain.Abstract;
 

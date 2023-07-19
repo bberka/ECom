@@ -1,7 +1,4 @@
-﻿using ECom.Application.CustomValidators;
-using ECom.Domain.DTOs.AdminDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class UpdateAdminAccountRequestValidator : AbstractValidator<UpdateAdminAccountRequest>,
   IValidator<UpdateAdminAccountRequest>
@@ -13,7 +10,5 @@ public class UpdateAdminAccountRequestValidator : AbstractValidator<UpdateAdminA
     //RuleFor(x => x.EmailAddress)
     //  .Must(validationService.NotUsedEmail_Admin)
     //  .WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
-
-
   }
 }
