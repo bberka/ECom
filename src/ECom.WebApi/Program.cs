@@ -1,5 +1,3 @@
-using ECom.Application.Middlewares;
-using ECom.Application.Setup;
 using ECom.WebApi.Middlewares;
 using Microsoft.OpenApi.Models;
 

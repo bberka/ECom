@@ -105,7 +105,7 @@ public class UnitOfWork : IUnitOfWork
       }
     }
     catch (Exception ex) {
-      Log.Fatal(ex,"InternalDbError!!!");
+      Log.Fatal(ex, "InternalDbError!!!");
     }
 
     transaction.Rollback();

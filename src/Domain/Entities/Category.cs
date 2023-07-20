@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("Categories", Schema = "ECPrivate")]
 [PrimaryKey(nameof(NameKey))]

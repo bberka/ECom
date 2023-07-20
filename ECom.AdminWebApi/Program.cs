@@ -1,4 +1,3 @@
-using ECom.Application.Setup;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
 EComLoggerHelper.Configure(true);

@@ -19,7 +19,6 @@ public class UserService : IUserService
   }
 
 
-
   public CustomResult RegisterUser(RegisterUserRequest model) {
     var user = User.FromRegisterRequest(model);
     _unitOfWork.UserRepository.Insert(user);

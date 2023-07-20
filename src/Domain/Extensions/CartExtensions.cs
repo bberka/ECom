@@ -54,5 +54,4 @@ public static class CartExtensions
       UserId = userId
     }).ToList();
   }
-
 }

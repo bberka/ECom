@@ -2,91 +2,91 @@
 <AuthorizeView>
 
 
-<RadzenHeader>
-  <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
-    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
-      <RadzenSidebarToggle Click="@ToggleSideBar" />
-      <RadzenLabel Text="ECOM" />
+  <RadzenHeader>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+      <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+        <RadzenSidebarToggle Click="@ToggleSideBar"/>
+        <RadzenLabel Text="ECOM"/>
+      </RadzenStack>
+      <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+        <ChooseLanguageDropDown></ChooseLanguageDropDown>
+        <NavBarUserMenu></NavBarUserMenu>
+      </RadzenStack>
     </RadzenStack>
-    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
-      <ChooseLanguageDropDown></ChooseLanguageDropDown>
-      <NavBarUserMenu></NavBarUserMenu>
-    </RadzenStack>
-  </RadzenStack>
-</RadzenHeader>
-<RadzenSidebar @bind-Expanded="@_sideBarExpanded">
+  </RadzenHeader>
+  <RadzenSidebar @bind-Expanded="@_sideBarExpanded">
 
 
-  <RadzenStack AlignItems="AlignItems.Center">
+    <RadzenStack AlignItems="AlignItems.Center">
 
-    <RadzenPanelMenu Style="width: 100%" Multiple="false">
-      <RadzenPanelMenuItem Text="@Lang.Get("dashboard")" Path="dashboard" Icon="home" />
+      <RadzenPanelMenu Style="width: 100%" Multiple="false">
+        <RadzenPanelMenuItem Text="@Lang.Get("dashboard")" Path="dashboard" Icon="home"/>
 
-      <RadzenPanelMenuItem Text="@Lang.Get("management")" Icon="account_box">
-        <RadzenPanelMenuItem Text="@Lang.Get("admins")" Path="management/admins" />
-        <RadzenPanelMenuItem Text="@Lang.Get("roles","and","permissions")" Path="management/roles" />
-      </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="@Lang.Get("management")" Icon="account_box">
+          <RadzenPanelMenuItem Text="@Lang.Get("admins")" Path="management/admins"/>
+          <RadzenPanelMenuItem Text="@Lang.Get("roles", "and", "permissions")" Path="management/roles"/>
+        </RadzenPanelMenuItem>
 
-      <RadzenPanelMenuItem Text="@Lang.Get("categories")" Path="categories" />
-      <RadzenPanelMenuItem Text="@Lang.Get("announcements")" Path="announcements" />
+        <RadzenPanelMenuItem Text="@Lang.Get("categories")" Path="categories"/>
+        <RadzenPanelMenuItem Text="@Lang.Get("announcements")" Path="announcements"/>
 
-      <RadzenPanelMenuItem Text="@Lang.Get("image","management")">
-        <RadzenPanelMenuItem Text="@Lang.Get("image","list")" Path="image/list" />
-        <RadzenPanelMenuItem Text="@Lang.Get("upload","image")" Path="image/upload" />
-      </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="@Lang.Get("image", "management")">
+          <RadzenPanelMenuItem Text="@Lang.Get("image", "list")" Path="image/list"/>
+          <RadzenPanelMenuItem Text="@Lang.Get("upload", "image")" Path="image/upload"/>
+        </RadzenPanelMenuItem>
 
-      <RadzenPanelMenuItem Text="@Lang.Get("options")">
-        <RadzenPanelMenuItem Text="@Lang.Get("general","options")" Path="options/general" />
-        <RadzenPanelMenuItem Text="@Lang.Get("smtp","options")" Path="options/smtp" />
-        <RadzenPanelMenuItem Text="@Lang.Get("payment","options")" Path="options/payment" />
-        <RadzenPanelMenuItem Text="@Lang.Get("cargo","options")" Path="options/cargo" />
-        <RadzenPanelMenuItem Text="@Lang.Get("company","info")" Path="options/company" />
-      </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="@Lang.Get("options")">
+          <RadzenPanelMenuItem Text="@Lang.Get("general", "options")" Path="options/general"/>
+          <RadzenPanelMenuItem Text="@Lang.Get("smtp", "options")" Path="options/smtp"/>
+          <RadzenPanelMenuItem Text="@Lang.Get("payment", "options")" Path="options/payment"/>
+          <RadzenPanelMenuItem Text="@Lang.Get("cargo", "options")" Path="options/cargo"/>
+          <RadzenPanelMenuItem Text="@Lang.Get("company", "info")" Path="options/company"/>
+        </RadzenPanelMenuItem>
 
 
-      <RadzenPanelMenuItem Text="Inputs" Icon="payment">
-        <RadzenPanelMenuItem Text="CheckBox" Path="checkbox" Icon="check_circle"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="TextBox" Path="textbox" Icon="input"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="TextArea" Path="textarea" Icon="description"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Password" Path="password" Icon="payment"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Numeric" Path="numeric" Icon="aspect_ratio"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="DatePicker" Path="datepicker" Icon="date_range"></RadzenPanelMenuItem>
-      </RadzenPanelMenuItem>
-      <RadzenPanelMenuItem Text="Data" Icon="save">
-        <RadzenPanelMenuItem Text="DataGrid" Path="datagrid" Icon="grid_on"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="DataList" Path="datalist" Icon="list"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="DropDown" Path="dropdown" Icon="dns"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="DropDownDataGrid" Path="dropdown-datagrid" Icon="receipt"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="ListBox" Path="listbox" Icon="view_list"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="TemplateForm" Path="templateform" Icon="line_style"></RadzenPanelMenuItem>
-      </RadzenPanelMenuItem>
-      <RadzenPanelMenuItem Text="Containers" Icon="account_box">
-        <RadzenPanelMenuItem Text="Tabs" Path="tabs" Icon="tab"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Panel" Path="panel" Icon="content_paste"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Fieldset" Path="fieldset" Icon="account_balance_wallet"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Card" Path="card" Icon="line_style"></RadzenPanelMenuItem>
-      </RadzenPanelMenuItem>
-      <RadzenPanelMenuItem Text="More">
-        <RadzenPanelMenuItem Text="Item1"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="Item2"></RadzenPanelMenuItem>
-        <RadzenPanelMenuItem Text="More items">
-          <RadzenPanelMenuItem Text="More sub items">
-            <RadzenPanelMenuItem Text="Item3"></RadzenPanelMenuItem>
-            <RadzenPanelMenuItem Text="Item4"></RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Inputs" Icon="payment">
+          <RadzenPanelMenuItem Text="CheckBox" Path="checkbox" Icon="check_circle"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="TextBox" Path="textbox" Icon="input"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="TextArea" Path="textarea" Icon="description"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Password" Path="password" Icon="payment"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Numeric" Path="numeric" Icon="aspect_ratio"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DatePicker" Path="datepicker" Icon="date_range"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Data" Icon="save">
+          <RadzenPanelMenuItem Text="DataGrid" Path="datagrid" Icon="grid_on"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DataList" Path="datalist" Icon="list"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DropDown" Path="dropdown" Icon="dns"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="DropDownDataGrid" Path="dropdown-datagrid" Icon="receipt"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="ListBox" Path="listbox" Icon="view_list"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="TemplateForm" Path="templateform" Icon="line_style"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="Containers" Icon="account_box">
+          <RadzenPanelMenuItem Text="Tabs" Path="tabs" Icon="tab"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Panel" Path="panel" Icon="content_paste"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Fieldset" Path="fieldset" Icon="account_balance_wallet"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Card" Path="card" Icon="line_style"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="More">
+          <RadzenPanelMenuItem Text="Item1"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="Item2"></RadzenPanelMenuItem>
+          <RadzenPanelMenuItem Text="More items">
+            <RadzenPanelMenuItem Text="More sub items">
+              <RadzenPanelMenuItem Text="Item3"></RadzenPanelMenuItem>
+              <RadzenPanelMenuItem Text="Item4"></RadzenPanelMenuItem>
+            </RadzenPanelMenuItem>
           </RadzenPanelMenuItem>
         </RadzenPanelMenuItem>
-      </RadzenPanelMenuItem>
-    </RadzenPanelMenu>
+      </RadzenPanelMenu>
 
-  </RadzenStack>
-
+    </RadzenStack>
 
 
-  <div class="rz-p-4">
-  </div>
-</RadzenSidebar>
+    <div class="rz-p-4">
+    </div>
+  </RadzenSidebar>
 
 </AuthorizeView>
+
 @code {
   bool _sideBarExpanded = true;
 
@@ -95,4 +95,3 @@
   }
 
 }
-

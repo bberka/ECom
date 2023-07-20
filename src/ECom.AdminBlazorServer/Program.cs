@@ -1,14 +1,11 @@
 using ECom.AdminBlazorServer.Common;
 using ECom.AdminBlazorServer.Data;
-using ECom.AdminBlazorServer.Middlewares;
 using ECom.Application.Middlewares;
 using ECom.Application.Setup;
 using ECom.Domain;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using Radzen;
 
 EComLoggerHelper.Configure(true);
@@ -31,13 +28,11 @@ builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, AdminAuthenticationStateProvider>();
 builder.Services.AddScoped<AdminAuthenticationStateProvider>();
-builder.Services.AddLocalization(x => {
-  x.ResourcesPath = "Resources";
-});
+builder.Services.AddLocalization(x => { x.ResourcesPath = "Resources"; });
 var cultures = builder.Configuration.GetSection("Cultures")
   .GetChildren()
   .ToDictionary(x => x.Key, x => x.Value);
-var supportedCulture = new SupportedCultures() {
+var supportedCulture = new SupportedCultures {
   Dictionary = cultures
 };
 builder.Services.AddSingleton(supportedCulture);
@@ -61,8 +56,6 @@ builder.Services.AddCookiePolicy(x => {
   x.MinimumSameSitePolicy = SameSiteMode.None;
   //x.HttpOnly = HttpOnlyPolicy.Always;
   x.CheckConsentNeeded = context => false;
-
-
 });
 builder.Services.ConfigureApplicationCookie(options => {
   options.Cookie.HttpOnly = true;
@@ -85,7 +78,6 @@ builder.Services.Configure<CookiePolicyOptions>(options => {
   options.CheckConsentNeeded = context => true;
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
-
 
 
 builder.AddApplicationServices();

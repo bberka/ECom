@@ -17,11 +17,11 @@ public class Permission : IEntity
   public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
 
   public static PermissionDto ToDto(Permission permission) {
-    return new PermissionDto() {
+    return new PermissionDto {
       Id = permission.Id,
       Name = permission.Name,
       Memo = permission.Memo,
-      IsValid = permission.IsValid,
+      IsValid = permission.IsValid
     };
   }
 }

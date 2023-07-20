@@ -8,12 +8,12 @@ namespace ECom.Infrastructure.Configurations;
 public class LocalizationStringConfiguration : IEntityTypeConfiguration<LocalizationString>
 {
   private static readonly List<LocalizationString> _data = new() {
-    new() {
+    new LocalizationString {
       Language = LanguageType.English,
       Key = "hello",
       Value = "Hello"
     },
-    new() {
+    new LocalizationString {
       Language = LanguageType.Turkish,
       Key = "hello",
       Value = "Merhaba"

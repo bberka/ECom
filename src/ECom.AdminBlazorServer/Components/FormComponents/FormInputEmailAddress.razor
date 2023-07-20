@@ -1,7 +1,7 @@
 ﻿@inherits RadzenTextBox
 <div class="mb-2">
   <RadzenFormField class="my-2 w-100" Component="EmailAddress" Text="@Loc["email_address"]" Variant="Variant.Filled">
-    <RadzenTextBox  @bind-Value="EmailAddress" Name="EmailAddress" ></RadzenTextBox>
+    <RadzenTextBox @bind-Value="EmailAddress" Name="EmailAddress"></RadzenTextBox>
   </RadzenFormField>
   <RadzenRequiredValidator Component="EmailAddress" Text="@Loc["required"].Format("name", Loc["email_address"])"></RadzenRequiredValidator>
   <RadzenEmailValidator Component="EmailAddress" Text="@Loc["invalid"].Format("name", Loc["email_address"])"></RadzenEmailValidator>
@@ -15,9 +15,8 @@
   [Parameter]
   public string EmailAddress {
     get => _value;
-    set
-    {
-      if (_value == value ) return;
+    set {
+      if (_value == value) return;
       _value = value;
       EmailAddressChanged.InvokeAsync(value);
     }

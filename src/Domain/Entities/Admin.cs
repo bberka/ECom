@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("Admins", Schema = "ECOperation")]
 public class Admin : IEntity
@@ -86,6 +84,7 @@ public class Admin : IEntity
       TwoFactor = (TwoFactorType)adminDto.TwoFactorType
     };
   }
+
   public static Admin FromDto(AddAdminRequest request) {
     return new Admin {
       RegisterDate = DateTime.Now,
@@ -94,9 +93,7 @@ public class Admin : IEntity
       TwoFactorType = 0,
       RoleId = request.RoleId,
       Password = request.Password.ToEncryptedText(),
-      TwoFactor = Shared.Constants.TwoFactorType.None,
-      
+      TwoFactor = Shared.Constants.TwoFactorType.None
     };
   }
-
 }

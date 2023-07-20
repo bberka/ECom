@@ -1,5 +1,4 @@
-﻿
-namespace ECom.Shared.DTOs.AnnouncementDto;
+﻿namespace ECom.Shared.DTOs.AnnouncementDto;
 
 public class UpdateAnnouncementRequest
 {
@@ -13,6 +12,4 @@ public class UpdateAnnouncementRequest
   public string Message { get; set; } = null!;
 
   public bool IsValid { get; set; }
-
-
 }

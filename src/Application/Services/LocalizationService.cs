@@ -32,8 +32,7 @@ public class LocalizationService : ILocalizationService
       .ToDictionary(x => x.Key, x => x.Select(y => new LocalizationStringDTO(y.Key, y.Value)).ToList()
         .AsReadOnly())
       .AsReadOnly();
-    return new(languagePacks);
-
+    return new LanguagePackResultDTO(languagePacks);
   }
 
   public CustomResult AddOrUpdateLocalization(LocalizationString localizationString) {

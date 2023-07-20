@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(UserId), nameof(ProductId))]
 [Table("Carts", Schema = "ECPrivate")]

@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Shared.DTOs.UserDto;
+﻿namespace ECom.Shared.DTOs.UserDto;
 
 public class RegisterUserRequest
 {
@@ -12,6 +10,4 @@ public class RegisterUserRequest
   public int? CitizenshipNumber { get; set; }
   public int? TaxNumber { get; set; }
   public int PreferredLanguage { get; set; }
-
-
 }

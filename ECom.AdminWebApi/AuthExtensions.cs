@@ -30,7 +30,7 @@ public static class AuthExtensions
   public static T GetClaim<T>(this HttpContext context, string key) {
     return context.User.FindFirst(key).Value.ConvertTo<T>();
   }
-  
+
   public static AdminDto GetAdmin(this HttpContext context) {
     try {
       var claims = context.User.Identities.FirstOrDefault()?.Claims.AsDictionary();
@@ -42,6 +42,4 @@ public static class AuthExtensions
       throw new NotAuthorizedException(AuthType.User);
     }
   }
-
- 
 }

@@ -1,5 +1,4 @@
-﻿
-namespace ECom.Shared.DTOs.AdminDto;
+﻿namespace ECom.Shared.DTOs.AdminDto;
 
 public class AdminDto
 {

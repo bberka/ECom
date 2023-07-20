@@ -35,5 +35,4 @@ public class Announcement : IEntity
       Id = request.Id
     };
   }
-
 }

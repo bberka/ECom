@@ -7,6 +7,4 @@ public class PermissionRole : IEntity
   public int PermissionId { get; set; }
   public Role Role { get; set; }
   public Permission Permission { get; set; }
-
-  
 }

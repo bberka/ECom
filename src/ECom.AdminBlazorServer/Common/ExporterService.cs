@@ -8,17 +8,13 @@ public static class ExporterService
     XML,
     CSV,
     JSON,
-    PDF,
-
+    PDF
   }
 
   public static async Task Export(ExportType type) {
-    await Task.Run(() => {
-
-    });
+    await Task.Run(() => { });
   }
 
   private static void ExportToXLS() {
-
   }
 }

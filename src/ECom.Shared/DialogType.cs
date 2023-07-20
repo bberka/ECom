@@ -1,18 +1,19 @@
 ﻿namespace ECom.Shared;
 
- public enum SimpleDialogType
+public enum SimpleDialogType
 {
   //Add,
   //Update,
   Delete,
   Disable,
   Enable,
-  Recover,
+
+  Recover
   //Edit,
 }
 
 public enum DialogType
 {
   Create,
-  Update,
+  Update
 }

@@ -1,7 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(UserId), nameof(ProductId))]
 [Table("FavoriteProducts", Schema = "ECPrivate")]

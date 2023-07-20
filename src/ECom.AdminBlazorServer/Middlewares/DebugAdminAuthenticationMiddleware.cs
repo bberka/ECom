@@ -1,6 +1,4 @@
 ﻿using ECom.Domain.Abstract;
-using ECom.Shared.Constants;
-using ECom.Shared.DTOs;
 
 namespace ECom.AdminBlazorServer.Middlewares;
 
@@ -17,7 +15,6 @@ public class DebugAdminAuthenticationMiddleware
   public async Task InvokeAsync(HttpContext context, IAdminJwtAuthenticator adminJwtAuthenticator,
     IAdminService adminService) {
     await _next(context);
-
 
 
     //if (!ConstantMgr.IsDevelopment()) {

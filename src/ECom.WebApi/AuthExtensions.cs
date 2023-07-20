@@ -16,7 +16,6 @@ public static class AuthExtensions
   }
 
 
-
   public static bool IsUserAuthenticated(this HttpContext context) {
     try {
       _ = context.GetUserId();
@@ -34,7 +33,6 @@ public static class AuthExtensions
   public static T GetClaim<T>(this HttpContext context, string key) {
     return context.User.FindFirst(key).Value.ConvertTo<T>();
   }
-  
 
 
   public static UserDto GetUser(this HttpContext context) {

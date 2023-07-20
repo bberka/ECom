@@ -4,7 +4,7 @@ namespace ECom.Domain.Abstract;
 
 public interface ICollectionService
 {
-  public CustomResult CreateCollection(int userId,AddCollectionRequest model);
+  public CustomResult CreateCollection(int userId, AddCollectionRequest model);
   public CustomResult<Collection> GetCollection(int collectionId);
   public CustomResult<Collection> GetCollection(int userId, int collectionId);
   public CustomResult UpdateCollection(int userId, UpdateCollectionRequest model);

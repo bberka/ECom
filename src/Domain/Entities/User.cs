@@ -25,7 +25,7 @@ public class User : IEntity
   public string EmailAddress { get; set; }
 
 
-  public bool IsEmailVerified { get; set; } = false;
+  public bool IsEmailVerified { get; set; }
 
 
   [MinLength(ConstantMgr.NameMinLength)]
@@ -42,8 +42,8 @@ public class User : IEntity
   [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
   public string PhoneNumber { get; set; }
 
-  public int? CitizenShipNumber { get; set; } = null;
-  public int? TaxNumber { get; set; } = null;
+  public int? CitizenShipNumber { get; set; }
+  public int? TaxNumber { get; set; }
 
   [MaxLength(512)]
   [JsonIgnore]
@@ -65,9 +65,9 @@ public class User : IEntity
   ///   2: Phone
   ///   3: Authy
   /// </summary>
-  public byte TwoFactorType { get; set; } = 0;
+  public byte TwoFactorType { get; set; }
 
-  public DateTime? DeletedDate { get; set; } = null;
+  public DateTime? DeletedDate { get; set; }
 
   [MinLength(2)]
   [MaxLength(4)]

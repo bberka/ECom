@@ -9,8 +9,9 @@ public class Packs : EndpointBaseSync.WithoutRequest.WithResult<LanguagePackResu
   public Packs(ILocalizationService localizationService) {
     _localizationService = localizationService;
   }
+
   [HttpGet]
-  [EndpointSwaggerOperation(typeof(Packs),"Gets language packs")]
+  [EndpointSwaggerOperation(typeof(Packs), "Gets language packs")]
   [ResponseCache(Duration = 60 * 60)]
   public override LanguagePackResultDTO Handle() {
     return _localizationService.GetLanguagePacks();

@@ -2,17 +2,18 @@
 
 public class StringFormatter
 {
+  private string? _formattedText;
+
   public StringFormatter(string text) {
     Text = text;
     Parameters = new Dictionary<string, object>();
   }
 
-  private string Text { get; set; }
-  private string? _formattedText; 
+  private string Text { get; }
 
-  private Dictionary<string, object> Parameters { get; set; }
+  private Dictionary<string, object> Parameters { get; }
 
-  
+
   public bool AddArgument(string key, object? value) {
     if (key.Contains(' ')) throw new InvalidOperationException(nameof(key) + " can not contain spaces");
     if (value is null) throw new InvalidOperationException(nameof(value) + " can not be null");
@@ -21,16 +22,16 @@ public class StringFormatter
     Parameters.Add(key, value); // example: @@age must be in the string
     return true;
   }
+
   public bool AddArgument(LocalizationParam param) {
     return AddArgument(param.TranslatedKey, param.Value);
   }
 
   public override string ToString() {
-    if(_formattedText is not null) return _formattedText;
+    if (_formattedText is not null) return _formattedText;
     _formattedText = Text;
-    foreach (var parameter in Parameters) {
+    foreach (var parameter in Parameters)
       _formattedText = _formattedText.Replace($"@@{parameter.Key}", parameter.Value.ToString());
-    }
     return _formattedText;
   }
 }

@@ -31,5 +31,4 @@ public static class ValidationSettings
 
   public const int MinProductDescriptionLength = 20;
   public const int MaxProductDescriptionLength = int.MaxValue;
-
 }

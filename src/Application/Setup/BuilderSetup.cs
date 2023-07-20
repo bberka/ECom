@@ -2,7 +2,6 @@
 using ECom.Application.Filters;
 using ECom.Application.Manager;
 using ECom.Application.SharedEndpoints;
-using ECom.Application.SharedEndpoints.OptionEndpoints;
 using ECom.Application.Validators;
 using ECom.Domain;
 using ECom.Domain.Lib;
@@ -10,10 +9,7 @@ using ECom.Shared.Constants;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 namespace ECom.Application.Setup;
 
@@ -25,28 +21,23 @@ public static class BuilderSetup
     var assembly = typeof(_SharedEndpointsAssembly).Assembly;
 
     builder.Services
-      .AddControllers(x => {
-        x.Filters.Add(new ExceptionHandleFilter());
-      })
+      .AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); })
       .ConfigureApiBehaviorOptions(
-      options => {
-        options.InvalidModelStateResponseFactory = c => {
-          var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
-          var errors = c.ModelState.Values
-            .Where(v => v.Errors.Count > 0)
-            .SelectMany(v => v.Errors)
-            .Select(v => v.ErrorMessage)
-            .ToArray();
-          return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName, errors.FirstOrDefault()));
-        };
-      })
+        options => {
+          options.InvalidModelStateResponseFactory = c => {
+            var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
+            var errors = c.ModelState.Values
+              .Where(v => v.Errors.Count > 0)
+              .SelectMany(v => v.Errors)
+              .Select(v => v.ErrorMessage)
+              .ToArray();
+            return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName, errors.FirstOrDefault()));
+          };
+        })
       .AddApplicationPart(assembly)
       .AddControllersAsServices();
     return builder;
   }
-
-  
-
 
 
   public static WebApplicationBuilder AddAuthenticationPolicies(this WebApplicationBuilder builder) {
@@ -67,7 +58,7 @@ public static class BuilderSetup
           ValidateAudience = JwtOption.This.ValidateAudience,
           RequireExpirationTime = true,
           ValidateLifetime = true,
-          ClockSkew = TimeSpan.Zero,
+          ClockSkew = TimeSpan.Zero
         };
       });
 
@@ -77,7 +68,6 @@ public static class BuilderSetup
     });
     return builder;
   }
-
 
 
   public static WebApplicationBuilder AddApplicationServices(this WebApplicationBuilder builder) {
@@ -108,6 +98,7 @@ public static class BuilderSetup
     builder.Services.AddScoped<ILocalizationService, LocalizationService>();
     return builder;
   }
+
   public static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder) {
     ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
     builder.Services.AddFluentValidationAutoValidation();

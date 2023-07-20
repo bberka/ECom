@@ -1,5 +1,4 @@
-﻿
-namespace ECom.Shared.DTOs.AnnouncementDto;
+﻿namespace ECom.Shared.DTOs.AnnouncementDto;
 
 public class AddAnnouncementRequest
 {
@@ -7,6 +6,4 @@ public class AddAnnouncementRequest
 
   [MaxLength(128)]
   public string Message { get; set; } = null!;
-
-
 }

@@ -1,5 +1,4 @@
-﻿
-namespace ECom.Shared.DTOs.RoleDto;
+﻿namespace ECom.Shared.DTOs.RoleDto;
 
 public class RoleDto
 {

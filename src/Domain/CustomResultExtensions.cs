@@ -4,7 +4,7 @@ namespace ECom.Domain;
 
 public static class CustomResultExtensions
 {
-  public  static ActionResult<CustomResult<T>> ToActionResult<T>(this CustomResult<T> result) {
+  public static ActionResult<CustomResult<T>> ToActionResult<T>(this CustomResult<T> result) {
     if (result.Status) return new OkObjectResult(result);
     return new BadRequestObjectResult(result);
   }

@@ -21,7 +21,7 @@ public static class DialogTypeExtensions
       //SimpleDialogType.Update => true,
       //SimpleDialogType.Edit => true,
       SimpleDialogType.Recover => true,
-      _ => false,
+      _ => false
     };
     return showOkButton;
   }
@@ -35,7 +35,7 @@ public static class DialogTypeExtensions
       //SimpleDialogType.Update => true,
       //SimpleDialogType.Edit => true,
       SimpleDialogType.Recover => true,
-      _ => false,
+      _ => false
     };
     return showCancelButton;
   }

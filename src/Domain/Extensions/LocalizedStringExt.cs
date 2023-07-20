@@ -11,6 +11,6 @@ public static class LocalizedStringExt
   //  return str.Replace($"@@{key}", value.ToString());
   //}
   public static LocalizedString Format(this LocalizedString str, string key, object value) {
-    return new LocalizedString(key, str.Value.Replace($"{{{key}}}", value.ToString()),false);
+    return new LocalizedString(key, str.Value.Replace($"{{{key}}}", value.ToString()), false);
   }
 }

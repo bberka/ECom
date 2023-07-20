@@ -2,5 +2,5 @@
 
 public class SupportedCultures
 {
-  public Dictionary<string,string> Dictionary { get; set; }
+  public Dictionary<string, string> Dictionary { get; set; }
 }

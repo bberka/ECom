@@ -14,6 +14,22 @@ public static class DomainResult
     return CustomResult.Warn(name, "not_changed");
   }
 
+  public static CustomResult NotSupported(string operationName) {
+    return CustomResult.Critical(operationName, "not_supported");
+  }
+
+  public static CustomResult NotSupported() {
+    return CustomResult.Critical("action", "not_supported");
+  }
+
+  public static CustomResult OkNone(string empty = "") {
+    return CustomResult.Ok("", "none");
+  }
+
+  public static CustomResult OkRecovered(string name) {
+    return CustomResult.Ok(name, "recovered");
+  }
+
   #region OK
 
   public static CustomResult Ok(string name) {
@@ -145,21 +161,4 @@ public static class DomainResult
   }
 
   #endregion
-
-  public static CustomResult NotSupported(string operationName) {
-    return CustomResult.Critical(operationName, "not_supported");
-  }
-  public static CustomResult NotSupported() {
-    return CustomResult.Critical("action","not_supported");
-  }
-
-  public static CustomResult OkNone(string empty = "") {
-    return CustomResult.Ok("", "none");
-
-  }
-
-  public static CustomResult OkRecovered(string name) {
-    return CustomResult.Ok(name, "recovered");
-
-  }
 }

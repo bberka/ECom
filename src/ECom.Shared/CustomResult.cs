@@ -1,5 +1,4 @@
-﻿
-namespace ECom.Shared;
+﻿namespace ECom.Shared;
 
 public enum CustomResultLevel
 {
@@ -31,8 +30,6 @@ public class CustomResult : CustomResult<CustomResult>
       //ValidationErrors = this.ValidationErrors
     };
   }
-
- 
 }
 
 public class CustomResult<T>
@@ -128,8 +125,6 @@ public class CustomResult<T>
       Exception = exception
     };
   }
-
-
 
 
   public CustomResult ToResult() {
