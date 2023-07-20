@@ -1,12 +1,23 @@
-﻿<RadzenButton class="mx-2" Icon="logout" Click="@Logout" ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Button" Text="@Loc["logout"]"/>
+﻿@*@inject AdminAuthenticationStateProvider Auth*@
 
+
+<RadzenProfileMenu>
+  <Template>
+    <RadzenGravatar Email="@_emailAddress">
+    </RadzenGravatar>
+  </Template>
+  <ChildContent>
+    <RadzenProfileMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
+    <RadzenProfileMenuItem Text="@Loc["logout"]" Icon="logout" Path="logout" />
+
+  </ChildContent>
+</RadzenProfileMenu>
 @code {
-
-  private async Task Logout() {
-    if (await AuthProvider.IsAuthenticated()) {
-      await AuthProvider.Logout();
-    }
-    Nav.NavigateTo(Nav.Uri, true);
+  private string _emailAddress;
+  protected override async Task OnInitializedAsync() {
+    var state = await AuthProvider.GetAuthenticationStateAsync();
+    _emailAddress = state.User.Identity.Name;
   }
+
 
 }

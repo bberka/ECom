@@ -1,5 +1,4 @@
 using ECom.AdminBlazorServer.Common;
-using ECom.AdminBlazorServer.Data;
 using ECom.Application.Middlewares;
 using ECom.Application.Setup;
 using ECom.Domain;
@@ -17,7 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthenticationCore();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<HttpClient>();
 
 

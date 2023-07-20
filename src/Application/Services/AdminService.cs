@@ -48,7 +48,7 @@ public class AdminService : IAdminService
       .Get(x => x.EmailAddress == email)
       .Select(x => Admin.ToDto(x))
       .FirstOrDefault();
-    if (adminQuery is null) return DomainResult.NotFound(nameof(Admin));
+    if (adminQuery is null) return DomainResult.NoAccountFound(nameof(Admin));
     if (adminQuery.DeletedDate.HasValue) return DomainResult.Invalid(nameof(Admin));
     return adminQuery;
   }
@@ -68,7 +68,7 @@ public class AdminService : IAdminService
     var admin = adminResult.Data!;
     var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
     if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
-      return DomainResult.NotFound(nameof(Admin));
+      return DomainResult.NoAccountFound(nameof(Admin));
     if (admin.Permissions.Length == 0) return DomainResult.None(nameof(Permission));
     if (admin.TwoFactorType != 0) {
       //TODO: two factor authentication

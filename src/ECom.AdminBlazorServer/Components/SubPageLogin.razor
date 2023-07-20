@@ -1,5 +1,5 @@
 ﻿@inject ICompanyInformationService CompanyInformationService
-@inject IAdminJwtAuthenticator AdminJwtAuthenticator
+@inject IAdminService AdminService
 @using EasMe.Extensions
 @using ECom.Shared.DTOs
 @using Microsoft.AspNetCore.Mvc
@@ -71,7 +71,7 @@
       return;
     }
 
-    var result = AdminJwtAuthenticator.Authenticate(LoginRequest);
+    var result = AdminService.AdminLogin(LoginRequest);
     if (result.Status) {
       await AuthProvider.Login(result.Data);
       NavigatePage();

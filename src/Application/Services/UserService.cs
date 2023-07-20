@@ -33,7 +33,7 @@ public class UserService : IUserService
     var user = userResult.Data!;
     var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
     if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal))
-      return DomainResult.NotFound(nameof(User)); //Or invalid password
+      return DomainResult.NoAccountFound(nameof(User)); //Or invalid password
     if (user.TwoFactorType != 0) {
       //TODO: implement two factor
     }
@@ -54,7 +54,7 @@ public class UserService : IUserService
 
   public CustomResult<User> GetUser(string email) {
     var user = _unitOfWork.UserRepository.GetFirstOrDefault(x => x.EmailAddress == email);
-    if (user is null) return DomainResult.NotFound(nameof(User));
+    if (user is null) return DomainResult.NoAccountFound(nameof(User));
     if (!user.IsValid) return DomainResult.Invalid(nameof(User));
     if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
     return user;

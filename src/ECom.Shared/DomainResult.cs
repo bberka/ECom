@@ -119,7 +119,9 @@ public static class DomainResult
   public static CustomResult TooShort(string name) {
     return CustomResult.Warn(name, "too_short");
   }
-
+  public static CustomResult NoAccountFound(string name) {
+    return CustomResult.Warn(name, "no_account_found");
+  }
   public static CustomResult TooLong(string name) {
     return CustomResult.Warn(name, "too_long");
   }

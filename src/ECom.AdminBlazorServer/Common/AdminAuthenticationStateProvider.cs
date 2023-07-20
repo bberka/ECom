@@ -52,7 +52,7 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
   public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
     //var identity = _anonymous.Identity as ClaimsIdentity;
     try {
-      var login = await _protectedSessionStorage.GetAsync<AdminLoginResponse>(AdminLoginKey);
+      var login = await _protectedSessionStorage.GetAsync<AdminDto>(AdminLoginKey);
       var session = login.Success ? login.Value : null;
       if (session == null) return new AuthenticationState(_anonymous);
       var principal = CreatePrincipalFromLoginResponse(session);
@@ -69,15 +69,14 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
     NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
   }
 
-  public async Task Login(AdminLoginResponse adminLoginResponse) {
-    if (adminLoginResponse == null) throw new ArgumentNullException(nameof(adminLoginResponse));
-    await _protectedSessionStorage.SetAsync(AdminLoginKey, adminLoginResponse);
-    var claimsPrincipal = CreatePrincipalFromLoginResponse(adminLoginResponse);
+  public async Task Login(AdminDto admin) {
+    if (admin == null) throw new ArgumentNullException(nameof(admin));
+    await _protectedSessionStorage.SetAsync(AdminLoginKey, admin);
+    var claimsPrincipal = CreatePrincipalFromLoginResponse(admin);
     NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
   }
 
-  private static ClaimsPrincipal CreatePrincipalFromLoginResponse(AdminLoginResponse adminLoginResponse) {
-    var admin = adminLoginResponse.Admin;
+  private static ClaimsPrincipal CreatePrincipalFromLoginResponse(AdminDto admin) {
     var claims = new List<Claim>();
     //claims.Add(new Claim("AdminOnly", "true"));
     claims.Add(new Claim(ClaimTypes.Role, admin.RoleName));
