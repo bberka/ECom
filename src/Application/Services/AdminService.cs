@@ -98,7 +98,8 @@ public class AdminService : IAdminService
     if (!roleExist) return DomainResult.NotFound(nameof(Role));
     var adminExist = AdminExists(admin.EmailAddress);
     if (adminExist) return DomainResult.AlreadyExists(nameof(Admin.EmailAddress));
-    _unitOfWork.AdminRepository.Insert(Admin.FromDto(admin));
+    var dbAdmin = Admin.FromDto(admin);
+    _unitOfWork.AdminRepository.Insert(dbAdmin);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddAdmin));
     return DomainResult.OkAdded(nameof(Admin));
@@ -194,6 +195,6 @@ public class AdminService : IAdminService
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(RecoverAdmin));
-    return DomainResult.OkUpdated(nameof(Admin));
+    return DomainResult.OkRecovered(nameof(Admin));
   }
 }

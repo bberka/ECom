@@ -1,5 +1,6 @@
 ﻿using ECom.Domain.Entities;
 using ECom.Infrastructure.Repository;
+using Serilog;
 
 namespace ECom.Infrastructure;
 
@@ -104,7 +105,7 @@ public class UnitOfWork : IUnitOfWork
       }
     }
     catch (Exception ex) {
-      //TODO Log Exception Handling message                      
+      Log.Fatal(ex,"InternalDbError!!!");
     }
 
     transaction.Rollback();

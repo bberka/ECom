@@ -10,7 +10,7 @@ public class ExceptionHandleFilter : IExceptionFilter
     context.HttpContext.Response.StatusCode = 500;
 
     var type = context.Exception.GetType();
-    if (type.Equals(typeof(NotAuthorizedException))) {
+    if (type == typeof(NotAuthorizedException)) {
       context.HttpContext.Response.StatusCode = 403;
       //Logging 
     }

@@ -29,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{C461629E-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6. AdminBlazorServer", "6. AdminBlazorServer", "{BD7EA34D-937C-4415-8AAE-969380BF8C6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.AdminBlazorServer", "src\ECom.AdminBlazorServer\ECom.AdminBlazorServer.csproj", "{D86C8256-AA21-4D12-B19F-676303226172}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.AdminBlazorServer", "src\ECom.AdminBlazorServer\ECom.AdminBlazorServer.csproj", "{D86C8256-AA21-4D12-B19F-676303226172}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.AdminWebApi", "ECom.AdminWebApi\ECom.AdminWebApi.csproj", "{B2C34D53-50E1-43B0-BDFB-7675FC0A7B82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.AdminWebApi", "ECom.AdminWebApi\ECom.AdminWebApi.csproj", "{B2C34D53-50E1-43B0-BDFB-7675FC0A7B82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

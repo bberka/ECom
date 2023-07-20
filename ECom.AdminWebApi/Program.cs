@@ -1,11 +1,14 @@
 using ECom.Application.Setup;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
+EComLoggerHelper.Configure(true);
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Setup();
+//builder.Setup();
 builder.Services.AddControllers(config => {
   var policy = new AuthorizationPolicyBuilder()
     .RequireAuthenticatedUser()
@@ -14,5 +17,5 @@ builder.Services.AddControllers(config => {
 });
 
 var app = builder.Build();
-app.Setup();
+//app.Setup();
 app.Run();

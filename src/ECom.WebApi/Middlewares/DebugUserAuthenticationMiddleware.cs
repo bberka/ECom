@@ -1,6 +1,7 @@
 ﻿using ECom.Shared.Constants;
+using ECom.Shared.DTOs;
 
-namespace ECom.Application.Middlewares;
+namespace ECom.WebApi.Middlewares;
 
 public class DebugUserAuthenticationMiddleware
 {

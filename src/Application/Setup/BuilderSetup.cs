@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ECom.Application.Filters;
 using ECom.Application.Manager;
+using ECom.Application.SharedEndpoints;
 using ECom.Application.SharedEndpoints.OptionEndpoints;
 using ECom.Application.Validators;
 using ECom.Domain;
@@ -9,6 +10,8 @@ using ECom.Shared.Constants;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -18,8 +21,14 @@ public static class BuilderSetup
 {
   private const int SessionTimeOutSeconds = int.MaxValue;
 
-  public static WebApplicationBuilder Setup(this WebApplicationBuilder builder) {
-    builder.Services.AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); }).ConfigureApiBehaviorOptions(
+  public static WebApplicationBuilder AddApplicationControllers(this WebApplicationBuilder builder) {
+    var assembly = typeof(_SharedEndpointsAssembly).Assembly;
+
+    builder.Services
+      .AddControllers(x => {
+        x.Filters.Add(new ExceptionHandleFilter());
+      })
+      .ConfigureApiBehaviorOptions(
       options => {
         options.InvalidModelStateResponseFactory = c => {
           var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
@@ -30,30 +39,17 @@ public static class BuilderSetup
             .ToArray();
           return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName, errors.FirstOrDefault()));
         };
-      });
-    var assembly = typeof(GetCargoInfo).Assembly;
-    builder.Services.AddControllers().AddApplicationPart(assembly).AddControllersAsServices();
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddHttpContextAccessor();
-    builder.Services.AddResponseCaching();
-    builder.Services.AddCors();
+      })
+      .AddApplicationPart(assembly)
+      .AddControllersAsServices();
+    return builder;
+  }
 
-    builder.Services.AddSession(options => {
-      options.IdleTimeout = TimeSpan.FromSeconds(SessionTimeOutSeconds);
-      options.Cookie.HttpOnly = true;
-      // Make the session cookie essential
-      options.Cookie.IsEssential = true;
-      options.Cookie.Name = ".Session.ECom";
-    });
-    builder.Services.AddMemoryCache();
-    builder.Services.AddDataProtection();
-    builder.Services.AddDistributedMemoryCache();
+  
 
-    builder.Services.Configure<CookiePolicyOptions>(options => {
-      options.CheckConsentNeeded = context => true;
-      options.MinimumSameSitePolicy = SameSiteMode.None;
-    });
 
+
+  public static WebApplicationBuilder AddAuthenticationPolicies(this WebApplicationBuilder builder) {
     builder.Services
       .AddAuthentication(op => {
         op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,7 +67,7 @@ public static class BuilderSetup
           ValidateAudience = JwtOption.This.ValidateAudience,
           RequireExpirationTime = true,
           ValidateLifetime = true,
-          ClockSkew = TimeSpan.Zero
+          ClockSkew = TimeSpan.Zero,
         };
       });
 
@@ -79,47 +75,15 @@ public static class BuilderSetup
       options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
       options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
     });
+    return builder;
+  }
 
-    builder.Services.AddSwaggerGen(c => {
-      c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECom.WebApi", Version = "v1" });
-      c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-        Description = @$"JWT Authorization header using the Bearer scheme. 
-                        {Environment.NewLine}{Environment.NewLine}Enter 'Your token in the text input below.
-                      {Environment.NewLine}{Environment.NewLine}Example: '12345abcdef'",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer"
-      });
-      c.SwaggerDoc("User", new OpenApiInfo { Title = "User API", Version = "v1" });
-      c.SwaggerDoc("Admin", new OpenApiInfo { Title = "Admin API", Version = "v1" });
-      c.DocInclusionPredicate((groupName, apiDescription) => {
-        // Filter the API descriptions based on the group name
-        if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) return true;
-        return false;
-      });
-      c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-        {
-          new OpenApiSecurityScheme {
-            Reference = new OpenApiReference {
-              Type = ReferenceType.SecurityScheme,
-              Id = "Bearer"
-            },
-            Scheme = "Http",
-            Name = "Bearer",
-            In = ParameterLocation.Header
-          },
-          new List<string>()
-        }
-      });
-    });
-    builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
+
+  public static WebApplicationBuilder AddApplicationServices(this WebApplicationBuilder builder) {
     builder.Services.AddScoped<IAdminJwtAuthenticator, AdminJwtAuthenticator>();
     builder.Services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();
-
     builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-
     builder.Services.AddDbContext<EComDbContext>();
     builder.Services.AddScoped<IOptionService, OptionService>();
     builder.Services.AddScoped<ICompanyInformationService, CompanyInformationService>();
@@ -142,8 +106,9 @@ public static class BuilderSetup
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IDebugService, DebugService>();
     builder.Services.AddScoped<ILocalizationService, LocalizationService>();
-
-
+    return builder;
+  }
+  public static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder) {
     ValidatorOptions.Global.LanguageManager = new ValidationLanguageManager();
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddScoped<IValidationService, ValidationService>();
@@ -152,7 +117,6 @@ public static class BuilderSetup
     builder.Services.AddTransient<IValidator<AddAdminRequest>, AddAdminRequestValidator>();
     builder.Services.AddTransient<IValidator<ChangePasswordRequest>, ChangePasswordRequestValidator>();
     builder.Services.AddTransient<IValidator<UpdateAdminAccountRequest>, UpdateAdminAccountRequestValidator>();
-
     return builder;
   }
 }

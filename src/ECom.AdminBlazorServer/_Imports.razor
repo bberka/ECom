@@ -1,4 +1,5 @@
-﻿@using System.Net.Http
+﻿
+@using System.Net.Http
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -11,3 +12,17 @@
 @using Radzen.Blazor
 @using Radzen
 @using Common
+@using ECom.AdminBlazorServer.Components
+@using ECom.Domain.Abstract
+@using ECom.Shared
+@using ECom.Domain
+@using ECom.AdminBlazorServer.Shared.Sub
+@using Microsoft.Extensions.Localization
+@using ECom.Domain.Extensions
+@using ECom.AdminBlazorServer.Components.FormComponents
+
+
+@inject AdminAuthenticationStateProvider AuthProvider
+@inject NavigationManager Nav
+@inject IStringLocalizer<App> Loc
+

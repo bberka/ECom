@@ -1,12 +1,16 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@attribute [Authorize]
+<CascadingAuthenticationState>
+  <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+      <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+      </RouteView>
+      <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
+      <PageTitle>@Loc["not_found"]</PageTitle>
+      <LayoutView Layout="@typeof(EmptyLayout)">
+        <RadzenText TextStyle="TextStyle.H5">@Loc["http_404"]</RadzenText>
+      </LayoutView>
     </NotFound>
-</Router>
+  </Router>
+</CascadingAuthenticationState>

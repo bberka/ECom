@@ -1,0 +1,222 @@
+﻿@page "/management/admins"
+@using ECom.Shared.DTOs.AdminDto
+@using ECom.Shared.DTOs.RoleDto
+@using ECom.Domain.Entities
+@inject IAdminService AdminService
+@inject IRoleService RoleService
+@inject IJSRuntime JSRuntime
+@inject DialogService DialogService
+@inject TooltipService tooltipService
+@inherits ResultDialog
+@attribute [Authorize]
+<PageTitle>Admins</PageTitle>
+
+
+<RadzenCard Variant="Variant.Filled">
+  <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
+    <RadzenText TextStyle="TextStyle.H4">Admins</RadzenText>
+    <RadzenButton Text="@Lang.Get("create")" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
+   </RadzenStack>
+  <CustomHr></CustomHr>
+<RadzenDataGrid @ref="grid" EmptyText="@Lang.Get("empty_table")" Data="@admins" TItem="AdminDto" Context="admin" PageNumbersCount="10" AllowAlternatingRows=false AllowFiltering=true AllowColumnResize=true FilterMode="FilterMode.Simple" AllowSorting=true PageSize="5" AllowPaging=true PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary=true ColumnWidth="auto" LogicalFilterOperator="LogicalFilterOperator.Or">
+  <Columns>
+    <RadzenDataGridColumn MinWidth="60px" Width="80px" TItem="AdminDto" Property="Id" Title="@Lang.Get("id")" TextAlign="TextAlign.Center" Frozen="true" />
+    <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="AdminDto" Property="RegisterDate" Title="@Lang.Get("register","date")" FormatString="{0:d}" />
+    <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="EmailAddress" Title="@Lang.Get("email_address")" />
+    @*<RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="TwoFactorType" Title="@Lang.Get("two_factor","type")" />*@
+    @*<RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="RoleId" Title="@Lang.Get("role","id")" />*@
+    <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="RoleName" Title="@Lang.Get("role","name")" />
+    <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="DeletedDate" Title="@Lang.Get("delete","date")" FormatString="{0:d}" />
+    <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Title="@Lang.Get("actions")">
+      <Template Context="admin">
+        <RadzenButton MouseEnter="@(args => ShowTooltip(args,Lang.Get("delete"), new TooltipOptions(){ Position = TooltipPosition.Bottom, CssClass = "text-danger"}))" Visible="!admin.DeletedDate.HasValue" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="(() => Show(SimpleDialogType.Delete,admin))">
+        </RadzenButton>
+        <RadzenButton MouseEnter="@(args => ShowTooltip(args,Lang.Get("recover"), new TooltipOptions(){ Position = TooltipPosition.Bottom, CssClass = "text-success"}))" Visible="admin.DeletedDate.HasValue" Icon="done" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Button" Click="(() => Show(SimpleDialogType.Recover,admin))">
+        </RadzenButton>
+        <RadzenButton MouseEnter="@(args => ShowTooltip(args,Lang.Get("edit"), new TooltipOptions(){ Position = TooltipPosition.Bottom, CssClass = "text-info"}))" Visible="!admin.DeletedDate.HasValue" Icon="edit" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Button" Click="(() => ShowEditDialog(DialogType.Update,admin))">
+        </RadzenButton>
+
+      </Template>
+
+
+    </RadzenDataGridColumn>
+  </Columns>
+</RadzenDataGrid>
+</RadzenCard>
+@code {
+
+  private List<AdminDto> admins;
+  private List<RoleDto> roles;
+  private Dictionary<int, string> rolesDic;
+  private RadzenDataGrid<AdminDto> grid;
+  private string _passwordClassName = "display: none; my-2";
+  private AddAdminRequest addAdmin = new AddAdminRequest();
+  private UpdateAdminAccountRequest updateAdmin = new UpdateAdminAccountRequest();
+  private int AuthenticatedAdminId = -1;
+  protected override async Task OnInitializedAsync() {
+    await LoadAdmins();
+    roles = RoleService.GetRolesWithPermissions();
+    rolesDic = roles.ToDictionary(r => r.Id, r => r.Name);
+  AuthenticatedAdminId = await AuthProvider.GetId();
+  }
+  async Task LoadAdmins() {
+    admins = AdminService.ListOtherAdmins(AuthenticatedAdminId);
+  }
+
+  async Task RefreshGrid() {
+    await grid.Reload();
+  }
+
+  async Task Show(SimpleDialogType type, AdminDto model) {
+    var dialogResult = await ShowSimpleDialog(type, model.EmailAddress);
+    if (dialogResult != true) {
+      return;
+    }
+    var actionResult = PerformSimpleAction(type, model);
+    if (actionResult.Status) {
+      LoadAdmins();
+      await RefreshGrid();
+    }
+    //await ShowResultDialog(actionResult);
+    ShowResultNotification(actionResult);
+  }
+
+
+
+  async Task ShowCreateDialog() {
+    var result = await DialogService.OpenAsync(Lang.Get("create"), ds =>
+      @<RadzenTemplateForm TItem="AddAdminRequest" Data="@addAdmin" InvalidSubmit="@OnInvalidSubmit" Submit="@(OnAddSubmit)">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <RadzenStack Orientation="Orientation.Vertical">
+          <div >
+            <RadzenFormField class="my-2 w-100" Component="@nameof(Admin.EmailAddress)" Text="@Lang.Get("email_address")" Variant="Variant.Filled">
+              <RadzenTextBox @bind-Value="@addAdmin.EmailAddress" Name="@nameof(Admin.EmailAddress)"/>
+            </RadzenFormField>
+            <RadzenEmailValidator Component="@nameof(Admin.EmailAddress)" Text="@Lang.Get("email_address", "is_invalid")" Visible="true"></RadzenEmailValidator>
+            <RadzenRequiredValidator Component="@nameof(Admin.EmailAddress)" Text="@Lang.Get("email_address", "is_required")"></RadzenRequiredValidator>
+          </div>
+          <div >
+            <RadzenFormField class="my-2 w-100" Component="@nameof(Admin.RoleId)" Text="@Lang.Get("role")" Variant="Variant.Filled">
+              <RadzenDropDown Name="@nameof(Admin.RoleId)" TValue="int" @bind-Value=@addAdmin.RoleId Data=@roles ValueProperty="@nameof(RoleDto.Id)" TextProperty="@nameof(RoleDto.Name)"/>
+            </RadzenFormField>
+            <RadzenRequiredValidator Component="@nameof(Admin.RoleId)" Text="@Lang.Get("role", "is_required")"></RadzenRequiredValidator>
+          </div>
+          <div >
+            <RadzenFormField class="my-2 w-100" Component="@nameof(Admin.Password)" Text="@Lang.Get("password")" Variant="Variant.Filled">
+              <RadzenPassword @bind-Value="@addAdmin.Password" Name="@nameof(Admin.Password)"/>
+            </RadzenFormField>
+            <RadzenRequiredValidator Component="@nameof(Admin.Password)" Text="@Lang.Get("password", "is_required")"></RadzenRequiredValidator>
+          </div>
+
+          <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenStack Orientation="Orientation.Horizontal">
+              <RadzenButton Visible="true" Text=@Lang.Get("create") Click="() => { }" ButtonType="ButtonType.Submit" Style="width: 120px;"/>
+              <RadzenButton Visible="true" Text=@Lang.Get("cancel") Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
+            </RadzenStack>
+          </RadzenStack>
+        </RadzenStack>
+      </RadzenTemplateForm>
+
+
+  , new DialogOptions() {
+        AutoFocusFirstElement = true,
+        Height = "auto",
+        Width = "330px",
+      });
+    async Task OnAddSubmit(AddAdminRequest model) {
+      //var actionResult = AdminService.AddAdmin(model);
+      //if (actionResult.Status) {
+      //  LoadAdmins();
+      //  await RefreshGrid();
+      //  addAdmin = new AddAdminRequest();
+      //}
+      //ShowResultNotification(actionResult);
+    }
+  }
+
+
+  async Task ShowEditDialog(DialogType type, AdminDto model) {
+    updateAdmin = new UpdateAdminAccountRequest {
+          EmailAddress = model.EmailAddress,
+          RoleId = model.RoleId,
+          Password = "",
+          Id = model.Id,
+          UpdatePassword = false
+        };
+    var result = await DialogService.OpenAsync(Lang.Get("edit"), ds =>
+    @<RadzenTemplateForm TItem="UpdateAdminAccountRequest" Data="@updateAdmin" Submit="@(OnUpdateSubmit)">
+      <RadzenStack Orientation="Orientation.Vertical">
+        <RadzenFormField Class="my-2" Text="@Lang.Get("email_address")" Variant="Variant.Filled">
+          <RadzenTextBox @bind-Value="@updateAdmin.EmailAddress" Name="EmailAddress" />
+          <RadzenEmailValidator Component="EmailAddress" Text="@Lang.Get("invalid_email")"></RadzenEmailValidator>
+        </RadzenFormField>
+        <RadzenFormField Class="my-2" Text="@Lang.Get("role")" Variant="Variant.Filled">
+          <RadzenDropDown TValue="int" @bind-Value=@updateAdmin.RoleId Data=@roles ValueProperty="@nameof(RoleDto.Id)" TextProperty="@nameof(RoleDto.Name)" />
+        </RadzenFormField>
+        <RadzenStack Class="my-2" AlignItems="AlignItems.Normal" JustifyContent="JustifyContent.Start" Orientation="Orientation.Horizontal">
+          <RadzenCheckBox @bind-Value="@updateAdmin.UpdatePassword" Name="@Lang.Get("update","password")" />
+          <RadzenLabel Text="@Lang.Get("update","password")" Component="@Lang.Get("update","password")" Style="margin-left: 8px; vertical-align: middle;" />
+
+        </RadzenStack>
+        <RadzenFormField Class="my-2" Component="UpdatePassword" Text="@Lang.Get("password")" Variant="Variant.Filled">
+          <RadzenPassword @bind-Value="@updateAdmin.Password" />
+        </RadzenFormField>
+
+        <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+          <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenButton Visible="true" Text=@Lang.Get("update") Click="() => { ds.Close(true);}" ButtonType="ButtonType.Submit" />
+            <RadzenButton Visible="true" Text=@Lang.Get("cancel") Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+          </RadzenStack>
+        </RadzenStack>
+      </RadzenStack>
+    </RadzenTemplateForm>
+
+  , new DialogOptions() {
+    AutoFocusFirstElement = true,
+    Height = "auto",
+    Width = "330px",
+
+  });
+
+    async Task OnUpdateSubmit(UpdateAdminAccountRequest updateAdminAccountRequest) {
+      var actionResult = AdminService.UpdateAdmin(AuthenticatedAdminId, updateAdminAccountRequest);
+      if (actionResult.Status) {
+        LoadAdmins();
+        await RefreshGrid();
+        updateAdmin = new UpdateAdminAccountRequest();
+
+      }
+      ShowResultNotification(actionResult);
+
+    }
+  }
+
+
+
+  void OnInvalidSubmit(FormInvalidSubmitEventArgs args) {
+    foreach (var error in args.Errors) {
+      //ShowNotification(NotificationSeverity.Warning,error);
+    }
+  }
+  private CustomResult PerformSimpleAction(SimpleDialogType type, AdminDto model) {
+    var actionResult = type switch {
+      SimpleDialogType.Delete => AdminService.DeleteAdmin(AuthenticatedAdminId, model.Id),
+      SimpleDialogType.Recover => AdminService.RecoverAdmin(AuthenticatedAdminId, model.Id),
+      _ => DomainResult.NotSupported(),
+    };
+    return actionResult;
+  }
+
+  void ShowTooltip(ElementReference elementReference, string text, TooltipOptions options = null) {
+    //tooltipService.Open(elementReference, text, options);
+  }
+
+}
+
+
+
+
+
+
+

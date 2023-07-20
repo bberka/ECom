@@ -1,0 +1,12 @@
+﻿<RadzenButton class="mx-2" Icon="logout" Click="@Logout" ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Button" Text="@Loc["logout"]" />
+
+@code {
+
+  private async Task Logout() {
+    if (await AuthProvider.IsAuthenticated()) {
+      await AuthProvider.Logout();
+    }
+    Nav.NavigateTo(Nav.Uri, forceLoad: true);
+  }
+
+}

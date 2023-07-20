@@ -46,11 +46,11 @@ public class CustomResult<T>
   public int HttpStatusCode => Status ? 200 : 400;
 
   public string LevelText => Level switch {
-    CustomResultLevel.Auto => "info",
     CustomResultLevel.Info => "info",
     CustomResultLevel.Warning => "warn",
     CustomResultLevel.Error => "error",
     CustomResultLevel.Critical => "critical",
+    CustomResultLevel.Auto => throw new NotSupportedException(),
     _ => throw new ArgumentOutOfRangeException()
   };
 
@@ -73,7 +73,8 @@ public class CustomResult<T>
       Status = true,
       ErrorCode = $"{name}.{error}",
       Exception = null,
-      Data = data
+      Data = data,
+      Level = CustomResultLevel.Info
     };
   }
 

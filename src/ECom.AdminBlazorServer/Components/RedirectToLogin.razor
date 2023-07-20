@@ -1,0 +1,14 @@
+﻿
+
+@code {
+  protected override Task OnInitializedAsync() {
+    var redirectPath = new Uri(Nav.Uri)
+      .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+    Nav.NavigateTo("/login");
+    if(string.IsNullOrEmpty(redirectPath) || redirectPath == "/")
+      Nav.NavigateTo("/login");
+    else
+      Nav.NavigateTo("/login?redirect=" + redirectPath);
+    return base.OnInitializedAsync();
+  }
+}

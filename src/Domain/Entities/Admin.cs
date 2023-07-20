@@ -92,7 +92,10 @@ public class Admin : IEntity
       DeletedDate = null,
       EmailAddress = request.EmailAddress,
       TwoFactorType = 0,
-      RoleId = request.RoleId
+      RoleId = request.RoleId,
+      Password = request.Password.ToEncryptedText(),
+      TwoFactor = Shared.Constants.TwoFactorType.None,
+      
     };
   }
 

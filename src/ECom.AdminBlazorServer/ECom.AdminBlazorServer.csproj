@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasMe" Version="4.0.3" />
     <PackageReference Include="FluentValidation" Version="11.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.9" />
     <PackageReference Include="Radzen.Blazor" Version="4.14.1" />
   </ItemGroup>
 
@@ -16,6 +20,10 @@
     <ProjectReference Include="..\Application\ECom.Application.csproj" />
     <ProjectReference Include="..\Domain\ECom.Domain.csproj" />
     <ProjectReference Include="..\ECom.Shared\ECom.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Announcement\" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,7 @@ public class JwtOption
     Issuer = ConfigHelper.GetString("JwtIssuer");
     Audience = ConfigHelper.GetString("JwtAudience");
     TokenExpireMinutes = ConfigHelper.Get<int>("JwtTokenExpireMinutes");
+    SessionExpireMinutes = ConfigHelper.Get<int>("SessionExpireMinutes");
     if (TokenExpireMinutes == 0) TokenExpireMinutes = 720;
   }
 
@@ -19,10 +20,11 @@ public class JwtOption
     }
   }
 
-  public string Secret { get; set; }
-  public string? Issuer { get; set; }
+  public string Secret { get; init; }
+  public string? Issuer { get; }
   public bool ValidateIssuer => !Issuer.IsNullOrEmpty();
-  public string? Audience { get; set; }
+  public string? Audience { get; }
   public bool ValidateAudience => !Audience.IsNullOrEmpty();
-  public int TokenExpireMinutes { get; set; } = 720;
+  public int TokenExpireMinutes { get; } = 720;
+  public int SessionExpireMinutes { get; } = 720;
 }
