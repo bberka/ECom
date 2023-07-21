@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20230718170257_admin-table-isvalid-change")]
-    partial class admintableisvalidchange
+    [Migration("20230721112656_string_length_update")]
+    partial class string_length_update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,60 +27,61 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Details")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Provience")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Town")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -91,37 +92,41 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DeletedDate")
+                    b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TwoFactorKey")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<byte>("TwoFactorType")
-                        .HasColumnType("tinyint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((byte)0);
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -132,59 +137,53 @@ namespace ECom.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"),
                             EmailAddress = "owner@mail.com",
                             Password = "25f9e794323b453885f5181f1b624d0b",
                             RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 1,
-                            TwoFactorType = (byte)0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EmailAddress = "admin@mail.com",
-                            Password = "25f9e794323b453885f5181f1b624d0b",
-                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 2,
-                            TwoFactorType = (byte)0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EmailAddress = "mod@admin.com",
-                            Password = "25f9e794323b453885f5181f1b624d0b",
-                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 3,
+                            RoleId = "Owner",
                             TwoFactorType = (byte)0
                         });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.AdminLog", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("AdminId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CFConnecting_IpAddress")
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ErrorCode")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<short>("HttpStatusCode")
+                        .HasColumnType("smallint");
+
+                    b.Property<byte>("Level")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((byte)1);
+
+                    b.Property<string>("OperationName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<string>("OperationName")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
                     b.Property<string>("Params")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QueryString")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
@@ -196,15 +195,13 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<string>("ResultErrors")
+                    b.Property<string>("RequestUrl")
+                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("Rv")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Severity")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserAgent")
                         .IsRequired()
@@ -224,14 +221,15 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Announcement", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -244,6 +242,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Announcements", "ECPrivate");
@@ -251,24 +252,29 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FreeShippingMinCost")
                         .HasColumnType("int");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -279,19 +285,22 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LastUpdateDate")
+                    b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "ProductId");
@@ -304,15 +313,27 @@ namespace ECom.Infrastructure.Migrations
             modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
                 {
                     b.Property<string>("NameKey")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("ParentNameKey")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("NameKey");
 
@@ -323,21 +344,19 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.CategoryDiscount", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CategoryNameKey")
+                    b.Property<string>("CategoryId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<byte>("DiscountPercent")
-                        .HasColumnType("tinyint");
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("DiscountPercent")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -347,29 +366,33 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryNameKey");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("CategoryDiscounts", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Collection", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -380,14 +403,11 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.CollectionProduct", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("CollectionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ProductId", "CollectionId");
 
@@ -398,90 +418,75 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.CompanyInformation", b =>
                 {
-                    b.Property<bool>("IsRelease")
+                    b.Property<bool>("Key")
                         .HasColumnType("bit");
 
                     b.Property<string>("CompanyAddress")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ContactEmail")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("DomainUrl")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("FacebookLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
-                    b.Property<int?>("FavIcoImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("FavIcoImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("InstagramLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
-                    b.Property<int?>("LogoImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LogoImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("WebApiUrl")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("WhatsApp")
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("YoutubeLink")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("IsRelease");
+                    b.HasKey("Key");
 
-                    b.ToTable("CompanyInformations", "ECPrivate");
+                    b.ToTable("CompanyInformation", "ECOperation");
 
                     b.HasData(
                         new
                         {
-                            IsRelease = true,
+                            Key = true,
                             CompanyAddress = "Address",
-                            CompanyName = "ECom.Company",
-                            ContactEmail = "contact@support.com",
-                            Description = "Company Description",
-                            DomainUrl = "www.company.com",
-                            FacebookLink = "facebook.com/company",
-                            InstagramLink = "instagram.com/company",
-                            PhoneNumber = "5526667788",
-                            WebApiUrl = "api.company.com",
-                            WhatsApp = "5526667788",
-                            YoutubeLink = "yt.com/company"
-                        },
-                        new
-                        {
-                            IsRelease = false,
-                            CompanyAddress = "Address",
-                            CompanyName = "ECom.Company",
+                            CompanyName = "CompanyName",
                             ContactEmail = "contact@support.com",
                             Description = "Company Description",
                             DomainUrl = "www.company.com",
@@ -496,21 +501,20 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DiscountCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DiscountCategoryNameKey")
+                    b.Property<string>("Coupon")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
-                    b.Property<byte>("DiscountPercent")
-                        .HasColumnType("tinyint");
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("DiscountPercent")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -520,18 +524,18 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiscountCategoryNameKey");
+                    b.HasIndex("Coupon");
 
                     b.ToTable("DiscountCoupons", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountNotify", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "ProductId");
 
@@ -542,28 +546,35 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.EmailVerifyToken", b =>
                 {
-                    b.Property<string>("Token")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("Token");
+                    b.Property<DateTime?>("UseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token");
 
                     b.HasIndex("UserId");
 
@@ -572,13 +583,16 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.FavoriteProduct", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "ProductId");
@@ -590,74 +604,48 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Image", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Culture")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.Property<byte[]>("Data")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Images", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.LocalizationString", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<byte>("Language")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Key", "Language");
-
-                    b.ToTable("LocalizationStrings", "ECPrivate");
-
-                    b.HasData(
-                        new
-                        {
-                            Key = "hello",
-                            Language = (byte)0,
-                            Value = "Hello"
-                        },
-                        new
-                        {
-                            Key = "hello",
-                            Language = (byte)1,
-                            Value = "Merhaba"
-                        });
-                });
-
             modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
                 {
-                    b.Property<bool>("IsRelease")
+                    b.Property<bool>("Key")
                         .HasColumnType("bit");
+
+                    b.Property<int>("DefaultCurrency")
+                        .HasColumnType("int");
 
                     b.Property<int>("EmailVerificationTimeoutMinutes")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsAdminOpen")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsOpen")
                         .HasColumnType("bit");
@@ -686,24 +674,19 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<bool>("RequireUpperCaseInPassword")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SelectedCurrency")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
                     b.Property<bool>("ShowStock")
                         .HasColumnType("bit");
 
-                    b.HasKey("IsRelease");
+                    b.HasKey("Key");
 
                     b.ToTable("Options", "ECOption");
 
                     b.HasData(
                         new
                         {
-                            IsRelease = true,
+                            Key = true,
+                            DefaultCurrency = 0,
                             EmailVerificationTimeoutMinutes = 30,
-                            IsAdminOpen = true,
                             IsOpen = true,
                             PagingProductCount = (byte)20,
                             PasswordResetTimeoutMinutes = 30,
@@ -713,45 +696,21 @@ namespace ECom.Infrastructure.Migrations
                             RequireNumberInPassword = false,
                             RequireSpecialCharacterInPassword = false,
                             RequireUpperCaseInPassword = false,
-                            SelectedCurrency = "Lira",
-                            ShowStock = false
-                        },
-                        new
-                        {
-                            IsRelease = false,
-                            EmailVerificationTimeoutMinutes = 30,
-                            IsAdminOpen = true,
-                            IsOpen = true,
-                            PagingProductCount = (byte)20,
-                            PasswordResetTimeoutMinutes = 30,
-                            ProductCommentImageLimit = (byte)5,
-                            ProductImageLimit = (byte)10,
-                            RequireLowerCaseInPassword = false,
-                            RequireNumberInPassword = false,
-                            RequireSpecialCharacterInPassword = false,
-                            RequireUpperCaseInPassword = false,
-                            SelectedCurrency = "Lira",
                             ShowStock = false
                         });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DiscountCouponId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DiscountCouponId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("DiscountedPrice")
                         .HasColumnType("float");
-
-                    b.Property<string>("Ip")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
 
                     b.Property<byte>("OrderStatus")
                         .ValueGeneratedOnAdd()
@@ -761,14 +720,17 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<double>("OriginalPrice")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -783,23 +745,35 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.PasswordResetToken", b =>
                 {
-                    b.Property<string>("Token")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("Token");
+                    b.Property<DateTime?>("UseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token");
 
                     b.HasIndex("UserId");
 
@@ -808,11 +782,9 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.PaymentOption", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ApiKey")
                         .HasMaxLength(512)
@@ -822,22 +794,15 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<string>("Culture")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecretKey")
                         .HasMaxLength(512)
@@ -846,13 +811,11 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<float>("Tax")
                         .HasColumnType("real");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
 
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .HasMaxLength(512)
@@ -865,242 +828,128 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Memo")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("Id")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions", "ECOperation");
+                    b.ToTable("Permissions", "ECEnum");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            IsValid = true,
-                            Name = "AdminUpdate"
+                            Id = "ManageAdmins"
                         },
                         new
                         {
-                            Id = 2,
-                            IsValid = true,
-                            Name = "AdminDisable"
+                            Id = "ManageCategories"
                         },
                         new
                         {
-                            Id = 3,
-                            IsValid = true,
-                            Name = "AdminEnable"
+                            Id = "ManageProducts"
                         },
                         new
                         {
-                            Id = 4,
-                            IsValid = true,
-                            Name = "AdminDelete"
+                            Id = "ManageOrders"
                         },
                         new
                         {
-                            Id = 5,
-                            IsValid = true,
-                            Name = "AdminGet"
+                            Id = "ManageCoupons"
                         },
                         new
                         {
-                            Id = 6,
-                            IsValid = true,
-                            Name = "AdminGetAll"
+                            Id = "ManageReports"
                         },
                         new
                         {
-                            Id = 7,
-                            IsValid = true,
-                            Name = "AdminCreate"
+                            Id = "ManageSettings"
                         },
                         new
                         {
-                            Id = 8,
-                            IsValid = true,
-                            Name = "AnnouncementUpdate"
+                            Id = "ManageThemes"
                         },
                         new
                         {
-                            Id = 9,
-                            IsValid = true,
-                            Name = "AnnouncementDelete"
+                            Id = "ManagePlugins"
                         },
                         new
                         {
-                            Id = 10,
-                            IsValid = true,
-                            Name = "AnnouncementAdd"
+                            Id = "ManageLanguages"
                         },
                         new
                         {
-                            Id = 11,
-                            IsValid = true,
-                            Name = "AnnouncementEnable"
+                            Id = "ManageCurrencies"
                         },
                         new
                         {
-                            Id = 12,
-                            IsValid = true,
-                            Name = "AnnouncementDisable"
+                            Id = "ManageShipping"
                         },
                         new
                         {
-                            Id = 13,
-                            IsValid = true,
-                            Name = "CategoryAdd"
+                            Id = "ManagePayments"
                         },
                         new
                         {
-                            Id = 14,
-                            IsValid = true,
-                            Name = "CategoryUpdate"
+                            Id = "ManageSmtpOption"
                         },
                         new
                         {
-                            Id = 15,
-                            IsValid = true,
-                            Name = "CategoryDelete"
+                            Id = "ManagePaymentOptions"
                         },
                         new
                         {
-                            Id = 16,
-                            IsValid = true,
-                            Name = "CategoryEnable"
+                            Id = "ManageShippingOptions"
                         },
                         new
                         {
-                            Id = 17,
-                            IsValid = true,
-                            Name = "CategoryDisable"
+                            Id = "ManageTaxOptions"
                         },
                         new
                         {
-                            Id = 18,
-                            IsValid = true,
-                            Name = "SubCategoryEnable"
+                            Id = "ManageGeneralOptions"
                         },
                         new
                         {
-                            Id = 19,
-                            IsValid = true,
-                            Name = "SubCategoryDisable"
+                            Id = "ManageImages"
                         },
                         new
                         {
-                            Id = 20,
-                            IsValid = true,
-                            Name = "CompanyInfoAdd"
+                            Id = "ManageAnnouncements"
                         },
                         new
                         {
-                            Id = 21,
-                            IsValid = true,
-                            Name = "CompanyInfoUpdate"
+                            Id = "ManageCompanyInformation"
                         },
                         new
                         {
-                            Id = 22,
-                            IsValid = true,
-                            Name = "ImageUpload"
+                            Id = "ManageUserAccounts"
                         },
                         new
                         {
-                            Id = 23,
-                            IsValid = true,
-                            Name = "OptionGet"
+                            Id = "ManageRolesAndPermissions"
                         },
                         new
                         {
-                            Id = 24,
-                            IsValid = true,
-                            Name = "OptionUpdate"
+                            Id = "ManageLocalization"
                         },
                         new
                         {
-                            Id = 25,
-                            IsValid = true,
-                            Name = "CargoOptionGet"
+                            Id = "ManagePluginsAndThemes"
                         },
                         new
                         {
-                            Id = 26,
-                            IsValid = true,
-                            Name = "CargoOptionUpdate"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            IsValid = true,
-                            Name = "CargoOptionDelete"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            IsValid = true,
-                            Name = "PaymentOptionGet"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            IsValid = true,
-                            Name = "PaymentOptionUpdate"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            IsValid = true,
-                            Name = "PaymentOptionDelete"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            IsValid = true,
-                            Name = "SmtpOptionGet"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            IsValid = true,
-                            Name = "SmtpOptionUpdate"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            IsValid = true,
-                            Name = "SmtpOptionDelete"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            IsValid = true,
-                            Name = "AdminRecoverAccount"
+                            Id = "ManageCargoOptions"
                         });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                    b.Property<string>("PermissionId")
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("RoleId", "PermissionId");
 
@@ -1111,204 +960,162 @@ namespace ECom.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 1
+                            RoleId = "Owner",
+                            PermissionId = "ManageAdmins"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 2
+                            RoleId = "Owner",
+                            PermissionId = "ManageCategories"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 3
+                            RoleId = "Owner",
+                            PermissionId = "ManageProducts"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 4
+                            RoleId = "Owner",
+                            PermissionId = "ManageOrders"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 5
+                            RoleId = "Owner",
+                            PermissionId = "ManageCoupons"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 6
+                            RoleId = "Owner",
+                            PermissionId = "ManageReports"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 7
+                            RoleId = "Owner",
+                            PermissionId = "ManageSettings"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 8
+                            RoleId = "Owner",
+                            PermissionId = "ManageThemes"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 9
+                            RoleId = "Owner",
+                            PermissionId = "ManagePlugins"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 10
+                            RoleId = "Owner",
+                            PermissionId = "ManageLanguages"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 11
+                            RoleId = "Owner",
+                            PermissionId = "ManageCurrencies"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 12
+                            RoleId = "Owner",
+                            PermissionId = "ManageShipping"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 13
+                            RoleId = "Owner",
+                            PermissionId = "ManagePayments"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 14
+                            RoleId = "Owner",
+                            PermissionId = "ManageSmtpOption"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 15
+                            RoleId = "Owner",
+                            PermissionId = "ManagePaymentOptions"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 16
+                            RoleId = "Owner",
+                            PermissionId = "ManageShippingOptions"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 17
+                            RoleId = "Owner",
+                            PermissionId = "ManageTaxOptions"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 18
+                            RoleId = "Owner",
+                            PermissionId = "ManageGeneralOptions"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 19
+                            RoleId = "Owner",
+                            PermissionId = "ManageImages"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 20
+                            RoleId = "Owner",
+                            PermissionId = "ManageAnnouncements"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 21
+                            RoleId = "Owner",
+                            PermissionId = "ManageCompanyInformation"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 22
+                            RoleId = "Owner",
+                            PermissionId = "ManageUserAccounts"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 23
+                            RoleId = "Owner",
+                            PermissionId = "ManageRolesAndPermissions"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 24
+                            RoleId = "Owner",
+                            PermissionId = "ManageLocalization"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 25
+                            RoleId = "Owner",
+                            PermissionId = "ManagePluginsAndThemes"
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 26
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 27
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 28
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 29
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 30
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 31
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 32
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 33
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 34
+                            RoleId = "Owner",
+                            PermissionId = "ManageCargoOptions"
                         });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DiscountedPriceIncludingTax")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("DiscountedPriceIncludingTax")
+                        .HasColumnType("real");
 
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
+                    b.Property<float>("OriginalPriceIncludingTax")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("OriginalPriceIncludingTax")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("ProductVariantId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ProductVariantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Tax")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1319,32 +1126,30 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductCategory", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("SubCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ProductId", "SubCategoryId");
+                    b.HasKey("ProductId", "CategoryId");
 
                     b.ToTable("ProductCategories", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
@@ -1352,8 +1157,8 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<byte>("Star")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1366,38 +1171,43 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Culture")
                         .IsRequired()
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DescriptionMarkdown")
                         .IsRequired()
-                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("TechnicalInformationMarkdown")
-                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1408,11 +1218,11 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ProductId", "ImageId");
 
@@ -1421,50 +1231,24 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductImages", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ProductVariant", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<byte>("Order")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("ShowCaseType")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductShowCases", "ECPrivate");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ProductVariant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("RegisterDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1474,76 +1258,66 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<string>("Id")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "ECOperation");
+                    b.ToTable("Roles", "ECEnum");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            IsValid = true,
-                            Name = "Owner"
+                            Id = "None"
                         },
                         new
                         {
-                            Id = 2,
-                            IsValid = true,
-                            Name = "Admin"
+                            Id = "Support"
                         },
                         new
                         {
-                            Id = 3,
-                            IsValid = true,
-                            Name = "Moderator"
+                            Id = "Moderator"
+                        },
+                        new
+                        {
+                            Id = "Admin"
+                        },
+                        new
+                        {
+                            Id = "Owner"
                         });
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.SecurityLog", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CFConnecting_IpAddress")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
-                    b.Property<int>("HttpStatusCodeResponse")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Params")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                    b.Property<short>("HttpStatusCode")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("QueryString")
-                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RemoteIpAddress")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("RequestUrl")
                         .IsRequired()
@@ -1551,60 +1325,49 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("nvarchar(2000)");
 
                     b.Property<string>("UserAgent")
+                        .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("XReal_IpAddress")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
 
                     b.ToTable("SecurityLogs", "ECLog");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ShowCaseImage", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ShowCase", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<byte>("Order")
-                        .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<byte>("ShowCaseType")
                         .HasColumnType("tinyint");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ShowCaseType");
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("ShowCaseImages", "ECPrivate");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShowCases", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Slider", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Alt")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Culture")
                         .IsRequired()
@@ -1614,8 +1377,8 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -1625,8 +1388,11 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1637,35 +1403,38 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.SmtpOption", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Host")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Port")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Ssl")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1674,23 +1443,24 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.StockChange", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Cost")
-                        .HasColumnType("int");
+                    b.Property<float>("Cost")
+                        .HasColumnType("real");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
@@ -1698,14 +1468,14 @@ namespace ECom.Infrastructure.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("SupplierId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Type")
-                        .HasColumnType("bit");
+                    b.Property<byte>("Type")
+                        .HasColumnType("tinyint");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1720,38 +1490,42 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1761,11 +1535,9 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("CitizenShipNumber")
                         .HasColumnType("int");
@@ -1775,46 +1547,45 @@ namespace ECom.Infrastructure.Migrations
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
-                    b.Property<DateTime?>("DeletedDate")
+                    b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsEmailVerified")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("OAuthKey")
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.Property<byte?>("OAuthType")
-                        .HasColumnType("tinyint");
+                    b.Property<byte>("OAuthType")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((byte)0);
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
@@ -1823,108 +1594,20 @@ namespace ECom.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TwoFactorKey")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<byte>("TwoFactorType")
-                        .HasColumnType("tinyint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((byte)0);
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users", "ECPrivate");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Culture = "tr",
-                            EmailAddress = "debug@mail.com",
-                            FirstName = "User",
-                            IsEmailVerified = false,
-                            IsValid = true,
-                            LastName = "Last",
-                            Password = "25f9e794323b453885f5181f1b624d0b",
-                            PhoneNumber = "5525553344",
-                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TwoFactorType = (byte)0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Culture = "tr",
-                            EmailAddress = "debug2@mail.com",
-                            FirstName = "User",
-                            IsEmailVerified = false,
-                            IsValid = true,
-                            LastName = "Last",
-                            Password = "25f9e794323b453885f5181f1b624d0b",
-                            PhoneNumber = "5525553344",
-                            RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TwoFactorType = (byte)0
-                        });
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("CFConnecting_IpAddress")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("ErrorCode")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("OperationName")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("Params")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RemoteIpAddress")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("ResultErrors")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<int>("Rv")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Severity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserAgent")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("XReal_IpAddress")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserLogs", "ECLog");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
@@ -1988,7 +1671,7 @@ namespace ECom.Infrastructure.Migrations
                 {
                     b.HasOne("ECom.Domain.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryNameKey")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2023,17 +1706,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Collection");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Category", "DiscountCategory")
-                        .WithMany()
-                        .HasForeignKey("DiscountCategoryNameKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DiscountCategory");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.DiscountNotify", b =>
@@ -2074,15 +1746,13 @@ namespace ECom.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Domain.Entities.User", null)
                         .WithMany("FavoriteProducts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
@@ -2153,17 +1823,21 @@ namespace ECom.Infrastructure.Migrations
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", null)
+                    b.HasOne("ECom.Domain.Entities.Product", "Product")
                         .WithMany("ProductComments")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", null)
+                    b.HasOne("ECom.Domain.Entities.User", "User")
                         .WithMany("ProductComments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
@@ -2196,18 +1870,7 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductShowCase", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.ShowCaseImage", b =>
+            modelBuilder.Entity("ECom.Domain.Entities.ShowCase", b =>
                 {
                     b.HasOne("ECom.Domain.Entities.Image", "Image")
                         .WithMany()
@@ -2215,7 +1878,13 @@ namespace ECom.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
                     b.Navigation("Image");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Slider", b =>
@@ -2252,13 +1921,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Supplier");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.UserLog", b =>
-                {
-                    b.HasOne("ECom.Domain.Entities.User", null)
-                        .WithMany("UserLogs")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
@@ -2307,8 +1969,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("PasswordResetTokens");
 
                     b.Navigation("ProductComments");
-
-                    b.Navigation("UserLogs");
                 });
 #pragma warning restore 612, 618
         }

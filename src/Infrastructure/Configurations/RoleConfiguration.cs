@@ -8,7 +8,7 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
   public void Configure(EntityTypeBuilder<Role> builder) {
     builder.Navigation(x => x.PermissionRoles).AutoInclude();
-    var names = Enum.GetValues(typeof(AdminPermission));
+    var names = Enum.GetValues(typeof(RoleType));
     var roles = new List<Role>();
     foreach (var name in names)
       roles.Add(new Role {

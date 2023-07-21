@@ -11,12 +11,13 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
     new Admin {
       EmailAddress = "owner@mail.com",
       Password = "25f9e794323b453885f5181f1b624d0b", //123456789
-      RoleId = RoleType.Owner.ToString(),
+      RoleId = "Owner",
       TwoFactorType = TwoFactorType.None,
-      Id = Guid.NewGuid(),
+      Id = new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"),
       DeleteDate = null,
       RegisterDate = ConstantMgr.DefaultDateTime,
-      TwoFactorKey = null
+      TwoFactorKey = null,
+    
     },
   };
 

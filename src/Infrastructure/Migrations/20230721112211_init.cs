@@ -25,17 +25,21 @@ namespace ECom.Infrastructure.Migrations
             migrationBuilder.EnsureSchema(
                 name: "ECOption");
 
+            migrationBuilder.EnsureSchema(
+                name: "ECEnum");
+
             migrationBuilder.CreateTable(
                 name: "Announcements",
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Order = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,9 +51,13 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    NameKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    NameKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    ParentNameKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    ParentNameKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,28 +65,45 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyInformations",
-                schema: "ECPrivate",
+                name: "CompanyInformation",
+                schema: "ECOperation",
                 columns: table => new
                 {
-                    IsRelease = table.Column<bool>(type: "bit", nullable: false),
-                    DomainUrl = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    WebApiUrl = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactEmail = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    WhatsApp = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
-                    CompanyAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FacebookLink = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    InstagramLink = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    YoutubeLink = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LogoImageId = table.Column<int>(type: "int", nullable: true),
-                    FavIcoImageId = table.Column<int>(type: "int", nullable: true)
+                    Key = table.Column<bool>(type: "bit", nullable: false),
+                    DomainUrl = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    WebApiUrl = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WhatsApp = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
+                    CompanyAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    FacebookLink = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    InstagramLink = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    YoutubeLink = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    LogoImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    FavIcoImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompanyInformations", x => x.IsRelease);
+                    table.PrimaryKey("PK_CompanyInformation", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DiscountCoupons",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DiscountPercent = table.Column<float>(type: "real", nullable: false),
+                    Coupon = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiscountCoupons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,11 +111,13 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Culture = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,42 +125,27 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LocalizationStrings",
-                schema: "ECPrivate",
-                columns: table => new
-                {
-                    Key = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Language = table.Column<byte>(type: "tinyint", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LocalizationStrings", x => new { x.Key, x.Language });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Options",
                 schema: "ECOption",
                 columns: table => new
                 {
-                    IsRelease = table.Column<bool>(type: "bit", nullable: false),
+                    Key = table.Column<bool>(type: "bit", nullable: false),
                     IsOpen = table.Column<bool>(type: "bit", nullable: false),
-                    IsAdminOpen = table.Column<bool>(type: "bit", nullable: false),
-                    PagingProductCount = table.Column<byte>(type: "tinyint", nullable: false),
                     RequireUpperCaseInPassword = table.Column<bool>(type: "bit", nullable: false),
                     RequireLowerCaseInPassword = table.Column<bool>(type: "bit", nullable: false),
                     RequireSpecialCharacterInPassword = table.Column<bool>(type: "bit", nullable: false),
                     RequireNumberInPassword = table.Column<bool>(type: "bit", nullable: false),
                     EmailVerificationTimeoutMinutes = table.Column<int>(type: "int", nullable: false),
                     PasswordResetTimeoutMinutes = table.Column<int>(type: "int", nullable: false),
-                    SelectedCurrency = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    DefaultCurrency = table.Column<int>(type: "int", nullable: false),
                     ShowStock = table.Column<bool>(type: "bit", nullable: false),
+                    PagingProductCount = table.Column<byte>(type: "tinyint", nullable: false),
                     ProductImageLimit = table.Column<byte>(type: "tinyint", nullable: false),
                     ProductCommentImageLimit = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Options", x => x.IsRelease);
+                    table.PrimaryKey("PK_Options", x => x.Key);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,19 +153,17 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOption",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    TypeName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<byte>(type: "tinyint", nullable: false),
                     Tax = table.Column<float>(type: "real", nullable: false),
                     SecretKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     ClientId = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     ApiKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     Username = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -162,14 +172,10 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Permissions",
-                schema: "ECOperation",
+                schema: "ECEnum",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Memo = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,12 +187,12 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    SubCategoryId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCategories", x => new { x.ProductId, x.SubCategoryId });
+                    table.PrimaryKey("PK_ProductCategories", x => new { x.ProductId, x.CategoryId });
                 });
 
             migrationBuilder.CreateTable(
@@ -194,10 +200,11 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,13 +213,10 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "ECOperation",
+                schema: "ECEnum",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -224,17 +228,16 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECLog",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    HttpStatusCodeResponse = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    HttpStatusCode = table.Column<short>(type: "smallint", nullable: false),
+                    RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    XReal_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    CFConnecting_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     RequestUrl = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    QueryString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    RemoteIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    XReal_IpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    CFConnecting_IpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
+                    QueryString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -246,12 +249,13 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOption",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Host = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Host = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Ssl = table.Column<bool>(type: "bit", nullable: false),
                     Port = table.Column<int>(type: "int", nullable: false)
                 },
@@ -265,14 +269,15 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -284,23 +289,22 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
                     CitizenShipNumber = table.Column<int>(type: "int", nullable: true),
                     TaxNumber = table.Column<int>(type: "int", nullable: true),
                     OAuthKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    OAuthType = table.Column<byte>(type: "tinyint", nullable: true),
-                    TwoFactorKey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OAuthType = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
+                    TwoFactorKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
                     Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
@@ -313,45 +317,19 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CategoryNameKey = table.Column<string>(type: "nvarchar(64)", nullable: false)
+                    DiscountPercent = table.Column<float>(type: "real", nullable: false),
+                    CategoryId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoryDiscounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryDiscounts_Categories_CategoryNameKey",
-                        column: x => x.CategoryNameKey,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Categories",
-                        principalColumn: "NameKey",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DiscountCoupons",
-                schema: "ECPrivate",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiscountPercent = table.Column<byte>(type: "tinyint", nullable: false),
-                    DiscountCategoryId = table.Column<int>(type: "int", nullable: false),
-                    DiscountCategoryNameKey = table.Column<string>(type: "nvarchar(64)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiscountCoupons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DiscountCoupons_Categories_DiscountCategoryNameKey",
-                        column: x => x.DiscountCategoryNameKey,
+                        name: "FK_CategoryDiscounts_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalSchema: "ECPrivate",
                         principalTable: "Categories",
                         principalColumn: "NameKey",
@@ -363,12 +341,13 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOption",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FreeShippingMinCost = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -383,43 +362,18 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShowCaseImages",
-                schema: "ECPrivate",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Order = table.Column<byte>(type: "tinyint", nullable: false),
-                    ShowCaseType = table.Column<byte>(type: "tinyint", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShowCaseImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShowCaseImages_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sliders",
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Alt = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Alt = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Order = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
@@ -439,15 +393,14 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DiscountedPriceIncludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OriginalPriceIncludingTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductVariantId = table.Column<int>(type: "int", nullable: true)
+                    DiscountedPriceIncludingTax = table.Column<float>(type: "real", nullable: false),
+                    OriginalPriceIncludingTax = table.Column<float>(type: "real", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false),
+                    ProductVariantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -465,16 +418,15 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOperation",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TwoFactorKey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
+                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -482,7 +434,7 @@ namespace ECom.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Admins_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "ECOperation",
+                        principalSchema: "ECEnum",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -493,8 +445,8 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOperation",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    PermissionId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -502,14 +454,14 @@ namespace ECom.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_PermissionRoles_Permissions_PermissionId",
                         column: x => x.PermissionId,
-                        principalSchema: "ECOperation",
+                        principalSchema: "ECEnum",
                         principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PermissionRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "ECOperation",
+                        principalSchema: "ECEnum",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -520,19 +472,19 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Provience = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Provience = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -551,11 +503,12 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -574,16 +527,17 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmailVerifyTokens", x => x.Token);
+                    table.PrimaryKey("PK_EmailVerifyTokens", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EmailVerifyTokens_Users_UserId",
                         column: x => x.UserId,
@@ -598,15 +552,17 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PasswordResetTokens", x => x.Token);
+                    table.PrimaryKey("PK_PasswordResetTokens", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PasswordResetTokens_Users_UserId",
                         column: x => x.UserId,
@@ -617,45 +573,15 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserLogs",
-                schema: "ECLog",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Severity = table.Column<int>(type: "int", nullable: false),
-                    OperationName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    ErrorCode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Rv = table.Column<int>(type: "int", nullable: false),
-                    RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    XReal_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    CFConnecting_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    ResultErrors = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserLogs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserLogs_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "ECPrivate",
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Carts",
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Count = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -682,8 +608,8 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -709,9 +635,10 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -737,16 +664,15 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     OriginalPrice = table.Column<double>(type: "float", nullable: false),
                     DiscountedPrice = table.Column<double>(type: "float", nullable: true),
-                    Ip = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DiscountCouponId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DiscountCouponId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderStatus = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -779,13 +705,12 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Star = table.Column<byte>(type: "tinyint", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -811,13 +736,15 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    ShortDescription = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    DescriptionMarkdown = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: false),
-                    TechnicalInformationMarkdown = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    DescriptionMarkdown = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TechnicalInformationMarkdown = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
                 },
                 constraints: table =>
@@ -837,8 +764,8 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -860,28 +787,30 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductShowCases",
+                name: "ShowCases",
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    Order = table.Column<byte>(type: "tinyint", nullable: false),
                     ShowCaseType = table.Column<byte>(type: "tinyint", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductShowCases", x => x.Id);
+                    table.PrimaryKey("PK_ShowCases", x => x.ShowCaseType);
                     table.ForeignKey(
-                        name: "FK_ProductShowCases_Products_ProductId",
+                        name: "FK_ShowCases_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalSchema: "ECPrivate",
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShowCases_Products_ProductId",
                         column: x => x.ProductId,
                         principalSchema: "ECPrivate",
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -889,17 +818,17 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Type = table.Column<bool>(type: "bit", nullable: false),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<byte>(type: "tinyint", nullable: false),
                     Count = table.Column<int>(type: "int", nullable: false),
-                    Cost = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: true),
+                    Cost = table.Column<float>(type: "real", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -931,20 +860,22 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECLog",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Severity = table.Column<int>(type: "int", nullable: false),
-                    OperationName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    ErrorCode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Rv = table.Column<int>(type: "int", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Level = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)1),
+                    OperationName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    ErrorCode = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Params = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdminId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    HttpStatusCode = table.Column<short>(type: "smallint", nullable: false),
                     RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     XReal_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     CFConnecting_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    Params = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    ResultErrors = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    AdminId = table.Column<int>(type: "int", nullable: true)
+                    RequestUrl = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    QueryString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -962,9 +893,8 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    CollectionId = table.Column<int>(type: "int", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CollectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -986,105 +916,69 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                schema: "ECPrivate",
-                table: "CompanyInformations",
-                columns: new[] { "IsRelease", "CompanyAddress", "CompanyName", "ContactEmail", "Description", "DomainUrl", "FacebookLink", "FavIcoImageId", "InstagramLink", "LogoImageId", "PhoneNumber", "WebApiUrl", "WhatsApp", "YoutubeLink" },
-                values: new object[,]
-                {
-                    { false, "Address", "ECom.Company", "contact@support.com", "Company Description", "www.company.com", "facebook.com/company", null, "instagram.com/company", null, "5526667788", "api.company.com", "5526667788", "yt.com/company" },
-                    { true, "Address", "ECom.Company", "contact@support.com", "Company Description", "www.company.com", "facebook.com/company", null, "instagram.com/company", null, "5526667788", "api.company.com", "5526667788", "yt.com/company" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "ECPrivate",
-                table: "LocalizationStrings",
-                columns: new[] { "Key", "Language", "Value" },
-                values: new object[,]
-                {
-                    { "hello", (byte)0, "Hello" },
-                    { "hello", (byte)1, "Merhaba" }
-                });
+                schema: "ECOperation",
+                table: "CompanyInformation",
+                columns: new[] { "Key", "CompanyAddress", "CompanyName", "ContactEmail", "Description", "DomainUrl", "FacebookLink", "FavIcoImageId", "InstagramLink", "LogoImageId", "PhoneNumber", "WebApiUrl", "WhatsApp", "YoutubeLink" },
+                values: new object[] { true, "Address", "CompanyName", "contact@support.com", "Company Description", "www.company.com", "facebook.com/company", null, "instagram.com/company", null, "5526667788", "api.company.com", "5526667788", "yt.com/company" });
 
             migrationBuilder.InsertData(
                 schema: "ECOption",
                 table: "Options",
-                columns: new[] { "IsRelease", "EmailVerificationTimeoutMinutes", "IsAdminOpen", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "SelectedCurrency", "ShowStock" },
-                values: new object[,]
-                {
-                    { false, 30, true, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, "Lira", false },
-                    { true, 30, true, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, "Lira", false }
-                });
+                columns: new[] { "Key", "DefaultCurrency", "EmailVerificationTimeoutMinutes", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "ShowStock" },
+                values: new object[] { true, 0, 30, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, false });
 
             migrationBuilder.InsertData(
-                schema: "ECOperation",
+                schema: "ECEnum",
                 table: "Permissions",
-                columns: new[] { "Id", "IsValid", "Memo", "Name" },
-                values: new object[,]
+                column: "Id",
+                values: new object[]
                 {
-                    { 1, true, null, "AdminUpdate" },
-                    { 2, true, null, "AdminDelete" },
-                    { 3, true, null, "AdminGet" },
-                    { 4, true, null, "AdminGetAll" },
-                    { 5, true, null, "AdminCreate" },
-                    { 6, true, null, "AnnouncementUpdate" },
-                    { 7, true, null, "AnnouncementDelete" },
-                    { 8, true, null, "AnnouncementAdd" },
-                    { 9, true, null, "AnnouncementEnable" },
-                    { 10, true, null, "AnnouncementDisable" },
-                    { 11, true, null, "CategoryAdd" },
-                    { 12, true, null, "CategoryUpdate" },
-                    { 13, true, null, "CategoryDelete" },
-                    { 14, true, null, "CategoryEnable" },
-                    { 15, true, null, "CategoryDisable" },
-                    { 16, true, null, "SubCategoryEnable" },
-                    { 17, true, null, "SubCategoryDisable" },
-                    { 18, true, null, "CompanyInfoAdd" },
-                    { 19, true, null, "CompanyInfoUpdate" },
-                    { 20, true, null, "ImageUpload" },
-                    { 21, true, null, "OptionGet" },
-                    { 22, true, null, "OptionUpdate" },
-                    { 23, true, null, "CargoOptionGet" },
-                    { 24, true, null, "CargoOptionUpdate" },
-                    { 25, true, null, "CargoOptionDelete" },
-                    { 26, true, null, "PaymentOptionGet" },
-                    { 27, true, null, "PaymentOptionUpdate" },
-                    { 28, true, null, "PaymentOptionDelete" },
-                    { 29, true, null, "SmtpOptionGet" },
-                    { 30, true, null, "SmtpOptionUpdate" },
-                    { 31, true, null, "SmtpOptionDelete" }
+                    "ManageAdmins",
+                    "ManageAnnouncements",
+                    "ManageCargoOptions",
+                    "ManageCategories",
+                    "ManageCompanyInformation",
+                    "ManageCoupons",
+                    "ManageCurrencies",
+                    "ManageGeneralOptions",
+                    "ManageImages",
+                    "ManageLanguages",
+                    "ManageLocalization",
+                    "ManageOrders",
+                    "ManagePaymentOptions",
+                    "ManagePayments",
+                    "ManagePlugins",
+                    "ManagePluginsAndThemes",
+                    "ManageProducts",
+                    "ManageReports",
+                    "ManageRolesAndPermissions",
+                    "ManageSettings",
+                    "ManageShipping",
+                    "ManageShippingOptions",
+                    "ManageSmtpOption",
+                    "ManageTaxOptions",
+                    "ManageThemes",
+                    "ManageUserAccounts"
                 });
 
             migrationBuilder.InsertData(
-                schema: "ECOperation",
+                schema: "ECEnum",
                 table: "Roles",
-                columns: new[] { "Id", "IsValid", "Name" },
-                values: new object[,]
+                column: "Id",
+                values: new object[]
                 {
-                    { 1, true, "Owner" },
-                    { 2, true, "Admin" },
-                    { 3, true, "Moderator" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "ECPrivate",
-                table: "Users",
-                columns: new[] { "Id", "CitizenShipNumber", "Culture", "DeletedDate", "EmailAddress", "FirstName", "IsEmailVerified", "IsValid", "LastName", "OAuthKey", "OAuthType", "Password", "PhoneNumber", "RegisterDate", "TaxNumber", "TwoFactorKey", "TwoFactorType" },
-                values: new object[,]
-                {
-                    { 1, null, "tr", null, "debug@mail.com", "User", false, true, "Last", null, null, "25f9e794323b453885f5181f1b624d0b", "5525553344", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, (byte)0 },
-                    { 2, null, "tr", null, "debug2@mail.com", "User", false, true, "Last", null, null, "25f9e794323b453885f5181f1b624d0b", "5525553344", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, (byte)0 }
+                    "Admin",
+                    "Moderator",
+                    "None",
+                    "Owner",
+                    "Support"
                 });
 
             migrationBuilder.InsertData(
                 schema: "ECOperation",
                 table: "Admins",
-                columns: new[] { "Id", "DeletedDate", "EmailAddress", "IsValid", "Password", "RegisterDate", "RoleId", "TwoFactorKey", "TwoFactorType" },
-                values: new object[,]
-                {
-                    { 1, null, "owner@mail.com", true, "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, null, (byte)0 },
-                    { 2, null, "admin@mail.com", true, "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, null, (byte)0 },
-                    { 3, null, "mod@admin.com", true, "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, null, (byte)0 }
-                });
+                columns: new[] { "Id", "DeleteDate", "EmailAddress", "Password", "RegisterDate", "RoleId", "TwoFactorKey", "UpdateDate" },
+                values: new object[] { new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"), null, "owner@mail.com", "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Owner", null, null });
 
             migrationBuilder.InsertData(
                 schema: "ECOperation",
@@ -1092,37 +986,32 @@ namespace ECom.Infrastructure.Migrations
                 columns: new[] { "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 2, 1 },
-                    { 3, 1 },
-                    { 4, 1 },
-                    { 5, 1 },
-                    { 6, 1 },
-                    { 7, 1 },
-                    { 8, 1 },
-                    { 9, 1 },
-                    { 10, 1 },
-                    { 11, 1 },
-                    { 12, 1 },
-                    { 13, 1 },
-                    { 14, 1 },
-                    { 15, 1 },
-                    { 16, 1 },
-                    { 17, 1 },
-                    { 18, 1 },
-                    { 19, 1 },
-                    { 20, 1 },
-                    { 21, 1 },
-                    { 22, 1 },
-                    { 23, 1 },
-                    { 24, 1 },
-                    { 25, 1 },
-                    { 26, 1 },
-                    { 27, 1 },
-                    { 28, 1 },
-                    { 29, 1 },
-                    { 30, 1 },
-                    { 31, 1 }
+                    { "ManageAdmins", "Owner" },
+                    { "ManageAnnouncements", "Owner" },
+                    { "ManageCargoOptions", "Owner" },
+                    { "ManageCategories", "Owner" },
+                    { "ManageCompanyInformation", "Owner" },
+                    { "ManageCoupons", "Owner" },
+                    { "ManageCurrencies", "Owner" },
+                    { "ManageGeneralOptions", "Owner" },
+                    { "ManageImages", "Owner" },
+                    { "ManageLanguages", "Owner" },
+                    { "ManageLocalization", "Owner" },
+                    { "ManageOrders", "Owner" },
+                    { "ManagePaymentOptions", "Owner" },
+                    { "ManagePayments", "Owner" },
+                    { "ManagePlugins", "Owner" },
+                    { "ManagePluginsAndThemes", "Owner" },
+                    { "ManageProducts", "Owner" },
+                    { "ManageReports", "Owner" },
+                    { "ManageRolesAndPermissions", "Owner" },
+                    { "ManageSettings", "Owner" },
+                    { "ManageShipping", "Owner" },
+                    { "ManageShippingOptions", "Owner" },
+                    { "ManageSmtpOption", "Owner" },
+                    { "ManageTaxOptions", "Owner" },
+                    { "ManageThemes", "Owner" },
+                    { "ManageUserAccounts", "Owner" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1162,10 +1051,10 @@ namespace ECom.Infrastructure.Migrations
                 columns: new[] { "NameKey", "ParentNameKey" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryDiscounts_CategoryNameKey",
+                name: "IX_CategoryDiscounts_CategoryId",
                 schema: "ECPrivate",
                 table: "CategoryDiscounts",
-                column: "CategoryNameKey");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CollectionProducts_CollectionId",
@@ -1180,16 +1069,22 @@ namespace ECom.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiscountCoupons_DiscountCategoryNameKey",
+                name: "IX_DiscountCoupons_Coupon",
                 schema: "ECPrivate",
                 table: "DiscountCoupons",
-                column: "DiscountCategoryNameKey");
+                column: "Coupon");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiscountNotifies_ProductId",
                 schema: "ECPrivate",
                 table: "DiscountNotifies",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailVerifyTokens_Token",
+                schema: "ECPrivate",
+                table: "EmailVerifyTokens",
+                column: "Token");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailVerifyTokens_UserId",
@@ -1220,6 +1115,12 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 table: "Orders",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PasswordResetTokens_Token",
+                schema: "ECPrivate",
+                table: "PasswordResetTokens",
+                column: "Token");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PasswordResetTokens_UserId",
@@ -1264,16 +1165,16 @@ namespace ECom.Infrastructure.Migrations
                 column: "ProductVariantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductShowCases_ProductId",
+                name: "IX_ShowCases_ImageId",
                 schema: "ECPrivate",
-                table: "ProductShowCases",
-                column: "ProductId");
+                table: "ShowCases",
+                column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShowCaseImages_ImageId",
+                name: "IX_ShowCases_ProductId",
                 schema: "ECPrivate",
-                table: "ShowCaseImages",
-                column: "ImageId");
+                table: "ShowCases",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sliders_ImageId",
@@ -1297,12 +1198,6 @@ namespace ECom.Infrastructure.Migrations
                 name: "IX_StockChanges_UserId",
                 schema: "ECPrivate",
                 table: "StockChanges",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserLogs_UserId",
-                schema: "ECLog",
-                table: "UserLogs",
                 column: "UserId");
         }
 
@@ -1338,8 +1233,8 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
-                name: "CompanyInformations",
-                schema: "ECPrivate");
+                name: "CompanyInformation",
+                schema: "ECOperation");
 
             migrationBuilder.DropTable(
                 name: "DiscountNotifies",
@@ -1351,10 +1246,6 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "FavoriteProducts",
-                schema: "ECPrivate");
-
-            migrationBuilder.DropTable(
-                name: "LocalizationStrings",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
@@ -1394,15 +1285,11 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
-                name: "ProductShowCases",
-                schema: "ECPrivate");
-
-            migrationBuilder.DropTable(
                 name: "SecurityLogs",
                 schema: "ECLog");
 
             migrationBuilder.DropTable(
-                name: "ShowCaseImages",
+                name: "ShowCases",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
@@ -1418,12 +1305,12 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
-                name: "UserLogs",
-                schema: "ECLog");
-
-            migrationBuilder.DropTable(
                 name: "Admins",
                 schema: "ECOperation");
+
+            migrationBuilder.DropTable(
+                name: "Categories",
+                schema: "ECPrivate");
 
             migrationBuilder.DropTable(
                 name: "Collections",
@@ -1435,7 +1322,7 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Permissions",
-                schema: "ECOperation");
+                schema: "ECEnum");
 
             migrationBuilder.DropTable(
                 name: "Images",
@@ -1451,14 +1338,10 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "ECOperation");
+                schema: "ECEnum");
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "ECPrivate");
-
-            migrationBuilder.DropTable(
-                name: "Categories",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(

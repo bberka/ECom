@@ -12,7 +12,7 @@ public class StockChange : IEntity
   public StockChangeType Type { get; set; }
 
   public int Count { get; set; }
-  public decimal Cost { get; set; }
+  public float Cost { get; set; }
   public Guid ProductId { get; set; }
   public Guid? SupplierId { get; set; }
   public Guid? OrderId { get; set; }

@@ -6,6 +6,8 @@ public static class ValidationSettings
   public const int MaxGlobalStringLength = 1000;
   public const int MinPasswordLength = 6;
   public const int MaxPasswordLength = 32;
+  public const int MinHashedPasswordLength = 1;
+  public const int MaxHashedPasswordLength = 256;
   public const int MinNameLength = 2;
   public const int MaxNameLength = 50;
   public const int MinPhoneLength = 8;

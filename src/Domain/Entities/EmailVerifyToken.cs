@@ -17,6 +17,7 @@ public class EmailVerifyToken : IEntity
   public string Token { get; set; }
 
   [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   public string EmailAddress { get; set; }
   
   public Guid UserId { get; set; }

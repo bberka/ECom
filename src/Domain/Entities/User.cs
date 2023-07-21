@@ -12,15 +12,15 @@ public class User : IEntity
   public DateTime? DeleteDate { get; set; }
 
 
-  [MinLength(ValidationSettings.MinPasswordLength)]
-  [MaxLength(ValidationSettings.MaxPasswordLength)]
+  [MinLength(ValidationSettings.MinHashedPasswordLength)]
+  [MaxLength(ValidationSettings.MaxHashedPasswordLength)]
   [JsonIgnore]
   [System.Text.Json.Serialization.JsonIgnore]
   [IgnoreDataMember]
 
   public string Password { get; set; }
 
-  [MaxLength(ValidationSettings.MaxPasswordLength)]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   [EmailAddress]
   public string EmailAddress { get; set; }
 

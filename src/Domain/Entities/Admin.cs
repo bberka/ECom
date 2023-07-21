@@ -11,11 +11,12 @@ public class Admin : IEntity
   public DateTime? UpdateDate { get; set; }
   public DateTime? DeleteDate { get; set; }
 
-  [MaxLength(ValidationSettings.MaxPasswordLength)]
-  [MinLength(ValidationSettings.MinPasswordLength)]
+  [MinLength(ValidationSettings.MinHashedPasswordLength)]
+  [MaxLength(ValidationSettings.MaxHashedPasswordLength)]
   public string Password { get; set; }
   
   [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   public string EmailAddress { get; set; }
 
 
@@ -45,7 +46,7 @@ public class Admin : IEntity
       //Permissions = string.Join(",", admin.Role.Permissions.Select(x => x.Name).ToArray()),
       RoleId = admin.RoleId,
       DeletedDate = admin.DeleteDate,
-      Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.Name)?.ToArray() ?? Array.Empty<string>(),
+      Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.Id)?.ToArray() ?? Array.Empty<string>(),
       Password = admin.Password,
       RegisterDate = admin.RegisterDate
     };

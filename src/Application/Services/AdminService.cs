@@ -135,7 +135,7 @@ public class AdminService : IAdminService
   }
 
   public bool IsValidPermission(string permissionId) {
-    return _unitOfWork.PermissionRepository.Any(x =>  x.Name == permissionId);
+    return _unitOfWork.PermissionRepository.Any(x =>  x.Id == permissionId);
   }
 
   public List<AdminDto> ListOtherAdmins(Guid adminId) {

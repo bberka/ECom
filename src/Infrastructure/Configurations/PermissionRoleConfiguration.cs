@@ -20,13 +20,12 @@ internal class PermissionRoleConfiguration : IEntityTypeConfiguration<Permission
     builder.Navigation(x => x.Permission).AutoInclude();
     //builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
 
-
-    var names = Enum.GetValues(typeof(AdminPermission));
+    var names = Enum.GetNames(typeof(AdminPermission));
     var permissions = new List<PermissionRole>();
     foreach (var name in names)
       permissions.Add(new PermissionRole {
-        PermissionId = name.ToString(),
-        RoleId = RoleType.Owner.ToString()
+        PermissionId = name,
+        RoleId = "Owner"
       });
 
     builder.HasData(permissions);

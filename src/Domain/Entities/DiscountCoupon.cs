@@ -12,7 +12,7 @@ public class DiscountCoupon : IEntity
   public DateTime? DeleteDate { get; set; }
   public DateTime EndDate { get; set; }
 
-  public decimal DiscountPercent { get; set; }
+  public float DiscountPercent { get; set; }
 
   [MaxLength(ValidationSettings.MaxCouponLength)]
   [MinLength(ValidationSettings.MinCouponLength)]

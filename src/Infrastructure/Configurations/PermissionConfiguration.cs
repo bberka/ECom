@@ -13,7 +13,7 @@ internal class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 
     foreach (var value in enumValues)
       permissions.Add(new Permission {
-        Name = value.ToString(),
+        Id = value.ToString(),
       });
 
     builder.HasData(permissions);

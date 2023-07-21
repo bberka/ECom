@@ -10,9 +10,9 @@ public class Product : IEntity
   public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
   public DateTime? UpdateDate { get; set; }
   public DateTime? DeleteDate { get; set; }
-  public decimal DiscountedPriceIncludingTax { get; set; }
-  public decimal OriginalPriceIncludingTax { get; set; }
-  public decimal Tax { get; set; }
+  public float DiscountedPriceIncludingTax { get; set; }
+  public float OriginalPriceIncludingTax { get; set; }
+  public float Tax { get; set; }
   public Guid? ProductVariantId { get; set; }
 
   //virtual

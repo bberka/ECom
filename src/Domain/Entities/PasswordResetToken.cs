@@ -17,6 +17,7 @@ public class PasswordResetToken : IEntity
   public string Token { get; set; }
 
   [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   public string EmailAddress { get; set; }
   
 
