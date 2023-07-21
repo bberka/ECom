@@ -53,7 +53,7 @@ public class User : IEntity
   [IgnoreDataMember]
   public string? OAuthKey { get; set; } = null;
 
-  public OAuthType? OAuthType { get; set; } = null;
+  public OAuthType OAuthType { get; set; } = OAuthType.None;
 
   [MaxLength(ValidationSettings.MaxTokenLength)]
   [JsonIgnore]

@@ -2,6 +2,7 @@
 
 public enum OAuthType
 {
+  None,
   Google,
   Facebook,
   Twitter,

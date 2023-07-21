@@ -2,7 +2,6 @@
 
 public enum PaymentType
 {
-  None = 0,
   Iyzico = 1,
   PayTR = 2,
   Shopier = 3,

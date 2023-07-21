@@ -1,6 +1,7 @@
 ﻿using ECom.Domain.Entities;
 using ECom.Shared.Constants;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECom.Infrastructure.Configurations;
 
@@ -47,5 +48,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
   public void Configure(EntityTypeBuilder<User> builder) {
     //builder.HasData(_users);
+    builder.Property(x => x.TwoFactorType)
+      .HasConversion(new EnumToNumberConverter<TwoFactorType, byte>())
+      .HasDefaultValue(TwoFactorType.None);
+    builder.Property(x => x.OAuthType)
+      .HasConversion(new EnumToNumberConverter<OAuthType, byte>())
+      .HasDefaultValue(OAuthType.None);
   }
 }

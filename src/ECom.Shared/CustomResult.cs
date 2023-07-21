@@ -2,7 +2,7 @@
 
 public enum CustomResultLevel
 {
-  Auto,
+  None = 0,
   Info,
   Warning,
   Error,
@@ -35,7 +35,6 @@ public class CustomResult : CustomResult<CustomResult>
 public class CustomResult<T>
 {
   protected internal CustomResult() {
-    if (CustomResultLevel.Auto == Level) Level = Status ? CustomResultLevel.Info : CustomResultLevel.Error;
   }
 
   public bool Status { get; internal init; }
@@ -47,7 +46,6 @@ public class CustomResult<T>
     CustomResultLevel.Warning => "warn",
     CustomResultLevel.Error => "error",
     CustomResultLevel.Critical => "critical",
-    CustomResultLevel.Auto => throw new NotSupportedException(),
     _ => throw new ArgumentOutOfRangeException()
   };
 
@@ -62,7 +60,7 @@ public class CustomResult<T>
 
   public T? Data { get; internal init; }
 
-  public CustomResultLevel Level { get; internal init; } = CustomResultLevel.Auto;
+  public CustomResultLevel Level { get; internal init; } = CustomResultLevel.None;
 
   public Exception? Exception { get; internal init; }
 
