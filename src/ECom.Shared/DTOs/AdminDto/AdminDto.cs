@@ -7,7 +7,7 @@ public class AdminDto
   public string EmailAddress { get; set; }
   public TwoFactorType TwoFactorType { get; set; }
   public string RoleId { get; set; }
-  public string[] Permissions { get; set; }
+  public string[] Permissions { get; set; } = Array.Empty<string>();
   public string Password { get; set; }
   public DateTime? DeletedDate { get; set; }
 }

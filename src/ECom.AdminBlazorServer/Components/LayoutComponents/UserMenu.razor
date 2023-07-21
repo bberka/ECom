@@ -3,20 +3,22 @@
 
 <RadzenProfileMenu>
   <Template>
-    <RadzenGravatar Email="@_emailAddress">
-    </RadzenGravatar>
+ 
+    <RadzenLabel class="mx-2">@_emailAddress</RadzenLabel>
   </Template>
   <ChildContent>
-    <RadzenProfileMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
-    <RadzenProfileMenuItem Text="@Loc["logout"]" Icon="logout" Path="logout" />
+
+   <RadzenProfileMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
+    <RadzenProfileMenuItem Text="@Loc["logout"]" Icon="logout" Path="logout"/>
 
   </ChildContent>
 </RadzenProfileMenu>
 @code {
-  private string _emailAddress;
-  protected override async Task OnInitializedAsync() {
+  private string _emailAddress = "--@mail.com";
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
     var state = await AuthProvider.GetAuthenticationStateAsync();
-    _emailAddress = state.User.Identity.Name;
+    _emailAddress = state.User.Identity?.Name ?? "";
   }
 
 

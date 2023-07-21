@@ -8,6 +8,7 @@ public interface IAdminService
   CustomResult<Admin> GetAdmin(Guid id);
   CustomResult<Admin> GetAdmin(string email);
   CustomResult<AdminDto> GetAdminDto(Guid id);
+  CustomResult<string> ResetPassword(Guid author, Guid adminId);
   CustomResult<AdminDto> GetAdminDto(string email);
   bool AdminExists(Guid id);
   bool AdminExists(string email);

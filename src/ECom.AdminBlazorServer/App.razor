@@ -7,13 +7,7 @@
       <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>
-      <PageTitle>@Loc["not_found"]</PageTitle>
-      <LayoutView Layout="@typeof(EmptyLayout)">
-        <RadzenText TextStyle="TextStyle.H5">@Loc["http_404"]</RadzenText>
-      </LayoutView>
+      <SubPageNotFound></SubPageNotFound>
     </NotFound>
-    <Navigating>
-      <SubPageNavigating></SubPageNavigating>
-    </Navigating>
   </Router>
 </CascadingAuthenticationState>

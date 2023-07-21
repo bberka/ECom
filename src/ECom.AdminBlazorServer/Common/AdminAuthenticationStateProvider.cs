@@ -23,31 +23,26 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
     _protectedSessionStorage = protectedSessionStorage;
   }
 
-  public async Task<bool> IsAuthenticated() {
-    var authState = await GetAuthenticationStateAsync();
-    return authState?.User?.Identity?.IsAuthenticated == true;
-  }
+  //public async Task<bool> IsAuthenticated() {
+  //  var authState = await GetAuthenticationStateAsync();
+  //  return authState?.User?.Identity?.IsAuthenticated == true;
+  //}
 
-  public async Task<Guid> GetId() {
-    var authState = await GetAuthenticationStateAsync();
-    var id = authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-    return  Guid.Parse(id ?? "00000000-0000-0000-0000-000000000000");
-  }
-
-  public async Task<AdminDto> GetAdmin() {
-    var authState = await GetAuthenticationStateAsync();
-    var adminDto = new AdminDto();
-    adminDto.Id = Guid.Parse(authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-    adminDto.EmailAddress = authState?.User?.FindFirstValue(ClaimTypes.Email) ?? "";
-    adminDto.RoleId = authState?.User?.FindFirstValue(ClaimTypes.Role) ?? "";
-    adminDto.Permissions =
-      authState?.User?.FindFirstValue(ExtClaimTypes.EndPointPermissions)?.Split(',') ?? new string[0];
-    adminDto.Password = authState?.User?.FindFirstValue(ClaimTypes.Hash) ?? "";
-    adminDto.RegisterDate =
-      DateTime.Parse(authState?.User?.FindFirstValue("RegisterDate") ?? "", CultureInfo.InvariantCulture);
-    adminDto.TwoFactorType = Enum.Parse<TwoFactorType>(authState?.User?.FindFirstValue("TwoFactorType") ?? "0");
-    return adminDto;
-  }
+  //public async Task<AdminDto> GetAdmin() {
+  //  var authState = await GetAuthenticationStateAsync();
+  //  return authState.User.GetAdmin();
+  //  //var adminDto = new AdminDto();
+  //  //adminDto.Id = Guid.Parse(authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+  //  //adminDto.EmailAddress = authState?.User?.FindFirstValue(ClaimTypes.Email) ?? "";
+  //  //adminDto.RoleId = authState?.User?.FindFirstValue(ClaimTypes.Role) ?? "";
+  //  //adminDto.Permissions =
+  //  //  authState?.User?.FindFirstValue(ExtClaimTypes.EndPointPermissions)?.Split(',') ?? new string[0];
+  //  //adminDto.Password = authState?.User?.FindFirstValue(ClaimTypes.Hash) ?? "";
+  //  //adminDto.RegisterDate =
+  //  //  DateTime.Parse(authState?.User?.FindFirstValue("RegisterDate") ?? "", CultureInfo.InvariantCulture);
+  //  //adminDto.TwoFactorType = Enum.Parse<TwoFactorType>(authState?.User?.FindFirstValue("TwoFactorType") ?? "0");
+  //  //return adminDto;
+  //}
 
   public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
     //var identity = _anonymous.Identity as ClaimsIdentity;
@@ -81,18 +76,14 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
       //claims.Add(new Claim("AdminOnly", "true"));
       new(ClaimTypes.Role, admin.RoleId),
       new(ClaimTypes.NameIdentifier, admin.Id.ToString()),
+      new(ClaimTypes.Name, admin.EmailAddress),
       new(ClaimTypes.Email, admin.EmailAddress),
       new("TwoFactorType", admin.TwoFactorType.ToString()),
       new("RegisterDate", admin.RegisterDate.ToString(CultureInfo.InvariantCulture)),
       new(ClaimTypes.Hash, admin.Password)
     };
-    if (ConstantMgr.IsDevelopment()) {
-      claims.Add(new Claim(ExtClaimTypes.AllPermissions, "true"));
-    }
-    else {
-      var permissions = admin.Permissions.ToList().CreatePermissionString();
-      claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
-    }
+    var permissions = admin.Permissions.ToList().CreatePermissionString();
+    claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
     return new ClaimsPrincipal(new ClaimsIdentity(claims, AdminAuthType));
   }
 }

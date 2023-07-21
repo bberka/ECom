@@ -1,0 +1,24 @@
+﻿<PageTitle>@Loc["not_found"]</PageTitle>
+
+<RadzenLayout>
+  <RadzenBody>
+    <div class="rz-p-4">
+      <RadzenStack class="mt-5" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Orientation="Orientation.Vertical">
+        <RadzenText Class="my-2" TextAlign="TextAlign.Center" TextStyle="TextStyle.H1">404</RadzenText>
+        <RadzenText Class="my-2" TextAlign="TextAlign.Center" TextStyle="TextStyle.H3">@Loc["http_status_404"]</RadzenText>
+        <RadzenButton Text="@Loc["go_to_home_page"]" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Click="NavigateToHome"></RadzenButton>
+      </RadzenStack>
+    </div>
+  </RadzenBody>
+  <LayoutFooter></LayoutFooter>
+</RadzenLayout>
+
+@code {
+
+  private void NavigateToHome()
+  {
+    Nav.NavigateTo("/");
+  }
+
+}
+

@@ -43,6 +43,21 @@ public class AdminService : IAdminService
     return adminQuery;
   }
 
+  public CustomResult<string> ResetPassword(Guid author, Guid adminId) {
+    var isEquals = author.Equals(adminId);
+    if(isEquals) return DomainResult.Invalid(nameof(Admin));
+    var adminResult = GetAdmin(adminId);
+    if (!adminResult.Status) return adminResult.ToResult();
+    var admin = adminResult.Data!;
+    var newPassword = EasGenerate.RandomString(12);
+    admin.Password = newPassword.ToEncryptedText();
+    admin.UpdateDate = DateTime.UtcNow;
+    _unitOfWork.AdminRepository.Update(admin);
+    var result = _unitOfWork.Save();
+    if (!result) return DomainResult.DbInternalError(nameof(AddAdmin));
+    return newPassword;
+  }
+
   public CustomResult<AdminDto> GetAdminDto(string email) {
     var adminQuery = _unitOfWork.AdminRepository
       .Get(x => x.EmailAddress == email)
@@ -119,6 +134,8 @@ public class AdminService : IAdminService
     var password = model.NewPassword.ToEncryptedText();
     if (admin.Password != password) return DomainResult.WrongPassword();
     admin.Password = password;
+    admin.UpdateDate = DateTime.UtcNow;
+
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
@@ -180,6 +197,7 @@ public class AdminService : IAdminService
     if (!roleExist) return DomainResult.NotFound(nameof(Role));
 
     admin.RoleId = request.RoleId;
+    admin.UpdateDate = DateTime.UtcNow;
 
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
@@ -192,6 +210,7 @@ public class AdminService : IAdminService
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
     if (!admin.DeleteDate.HasValue) return DomainResult.NotDeleted(nameof(Admin));
     admin.DeleteDate = null;
+    admin.UpdateDate = DateTime.UtcNow;
     _unitOfWork.AdminRepository.Update(admin);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(RecoverAdmin));

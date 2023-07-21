@@ -4,7 +4,7 @@
 @using ECom.Shared.Constants
 @using ECom.Shared.DTOs
 @using Microsoft.AspNetCore.Mvc
-@inherits ResultDialog
+@inherits SharedBasePage
 
 <RadzenBody>
   <div class="rz-p-4">
@@ -50,8 +50,8 @@
   private LoginRequest LoginRequest { get; set; } = new();
 
   protected override async Task OnInitializedAsync() {
-    var isAuthenticated = await AuthProvider.IsAuthenticated();
-    if (isAuthenticated) {
+    var authState = await AuthProvider.GetAuthenticationStateAsync();
+    if (authState.IsAuthenticated()) {
       NavigatePage();
       return;
     }
@@ -73,8 +73,8 @@
   }
 
   private async Task OnSubmit() {
-    var isAuthenticated = await AuthProvider.IsAuthenticated();
-    if (isAuthenticated) {
+    var authState = await AuthProvider.GetAuthenticationStateAsync();
+    if (authState.IsAuthenticated()) {
       NavigatePage();
       return;
     }
@@ -87,7 +87,7 @@
 
     var result = AdminService.AdminLogin(LoginRequest);
     if (result.Status) {
-      await AuthProvider.Login(result.Data);
+      await AuthProvider.Login(result.Data!);
       NavigatePage();
       return;
     }

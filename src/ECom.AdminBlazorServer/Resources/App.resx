@@ -168,8 +168,23 @@
   <data name="category" xml:space="preserve">
     <value>Category</value>
   </data>
+  <data name="change_password" xml:space="preserve">
+    <value>Change password</value>
+  </data>
   <data name="company" xml:space="preserve">
     <value>Company</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="confirm_reset_password" xml:space="preserve">
+    <value>Are you sure you want to reset your password ?</value>
+  </data>
+  <data name="confirm_reset_password_other_admin" xml:space="preserve">
+    <value>Are you sure you want to reset selected admin password ?</value>
   </data>
   <data name="copyright" xml:space="preserve">
     <value>© 2022 - Today by ZDK Network. All Rights Reserved</value>
@@ -192,6 +207,9 @@
   <data name="delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="delete_date" xml:space="preserve">
+    <value>Delete Date</value>
+  </data>
   <data name="description" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -210,8 +228,14 @@
   <data name="enable" xml:space="preserve">
     <value>Enable</value>
   </data>
+  <data name="end_date" xml:space="preserve">
+    <value>End Date</value>
+  </data>
   <data name="error" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="expiration_date" xml:space="preserve">
+    <value>Expiration Date</value>
   </data>
   <data name="fatal" xml:space="preserve">
     <value>Fatal</value>
@@ -225,8 +249,17 @@
   <data name="general" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="generated_new_password" xml:space="preserve">
+    <value>Here is the new generated password: {password}</value>
+  </data>
+  <data name="go_to_home_page" xml:space="preserve">
+    <value>Go to home page</value>
+  </data>
   <data name="hello" xml:space="preserve">
     <value>Hello</value>
+  </data>
+  <data name="http_status_404" xml:space="preserve">
+    <value>Page you looking for is not found</value>
   </data>
   <data name="id" xml:space="preserve">
     <value>Id</value>
@@ -242,6 +275,9 @@
   </data>
   <data name="invalid" xml:space="preserve">
     <value>{name} is invalid</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
   </data>
   <data name="length_must_be_in_between" xml:space="preserve">
     <value>{name} must be between {min}-{max} number of characters</value>
@@ -270,8 +306,17 @@
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="navigating" xml:space="preserve">
+    <value>Navigating</value>
+  </data>
+  <data name="new_password" xml:space="preserve">
+    <value>New Password</value>
+  </data>
   <data name="not_changed" xml:space="preserve">
     <value>{name} is not changed</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>Not found</value>
   </data>
   <data name="ok_added" xml:space="preserve">
     <value>{name} is added successfully</value>
@@ -288,11 +333,17 @@
   <data name="ok_enabled" xml:space="preserve">
     <value>{name} is enabled successfully</value>
   </data>
+  <data name="ok_not_changed" xml:space="preserve">
+    <value>None of {name} properties changed</value>
+  </data>
   <data name="ok_recovered" xml:space="preserve">
     <value>{name} is recovered successfully</value>
   </data>
   <data name="ok_updated" xml:space="preserve">
     <value>{name} is updated successfully</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Old Password</value>
   </data>
   <data name="option" xml:space="preserve">
     <value>Option</value>
@@ -300,11 +351,17 @@
   <data name="options" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="panel_settings" xml:space="preserve">
+    <value>Panel Settings</value>
+  </data>
   <data name="password" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="passwords" xml:space="preserve">
     <value>Passwords</value>
+  </data>
+  <data name="passwords_must_be_same" xml:space="preserve">
+    <value>Passwords must be same</value>
   </data>
   <data name="payment" xml:space="preserve">
     <value>Payment</value>
@@ -342,14 +399,26 @@
   <data name="recover" xml:space="preserve">
     <value>Recover</value>
   </data>
+  <data name="redirecting" xml:space="preserve">
+    <value>Redirecting</value>
+  </data>
   <data name="register" xml:space="preserve">
     <value>Register</value>
+  </data>
+  <data name="register_date" xml:space="preserve">
+    <value>Register Date</value>
   </data>
   <data name="remember_me" xml:space="preserve">
     <value>Remember Me</value>
   </data>
+  <data name="repeat_new_password" xml:space="preserve">
+    <value>Repeat New Password</value>
+  </data>
   <data name="required" xml:space="preserve">
     <value>{name} field is required</value>
+  </data>
+  <data name="reset_password" xml:space="preserve">
+    <value>Reset password</value>
   </data>
   <data name="result" xml:space="preserve">
     <value>Result</value>
@@ -360,6 +429,15 @@
   <data name="roles" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="select_language" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="select_theme" xml:space="preserve">
+    <value>Select theme</value>
+  </data>
   <data name="simple_dialog_confirmation" xml:space="preserve">
     <value>Are you sure you want to {action} {name} ?</value>
   </data>
@@ -368,6 +446,12 @@
   </data>
   <data name="stock" xml:space="preserve">
     <value>Stock</value>
+  </data>
+  <data name="success_password_reset" xml:space="preserve">
+    <value>Password has been reset successfully</value>
+  </data>
+  <data name="theme" xml:space="preserve">
+    <value>Theme</value>
   </data>
   <data name="too_long" xml:space="preserve">
     <value>{name} can not be longer than {limit} characters</value>
@@ -384,6 +468,12 @@
   <data name="update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="update_date" xml:space="preserve">
+    <value>Update Date</value>
+  </data>
+  <data name="upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
   <data name="username" xml:space="preserve">
     <value>Username</value>
   </data>
@@ -396,5 +486,11 @@
   <data name="welcome_message" xml:space="preserve">
     <value>Welcome to {companyName}</value>
     <comment>this text is shown at login page</comment>
+  </data>
+  <data name="wrong_password" xml:space="preserve">
+    <value>Wrong password</value>
+  </data>
+  <data name="your_new_password" xml:space="preserve">
+    <value>Your new password: {password}</value>
   </data>
 </root>

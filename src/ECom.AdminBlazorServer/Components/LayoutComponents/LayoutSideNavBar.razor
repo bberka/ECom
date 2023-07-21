@@ -1,4 +1,7 @@
-﻿@inherits ComponentBase
+﻿@using ECom.Shared.DTOs
+@using Microsoft.AspNetCore.Localization
+@inherits ComponentBase
+@inject SupportedCultures SupportedCultures
 <AuthorizeView>
 
 
@@ -9,7 +12,8 @@
         <RadzenLabel Text="@Loc["company"]" />
       </RadzenStack>
       <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
-        <DropDownCulture></DropDownCulture>
+        @*<DropDownTheme></DropDownTheme>*@
+        @*<DropDownCulture></DropDownCulture>*@
         <UserMenu></UserMenu>
       </RadzenStack>
     </RadzenStack>
@@ -42,6 +46,10 @@
           <RadzenPanelMenuItem Text="@(Loc["cargo"] + " "+Loc["options"])" Path="options/cargo" />
           <RadzenPanelMenuItem Text="@(Loc["company"] + " "+Loc["info"])" Path="options/company" />
         </RadzenPanelMenuItem>
+        
+        <RadzenPanelMenuItem Text="@(Loc["panel_settings"])" Path="PanelSettings" />
+
+        
 
       </RadzenPanelMenu>
 
@@ -54,8 +62,12 @@
 @code {
   bool _sideBarExpanded = true;
 
+
+
+
   private void ToggleSideBar() {
     _sideBarExpanded = !_sideBarExpanded;
   }
 
+  }
 }

@@ -1,9 +1,13 @@
-﻿<RadzenBody>
+﻿@layout EmptyLayout
+<RadzenBody>
   <div class="rz-p-4">
     <RadzenStack class="mt-5" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Orientation="Orientation.Vertical">
-      <RadzenText TextAlign="TextAlign.Center" TextStyle="TextStyle.H3">@Loc["navigating"]</RadzenText>
+      <RadzenText Class="my-2" TextAlign="TextAlign.Center" TextStyle="TextStyle.H1">@Loc["author_name"]</RadzenText>
+      <RadzenText Class="my-2" TextAlign="TextAlign.Center" TextStyle="TextStyle.H3">@Loc["authorizing"]</RadzenText>
       <RadzenProgressBarCircular ShowValue="false" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
       </RadzenProgressBarCircular>
     </RadzenStack>
   </div>
 </RadzenBody>
+
+

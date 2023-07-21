@@ -48,7 +48,8 @@ public class Admin : IEntity
       DeletedDate = admin.DeleteDate,
       Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.Id)?.ToArray() ?? Array.Empty<string>(),
       Password = admin.Password,
-      RegisterDate = admin.RegisterDate
+      RegisterDate = admin.RegisterDate,
+      
     };
   }
 
