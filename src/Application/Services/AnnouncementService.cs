@@ -15,7 +15,6 @@ public class AnnouncementService : IAnnouncementService
     if (dbData is null) return DomainResult.NotFound(nameof(Announcement));
     dbData.Order = data.Order;
     dbData.Message = data.Message;
-    dbData.IsValid = data.IsValid;
     _unitOfWork.AnnouncementRepository.Update(dbData);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateAnnouncement));
@@ -31,37 +30,31 @@ public class AnnouncementService : IAnnouncementService
     return DomainResult.OkAdded(nameof(Announcement));
   }
 
-  public CustomResult DeleteAnnouncement(uint id) {
-    if (!_unitOfWork.AnnouncementRepository.Any(x => x.Id == id)) return DomainResult.NotFound(nameof(Announcement));
-    _unitOfWork.AnnouncementRepository.Delete((int)id);
+  public CustomResult DeleteAnnouncement(Guid id) {
+    var data = _unitOfWork.AnnouncementRepository.GetById(id);
+    if (data is null) return DomainResult.NotFound(nameof(Announcement));
+    data.DeleteDate = DateTime.UtcNow;
+    data.UpdateDate = DateTime.UtcNow;
+    _unitOfWork.AnnouncementRepository.Update(data);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteAnnouncement));
     return DomainResult.OkDeleted(nameof(Announcement));
+  }
+
+  public CustomResult RecoverAnnouncement(Guid id) {
+    var data = _unitOfWork.AnnouncementRepository.GetById(id);
+    if (data is null) return DomainResult.NotFound(nameof(Announcement));
+    data.DeleteDate = null;
+    data.UpdateDate = DateTime.UtcNow;
+    _unitOfWork.AnnouncementRepository.Update(data);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(DeleteAnnouncement));
+    return DomainResult.OkRecovered(nameof(Announcement));
   }
 
   public List<Announcement> ListAnnouncements() {
     return _unitOfWork.AnnouncementRepository.Get().ToList();
   }
 
-  public CustomResult EnableAnnouncement(uint id) {
-    var data = _unitOfWork.AnnouncementRepository.GetById((int)id);
-    if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    if (data.IsValid) return DomainResult.AlreadyEnabled(nameof(Announcement));
-    data.IsValid = true;
-    _unitOfWork.AnnouncementRepository.Update(data);
-    var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(EnableAnnouncement));
-    return DomainResult.OkUpdated(nameof(Announcement));
-  }
 
-  public CustomResult DisableAnnouncement(uint id) {
-    var data = _unitOfWork.AnnouncementRepository.GetById((int)id);
-    if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    if (!data.IsValid) return DomainResult.AlreadyDisabled(nameof(Announcement));
-    data.IsValid = false;
-    _unitOfWork.AnnouncementRepository.Update(data);
-    var res = _unitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(DisableAnnouncement));
-    return DomainResult.OkUpdated(nameof(Announcement));
-  }
 }

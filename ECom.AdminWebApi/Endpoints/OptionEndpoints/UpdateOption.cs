@@ -12,7 +12,7 @@ public class UpdateOption : EndpointBaseSync.WithRequest<Option>.WithResult<Cust
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.OptionUpdate)]
+  [RequirePermission(AdminPermission.ManageGeneralOptions)]
   [EndpointSwaggerOperation(typeof(UpdateOption), "Updates base option")]
   public override CustomResult Handle(Option request) {
     var res = _optionService.UpdateOption(request);

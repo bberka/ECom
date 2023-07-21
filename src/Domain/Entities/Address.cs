@@ -1,45 +1,48 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("Addresses", Schema = "ECPrivate")]
 public class Address : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
-
-  public DateTime RegisterDate { get; set; }
-
-  [System.Text.Json.Serialization.JsonIgnore]
-  [JsonIgnore]
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
   public DateTime? DeleteDate { get; set; }
 
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string Name { get; set; }
 
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string Surname { get; set; }
 
-  [MaxLength(ConstantMgr.TitleMaxLength)]
+  [MaxLength(ValidationSettings.MaxTitleLength)]
   public string Title { get; set; }
 
-  [MaxLength(64)]
+  [MaxLength(ValidationSettings.MaxCityLength)]
+  [MinLength(ValidationSettings.MinCityLength)]
   public string Town { get; set; }
 
-  [MaxLength(32)]
+  [MaxLength(ValidationSettings.MaxCountryLength)]
+  [MinLength(ValidationSettings.MinCountryLength)]
   public string Country { get; set; }
 
-  [MaxLength(32)]
+  [MaxLength(ValidationSettings.MaxCityLength)]
+  [MinLength(ValidationSettings.MinCityLength)]
   public string Provience { get; set; }
 
-  [MaxLength(128)]
+  [MaxLength(ValidationSettings.MaxAddressLength)]
+  [MinLength(ValidationSettings.MinAddressLength)]
   public string Details { get; set; }
 
-  [MinLength(ConstantMgr.PhoneNumberMinLength)]
-  [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
+  [MinLength(ValidationSettings.MinPhoneLength)]
+  [MaxLength(ValidationSettings.MaxPhoneLength)]
   public string PhoneNumber { get; set; }
 
   //FK
-  public int UserId { get; set; }
+  public Guid UserId { get; set; }
+  
 }

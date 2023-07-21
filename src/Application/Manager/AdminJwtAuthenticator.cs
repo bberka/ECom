@@ -34,7 +34,7 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
     var remove = adminAsDic.Where(x => x.Value == null || x.Value.ToString() == "");
     foreach (var kvp in remove) adminAsDic.Remove(kvp.Key);
     adminAsDic.Add("AdminOnly", "true");
-    adminAsDic.Add(ClaimTypes.Role, admin.RoleName);
+    adminAsDic.Add(ClaimTypes.Role, admin.RoleId);
     if (ConstantMgr.IsDevelopment())
       adminAsDic.Add(ExtClaimTypes.AllPermissions, "true");
     else

@@ -12,7 +12,7 @@ public class UpdateCargoOption : EndpointBaseSync.WithRequest<CargoOption>.WithR
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.CargoOptionUpdate)]
+  [RequirePermission(AdminPermission.ManageCargoOptions)]
   [EndpointSwaggerOperation(typeof(UpdateCargoOption), "Updates cargo option")]
   public override CustomResult Handle(CargoOption request) {
     var res = _optionService.UpdateCargoOption(request);

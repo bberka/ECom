@@ -6,5 +6,5 @@ public class AddProductCommentRequest : BaseAuthenticatedRequest
 
   public byte Star { get; set; }
 
-  public int ProductId { get; set; }
+  public Guid ProductId { get; set; }
 }

@@ -10,10 +10,5 @@ public class AddStockChangeRequestValidator : AbstractValidator<AddStockChangeRe
     RuleFor(x => x.Count)
       .GreaterThan(0);
 
-    RuleFor(x => x.ProductId)
-      .GreaterThan(0);
-
-    RuleFor(x => x.SupplierId)
-      .GreaterThan(0);
   }
 }

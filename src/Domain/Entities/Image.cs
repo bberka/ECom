@@ -1,20 +1,22 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("Images", Schema = "ECPrivate")]
 public class Image : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  [MaxLength(1000)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string Name { get; set; }
-
   public byte[] Data { get; set; }
 
-  [MaxLength(2)]
-  [MinLength(2)]
+  [MaxLength(ValidationSettings.MaxCultureLength)]
+  [MinLength(ValidationSettings.MinCultureLength)]
   public string Culture { get; set; }
-
-  //public virtual List<Product>? Products { get; set; }
+  
 }

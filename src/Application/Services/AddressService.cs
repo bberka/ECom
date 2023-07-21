@@ -15,7 +15,7 @@ public class AddressService : IAddressService
   }
 
 
-  public CustomResult DeleteAddress(int userId, int id) {
+  public CustomResult DeleteAddress(Guid userId, Guid id) {
     var addressResult = GetAddress(userId, id);
     if (!addressResult.Status) return addressResult;
     var address = addressResult.Data;
@@ -28,11 +28,11 @@ public class AddressService : IAddressService
     return DomainResult.OkDeleted(nameof(Address));
   }
 
-  public List<Address> GetUserAddresses(int userId) {
+  public List<Address> GetUserAddresses(Guid userId) {
     return _unitOfWork.AddressRepository.Get(x => x.UserId == userId && !x.DeleteDate.HasValue).ToList();
   }
 
-  public CustomResult UpdateAddress(int userId, Address data) {
+  public CustomResult UpdateAddress(Guid userId, Address data) {
     var addressResult = GetAddress(userId, data.Id);
     if (!addressResult.Status) return addressResult;
     var address = addressResult.Data!;
@@ -42,20 +42,20 @@ public class AddressService : IAddressService
     return DomainResult.OkUpdated(nameof(Address));
   }
 
-  public CustomResult AddAddress(int userId, Address address) {
+  public CustomResult AddAddress(Guid userId, Address address) {
     _unitOfWork.AddressRepository.Insert(address);
     if (!_unitOfWork.Save()) return DomainResult.DbInternalError(nameof(AddAddress));
     return DomainResult.OkAdded(nameof(Address));
   }
 
-  public CustomResult<Address> GetAddress(int addressId) {
+  public CustomResult<Address> GetAddress(Guid addressId) {
     var address = _unitOfWork.AddressRepository.GetById(addressId);
     if (address is null) return DomainResult.NotFound(nameof(Address));
     if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
     return address;
   }
 
-  public CustomResult<Address> GetAddress(int userId, int addressId) {
+  public CustomResult<Address> GetAddress(Guid userId, Guid addressId) {
     var addressResult = GetAddress(addressId);
     if (!addressResult.Status) return addressResult;
     var isAuthorized = addressResult.Data?.UserId == userId;

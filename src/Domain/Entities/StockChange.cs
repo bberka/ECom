@@ -1,25 +1,21 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("StockChanges", Schema = "ECPrivate")]
 public class StockChange : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
-
-  public DateTime RegisterDate { get; set; } = DateTime.Now;
-
-  /// <summary>
-  ///   0: Decrease
-  ///   1: Create
-  /// </summary>
-  public bool Type { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? DeleteDate { get; set; }
+  public StockChangeType Type { get; set; }
 
   public int Count { get; set; }
-  public int Cost { get; set; }
-  public int ProductId { get; set; }
-  public int? SupplierId { get; set; }
-  public int? OrderId { get; set; }
+  public decimal Cost { get; set; }
+  public Guid ProductId { get; set; }
+  public Guid? SupplierId { get; set; }
+  public Guid? OrderId { get; set; }
   public string? Reason { get; set; }
 
   //virtual

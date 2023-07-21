@@ -4,7 +4,7 @@ namespace ECom.WebApi.Endpoints.ProductEndpoints.FavoriteEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(Add))]
-public class Add : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
+public class Add : EndpointBaseSync.WithRequest<Guid>.WithResult<CustomResult>
 {
   private readonly IFavoriteProductService _favoriteProductService;
   private readonly ILogService _logService;
@@ -18,7 +18,7 @@ public class Add : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
 
   [HttpPost]
   [EndpointSwaggerOperation(typeof(Add), "Adds product to favorite list")]
-  public override CustomResult Handle(int id) {
+  public override CustomResult Handle(Guid id) {
     var userId = HttpContext.GetUserId();
     var res = _favoriteProductService.AddFavoriteProduct(userId, id);
     _logService.UserLog(res, userId, "FavoriteProduct.Add", id);

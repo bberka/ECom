@@ -22,7 +22,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Domain\ECom.Domain.csproj" />
-		<ProjectReference Include="..\ECom.SharedServer\ECom.SharedServer.csproj" />
 		<ProjectReference Include="..\Infrastructure\ECom.Infrastructure.csproj" />
 	</ItemGroup>
 

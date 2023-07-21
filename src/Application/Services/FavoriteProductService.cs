@@ -18,8 +18,8 @@ public class FavoriteProductService : IFavoriteProductService
     _userService = userService;
   }
 
-  public CustomResult AddFavoriteProduct(int userId, int productId) {
-    var userExist = _userService.UserExists(userId);
+  public CustomResult AddFavoriteProduct(Guid userId, Guid productId) {
+    var userExist = _unitOfWork.UserRepository.Any(x => x.Id == userId);
     if (!userExist) return DomainResult.NotFound(nameof(User));
     var productExist = _productService.Exists(productId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
@@ -34,8 +34,8 @@ public class FavoriteProductService : IFavoriteProductService
     return DomainResult.OkAdded(nameof(FavoriteProduct));
   }
 
-  public CustomResult RemoveFavoriteProduct(int userId, int productId) {
-    var userExist = _userService.UserExists(userId);
+  public CustomResult RemoveFavoriteProduct(Guid userId, Guid productId) {
+    var userExist = _unitOfWork.UserRepository.Any(x => x.Id == userId);
     if (!userExist) return DomainResult.NotFound(nameof(User));
     var favProduct =
       _unitOfWork.FavoriteProductRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
@@ -47,8 +47,7 @@ public class FavoriteProductService : IFavoriteProductService
     return DomainResult.OkRemoved(nameof(FavoriteProduct));
   }
 
-  public List<FavoriteProduct>
-    GetFavoriteProducts(int userId, ushort page, string culture = ConstantMgr.DefaultCulture) {
+  public List<FavoriteProduct> GetFavoriteProducts(Guid userId) {
     return _unitOfWork.FavoriteProductRepository
       .Get(x => x.UserId == userId)
       .Include(x => x.Product)

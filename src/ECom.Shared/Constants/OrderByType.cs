@@ -5,7 +5,7 @@ public enum OrderByType
   Recommended,
   PriceAsc,
   PriceDesc,
-  NewAddded,
+  NewAdded,
   HighScore,
   MostReviews,
   MostSells,

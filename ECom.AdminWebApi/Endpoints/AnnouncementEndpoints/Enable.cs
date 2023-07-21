@@ -11,7 +11,7 @@
 //    _logService = logService;
 //  }
 //  [HttpPut]
-//  [RequirePermission(AdminOperationType.AnnouncementUpdate)]
+//  [RequirePermission(AdminPermission.AnnouncementUpdate)]
 //  [EndpointSwaggerOperation(typeof(Enable),"Enables announcement")]
 //  public override CustomResult Handle([FromBody] uint id)
 //  {

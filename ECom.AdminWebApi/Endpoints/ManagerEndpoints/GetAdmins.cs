@@ -13,7 +13,7 @@ public class GetAdmins : EndpointBaseSync.WithoutRequest.WithResult<List<AdminDt
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.AdminGet)]
+  [RequirePermission(AdminPermission.ManageAdmins)]
   [EndpointSwaggerOperation(typeof(GetAdmins), "Gets all admins except the authenticated admin")]
   public override List<AdminDto> Handle() {
     var adminId = HttpContext.GetAdminId();

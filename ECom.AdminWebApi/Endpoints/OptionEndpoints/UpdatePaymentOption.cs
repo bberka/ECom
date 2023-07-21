@@ -12,7 +12,7 @@ public class UpdatePaymentOption : EndpointBaseSync.WithRequest<PaymentOption>.W
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.PaymentOptionUpdate)]
+  [RequirePermission(AdminPermission.ManagePaymentOptions)]
   [EndpointSwaggerOperation(typeof(UpdatePaymentOption), "Updates payment information")]
   public override CustomResult Handle(PaymentOption request) {
     var res = _optionService.UpdatePaymentOption(request);

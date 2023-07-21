@@ -11,7 +11,7 @@
 //    _logService = logService;
 //  }
 //  [HttpPut]
-//  [RequirePermission(AdminOperationType.AnnouncementUpdate)]
+//  [RequirePermission(AdminPermission.AnnouncementUpdate)]
 //  [EndpointSwaggerOperation(typeof(Disable), "Disables announcement")]
 //  public override CustomResult Handle([FromBody] uint id) {
 //    var adminId = HttpContext.GetAdminId();

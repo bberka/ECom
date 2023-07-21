@@ -24,20 +24,19 @@ public class ProductService : IProductService
     _option = _optionService.GetOption();
   }
 
-  public bool Exists(int id) {
+  public bool Exists(Guid id) {
     return _unitOfWork.ProductRepository.Any(x => x.Id == id);
   }
 
-  public CustomResult<Product> GetProduct(long productNo) {
+  public CustomResult<Product> GetProduct(Guid productNo) {
     var product = _unitOfWork.ProductRepository.GetFirstOrDefault(x => x.Id == productNo);
     if (product is null) return DomainResult.NotFound(nameof(Product));
-    if (!product.IsValid) return DomainResult.Invalid(nameof(Product));
-    if (product.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Product));
+    if (product.DeleteDate.HasValue) return DomainResult.Invalid(nameof(Product));
     return product;
   }
 
   public List<ProductComment> GetProductComments(
-    List<int> productIds,
+    List<Guid> productIds,
     ushort page) {
     var lastIdx = _option.PagingProductCount * page;
     return _unitOfWork.ProductCommentRepository
@@ -48,7 +47,7 @@ public class ProductService : IProductService
       .ToList();
   }
 
-  public List<ProductComment> GetProductComments(int productId, ushort page) {
+  public List<ProductComment> GetProductComments(Guid productId, ushort page) {
     var lastIdx = _option.PagingProductCount * page;
     return _unitOfWork.ProductCommentRepository
       .Get(x => x.ProductId == productId)
@@ -58,7 +57,7 @@ public class ProductService : IProductService
       .ToList();
   }
 
-  public CustomResult<int> AddProductComment(int userId, AddProductCommentRequest model) {
+  public CustomResult<int> AddProductComment(Guid userId, AddProductCommentRequest model) {
     var productResult = GetProduct(model.ProductId);
     if (!productResult.Status) return productResult.ToResult();
     //TODO: Check if user purchased the product
@@ -75,7 +74,7 @@ public class ProductService : IProductService
     return DomainResult.OkAdded(nameof(ProductComment));
   }
 
-  //public CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId)
+  //public CustomResult<int> AddCommentImage(IFormFile file, Guid UserId,int commentId)
   //{
   //    var productComment = _productCommentRepo.Find(commentId);
   //    if (productComment is null)
@@ -112,7 +111,7 @@ public class ProductService : IProductService
     return _unitOfWork.ProductRepository
       .GetPaging(page,
         _option.PagingProductCount,
-        x => !x.DeleteDate.HasValue && x.IsValid,
+        x => !x.DeleteDate.HasValue,
         x => x.OrderByDescending(y => y.RegisterDate))
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
@@ -120,11 +119,11 @@ public class ProductService : IProductService
       .ToList();
   }
 
-  public List<Product> GetProducts(List<int> productIds, ushort page, string culture = ConstantMgr.DefaultCulture) {
+  public List<Product> GetProducts(List<Guid> productIds, ushort page, string culture = ConstantMgr.DefaultCulture) {
     return _unitOfWork.ProductRepository
       .GetPaging(page,
         _option.PagingProductCount,
-        x => !x.DeleteDate.HasValue && x.IsValid && productIds.Contains(x.Id),
+        x => !x.DeleteDate.HasValue && productIds.Contains(x.Id),
         x => x.OrderByDescending(y => y.RegisterDate))
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)

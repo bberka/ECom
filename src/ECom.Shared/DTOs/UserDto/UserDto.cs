@@ -14,13 +14,13 @@ public class UserDto
   //    EmailAddress = user.EmailAddress;
   //    PhoneNumber = user.PhoneNumber;
   //}
-  public int Id { get; set; }
+  public Guid Id { get; set; }
   public string EmailAddress { get; set; } = null!;
   public bool IsEmailVerified { get; set; }
   public string FirstName { get; set; } = null!;
   public string LastName { get; set; } = null!;
   public string PhoneNumber { get; set; } = null!;
   public int? TaxNumber { get; set; }
-  public byte TwoFactorType { get; set; } = 0;
+  public TwoFactorType TwoFactorType { get; set; } = 0;
   public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 }

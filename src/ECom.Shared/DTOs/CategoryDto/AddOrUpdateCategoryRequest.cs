@@ -6,5 +6,5 @@ public class AddOrUpdateCategoryRequest : BaseAuthenticatedRequest
   public string NameKey { get; set; } = null!;
   public string? ParentNameKey { get; set; }
   public string Name { get; set; } = null!;
-  public LanguageType Language { get; set; }
+  public Language Language { get; set; }
 }

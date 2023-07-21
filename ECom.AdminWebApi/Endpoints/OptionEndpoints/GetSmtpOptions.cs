@@ -12,7 +12,7 @@ public class GetSmtpOptions : EndpointBaseSync.WithoutRequest.WithResult<List<Sm
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.SmtpOptionGet)]
+  [RequirePermission(AdminPermission.ManageSmtpOption)]
   [EndpointSwaggerOperation(typeof(GetSmtpOptions), "Gets smtp info list")]
   public override List<SmtpOption> Handle() {
     return _optionService.ListSmtpOptions();

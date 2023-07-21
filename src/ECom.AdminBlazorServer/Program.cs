@@ -1,3 +1,4 @@
+using Bers.Blazor.Ext.Javascript;
 using ECom.AdminBlazorServer.Common;
 using ECom.Application.Middlewares;
 using ECom.Application.Setup;
@@ -118,7 +119,7 @@ builder.Services.AddSwaggerGen(c => {
 });
 builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
-builder.Services.AddScoped<IJsCookieUtil, JsCookieUtil>();
+builder.Services.AddBlazorExt();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -151,7 +152,6 @@ app.UseRequestLocalization(localizationOptions);
 //}
 //app.UseMiddleware<AdminAuthenticationBearerMiddleware>();
 app.UseMiddleware<LoggingMiddleware>();
-app.UseMiddleware<MaintenanceCheckMiddleware>();
 app.UseAuthorization();
 app.UseAuthentication();
 

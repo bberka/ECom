@@ -1,4 +1,7 @@
-﻿namespace ECom.Application.Validators;
+﻿using ECom.Shared.Constants;
+using Microsoft.AspNetCore.Routing;
+
+namespace ECom.Application.Validators;
 
 public class AddAdminRequestValidator : AbstractValidator<AddAdminRequest>, IValidator<AddAdminRequest>
 {
@@ -11,11 +14,17 @@ public class AddAdminRequestValidator : AbstractValidator<AddAdminRequest>, IVal
       .MaximumLength(32);
 
     RuleFor(x => x.RoleId)
-      .GreaterThan(0);
+      .Must(x => {
+        var values = Enum.GetValues(typeof(RoleType));
+        foreach (var value in values) {
+          var role = (RoleType)value;
+          var isMatch = role.ToString().Equals(x, StringComparison.OrdinalIgnoreCase);
+          if (isMatch)
+            return true;
+        }
+        return false;
+      });
 
 
-    //RuleFor(x => x.EmailAddress)
-    //  .Must(validationService.NotUsedEmail_Admin)
-    //  .WithErrorCode(CustomValidationType.AlreadyInUse.ToString());
   }
 }

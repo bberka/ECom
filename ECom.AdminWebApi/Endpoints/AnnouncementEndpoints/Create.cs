@@ -12,7 +12,7 @@ public class Create : EndpointBaseSync.WithRequest<AddAnnouncementRequest>.WithR
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.AnnouncementAdd)]
+  [RequirePermission(AdminPermission.ManageAnnouncements)]
   [EndpointSwaggerOperation(typeof(Create), "Adds announcement")]
   public override CustomResult Handle(AddAnnouncementRequest request) {
     var adminId = HttpContext.GetAdminId();

@@ -59,11 +59,20 @@ public class CustomResult<T>
   //public ValidationError[] ValidationErrors { get; internal init; }  
 
 
+
   public T? Data { get; internal init; }
 
   public CustomResultLevel Level { get; internal init; } = CustomResultLevel.Auto;
 
   public Exception? Exception { get; internal init; }
+
+
+  public (string name, string error) GetErrorAndName() {
+    var split = ErrorCode.Split('.');
+    var name = split[0];
+    var error = split[1];
+    return (name, error);
+  }
 
   public static CustomResult<T> Ok(string name, string error, T? data = default) {
     return new CustomResult<T> {

@@ -11,13 +11,13 @@ public class ImageService : IImageService
     _unitOfWork = unitOfWork;
   }
 
-  public CustomResult<Image> GetImage(int id) {
+  public CustomResult<Image> GetImage(Guid id) {
     var image = _unitOfWork.ImageRepository.GetById(id);
     if (image is null) return DomainResult.NotFound(nameof(Image));
     return image;
   }
 
-  public string GetImageBase64String(int id) {
+  public string GetImageBase64String(Guid id) {
     var imageData = _unitOfWork.ImageRepository
       .Get(x => x.Id == id)
       .Select(x => x.Data)
@@ -27,7 +27,7 @@ public class ImageService : IImageService
     return $"data:image/jpg;base64,{imageBase64Data}";
   }
 
-  public CustomResult<int> UploadImage(IFormFile file) {
+  public CustomResult<Guid> UploadImage(IFormFile file) {
     var img = new Image();
     var ms = new MemoryStream();
     file.CopyTo(ms);

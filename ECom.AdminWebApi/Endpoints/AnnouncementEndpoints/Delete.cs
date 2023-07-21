@@ -12,7 +12,7 @@ public class Delete : EndpointBaseSync.WithRequest<uint>.WithResult<CustomResult
   }
 
   [HttpDelete]
-  [RequirePermission(AdminOperationType.AnnouncementDelete)]
+  [RequirePermission(AdminPermission.ManageAnnouncements)]
   [EndpointSwaggerOperation(typeof(Delete), "Deletes announcement")]
   public override CustomResult Handle([FromBody] uint id) {
     var adminId = HttpContext.GetAdminId();

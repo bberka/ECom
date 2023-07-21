@@ -1,6 +1,6 @@
 ﻿namespace ECom.Shared.Constants;
 
-public enum TwoFactorType
+public enum TwoFactorType : byte
 {
   None,
   Email,

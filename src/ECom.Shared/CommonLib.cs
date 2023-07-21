@@ -9,14 +9,14 @@ public static class CommonLib
   }
 
   public static string[] GetCultureNames() {
-    return Enum.GetNames<LanguageType>();
+    return Enum.GetNames<Language>().Select(x => x.Replace("_","-")).ToArray();
   }
 
   public static string[] GetAdminOperationTypes() {
-    return Enum.GetNames<AdminOperationType>();
+    return Enum.GetNames<AdminPermission>();
   }
 
   public static string[] GetCurrencyTypes() {
-    return Enum.GetNames<CurrencyType>();
+    return Enum.GetNames<Currency>();
   }
 }

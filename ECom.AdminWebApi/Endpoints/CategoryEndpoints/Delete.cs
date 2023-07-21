@@ -14,7 +14,7 @@
 //  }
 
 //  [HttpDelete]
-//  [RequirePermission(AdminOperationType.CategoryDelete)]
+//  [RequirePermission(AdminPermission.CategoryDelete)]
 //  [EndpointSwaggerOperation(typeof(Delete))]
 //  public override CustomResult Handle([FromBody] string key)
 //  {

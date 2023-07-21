@@ -123,6 +123,9 @@
   <data name="account_found" xml:space="preserve">
     <value>No account found matching given information</value>
   </data>
+  <data name="actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="add" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -201,6 +204,9 @@
   <data name="email_address" xml:space="preserve">
     <value>Email Address</value>
   </data>
+  <data name="empty_table" xml:space="preserve">
+    <value>No data found</value>
+  </data>
   <data name="enable" xml:space="preserve">
     <value>Enable</value>
   </data>
@@ -209,6 +215,9 @@
   </data>
   <data name="fatal" xml:space="preserve">
     <value>Fatal</value>
+  </data>
+  <data name="footer_text" xml:space="preserve">
+    <value>© 2021 - Today by ZDK Network. All Rights Reserved</value>
   </data>
   <data name="forgot_password" xml:space="preserve">
     <value>Forgot password</value>
@@ -251,6 +260,12 @@
   </data>
   <data name="management" xml:space="preserve">
     <value>Management</value>
+  </data>
+  <data name="must_be_in_range" xml:space="preserve">
+    <value>{name} must be between {min}-{max}</value>
+  </data>
+  <data name="must_select" xml:space="preserve">
+    <value>You must select {name}</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>

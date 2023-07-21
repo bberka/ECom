@@ -95,7 +95,6 @@ public static class BuilderSetup
     builder.Services.AddScoped<IRoleService, RoleService>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IDebugService, DebugService>();
-    builder.Services.AddScoped<ILocalizationService, LocalizationService>();
     return builder;
   }
 

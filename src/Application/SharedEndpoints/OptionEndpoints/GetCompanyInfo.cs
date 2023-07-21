@@ -16,6 +16,6 @@ public class GetCompanyInfo : EndpointBaseSync.WithoutRequest.WithResult<Company
   [ResponseCache(Duration = 60)]
   [EndpointSwaggerOperation(typeof(GetCompanyInfo), "Packs company information")]
   public override CompanyInformation Handle() {
-    return _companyInformationService.GetFromCache() ?? throw new ArgumentNullException(nameof(CompanyInformation));
+    return _companyInformationService.GetCompanyInformation();
   }
 }

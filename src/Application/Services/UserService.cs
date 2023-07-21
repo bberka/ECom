@@ -27,6 +27,10 @@ public class UserService : IUserService
     return DomainResult.OkUpdated(nameof(User));
   }
 
+  public List<User> GetUsers() {
+    return _unitOfWork.UserRepository.Get().ToList();
+  }
+
   public CustomResult<UserDto> LoginUser(LoginRequest model) {
     var userResult = GetUser(model.EmailAddress);
     if (!userResult.Status) return userResult.ToResult();
@@ -55,26 +59,21 @@ public class UserService : IUserService
   public CustomResult<User> GetUser(string email) {
     var user = _unitOfWork.UserRepository.GetFirstOrDefault(x => x.EmailAddress == email);
     if (user is null) return DomainResult.NoAccountFound(nameof(User));
-    if (!user.IsValid) return DomainResult.Invalid(nameof(User));
-    if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
+    if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
   }
 
-  public CustomResult<User> GetUser(int id) {
+  public CustomResult<User> GetUser(Guid id) {
     var user = _unitOfWork.UserRepository.GetById(id);
     if (user is null) return DomainResult.NotFound(nameof(User));
-    if (!user.IsValid) return DomainResult.Invalid(nameof(User));
-    if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
+    if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
   }
 
 
-  public bool UserExists(string email) {
-    return _unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
-  }
 
 
-  public CustomResult ChangePassword(int userId, ChangePasswordRequest model) {
+  public CustomResult ChangePassword(Guid userId, ChangePasswordRequest model) {
     var userResult = GetUser(userId);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
@@ -87,8 +86,7 @@ public class UserService : IUserService
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public CustomResult UpdateUser(int userId, UpdateUserRequest model) {
-    if (userId < 1) throw new InvalidOperationException("UserNo can not be negative");
+  public CustomResult UpdateUser(Guid userId, UpdateUserRequest model) {
     var user = _unitOfWork.UserRepository.GetById(userId);
     if (user is null) return DomainResult.NotFound(nameof(User));
     user.EmailAddress = model.EmailAddress;
@@ -103,7 +101,4 @@ public class UserService : IUserService
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public bool UserExists(int id) {
-    return _unitOfWork.UserRepository.Any(x => x.Id == id);
-  }
 }

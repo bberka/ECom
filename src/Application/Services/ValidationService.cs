@@ -16,12 +16,6 @@ public class ValidationService : IValidationService
     _optionService = optionService;
     _option = _optionService.GetOption();
   }
-
-  public bool AllowTester(bool isTesterAccount) {
-    if (!isTesterAccount) return false;
-    return !_option.IsRelease;
-  }
-
   public bool NotUsedEmail_Admin(string email) {
     return !_unitOfWork.AdminRepository.Any(x => x.EmailAddress == email);
   }
@@ -29,6 +23,8 @@ public class ValidationService : IValidationService
   public bool NotUsedEmail_User(string email) {
     return !_unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
   }
+
+
 
   public bool NotHasSpecialChar(string password) {
     return !_option.RequireSpecialCharacterInPassword || password.ContainsSpecialChars();
@@ -51,7 +47,4 @@ public class ValidationService : IValidationService
   }
 
 
-  public bool IsRelease() {
-    return _option.IsRelease;
-  }
 }

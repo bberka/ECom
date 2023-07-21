@@ -4,13 +4,13 @@ namespace ECom.Domain.Abstract;
 
 public interface ICollectionService
 {
-  public CustomResult CreateCollection(int userId, AddCollectionRequest model);
-  public CustomResult<Collection> GetCollection(int collectionId);
-  public CustomResult<Collection> GetCollection(int userId, int collectionId);
-  public CustomResult UpdateCollection(int userId, UpdateCollectionRequest model);
-  public CustomResult DeleteCollection(int userId, int collectionId);
-  public List<Collection> GetCollections(int userId);
+  public CustomResult CreateCollection(Guid userId, AddCollectionRequest model);
+  public CustomResult<Collection> GetCollection(Guid collectionId);
+  public CustomResult<Collection> GetCollection(Guid userId, Guid collectionId);
+  public CustomResult UpdateCollection(Guid userId, UpdateCollectionRequest model);
+  public CustomResult DeleteCollection(Guid userId, Guid collectionId);
+  public List<Collection> GetCollections(Guid userId);
 
-  public CustomResult<List<CollectionProduct>> GetCollectionProducts(int userId, int collectionId, ushort page,
+  public CustomResult<List<CollectionProduct>> GetCollectionProducts(Guid userId, Guid collectionId, ushort page,
     string culture = ConstantMgr.DefaultCulture);
 }

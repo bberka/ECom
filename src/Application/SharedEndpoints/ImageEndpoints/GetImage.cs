@@ -4,7 +4,7 @@ namespace ECom.Application.SharedEndpoints.ImageEndpoints;
 
 [AllowAnonymous]
 [EndpointRoute(typeof(GetImage))]
-public class GetImage : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult<Image>>
+public class GetImage : EndpointBaseSync.WithRequest<Guid>.WithResult<CustomResult<Image>>
 {
   private readonly IImageService _imageService;
 
@@ -15,7 +15,7 @@ public class GetImage : EndpointBaseSync.WithRequest<int>.WithResult<CustomResul
   [HttpGet]
   [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "id" })]
   [EndpointSwaggerOperation(typeof(GetImage), "Gets image")]
-  public override CustomResult<Image> Handle(int id) {
+  public override CustomResult<Image> Handle(Guid id) {
     return _imageService.GetImage(id);
   }
 }

@@ -1,22 +1,24 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("ProductComments", Schema = "ECPrivate")]
 public class ProductComment : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
 
-  public int Id { get; set; }
-
-  public DateTime RegisterDate { get; set; } = DateTime.Now;
-
-  [MaxLength(1000)]
-  [MinLength(8)]
+  [MaxLength(ValidationSettings.MaxProductCommentLength)]
+  [MinLength(ValidationSettings.MinProductCommentLength)]
   public string Comment { get; set; }
 
+  [Range(0,5)]
   public byte Star { get; set; }
 
   //FK
-  public int UserId { get; set; }
-  public int ProductId { get; set; }
+  public Guid UserId { get; set; }
+  public Guid ProductId { get; set; }
+  public virtual User User { get; set; }
+  public virtual Product Product { get; set; }
 }

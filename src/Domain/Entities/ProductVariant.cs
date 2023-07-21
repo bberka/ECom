@@ -1,14 +1,16 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("ProductVariants", Schema = "ECPrivate")]
 public class ProductVariant : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  [MaxLength(256)]
+  [MaxLength(ValidationSettings.MaxDescriptionLength)]
   public string Description { get; set; }
-
-  public DateTime RegisterDate { get; set; } = DateTime.Now;
 }

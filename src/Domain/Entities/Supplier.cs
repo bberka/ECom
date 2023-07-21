@@ -1,30 +1,34 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("Suppliers", Schema = "ECPrivate")]
 public class Supplier : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
+  
 
-  public DateTime RegisterDate { get; set; }
-
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string Name { get; set; }
 
-  [MaxLength(128)]
+  [MinLength(ValidationSettings.MinDescriptionLength)]
+  [MaxLength(ValidationSettings.MaxDescriptionLength)]
   public string Description { get; set; }
 
-  [MaxLength(128)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string CompanyName { get; set; }
 
-  [MinLength(ConstantMgr.PhoneNumberMinLength)]
-  [MaxLength(ConstantMgr.PhoneNumberMaxLength)]
+  [MinLength(ValidationSettings.MinPhoneLength)]
+  [MaxLength(ValidationSettings.MaxPhoneLength)]
   public string PhoneNumber { get; set; }
 
-  [MaxLength(ConstantMgr.EmailMaxLength)]
   [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   public string EmailAddress { get; set; }
 
   public virtual List<StockChange> StockChanges { get; set; }

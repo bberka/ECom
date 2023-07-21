@@ -28,24 +28,24 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
     return authState?.User?.Identity?.IsAuthenticated == true;
   }
 
-  public async Task<int> GetId() {
+  public async Task<Guid> GetId() {
     var authState = await GetAuthenticationStateAsync();
     var id = authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-    return int.Parse(id ?? "0");
+    return  Guid.Parse(id ?? "00000000-0000-0000-0000-000000000000");
   }
 
   public async Task<AdminDto> GetAdmin() {
     var authState = await GetAuthenticationStateAsync();
     var adminDto = new AdminDto();
-    adminDto.Id = int.Parse(authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+    adminDto.Id = Guid.Parse(authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
     adminDto.EmailAddress = authState?.User?.FindFirstValue(ClaimTypes.Email) ?? "";
-    adminDto.RoleName = authState?.User?.FindFirstValue(ClaimTypes.Role) ?? "";
+    adminDto.RoleId = authState?.User?.FindFirstValue(ClaimTypes.Role) ?? "";
     adminDto.Permissions =
       authState?.User?.FindFirstValue(ExtClaimTypes.EndPointPermissions)?.Split(',') ?? new string[0];
     adminDto.Password = authState?.User?.FindFirstValue(ClaimTypes.Hash) ?? "";
     adminDto.RegisterDate =
       DateTime.Parse(authState?.User?.FindFirstValue("RegisterDate") ?? "", CultureInfo.InvariantCulture);
-    adminDto.TwoFactorType = byte.Parse(authState?.User?.FindFirstValue("TwoFactorType") ?? "0");
+    adminDto.TwoFactorType = Enum.Parse<TwoFactorType>(authState?.User?.FindFirstValue("TwoFactorType") ?? "0");
     return adminDto;
   }
 
@@ -77,15 +77,15 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
   }
 
   private static ClaimsPrincipal CreatePrincipalFromLoginResponse(AdminDto admin) {
-    var claims = new List<Claim>();
-    //claims.Add(new Claim("AdminOnly", "true"));
-    claims.Add(new Claim(ClaimTypes.Role, admin.RoleName));
-    claims.Add(new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString()));
-    claims.Add(new Claim(ClaimTypes.Email, admin.EmailAddress));
-    claims.Add(new Claim("RoleId", admin.RoleId.ToString()));
-    claims.Add(new Claim("TwoFactorType", admin.TwoFactorType.ToString()));
-    claims.Add(new Claim("RegisterDate", admin.RegisterDate.ToString(CultureInfo.InvariantCulture)));
-    claims.Add(new Claim(ClaimTypes.Hash, admin.Password));
+    var claims = new List<Claim> {
+      //claims.Add(new Claim("AdminOnly", "true"));
+      new(ClaimTypes.Role, admin.RoleId),
+      new(ClaimTypes.NameIdentifier, admin.Id.ToString()),
+      new(ClaimTypes.Email, admin.EmailAddress),
+      new("TwoFactorType", admin.TwoFactorType.ToString()),
+      new("RegisterDate", admin.RegisterDate.ToString(CultureInfo.InvariantCulture)),
+      new(ClaimTypes.Hash, admin.Password)
+    };
     if (ConstantMgr.IsDevelopment()) {
       claims.Add(new Claim(ExtClaimTypes.AllPermissions, "true"));
     }
@@ -93,7 +93,6 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
       var permissions = admin.Permissions.ToList().CreatePermissionString();
       claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
     }
-
     return new ClaimsPrincipal(new ClaimsIdentity(claims, AdminAuthType));
   }
 }

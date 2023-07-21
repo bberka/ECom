@@ -13,7 +13,7 @@ public class UpdateAdminAccount : EndpointBaseSync.WithRequest<UpdateAdminAccoun
 
   [HttpPost]
   [EndpointSwaggerOperation(typeof(UpdateAdminAccount), "Updates admin account")]
-  [RequirePermission(AdminOperationType.AdminUpdate)]
+  [RequirePermission(AdminPermission.ManageAdmins)]
   public override CustomResult Handle([FromBody] UpdateAdminAccountRequest request) {
     var authId = HttpContext.GetAdminId();
     var res = _adminService.UpdateAdmin(authId, request);

@@ -23,11 +23,11 @@ public static class DomainResult
   }
 
   public static CustomResult OkNone(string empty = "") {
-    return CustomResult.Ok("", "none");
+    return CustomResult.Ok("", "ok_none");
   }
 
   public static CustomResult OkRecovered(string name) {
-    return CustomResult.Ok(name, "recovered");
+    return CustomResult.Ok(name, "ok_recovered");
   }
 
   #region OK
@@ -37,31 +37,31 @@ public static class DomainResult
   }
 
   public static CustomResult OkAdded(string name) {
-    return CustomResult.Ok(name, "added");
+    return CustomResult.Ok(name, "ok_added");
   }
 
   public static CustomResult OkAuthenticated(string name) {
-    return CustomResult.Ok(name, "authenticated");
+    return CustomResult.Ok(name, "ok_authenticated");
   }
 
   public static CustomResult OkUpdated(string name) {
-    return CustomResult.Ok(name, "updated");
+    return CustomResult.Ok(name, "ok_updated");
   }
 
   public static CustomResult OkRemoved(string name) {
-    return CustomResult.Ok(name, "removed");
+    return CustomResult.Ok(name, "ok_removed");
   }
 
   public static CustomResult OkDeleted(string name) {
-    return CustomResult.Ok(name, "deleted");
+    return CustomResult.Ok(name, "ok_deleted");
   }
 
   public static CustomResult OkCleared(string name) {
-    return CustomResult.Ok(name, "cleared");
+    return CustomResult.Ok(name, "ok_cleared");
   }
 
   public static CustomResult OkNotChanged(string name) {
-    return CustomResult.Ok(name, "not_changed");
+    return CustomResult.Ok(name, "ok_not_changed");
   }
 
   #endregion

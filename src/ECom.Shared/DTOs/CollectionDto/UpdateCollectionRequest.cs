@@ -2,6 +2,6 @@
 
 public class UpdateCollectionRequest : BaseAuthenticatedRequest
 {
-  public int CollectionId { get; set; }
+  public Guid CollectionId { get; set; }
   public string CollectionName { get; set; }
 }

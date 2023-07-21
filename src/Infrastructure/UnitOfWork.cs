@@ -12,7 +12,6 @@ public class UnitOfWork : IUnitOfWork
   public UnitOfWork() {
     _disposed = false;
     _dbContext = new EComDbContext();
-    LocalizationStringRepository = new LocalizationStringRepository(_dbContext);
     AddressRepository = new AddressRepository(_dbContext);
     AdminRepository = new AdminRepository(_dbContext);
     AdminLogRepository = new AdminLogRepository(_dbContext);
@@ -37,23 +36,18 @@ public class UnitOfWork : IUnitOfWork
     ProductRepository = new ProductRepository(_dbContext);
     ProductCommentRepository = new ProductCommentRepository(_dbContext);
     ProductDetailRepository = new ProductDetailRepository(_dbContext);
-    ProductShowCaseRepository = new ProductShowCaseRepository(_dbContext);
+    ShowCaseRepository = new ShowCaseRepository(_dbContext);
     ProductCategoryRepository = new ProductCategoryRepository(_dbContext);
     ProductVariantRepository = new ProductVariantRepository(_dbContext);
     RoleRepository = new RoleRepository(_dbContext);
     PermissionRoleRepository = new PermissionRoleRepository(_dbContext);
     SecurityLogRepository = new SecurityLogRepository(_dbContext);
-    ShowCaseImageRepository = new ShowCaseImageRepository(_dbContext);
     SliderRepository = new SliderRepository(_dbContext);
     SmtpOptionRepository = new SmtpOptionRepository(_dbContext);
     StockChangeRepository = new StockChangeRepository(_dbContext);
-    SubCategoryRepository = new SubCategoryRepository(_dbContext);
     SupplierRepository = new SupplierRepository(_dbContext);
     UserRepository = new UserRepository(_dbContext);
-    UserLogRepository = new UserLogRepository(_dbContext);
   }
-
-  public IGenericRepository<SubCategory> SubCategoryRepository { get; }
 
   public IGenericRepository<Address> AddressRepository { get; }
   public IGenericRepository<Admin> AdminRepository { get; }
@@ -79,20 +73,17 @@ public class UnitOfWork : IUnitOfWork
   public IGenericRepository<Product> ProductRepository { get; }
   public IGenericRepository<ProductComment> ProductCommentRepository { get; }
   public IGenericRepository<ProductDetail> ProductDetailRepository { get; }
-  public IGenericRepository<ProductShowCase> ProductShowCaseRepository { get; }
+  public IGenericRepository<ShowCase> ShowCaseRepository { get; }
   public IGenericRepository<ProductCategory> ProductCategoryRepository { get; }
   public IGenericRepository<ProductVariant> ProductVariantRepository { get; }
   public IGenericRepository<Role> RoleRepository { get; }
   public IGenericRepository<PermissionRole> PermissionRoleRepository { get; }
   public IGenericRepository<SecurityLog> SecurityLogRepository { get; }
-  public IGenericRepository<ShowCaseImage> ShowCaseImageRepository { get; }
   public IGenericRepository<Slider> SliderRepository { get; }
   public IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
   public IGenericRepository<StockChange> StockChangeRepository { get; }
-  public IGenericRepository<LocalizationString> LocalizationStringRepository { get; }
   public IGenericRepository<Supplier> SupplierRepository { get; }
   public IGenericRepository<User> UserRepository { get; }
-  public IGenericRepository<UserLog> UserLogRepository { get; }
 
 
   public bool Save() {
@@ -122,9 +113,8 @@ public class UnitOfWork : IUnitOfWork
       }
     }
     catch (Exception ex) {
-      //TODO Log Exception Handling message                      
+      Log.Error(ex, "InternalDbError!!!");
     }
-
     await transaction.RollbackAsync();
     return false;
   }

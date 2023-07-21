@@ -1,14 +1,18 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(UserId), nameof(ProductId))]
 [Table("Carts", Schema = "ECPrivate")]
 public class Cart : IEntity
 {
-  public DateTime RegisterDate { get; set; } = DateTime.MaxValue;
-  public DateTime LastUpdateDate { get; set; }
+
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
   public int Count { get; set; }
-  public int UserId { get; set; }
-  public int ProductId { get; set; }
+  public Guid UserId { get; set; }
+  public Guid ProductId { get; set; }
 
 
   //Virtual

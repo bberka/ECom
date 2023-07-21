@@ -1,24 +1,20 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("Admins", Schema = "ECOperation")]
 public class Admin : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  public DateTime RegisterDate { get; set; } = DateTime.Now;
-
-  //public bool IsValid { get; set; } = true;
-
-
-  [MaxLength(64)]
-  [JsonIgnore]
-  [System.Text.Json.Serialization.JsonIgnore]
-  [IgnoreDataMember]
+  [MaxLength(ValidationSettings.MaxPasswordLength)]
+  [MinLength(ValidationSettings.MinPasswordLength)]
   public string Password { get; set; }
-
-  [MaxLength(ConstantMgr.EmailMaxLength)]
+  
   [EmailAddress]
   public string EmailAddress { get; set; }
 
@@ -29,32 +25,16 @@ public class Admin : IEntity
   [IgnoreDataMember]
   public string? TwoFactorKey { get; set; }
 
-  /// <summary>
-  ///   0: None
-  ///   1: Email
-  ///   2: Phone
-  ///   3: Authy
-  /// </summary>
-  public byte TwoFactorType { get; set; }
+  public TwoFactorType TwoFactorType { get; set; }
+  
+  public bool IsDeleted => DeleteDate.HasValue;
 
-  [JsonConverter(typeof(StringEnumConverter))]
-  [NotMapped]
-  public TwoFactorType TwoFactor {
-    get => (TwoFactorType)TwoFactorType;
-    set => TwoFactorType = (byte)value;
-  }
-
-
-  public DateTime? DeletedDate { get; set; }
-
-  public bool IsDeleted => DeletedDate.HasValue;
-
-  public int RoleId { get; set; }
+  public string RoleId { get; set; }
 
 
   //virtual
   public Role Role { get; set; } = null!;
-  public virtual HashSet<AdminLog> AdminLogs { get; set; }
+  public virtual List<AdminLog> AdminLogs { get; set; }
 
 
   public static AdminDto ToDto(Admin admin) {
@@ -63,9 +43,8 @@ public class Admin : IEntity
       EmailAddress = admin.EmailAddress,
       TwoFactorType = admin.TwoFactorType,
       //Permissions = string.Join(",", admin.Role.Permissions.Select(x => x.Name).ToArray()),
-      RoleName = admin.Role.Name,
-      RoleId = admin.Role.Id,
-      DeletedDate = admin.DeletedDate,
+      RoleId = admin.RoleId,
+      DeletedDate = admin.DeleteDate,
       Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.Name)?.ToArray() ?? Array.Empty<string>(),
       Password = admin.Password,
       RegisterDate = admin.RegisterDate
@@ -80,20 +59,18 @@ public class Admin : IEntity
       RoleId = adminDto.RoleId,
       Password = adminDto.Password,
       RegisterDate = adminDto.RegisterDate,
-      DeletedDate = adminDto.DeletedDate,
-      TwoFactor = (TwoFactorType)adminDto.TwoFactorType
+      DeleteDate = adminDto.DeletedDate,
     };
   }
 
   public static Admin FromDto(AddAdminRequest request) {
     return new Admin {
       RegisterDate = DateTime.Now,
-      DeletedDate = null,
+      DeleteDate = null,
       EmailAddress = request.EmailAddress,
       TwoFactorType = 0,
       RoleId = request.RoleId,
       Password = request.Password.ToEncryptedText(),
-      TwoFactor = Shared.Constants.TwoFactorType.None
     };
   }
 }

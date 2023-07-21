@@ -1,4 +1,5 @@
 ﻿@using System.Net.Http
+@using Bers.Blazor.Ext.Javascript
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -15,12 +16,26 @@
 @using ECom.Domain.Abstract
 @using ECom.Shared
 @using ECom.Domain
-@using ECom.AdminBlazorServer.Shared.Sub
+@using ECom.AdminBlazorServer.Components
+@using ECom.AdminBlazorServer.Components.LayoutComponents
+@using ECom.AdminBlazorServer.Components.ActionComponents
+@using ECom.AdminBlazorServer.Components.BaseComponents
+@using ECom.AdminBlazorServer.Components.ButtonComponents
+@using ECom.AdminBlazorServer.Components.FieldComponents
+@using ECom.AdminBlazorServer.Components.SimpleComponents
+@using ECom.AdminBlazorServer.Components.SubPageComponents
 @using Microsoft.Extensions.Localization
 @using ECom.Domain.Extensions
-@using ECom.AdminBlazorServer.Components.FormComponents
-
 
 @inject AdminAuthenticationStateProvider AuthProvider
 @inject NavigationManager Nav
 @inject IStringLocalizer<App> Loc
+@inject IJsCookieUtil JsCookieUtil
+@inject IJsUtil JsUtil
+
+@*@inject IJsStorageUtil
+@inject IJsWindowUtil
+@inject IJsClipboardUtil
+@inject IJsNotificationUtil
+@inject IJsDomUtil
+@inject IJsFileUtil*@

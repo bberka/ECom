@@ -26,4 +26,10 @@
     <Folder Include="Pages\Announcement\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Bers.Blazor.Ext.Javascript">
+      <HintPath>..\External\Bers.Blazor.Ext.Javascript.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@ namespace ECom.Domain.Extensions;
 
 public static class CartExtensions
 {
-  public static void AddOrIncreaseInCart(this HttpContext context, int productId) {
+  public static void AddOrIncreaseInCart(this HttpContext context, Guid productId) {
     var currentCart = context.GetCart() ?? new List<SessionCart>();
     var current = currentCart.FirstOrDefault(x => x.ProductId == productId);
     if (current is not null)
@@ -29,7 +29,7 @@ public static class CartExtensions
     return res;
   }
 
-  public static void RemoveOrDecreaseInCart(this HttpContext context, int productId) {
+  public static void RemoveOrDecreaseInCart(this HttpContext context, Guid productId) {
     var currentCart = context.GetCart() ?? new List<SessionCart>();
     var current = currentCart.FirstOrDefault(x => x.ProductId == productId);
     if (current is not null) {
@@ -44,14 +44,14 @@ public static class CartExtensions
     context.Session.Remove("cart");
   }
 
-  public static List<Cart> GetDbCartEntity(this HttpContext context, int userId) {
+  public static IEnumerable<Cart> GetDbCartEntity(this HttpContext context, Guid? userId) {
     var current = context.GetCart();
     return current.Select(x => new Cart {
       Count = x.Count,
-      LastUpdateDate = DateTime.Now,
+      UpdateDate = DateTime.Now,
       RegisterDate = DateTime.Now,
       ProductId = x.ProductId,
-      UserId = userId
-    }).ToList();
+      UserId = userId ?? Guid.Empty 
+    });
   }
 }

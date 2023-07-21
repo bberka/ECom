@@ -5,7 +5,7 @@ namespace ECom.WebApi.Endpoints.ProductEndpoints.FavoriteEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(List))]
-public class List : EndpointBaseSync.WithRequest<ushort>.WithResult<List<FavoriteProduct>>
+public class List : EndpointBaseSync.WithoutRequest.WithResult<List<FavoriteProduct>>
 {
   private readonly IFavoriteProductService _favoriteProductService;
   private readonly ILogService _logService;
@@ -19,9 +19,9 @@ public class List : EndpointBaseSync.WithRequest<ushort>.WithResult<List<Favorit
 
   [HttpGet]
   [EndpointSwaggerOperation(typeof(List), "Lists favorite products")]
-  public override List<FavoriteProduct> Handle(ushort page) {
+  public override List<FavoriteProduct> Handle() {
     var userId = HttpContext.GetUserId();
-    var res = _favoriteProductService.GetFavoriteProducts(userId, page);
+    var res = _favoriteProductService.GetFavoriteProducts(userId);
     return res;
   }
 }

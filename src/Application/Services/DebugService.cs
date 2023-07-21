@@ -28,7 +28,7 @@ public class DebugService : IDebugService
   public Admin GetAdmin() {
     CheckAndThrowDebug();
     return _unitOfWork.AdminRepository
-      .Get(x => x.RoleId == 1)
+      .Get(x => x.RoleId == RoleType.Owner.ToString())
       .Include(x => x.Role)
       .ThenInclude(x => x.PermissionRoles)
       .Single();

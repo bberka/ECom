@@ -6,13 +6,13 @@ namespace ECom.WebApi;
 
 public static class AuthExtensions
 {
-  public static int GetUserId(this HttpContext context) {
+  public static Guid GetUserId(this HttpContext context) {
     if (context.User.Identity?.IsAuthenticated != true) throw new NotAuthorizedException(AuthType.User);
     var isUser = context.User.Claims.Any(x => x.Type == "UserOnly");
     if (!isUser) throw new NotAuthorizedException(AuthType.User);
     var user = context.User.FindFirst("Id")?.Value;
     if (user is null) throw new NotAuthorizedException(AuthType.User);
-    return user.ConvertTo<int>();
+    return user.ConvertTo<Guid>();
   }
 
 

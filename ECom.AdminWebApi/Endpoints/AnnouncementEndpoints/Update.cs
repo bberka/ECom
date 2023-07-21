@@ -12,7 +12,7 @@ public class Update : EndpointBaseSync.WithRequest<UpdateAnnouncementRequest>.Wi
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.AnnouncementUpdate)]
+  [RequirePermission(AdminPermission.ManageAnnouncements)]
   [EndpointSwaggerOperation(typeof(Update), "Updates announcement")]
   public override CustomResult Handle(UpdateAnnouncementRequest request) {
     var adminId = HttpContext.GetAdminId();

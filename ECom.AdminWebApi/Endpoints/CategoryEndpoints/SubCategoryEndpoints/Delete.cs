@@ -14,7 +14,7 @@
 //  }
 
 //  [HttpDelete]
-//  [RequirePermission(AdminOperationType.CargoOptionDelete)]
+//  [RequirePermission(AdminPermission.CargoOptionDelete)]
 //  [EndpointSwaggerOperation(typeof(Delete))]
 //  public override CustomResult Handle([FromBody] string id)
 //  {

@@ -1,41 +1,45 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("AdminLogs", Schema = "ECLog")]
 public class AdminLog : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public long Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  public DateTime RegisterDate { get; set; }
+  public CustomResultLevel Level { get; set; }
 
-  public int Severity { get; set; }
-
-  [MaxLength(32)]
+  [MaxLength(ValidationSettings.MaxOperationLength)]
   public string OperationName { get; set; }
 
-  [MaxLength(64)]
+  [MaxLength(ValidationSettings.MaxErrorCodeLength)]
   public string ErrorCode { get; set; } = "None";
 
-  public int Rv { get; set; } = -1;
+  public string? Params { get; set; }
+  public Guid? AdminId { get; set; }
+
+  public short HttpStatusCode { get; set; } = 0;
 
   [MaxLength(32)]
   public string RemoteIpAddress { get; set; }
 
   [MaxLength(32)]
-  public string? XReal_IpAddress { get; set; }
+  public string? XReal_IpAddress { get; set; } = null;
 
   [MaxLength(32)]
-  public string? CFConnecting_IpAddress { get; set; }
+  public string? CFConnecting_IpAddress { get; set; } = null;
 
   [MaxLength(512)]
   public string UserAgent { get; set; }
 
   [MaxLength(2000)]
-  public string? Params { get; set; }
-
+  public string RequestUrl { get; set; }
   [MaxLength(2000)]
-  public string? ResultErrors { get; set; }
-
-  public int? AdminId { get; set; }
+  public string? QueryString { get; set; }
 }

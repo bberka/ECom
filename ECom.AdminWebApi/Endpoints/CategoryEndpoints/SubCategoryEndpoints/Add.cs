@@ -14,7 +14,7 @@
 //  }
 
 //  [HttpPost]
-//  [RequirePermission(AdminOperationType.CategoryAdd)]
+//  [RequirePermission(AdminPermission.CategoryAdd)]
 //  [EndpointSwaggerOperation(typeof(Create),"Adds sub category to a main category")]
 //  public override CustomResult Handle(AddOrUpdateCategoryRequest request)
 //  {

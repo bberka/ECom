@@ -24,27 +24,27 @@ public class DebugUserAuthenticationMiddleware
       return;
     }
 
-    var hasBearer = context.Request.Headers.TryGetValue("Authorization", out var bearer);
-    if (!hasBearer) {
-      var hasTokenInSession = context.Session.TryGetValue("user_debug_token", out var tokenInSession);
-      if (!hasTokenInSession) {
-        var adminResult = _userService.GetUser(1);
-        if (adminResult.Status) {
-          var tokenResult = _userJwtAuthenticator.Authenticate(new LoginRequest {
-            Password = adminResult.Data.Password,
-            EmailAddress = adminResult.Data.EmailAddress,
-            IsHashed = true
-          });
-          if (tokenResult.Status) {
-            var token = tokenResult.Data!;
-            context.Response.Headers.Add("Authorization", $"Bearer {tokenResult.Data?.Token.Token}");
-            context.Session.SetString("user_debug_token", token.Token.Token);
-          }
-        }
-      }
-      else {
-        context.Request.Headers.Add("Authorization", $"Bearer {tokenInSession}");
-      }
-    }
+    //var hasBearer = context.Request.Headers.TryGetValue("Authorization", out var bearer);
+    //if (!hasBearer) {
+    //  var hasTokenInSession = context.Session.TryGetValue("user_debug_token", out var tokenInSession);
+    //  if (!hasTokenInSession) {
+    //    var adminResult = _userService.GetUser(1);
+    //    if (adminResult.Status) {
+    //      var tokenResult = _userJwtAuthenticator.Authenticate(new LoginRequest {
+    //        Password = adminResult.Data.Password,
+    //        EmailAddress = adminResult.Data.EmailAddress,
+    //        IsHashed = true
+    //      });
+    //      if (tokenResult.Status) {
+    //        var token = tokenResult.Data!;
+    //        context.Response.Headers.Add("Authorization", $"Bearer {tokenResult.Data?.Token.Token}");
+    //        context.Session.SetString("user_debug_token", token.Token.Token);
+    //      }
+    //    }
+    //  }
+    //  else {
+    //    context.Request.Headers.Add("Authorization", $"Bearer {tokenInSession}");
+    //  }
+    //}
   }
 }

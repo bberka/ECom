@@ -10,7 +10,7 @@ public class UploadImage : EndpointBaseSync.WithRequest<IFormFile>.WithResult<Cu
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.ImageUpload)]
+  [RequirePermission(AdminPermission.ManageImages)]
   [EndpointSwaggerOperation(typeof(UploadImage), "Upload image")]
   public override CustomResult<int> Handle(IFormFile file) {
     if (file is null) throw new InvalidOperationException("Image IFormFile can not be null");

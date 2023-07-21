@@ -17,8 +17,6 @@ public class AutoMapperProfiles : Profile
     CreateMap<AddAdminRequest, Admin>();
     CreateMap<AddProductCommentRequest, ProductComment>();
     CreateMap<AddStockChangeRequest, StockChange>();
-    CreateMap<RoleDto, Role>();
-    CreateMap<PermissionDto, PermissionRole>();
-    CreateMap<PermissionDto, Permission>();
+
   }
 }

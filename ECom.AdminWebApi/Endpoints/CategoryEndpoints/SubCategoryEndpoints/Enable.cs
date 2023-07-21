@@ -14,7 +14,7 @@
 //  }
 
 //  [HttpPost]
-//  [RequirePermission(AdminOperationType.SubCategoryEnable)]
+//  [RequirePermission(AdminPermission.SubCategoryEnable)]
 //  [EndpointSwaggerOperation(typeof(Enable),"Enables sub category")]
 //  public override CustomResult Handle([FromBody] uint id)
 //  {

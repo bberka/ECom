@@ -10,38 +10,23 @@ public class RoleService : IRoleService
     _unitOfWork = unitOfWork;
   }
 
-  public List<RoleDto> GetRolesWithPermissions() {
+  public List<Role> GetRoles() {
     return _unitOfWork.RoleRepository
       .Get()
-      .Select(x => Role.ToDto(x))
+      .Include(x => x.PermissionRoles)
       .ToList();
   }
 
-  public CustomResult<Role> GetRole(int roleId) {
+  public CustomResult<Role> GetRole(string roleId) {
+    if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
     var role = _unitOfWork.RoleRepository.GetById(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
 
-  public CustomResult<Role> GetRoleByName(string roleName) {
-    var role = _unitOfWork.RoleRepository.GetFirstOrDefault(x => x.Name == roleName);
-    if (role is null) return DomainResult.NotFound(nameof(Role));
-    return role;
-  }
 
-
-  public HashSet<Permission> GetRolePermissions(int roleId) {
-    var role = _unitOfWork.RoleRepository
-      .Get(x => x.Id == roleId)
-      //.Include(x => x.Permissions)
-      .FirstOrDefault();
-    if (role is null) return new HashSet<Permission>();
-    //return role.Permissions;
-    return new HashSet<Permission>();
-  }
-
-  public bool RoleExists(int roleId) {
-    if (roleId < 1) return false;
+  public bool RoleExists(string roleId) {
+    if(string.IsNullOrEmpty(roleId)) return false;
     return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
   }
 }

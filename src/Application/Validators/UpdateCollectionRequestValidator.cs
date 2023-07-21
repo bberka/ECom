@@ -8,7 +8,5 @@ public class UpdateCollectionRequestValidator : AbstractValidator<UpdateCollecti
       .MinimumLength(3)
       .MaximumLength(32);
 
-    RuleFor(x => x.CollectionId)
-      .GreaterThan(0);
   }
 }

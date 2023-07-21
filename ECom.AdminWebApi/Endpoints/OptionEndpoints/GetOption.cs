@@ -12,7 +12,7 @@ public class GetOption : EndpointBaseSync.WithoutRequest.WithResult<Option>
   }
 
   [HttpGet]
-  [RequirePermission(AdminOperationType.OptionGet)]
+  [RequirePermission(AdminPermission.ManageGeneralOptions)]
   [EndpointSwaggerOperation(typeof(GetOption), "Gets base option")]
   public override Option Handle() {
     return _optionService.GetOption();

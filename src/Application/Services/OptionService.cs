@@ -53,7 +53,7 @@ public class OptionService : IOptionService
   public Option GetOption() {
     var cache = _memoryCache.Get<Option>("option");
     if (cache is not null) return cache;
-    cache = _unitOfWork.OptionRepository.GetFirstOrDefault(x => x.IsRelease == !ConstantMgr.IsDevelopment());
+    cache = _unitOfWork.OptionRepository.GetFirstOrDefault(x => x.Key == true);
     if (cache is null) throw new NotFoundException(nameof(Option));
     _memoryCache.Set("option", cache, TimeSpan.FromMinutes(5));
     return cache;
@@ -63,7 +63,7 @@ public class OptionService : IOptionService
   public List<CargoOption> ListCargoOptions() {
     var cache = _memoryCache.Get<List<CargoOption>>(CARGO_OPTION_CACHE_KEY);
     if (cache is not null) return cache;
-    cache = _unitOfWork.CargoOptionRepository.Get(x => x.IsValid == true).ToList();
+    cache = _unitOfWork.CargoOptionRepository.Get(x => x.DeleteDate.HasValue == false).ToList();
     _memoryCache.Set(CARGO_OPTION_CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
@@ -71,7 +71,7 @@ public class OptionService : IOptionService
   public List<PaymentOption> ListPaymentOptions() {
     var cache = _memoryCache.Get<List<PaymentOption>>(PAYMENT_OPTION_CACHE_KEY);
     if (cache is not null) return cache;
-    cache = _unitOfWork.PaymentOptionRepository.Get(x => x.IsValid == true).ToList();
+    cache = _unitOfWork.PaymentOptionRepository.Get(x => x.DeleteDate.HasValue == false).ToList();
     _memoryCache.Set(PAYMENT_OPTION_CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
@@ -80,7 +80,7 @@ public class OptionService : IOptionService
   public List<SmtpOption> ListSmtpOptions() {
     var cache = _memoryCache.Get<List<SmtpOption>>(SMTP_OPTION_CACHE_KEY);
     if (cache is not null) return cache;
-    cache = _unitOfWork.SmtpOptionRepository.Get(x => x.IsValid == true).ToList();
+    cache = _unitOfWork.SmtpOptionRepository.Get(x => x.DeleteDate.HasValue == false).ToList();
     _memoryCache.Set(SMTP_OPTION_CACHE_KEY, cache, TimeSpan.FromMinutes(5));
     return cache;
   }

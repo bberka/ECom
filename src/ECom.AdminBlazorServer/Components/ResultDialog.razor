@@ -5,10 +5,12 @@
 @code {
   //const int defaultDuration = 4000;
   protected void ShowResultNotification(CustomResult result, int duration = 3000) {
-    var text = Lang.GetError(result.ErrorCode);
+    var error = result.GetErrorAndName();
+    var text = Loc[error.error].Format("name",error.name);
+
     var message = new NotificationMessage {
       Severity = SeverityFromResultLevel(result.Level),
-      Summary = Lang.Get(result.LevelText),
+          Summary = Loc[result.LevelText],
       Detail = text,
       Duration = duration
     };
@@ -18,7 +20,7 @@
   protected void ShowNotification(NotificationSeverity severity, string text, int duration = 3000) {
     var message = new NotificationMessage {
       Severity = severity,
-      Summary = Lang.Get(severity.ToString().ToLower()),
+          Summary = Loc[severity.ToString().ToLower()],
       Detail = text,
       Duration = duration
     };
@@ -26,10 +28,11 @@
   }
 
   protected async Task ShowResultDialog(CustomResult result) {
-    var message = Lang.GetError(result.ErrorCode);
-    _ = await DialogService.OpenAsync(Lang.Get(result.LevelText), ds =>
+    var error = result.GetErrorAndName();
+    var text = Loc[error.error].Format("name", error.name);
+    _ = await DialogService.OpenAsync(Loc[result.LevelText], ds =>
       @<RadzenStack >
-        <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@message</RadzenText>
+      <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
           <RadzenStack Orientation="Orientation.Horizontal">
             <RadzenButton Text="Ok" Click="() => { ds.Close(true); }" Style="width: 80px;"/>
@@ -44,13 +47,13 @@
 
 
   protected async Task<bool> ShowSimpleDialog(SimpleDialogType type, string name, string title = "Confirm") {
-    var message = Lang.Get("confirmation", new LocalizationParam("action", Lang.Get(type).ToLower()), new LocalizationParam("name", name));
+    var text = Loc["simple_dialog_confirmation"].Format("action", Loc[type.ToString().ToLower()]).Format("name", Loc["name"]);
     var showOkButton = type.ShowOkButton();
     var showCancelButton = type.ShowCancelButton();
 
     var result = await DialogService.OpenAsync(title, ds =>
       @<RadzenStack Gap="1.5rem">
-        <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@message</RadzenText>
+      <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
           <RadzenStack Orientation="Orientation.Horizontal">
             <RadzenButton Visible="showOkButton" Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;"/>

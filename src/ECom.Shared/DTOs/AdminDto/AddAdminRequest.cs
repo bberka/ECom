@@ -6,5 +6,5 @@ public class AddAdminRequest : BaseAuthenticatedRequest
 
   public string Password { get; set; }
 
-  public int RoleId { get; set; }
+  public string RoleId { get; set; }
 }

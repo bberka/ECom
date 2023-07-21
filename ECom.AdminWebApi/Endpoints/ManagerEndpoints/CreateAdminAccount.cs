@@ -13,7 +13,7 @@ public class CreateAdminAccount : EndpointBaseSync.WithRequest<AddAdminRequest>.
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.AdminCreate)]
+  [RequirePermission(AdminPermission.ManageAdmins)]
   [EndpointSwaggerOperation(typeof(CreateAdminAccount), "Creates new admin account")]
   public override CustomResult Handle(AddAdminRequest model) {
     var authId = HttpContext.GetAdminId();

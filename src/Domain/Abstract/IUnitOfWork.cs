@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 
@@ -28,23 +29,19 @@ public interface IUnitOfWork : IDisposable
   IGenericRepository<Product> ProductRepository { get; }
   IGenericRepository<ProductComment> ProductCommentRepository { get; }
   IGenericRepository<ProductDetail> ProductDetailRepository { get; }
-  IGenericRepository<ProductShowCase> ProductShowCaseRepository { get; }
+  IGenericRepository<ShowCase> ShowCaseRepository { get; }
   IGenericRepository<ProductCategory> ProductCategoryRepository { get; }
   IGenericRepository<ProductVariant> ProductVariantRepository { get; }
   IGenericRepository<Role> RoleRepository { get; }
   IGenericRepository<PermissionRole> PermissionRoleRepository { get; }
   IGenericRepository<SecurityLog> SecurityLogRepository { get; }
-  IGenericRepository<ShowCaseImage> ShowCaseImageRepository { get; }
   IGenericRepository<Slider> SliderRepository { get; }
   IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
   IGenericRepository<StockChange> StockChangeRepository { get; }
 
-  IGenericRepository<LocalizationString> LocalizationStringRepository { get; }
-
   //IGenericRepository<SubCategory> SubCategoryRepository { get; }
   IGenericRepository<Supplier> SupplierRepository { get; }
   IGenericRepository<User> UserRepository { get; }
-  IGenericRepository<UserLog> UserLogRepository { get; }
   bool Save();
   Task<bool> SaveAsync();
 }

@@ -4,7 +4,6 @@ namespace ECom.Domain.Abstract;
 
 public interface ICompanyInformationService
 {
-  CustomResult<CompanyInformation> GetCompanyInformation();
-  CompanyInformation? GetFromCache();
+  CompanyInformation GetCompanyInformation();
   CustomResult UpdateOrAddCompanyInformation(CompanyInformation info);
 }

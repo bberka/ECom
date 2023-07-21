@@ -1,10 +1,13 @@
-﻿namespace ECom.Domain.Entities;
+﻿using EasMe.EntityFrameworkCore;
+
+namespace ECom.Domain.Entities;
 
 [Table("PermissionRoles", Schema = "ECOperation")]
+[PrimaryKey(nameof(RoleId),nameof(PermissionId))]
 public class PermissionRole : IEntity
 {
-  public int RoleId { get; set; }
-  public int PermissionId { get; set; }
-  public Role Role { get; set; }
-  public Permission Permission { get; set; }
+  public string RoleId { get; set; }
+  public string PermissionId { get; set; }
+  public virtual Role Role { get; set; }
+  public virtual Permission Permission { get; set; }
 }

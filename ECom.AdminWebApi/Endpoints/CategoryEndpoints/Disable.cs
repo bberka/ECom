@@ -14,7 +14,7 @@
 //  }
 
 //  [HttpPut]
-//  [RequirePermission(AdminOperationType.CategoryDisable)]
+//  [RequirePermission(AdminPermission.CategoryDisable)]
 //  [EndpointSwaggerOperation(typeof(Disable))]
 //  public override CustomResult Handle([FromBody] string key)
 //  {

@@ -1,0 +1,18 @@
+﻿@typeparam T
+
+@code {
+  private T _value;
+
+  [Parameter]
+  public T Value {
+    get => _value;
+    set {
+      if (_value?.Equals(value) == true) return;
+      _value = value;
+      ValueChanged.InvokeAsync(value);
+    }
+  }
+
+  [Parameter]
+  public new EventCallback<T> ValueChanged { get; set; }
+}

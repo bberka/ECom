@@ -10,7 +10,7 @@ public class RecoverAdminAccount : EndpointBaseSync.WithRequest<int>.WithResult<
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.AdminRecoverAccount)]
+  [RequirePermission(AdminPermission.ManageAdmins)]
   [EndpointSwaggerOperation(typeof(RecoverAdminAccount), "Recovers deleted admin account")]
   public override CustomResult Handle([FromQuery] int id) {
     var admin = HttpContext.GetAdminId();

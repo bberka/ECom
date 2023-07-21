@@ -4,24 +4,8 @@ namespace ECom.Shared.Constants;
 
 public static class ConstantMgr
 {
-  public const byte StringMinLength = 3;
-
-  public const byte NameMinLength = 3;
-  public const byte NameMaxLength = 64;
-
-
-  public const byte EmailMaxLength = 255;
-
-  public const byte PasswordMinLength = 3;
-  public const byte PasswordMaxLength = 255;
-
-  public const byte TitleMinLength = 3;
-  public const byte TitleMaxLength = 32;
-  public const byte PhoneNumberMinLength = 10;
-  public const byte PhoneNumberMaxLength = 15;
-
   public const string DefaultCulture = "tr";
-  public const CurrencyType DefaultCurrency = CurrencyType.Lira;
+  public const Currency DefaultCurrency = Currency.Lira;
   public static readonly DateTime DefaultDateTime = new(1900, 1, 1);
 
 

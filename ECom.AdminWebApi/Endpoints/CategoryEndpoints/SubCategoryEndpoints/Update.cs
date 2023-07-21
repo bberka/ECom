@@ -14,7 +14,7 @@
 //  }
 
 //  [HttpPost]
-//  [RequirePermission(AdminOperationType.CategoryUpdate)]
+//  [RequirePermission(AdminPermission.CategoryUpdate)]
 //  [EndpointSwaggerOperation(typeof(Update))]
 //  public override CustomResult Handle(SubCategory request) {
 //    throw new NotImplementedException();

@@ -16,7 +16,7 @@ public class UpdateCompanyInfo : EndpointBaseSync.WithRequest<CompanyInformation
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.CompanyInfoAdd)]
+  [RequirePermission(AdminPermission.ManageCompanyInformation)]
   [EndpointSwaggerOperation(typeof(UpdateCompanyInfo), "Updates company information")]
   public override CustomResult Handle(CompanyInformation request) {
     var adminId = HttpContext.GetAdminId();

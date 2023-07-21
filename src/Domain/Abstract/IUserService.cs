@@ -4,12 +4,11 @@ namespace ECom.Domain.Abstract;
 
 public interface IUserService
 {
-  bool UserExists(string email);
-  bool UserExists(int id);
   CustomResult<User> GetUser(string email);
-  CustomResult<User> GetUser(int id);
+  CustomResult<User> GetUser(Guid id);
+  List<User> GetUsers();
   CustomResult<UserDto> LoginUser(LoginRequest model);
   CustomResult RegisterUser(RegisterUserRequest model);
-  CustomResult ChangePassword(int userId, ChangePasswordRequest model);
-  CustomResult UpdateUser(int userId, UpdateUserRequest model);
+  CustomResult ChangePassword(Guid userId, ChangePasswordRequest model);
+  CustomResult UpdateUser(Guid userId, UpdateUserRequest model);
 }

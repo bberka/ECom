@@ -1,4 +1,4 @@
-﻿global using EasMe.EntityFrameworkCore;
+﻿global using ECom.Domain.Abstract;
 global using EasMe.Extensions;
 global using ECom.Domain.Exceptions;
 global using ECom.Domain.Lib;
@@ -10,7 +10,6 @@ global using ECom.Shared.DTOs.AnnouncementDto;
 global using ECom.Shared.DTOs.CategoryDto;
 global using ECom.Shared.DTOs.CollectionDto;
 global using ECom.Shared.DTOs.ProductDto;
-global using ECom.Shared.DTOs.RoleDto;
 global using ECom.Shared.DTOs.StockChangeDto;
 global using ECom.Shared.DTOs.UserDto;
 global using System;

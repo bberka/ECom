@@ -12,7 +12,7 @@ public class Add : EndpointBaseSync.WithRequest<AddOrUpdateCategoryRequest>.With
   }
 
   [HttpPost]
-  [RequirePermission(AdminOperationType.CategoryAdd)]
+  [RequirePermission(AdminPermission.ManageCategories)]
   [EndpointSwaggerOperation(typeof(Add), "Adds category")]
   public override CustomResult Handle(AddOrUpdateCategoryRequest request) {
     var authId = HttpContext.GetAdminId();

@@ -16,7 +16,7 @@ public class ListProducts : EndpointBaseSync.WithoutRequest.WithResult<List<Cart
   [HttpGet]
   [EndpointSwaggerOperation(typeof(ListProducts), "Gets cart products")]
   public override List<Cart> Handle() {
-    if (!HttpContext.IsUserAuthenticated()) return HttpContext.GetDbCartEntity(-1).ToList();
+    if (!HttpContext.IsUserAuthenticated()) return HttpContext.GetDbCartEntity(null).ToList();
     var userId = HttpContext.GetUserId();
     return _cartService.ListBasketProducts(userId);
   }
