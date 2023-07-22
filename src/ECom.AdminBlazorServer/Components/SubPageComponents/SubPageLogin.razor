@@ -48,8 +48,12 @@
   private static string? companyName;
   private static string welcomeMessage;
   private LoginRequest LoginRequest { get; set; } = new();
-
   protected override async Task OnInitializedAsync() {
+    companyName = CompanyInformationService.GetCompanyInformation().CompanyName;
+    welcomeMessage = Loc["welcome_message"].Format("companyName", companyName);
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
     var authState = await AuthProvider.GetAuthenticationStateAsync();
     if (authState.IsAuthenticated()) {
       NavigatePage();
@@ -57,17 +61,10 @@
     }
     if (ConstantMgr.IsDevelopment()) {
       var debugLoginRequest = new LoginRequest() {
-        Password = "123456789",
-        EmailAddress = "owner@mail.com"
-      };
+          Password = "123456789",
+          EmailAddress = "owner@mail.com"
+        };
       LoginRequest = debugLoginRequest;
-    }
-    companyName = CompanyInformationService.GetCompanyInformation().CompanyName;
-    welcomeMessage = Loc["welcome_message"].Format("companyName", companyName);
-  }
-
-  protected override async Task OnAfterRenderAsync(bool firstRender) {
-    if (ConstantMgr.IsDevelopment()) {
       await OnSubmit();
     }
   }

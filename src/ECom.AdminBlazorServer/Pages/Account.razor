@@ -2,6 +2,7 @@
 @using ECom.Shared.DTOs.AdminDto
 @using ECom.Shared.DTOs
 @using System.Globalization
+@using EasMe.Extensions
 @using ECom.Domain.Entities
 @inject IAdminService AdminService
 @inherits SharedBasePage
@@ -39,17 +40,17 @@
 
           <RadzenRow class="my-3">
             <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["old_password"]" /></RadzenColumn>
-            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="OldPassword" Value="@_changePassword.OldPassword"></RadzenPassword></RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="OldPassword" @bind-Value="@_changePassword.OldPassword"></RadzenPassword></RadzenColumn>
           </RadzenRow>
           <RadzenRow class="my-3">
             <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["new_password"]" /></RadzenColumn>
-            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="NewPassword" Value="@_changePassword.NewPassword"></RadzenPassword></RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="NewPassword" @bind-Value="@_changePassword.NewPassword"></RadzenPassword></RadzenColumn>
           </RadzenRow>
           <RadzenRow class="my-3">
             <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["repeat_new_password"]" /></RadzenColumn>
-            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="RepeatNewPassword" Value="@_changePassword.NewPasswordConfirm"></RadzenPassword></RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="RepeatNewPassword" @bind-Value="@_changePassword.NewPasswordConfirm"></RadzenPassword></RadzenColumn>
           </RadzenRow>
-          <RadzenCompareValidator Text="@Loc["passwords_must_be_same"]" Component="RepeatNewPassword" Value="@_changePassword.NewPassword"></RadzenCompareValidator>
+          <RadzenCompareValidator Text="@Loc["passwords_must_be_same"]" Component="RepeatNewPassword" @bind-Value="@_changePassword.NewPassword"></RadzenCompareValidator>
 
           <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
             <RadzenStack Orientation="Orientation.Horizontal">
@@ -85,9 +86,13 @@
 @code {
   private AdminDto adminDto = new AdminDto();
   private ChangePasswordRequest _changePassword = new ChangePasswordRequest();
-  protected override async Task OnInitializedAsync() {
-    var auth = await AuthProvider.GetAuthenticationStateAsync();
-    adminDto = auth.User.GetAdmin();
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
+    if (firstRender) {
+      var auth = await AuthProvider.GetAuthenticationStateAsync();
+      adminDto = auth.User.GetAdmin();
+      StateHasChanged();
+    }
   }
 
   private async Task SubmitChangePassword(ChangePasswordRequest obj) {

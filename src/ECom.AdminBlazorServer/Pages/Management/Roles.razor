@@ -45,7 +45,7 @@
   private List<string> _editPermissions = new();
   protected override void OnInitialized() {
     if (roles.Count == 0)
-      roles = RoleService.GetRoles().OrderByDescending(x => x.PermissionRoles.Count).ToList();
+      roles = RoleService.GetRoles().ToList();
     if(allPermissions.Count == 0)
       allPermissions = RoleService.GetPermissions();
   }
@@ -53,8 +53,9 @@
   //<RadzenDropDown MaxSelectedLabels="2" Style="min-width: 300px" @bind-Value="@_editPermissions" Multiple="true" TValue="List<Permission>" AllowVirtualization="true" AllowFiltering="true" Data=@(allPermissions) TextProperty="Id" ValueProperty="Id">
   //</RadzenDropDown>
   private async Task ShowEditDialog(Role value) {
+    
     _editPermissions = value.PermissionRoles.Select(y => y.Permission.Id).ToList();
-    var result = await DialogService.OpenAsync(Loc["edit"] + " " +Loc[value.Id.ToLower() + "_roles"], ds =>
+    var result = await DialogService.OpenAsync(Loc["edit"] + " " +Loc[value.Id.ToLower() + "_permissions"], ds =>
       @<RadzenStack Orientation="Orientation.Vertical">
       <RadzenListBox @bind-Value=@_editPermissions Data=@allPermissions  TextProperty="Id" ValueProperty="Id"
                  FilterOperator="StringFilterOperator.Contains" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Multiple=true AllowClear=true Placeholder="@Loc["select_permissions"]" Style="width: 100%;  height: 300px;min-width: 300px" />
@@ -75,9 +76,11 @@
     if (result != true) {
       return;
     }
-    var dbResult =  RoleService.UpdatePermissions(value.Id, _editPermissions);
+    var auth = await AuthProvider.GetAuthenticationStateAsync();
+    var adminId = auth.GetAdminId();
+    var dbResult = RoleService.UpdatePermissions(adminId, value.Id, _editPermissions);
     if (dbResult.Status) {
-      roles = RoleService.GetRoles().OrderByDescending(x => x.PermissionRoles.Count).ToList();
+      roles = RoleService.GetRoles().ToList();
       await grid.Reload();
       await ShowResultDialog(dbResult);
     }

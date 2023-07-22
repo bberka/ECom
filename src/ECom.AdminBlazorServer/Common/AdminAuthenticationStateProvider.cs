@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Security.Claims;
 using AspNetCore.Authorization.Extender;
-using ECom.Shared.Constants;
+using ECom.Domain.Abstract;
 using ECom.Shared.DTOs.AdminDto;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -9,7 +9,9 @@ using Serilog;
 
 namespace ECom.AdminBlazorServer.Common;
 
-public class AdminAuthenticationStateProvider : AuthenticationStateProvider
+
+
+public class AdminAuthenticationStateProvider : AuthenticationStateProvider, IAdminAuthenticationStateProvider
 {
   private const string AdminLoginKey = "admin-login";
   private const string AdminAuthType = "admin-auth";

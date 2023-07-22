@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Localization
 @inject SupportedCultures SupportedCultures
 
-<RadzenMenu Style="width: 300px" Multiple="false">
+<RadzenMenu Style="width: 300px; height: 100%" Multiple="false">
   <RadzenMenuItem Text="Account">
     <RadzenMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenMenuItem>
     <RadzenMenuItem Text="@Loc["logout"]" Icon="logout" Path="logout" />

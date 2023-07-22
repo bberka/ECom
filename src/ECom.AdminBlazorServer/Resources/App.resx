@@ -132,6 +132,9 @@
   <data name="admins" xml:space="preserve">
     <value>Admins</value>
   </data>
+  <data name="admin_permissions" xml:space="preserve">
+    <value>Admin Permissions</value>
+  </data>
   <data name="admin_roles" xml:space="preserve">
     <value>Admin Roles</value>
   </data>
@@ -300,6 +303,9 @@
   <data name="management" xml:space="preserve">
     <value>Management</value>
   </data>
+  <data name="moderator_permissions" xml:space="preserve">
+    <value>Moderator Permissions</value>
+  </data>
   <data name="moderator_roles" xml:space="preserve">
     <value>Moderator Roles</value>
   </data>
@@ -356,6 +362,9 @@
   </data>
   <data name="options" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="owner_permissions" xml:space="preserve">
+    <value>Owner Permissions</value>
   </data>
   <data name="owner_permissions_can_not_be_updated" xml:space="preserve">
     <value>Owner permissions can not be updated</value>
@@ -467,6 +476,9 @@
   </data>
   <data name="success_password_reset" xml:space="preserve">
     <value>Password has been reset successfully</value>
+  </data>
+  <data name="support_permissions" xml:space="preserve">
+    <value>Support Permissions</value>
   </data>
   <data name="support_roles" xml:space="preserve">
     <value>Support Roles</value>

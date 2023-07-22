@@ -36,7 +36,13 @@ public class RoleService : IRoleService
     return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
   }
 
-  public CustomResult UpdatePermissions(string roleId, List<string> permissions) {
+  public bool HasPermission(Guid adminId, string permissionId) {
+    var hasPermission = _unitOfWork.AdminRepository
+      .Any(x => x.Id == adminId && x.Role.PermissionRoles.Any(y => y.PermissionId == permissionId));
+    return hasPermission;
+  }
+
+  public CustomResult UpdatePermissions(Guid requesterAdminId, string roleId, List<string> permissions) {
     if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
     var role = _unitOfWork.RoleRepository.Find(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));

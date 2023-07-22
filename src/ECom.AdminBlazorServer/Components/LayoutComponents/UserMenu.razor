@@ -1,14 +1,14 @@
 ﻿@*@inject AdminAuthenticationStateProvider Auth*@
 
 
-<RadzenProfileMenu>
-  <Template>
- 
-    <RadzenLabel class="mx-2" @bind-Text="_emailAddress"></RadzenLabel>
+<RadzenProfileMenu >
+  <Template >
+      <RadzenLabel Text="@_emailAddress"></RadzenLabel>
+
   </Template>
   <ChildContent>
 
-   <RadzenProfileMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
+    <RadzenProfileMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
     <RadzenProfileMenuItem Text="@Loc["logout"]" Icon="logout" Path="logout"/>
 
   </ChildContent>
@@ -17,8 +17,12 @@
   private string _emailAddress = "" ;
 
   protected override async Task OnAfterRenderAsync(bool firstRender) {
-    var state = await AuthProvider.GetAuthenticationStateAsync();
-    _emailAddress = state.User.Identity?.Name ?? "";
+    if (firstRender) {
+      var state = await AuthProvider.GetAuthenticationStateAsync();
+      _emailAddress = state.User.Identity?.Name ?? "";
+      StateHasChanged();
+    }
+
   }
 
 

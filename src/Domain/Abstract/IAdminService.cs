@@ -4,26 +4,74 @@ namespace ECom.Domain.Abstract;
 
 public interface IAdminService
 {
-  List<AdminDto> GetAdmins();
-  CustomResult<Admin> GetAdmin(Guid id);
-  CustomResult<Admin> GetAdmin(string email);
-  CustomResult<AdminDto> GetAdminDto(Guid id);
-  CustomResult<string> ResetPassword(Guid author, Guid adminId);
-  CustomResult<AdminDto> GetAdminDto(string email);
-  bool AdminExists(Guid id);
-  bool AdminExists(string email);
-  bool IsValidAdminAccount(Guid id);
+  /// <summary>
+  /// Gets admin information with login request model
+  /// </summary>
+  /// <param name="model"></param>
+  /// <returns></returns>
   CustomResult<AdminDto> AdminLogin(LoginRequest model);
-  CustomResult AddAdmin(AddAdminRequest admin);
-  CustomResult ChangePassword(Guid authId, ChangePasswordRequest model);
-  string? GetAdminRoleId(Guid userId);
 
-  //bool HasPermission(Guid userId, int permissionId);
-  List<Permission> GetValidPermissions();
-  List<Permission> GetInvalidPermissions();
-  bool IsValidPermission(string permissionId);
-  List<AdminDto> ListOtherAdmins(Guid userId);
-  CustomResult DeleteAdmin(Guid authorAdminId, Guid userId);
-  CustomResult UpdateAdmin(Guid authorAdminId, UpdateAdminAccountRequest request);
-  CustomResult RecoverAdmin(Guid authorAdminId, Guid id);
+  /// <summary>
+  /// Returns a list of admins except the requester admin
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <returns></returns>
+  List<AdminDto> GetAdminList(Guid requesterAdminId);
+
+  //
+  /// <summary>
+  /// Resets password by other admin request and returns randomly generated password
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <param name="adminId"></param>
+  /// <returns></returns>
+  CustomResult<string> ResetPassword(Guid requesterAdminId, Guid adminId);
+
+  /// <summary>
+  /// Changes password by email token 
+  /// </summary>
+  /// <param name="token"></param>
+  /// <returns></returns>
+  CustomResult<string> ResetPassword(ResetPasswordByTokenRequest token);
+
+  /// <summary>
+  /// Changes password by another admin
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <param name="model"></param>
+  /// <returns></returns>
+  CustomResult ChangePassword(Guid requesterAdminId, ChangePasswordRequest model);
+
+  /// <summary>
+  /// Adds new admin account to admin panel access
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <param name="admin"></param>
+  /// <returns></returns>
+  CustomResult AddAdmin(Guid requesterAdminId, AddAdminRequest admin);
+
+  /// <summary>
+  /// Updates an admin account for panel access
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <param name="request"></param>
+  /// <returns></returns>
+  CustomResult UpdateAdmin(Guid requesterAdminId, UpdateAdminAccountRequest request);
+
+  /// <summary>
+  /// Soft deletes an admin account by doing so disables the panel access however this wont have affect till admin re-logins.
+  /// Account can be recovered later 
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <param name="userId"></param>
+  /// <returns></returns>
+  CustomResult DeleteAdmin(Guid requesterAdminId, Guid userId);
+
+  /// <summary>
+  /// Recovers a deleted admin account by doing so enables the panel access
+  /// </summary>
+  /// <param name="requesterAdminId"></param>
+  /// <param name="id"></param>
+  /// <returns></returns>
+  CustomResult RecoverAdmin(Guid requesterAdminId, Guid id);
 }

@@ -3,6 +3,7 @@ using ECom.AdminBlazorServer.Common;
 using ECom.Application.Middlewares;
 using ECom.Application.Setup;
 using ECom.Domain;
+using ECom.Domain.Abstract;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -26,7 +27,7 @@ builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, AdminAuthenticationStateProvider>();
-builder.Services.AddScoped<AdminAuthenticationStateProvider>();
+builder.Services.AddScoped<IAdminAuthenticationStateProvider,AdminAuthenticationStateProvider>();
 builder.Services.AddLocalization(x => { x.ResourcesPath = "Resources"; });
 var cultures = builder.Configuration.GetSection("Cultures")
   .GetChildren()
@@ -151,7 +152,7 @@ app.UseRequestLocalization(localizationOptions);
 //  app.UseMiddleware<DebugAdminAuthenticationMiddleware>();
 //}
 //app.UseMiddleware<AdminAuthenticationBearerMiddleware>();
-app.UseMiddleware<LoggingMiddleware>();
+//app.UseMiddleware<LoggingMiddleware>();
 app.UseAuthorization();
 app.UseAuthentication();
 

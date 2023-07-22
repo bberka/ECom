@@ -38,7 +38,6 @@
           </RadzenButton>
         </Template>
 
-
       </RadzenDataGridColumn>
     </Columns>
   </RadzenDataGrid>
@@ -52,14 +51,20 @@
   private AddAdminRequest addAdmin = new();
   private UpdateAdminAccountRequest updateAdmin = new();
   private Guid AuthenticatedAdminId;
-  protected override async Task OnInitializedAsync() {
-    var authState = await AuthProvider.GetAuthenticationStateAsync();
-    AuthenticatedAdminId = authState.GetAdminId();
-    LoadAdmins();
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
+    if (firstRender) {
+      var authState = await AuthProvider.GetAuthenticationStateAsync();
+      AuthenticatedAdminId = authState.GetAdminId();
+      LoadAdmins();
+      StateHasChanged();
+    }
+    
+
   }
 
   void LoadAdmins() {
-    admins = AdminService.ListOtherAdmins(AuthenticatedAdminId);
+    admins = AdminService.GetAdminList(AuthenticatedAdminId);
   }
 
 
@@ -117,7 +122,9 @@
       });
 
     async Task OnAddSubmit(AddAdminRequest model) {
-      var actionResult = AdminService.AddAdmin(model);
+      var auth = await AuthProvider.GetAuthenticationStateAsync();
+      var adminId = auth.GetAdminId();
+      var actionResult = AdminService.AddAdmin(adminId,model);
       if (actionResult.Status) {
         LoadAdmins();
         addAdmin = new AddAdminRequest();
