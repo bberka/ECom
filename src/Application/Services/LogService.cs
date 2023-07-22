@@ -4,12 +4,16 @@ namespace ECom.Application.Services;
 
 public class LogService : ILogService
 {
+  private readonly IUnitOfWork _unitOfWork;
+
+  public LogService(IUnitOfWork unitOfWork) {
+    _unitOfWork = unitOfWork;
+  }
   private static readonly EasTask EasTask = new();
 
   public void SecurityLog(LogEventLevel severity, params string[] parameters) {
     var context = new HttpContextAccessor().HttpContext;
     var data = context.GetNecessaryRequestData();
-    var unitOfWork = new UnitOfWork();
 
     var action = new Action(() => {
       //try {
@@ -41,7 +45,6 @@ public class LogService : ILogService
   public void AdminLog(CustomResult result, Guid? adminId, string operationName, params object[] parameters) {
     var context = new HttpContextAccessor().HttpContext;
     var data = context.GetNecessaryRequestData();
-    var unitOfWork = new UnitOfWork();
 
     var action = new Action(() => {
       //try {
@@ -76,7 +79,6 @@ public class LogService : ILogService
   public void UserLog(CustomResult result, Guid? userId, string operationName, params object[] parameters) {
     var context = new HttpContextAccessor().HttpContext;
     var data = context.GetNecessaryRequestData();
-    var unitOfWork = new UnitOfWork();
     var action = new Action(() => {
       //try {
       //  var log = new UserLog {

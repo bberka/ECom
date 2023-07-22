@@ -28,7 +28,7 @@ public class UserService : IUserService
   }
 
   public List<User> GetUsers() {
-    return _unitOfWork.UserRepository.Get().ToList();
+    return _unitOfWork.UserRepository.GetAll().ToList();
   }
 
   public CustomResult<UserDto> LoginUser(LoginRequest model) {
@@ -57,14 +57,14 @@ public class UserService : IUserService
   }
 
   public CustomResult<User> GetUser(string email) {
-    var user = _unitOfWork.UserRepository.GetFirstOrDefault(x => x.EmailAddress == email);
+    var user = _unitOfWork.UserRepository.FirstOrDefault(x => x.EmailAddress == email);
     if (user is null) return DomainResult.NoAccountFound(nameof(User));
     if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
   }
 
   public CustomResult<User> GetUser(Guid id) {
-    var user = _unitOfWork.UserRepository.GetById(id);
+    var user = _unitOfWork.UserRepository.Find(id);
     if (user is null) return DomainResult.NotFound(nameof(User));
     if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
@@ -87,7 +87,7 @@ public class UserService : IUserService
   }
 
   public CustomResult UpdateUser(Guid userId, UpdateUserRequest model) {
-    var user = _unitOfWork.UserRepository.GetById(userId);
+    var user = _unitOfWork.UserRepository.Find(userId);
     if (user is null) return DomainResult.NotFound(nameof(User));
     user.EmailAddress = model.EmailAddress;
     user.CitizenShipNumber = model.CitizenShipNumber;

@@ -38,7 +38,7 @@ public class FavoriteProductService : IFavoriteProductService
     var userExist = _unitOfWork.UserRepository.Any(x => x.Id == userId);
     if (!userExist) return DomainResult.NotFound(nameof(User));
     var favProduct =
-      _unitOfWork.FavoriteProductRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+      _unitOfWork.FavoriteProductRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (favProduct is null) return DomainResult.NotFound(nameof(FavoriteProduct));
     _unitOfWork.FavoriteProductRepository.Delete(favProduct);
     var res = _unitOfWork.Save();
@@ -48,8 +48,7 @@ public class FavoriteProductService : IFavoriteProductService
   }
 
   public List<FavoriteProduct> GetFavoriteProducts(Guid userId) {
-    return _unitOfWork.FavoriteProductRepository
-      .Get(x => x.UserId == userId)
+    return _unitOfWork.FavoriteProductRepository.Get(x => x.UserId == userId)
       .Include(x => x.Product)
       //.ThenInclude(x => x.Images)
       .ToList();

@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class UserRepository : GenericRepository<User, EComDbContext>
+public class UserRepository : RepositoryBase<User>
 {
-  public UserRepository(EComDbContext context) : base(context) {
+  public UserRepository(DbContext context) : base(context) {
   }
 }

@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class SupplierRepository : GenericRepository<Supplier, EComDbContext>
+public class SupplierRepository : RepositoryBase<Supplier>
 {
-  public SupplierRepository(EComDbContext context) : base(context) {
+  public SupplierRepository(DbContext context) : base(context) {
   }
 }

@@ -12,15 +12,14 @@ public class ImageService : IImageService
   }
 
   public CustomResult<Image> GetImage(Guid id) {
-    var image = _unitOfWork.ImageRepository.GetById(id);
+    var image = _unitOfWork.ImageRepository.Find(id);
     if (image is null) return DomainResult.NotFound(nameof(Image));
     return image;
   }
 
   public string GetImageBase64String(Guid id) {
-    var imageData = _unitOfWork.ImageRepository
-      .Get(x => x.Id == id)
-      .Select(x => x.Data)
+    var imageData = Enumerable.Select(_unitOfWork.ImageRepository
+        .Get(x => x.Id == id), x => x.Data)
       .FirstOrDefault();
     if (imageData is null) return $"data:image/jpg;base64,{DefaultImageBase64String}";
     var imageBase64Data = Convert.ToBase64String(imageData);

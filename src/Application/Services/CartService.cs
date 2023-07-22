@@ -20,7 +20,7 @@ public class CartService : ICartService
   public CustomResult AddOrIncreaseProduct(Guid userId, Guid productId) {
     var productExist = _productService.Exists(productId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
-    var existing = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+    var existing = _unitOfWork.CartRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (existing != null) {
       existing.Count++;
       _unitOfWork.CartRepository.Update(existing);
@@ -43,7 +43,7 @@ public class CartService : ICartService
   }
 
   public CustomResult RemoveOrDecreaseProduct(Guid userId, Guid productId) {
-    var exist = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+    var exist = _unitOfWork.CartRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (exist is null) return DomainResult.NotFound(nameof(Cart));
     if (exist.Count > 1) {
       exist.Count--;

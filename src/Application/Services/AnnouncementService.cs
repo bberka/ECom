@@ -11,7 +11,7 @@ public class AnnouncementService : IAnnouncementService
   }
 
   public CustomResult UpdateAnnouncement(UpdateAnnouncementRequest data) {
-    var dbData = _unitOfWork.AnnouncementRepository.GetById(data.Id);
+    var dbData = _unitOfWork.AnnouncementRepository.Find(data.Id);
     if (dbData is null) return DomainResult.NotFound(nameof(Announcement));
     dbData.Order = data.Order;
     dbData.Message = data.Message;
@@ -31,7 +31,7 @@ public class AnnouncementService : IAnnouncementService
   }
 
   public CustomResult DeleteAnnouncement(Guid id) {
-    var data = _unitOfWork.AnnouncementRepository.GetById(id);
+    var data = _unitOfWork.AnnouncementRepository.Find(id);
     if (data is null) return DomainResult.NotFound(nameof(Announcement));
     data.DeleteDate = DateTime.UtcNow;
     data.UpdateDate = DateTime.UtcNow;
@@ -42,7 +42,7 @@ public class AnnouncementService : IAnnouncementService
   }
 
   public CustomResult RecoverAnnouncement(Guid id) {
-    var data = _unitOfWork.AnnouncementRepository.GetById(id);
+    var data = _unitOfWork.AnnouncementRepository.Find(id);
     if (data is null) return DomainResult.NotFound(nameof(Announcement));
     data.DeleteDate = null;
     data.UpdateDate = DateTime.UtcNow;
@@ -53,7 +53,7 @@ public class AnnouncementService : IAnnouncementService
   }
 
   public List<Announcement> ListAnnouncements() {
-    return _unitOfWork.AnnouncementRepository.Get().ToList();
+    return _unitOfWork.AnnouncementRepository.GetAll().ToList();
   }
 
 

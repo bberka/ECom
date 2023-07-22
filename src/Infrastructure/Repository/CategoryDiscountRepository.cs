@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class CategoryDiscountRepository : GenericRepository<CategoryDiscount, EComDbContext>
+public class CategoryDiscountRepository : RepositoryBase<CategoryDiscount>
 {
-  public CategoryDiscountRepository(EComDbContext context) : base(context) {
+  public CategoryDiscountRepository(DbContext context) : base(context) {
   }
 }

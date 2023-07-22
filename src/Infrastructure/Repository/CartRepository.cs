@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class CartRepository : GenericRepository<Cart, EComDbContext>
+public class CartRepository : RepositoryBase<Cart>
 {
-  public CartRepository(EComDbContext context) : base(context) {
+  public CartRepository(DbContext context) : base(context) {
   }
 }

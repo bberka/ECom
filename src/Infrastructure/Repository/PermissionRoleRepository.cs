@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class PermissionRoleRepository : GenericRepository<PermissionRole, EComDbContext>
+public class PermissionRoleRepository : RepositoryBase<PermissionRole>
 {
-  public PermissionRoleRepository(EComDbContext context) : base(context) {
+  public PermissionRoleRepository(DbContext context) : base(context) {
   }
 }

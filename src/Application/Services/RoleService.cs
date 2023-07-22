@@ -12,20 +12,20 @@ public class RoleService : IRoleService
 
   public List<Permission> GetPermissions() {
     return _unitOfWork.PermissionRepository
-      .Get()
+      .GetAll()
       .ToList();
   }
 
   public List<Role> GetRoles() {
     return _unitOfWork.RoleRepository
-      .Get()
+      .GetAll()
       //.Include(x => x.PermissionRoles)
       .ToList();
   }
 
   public CustomResult<Role> GetRole(string roleId) {
     if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
-    var role = _unitOfWork.RoleRepository.GetById(roleId);
+    var role = _unitOfWork.RoleRepository.Find(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
@@ -37,10 +37,10 @@ public class RoleService : IRoleService
   }
 
   public CustomResult UpdatePermissions(string roleId, List<string> permissions) {
-    var role = _unitOfWork.RoleRepository.GetById(roleId);
+    if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
+    var role = _unitOfWork.RoleRepository.Find(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));
-    var permissionRoles = _unitOfWork.PermissionRoleRepository
-      .Get(x => x.RoleId == roleId)
+    var permissionRoles = _unitOfWork.PermissionRoleRepository.Get(x => x.RoleId == roleId)
       .ToList();
     var permissionsToAdd = permissions
       .Where(x => permissionRoles.All(y => y.PermissionId != x))

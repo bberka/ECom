@@ -1,17 +1,14 @@
 ﻿namespace ECom.Domain.EfAbstractions;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWorkBase : IDisposable
 {
-    /// <summary>
-    /// Persists current changes to database in a transaction 
-    /// </summary>
-    /// <returns></returns>
+    bool Save();
+    Task<bool> SaveAsync();
+    DbActionResult SaveResult();
+    Task<DbActionResult> SaveResultAsync();
     int SaveChanges();
-    int SaveChangesCatch(out Exception? exception);
     Task<int> SaveChangesAsync();
     bool HasChanges();
-    void BeginTransaction();
-    Task BeginTransactionAsync();
-
 
 }
+

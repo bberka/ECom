@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class OrderRepository : GenericRepository<Order, EComDbContext>
+public class OrderRepository : RepositoryBase<Order>
 {
-  public OrderRepository(EComDbContext context) : base(context) {
+  public OrderRepository(DbContext context) : base(context) {
   }
 }

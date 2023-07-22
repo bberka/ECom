@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class ShowCaseRepository : GenericRepository<ShowCase, EComDbContext>
+public class ShowCaseRepository : RepositoryBase<ShowCase>
 {
-  public ShowCaseRepository(EComDbContext context) : base(context) {
+  public ShowCaseRepository(DbContext context) : base(context) {
   }
 }

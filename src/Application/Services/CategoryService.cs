@@ -12,14 +12,13 @@ public class CategoryService : ICategoryService
 
 
   public List<Category> ListCategories() {
-    return _unitOfWork.CategoryRepository
-      .Get(x => x.IsValid == true)
+    return _unitOfWork.CategoryRepository.Get(x => x.IsValid == true)
       .ToList();
   }
 
 
   public CustomResult UpdateCategory(AddOrUpdateCategoryRequest model) {
-    var category = _unitOfWork.CategoryRepository.GetFirstOrDefault(x => x.NameKey == model.NameKey);
+    var category = _unitOfWork.CategoryRepository.FirstOrDefault(x => x.NameKey == model.NameKey);
     if (category is null) return DomainResult.NotFound(nameof(Category));
     if (!category.IsValid) return DomainResult.Invalid(nameof(Category));
     category.NameKey = model.NameKey;
@@ -32,7 +31,7 @@ public class CategoryService : ICategoryService
 
 
   public CustomResult DeleteCategory(string key) {
-    var category = _unitOfWork.CategoryRepository.GetById(key);
+    var category = _unitOfWork.CategoryRepository.Find(key);
     if (category is null) return DomainResult.NotFound(nameof(Category));
     category.IsValid = false;
     _unitOfWork.CategoryRepository.Update(category);
@@ -45,7 +44,7 @@ public class CategoryService : ICategoryService
 
 
   public CustomResult EnableCategory(string key) {
-    var category = _unitOfWork.CategoryRepository.GetById(key);
+    var category = _unitOfWork.CategoryRepository.Find(key);
     if (category == null) return DomainResult.NotFound(nameof(Category));
     if (category.IsValid) return DomainResult.AlreadyEnabled(nameof(Category));
     category.IsValid = true;
@@ -56,7 +55,7 @@ public class CategoryService : ICategoryService
   }
 
   public CustomResult DisableCategory(string key) {
-    var category = _unitOfWork.CategoryRepository.GetById(key);
+    var category = _unitOfWork.CategoryRepository.Find(key);
     if (category == null) return DomainResult.NotFound(nameof(Category));
     if (!category.IsValid) return DomainResult.AlreadyDisabled(nameof(Category));
     category.IsValid = false;

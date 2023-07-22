@@ -1,5 +1,6 @@
 ﻿using ECom.Application.Attributes;
 using ECom.Shared.DTOs;
+using Serilog;
 
 namespace ECom.WebApi.Endpoints.AccountEndpoints;
 

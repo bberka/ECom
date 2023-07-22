@@ -1,9 +1,9 @@
-﻿using ECom.Domain.Entities;
+﻿
 
 namespace ECom.Infrastructure.Repository;
 
-public class AddressRepository : GenericRepository<Address, EComDbContext>
+public class AddressRepository : RepositoryBase<Address>
 {
-  public AddressRepository(EComDbContext context) : base(context) {
+  public AddressRepository(DbContext context) : base(context) {
   }
 }

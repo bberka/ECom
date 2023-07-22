@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class SmtpOptionRepository : GenericRepository<SmtpOption, EComDbContext>
+public class SmtpOptionRepository : RepositoryBase<SmtpOption>
 {
-  public SmtpOptionRepository(EComDbContext context) : base(context) {
+  public SmtpOptionRepository(DbContext context) : base(context) {
   }
 }

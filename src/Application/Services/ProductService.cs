@@ -29,7 +29,7 @@ public class ProductService : IProductService
   }
 
   public CustomResult<Product> GetProduct(Guid productNo) {
-    var product = _unitOfWork.ProductRepository.GetFirstOrDefault(x => x.Id == productNo);
+    var product = _unitOfWork.ProductRepository.FirstOrDefault(x => x.Id == productNo);
     if (product is null) return DomainResult.NotFound(nameof(Product));
     if (product.DeleteDate.HasValue) return DomainResult.Invalid(nameof(Product));
     return product;
@@ -39,8 +39,7 @@ public class ProductService : IProductService
     List<Guid> productIds,
     ushort page) {
     var lastIdx = _option.PagingProductCount * page;
-    return _unitOfWork.ProductCommentRepository
-      .Get(x => productIds.Contains(x.ProductId))
+    return _unitOfWork.ProductCommentRepository.Get(x => productIds.Contains(x.ProductId))
       .OrderByDescending(x => x.RegisterDate)
       .Skip(lastIdx)
       .Take(_option.PagingProductCount)
@@ -49,8 +48,7 @@ public class ProductService : IProductService
 
   public List<ProductComment> GetProductComments(Guid productId, ushort page) {
     var lastIdx = _option.PagingProductCount * page;
-    return _unitOfWork.ProductCommentRepository
-      .Get(x => x.ProductId == productId)
+    return _unitOfWork.ProductCommentRepository.Get(x => x.ProductId == productId)
       .OrderByDescending(x => x.RegisterDate)
       .Skip(lastIdx)
       .Take(_option.PagingProductCount)
@@ -109,10 +107,12 @@ public class ProductService : IProductService
     if (page == 0) return new List<Product>();
     var lastIdx = _option.PagingProductCount * (page - 1);
     return _unitOfWork.ProductRepository
-      .GetPaging(page,
-        _option.PagingProductCount,
+      .Get(
         x => !x.DeleteDate.HasValue,
-        x => x.OrderByDescending(y => y.RegisterDate))
+        x => x.RegisterDate,
+        true,
+        page,
+        _option.PagingProductCount)
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
       .Include(x => x.ProductImages)
@@ -121,10 +121,11 @@ public class ProductService : IProductService
 
   public List<Product> GetProducts(List<Guid> productIds, ushort page, string culture = ConstantMgr.DefaultCulture) {
     return _unitOfWork.ProductRepository
-      .GetPaging(page,
-        _option.PagingProductCount,
-        x => !x.DeleteDate.HasValue && productIds.Contains(x.Id),
-        x => x.OrderByDescending(y => y.RegisterDate))
+      .Get(x => !x.DeleteDate.HasValue && productIds.Contains(x.Id),
+        x => x.RegisterDate,
+        true,
+        page,
+        _option.PagingProductCount)
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
       .Include(x => x.ProductImages)

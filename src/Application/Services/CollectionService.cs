@@ -29,20 +29,20 @@ public class CollectionService : ICollectionService
     var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId)
       .Include(x => x.Collection);
     if (collectionProducts.Any()) _unitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
-    _unitOfWork.CollectionRepository.Delete(collectionId);
+    _unitOfWork.CollectionRepository.Delete(collectionResult.Data!);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteCollection));
     return DomainResult.OkDeleted(nameof(Collection));
   }
 
   public CustomResult<Collection> GetCollection(Guid id) {
-    var collection = _unitOfWork.CollectionRepository.GetById(id);
+    var collection = _unitOfWork.CollectionRepository.Find(id);
     if (collection is null) return DomainResult.NotFound(nameof(Collection));
     return collection;
   }
 
   public CustomResult<Collection> GetCollection(Guid userId, Guid id) {
-    var collection = _unitOfWork.CollectionRepository.GetById(id);
+    var collection = _unitOfWork.CollectionRepository.Find(id);
     if (collection is null) return DomainResult.NotFound(nameof(Collection));
     if (collection.UserId == userId) return DomainResult.Unauthorized();
     return collection;
@@ -53,8 +53,7 @@ public class CollectionService : ICollectionService
     string culture = ConstantMgr.DefaultCulture) {
     var collectionResult = GetCollection(userId, id);
     if (!collectionResult.Status) return collectionResult.ToResult();
-    return _unitOfWork.CollectionProductRepository
-      .Get(x => x.CollectionId == id)
+    return _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == id)
       .Include(x => x.Product)
       //.ThenInclude(x => x.ProductDetails)
       .ToList();

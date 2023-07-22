@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class CompanyInformationRepository : GenericRepository<CompanyInformation, EComDbContext>
+public class CompanyInformationRepository : RepositoryBase<CompanyInformation>
 {
-  public CompanyInformationRepository(EComDbContext context) : base(context) {
+  public CompanyInformationRepository(DbContext context) : base(context) {
   }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
+using ECom.Domain.EfAbstractions;
+using IEntity = ECom.Domain.EfAbstractions.IEntity;
 
-namespace ECom.Domain.EfAbstractions;
+namespace ECom.Infrastructure.Abstract;
 public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
   where TEntity : class, IEntity, new()
 {
@@ -10,12 +12,17 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     DbContext = dbContext;
   }
 
-  public async Task<IQueryable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate) {
+  public async Task<IQueryable<TEntity>> GetAllAsync() {
+    var query = Table.AsQueryable();
+    return await Task.FromResult(query);
+  }
+
+  public async Task<IQueryable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate) {
     var query = Table.Where(predicate);
     return await Task.FromResult(query);
   }
 
-  public async Task<IEnumerable<TEntity>> SelectAsync<TKey>(
+  public async Task<IQueryable<TEntity>> GetAsync<TKey>(
     Expression<Func<TEntity, bool>>? predicateExpression = null,
     Expression<Func<TEntity, TKey>>? orderByExpression = null,
     bool isDescending = false,
@@ -34,15 +41,14 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
       queryable = isDescending ? queryable.OrderByDescending(orderByExpression) : queryable.OrderBy(orderByExpression);
     var skipped = skip.HasValue ? queryable.Skip(skip.Value) : queryable;
     var taken = take.HasValue ? skipped.Take(take.Value) : skipped;
-    return await Task.FromResult(taken.AsEnumerable());
+    return await Task.FromResult(taken);
   }
 
-  public async Task<TEntity?> FindAsync<TKey>(Expression<Func<TEntity, TKey>> keySelector) {
-    var keys = keySelector.Parameters.Select(p => p.Name).Cast<object>().Where(x => x is not null).ToArray();
+  public async Task<TEntity?> FindAsync(params object[] keys) {
     var entity = await Table.FindAsync(keys);
     return await Task.FromResult(entity);
-    
   }
+
 
   public async Task<TEntity?> SingleOrDefaultAsync() {
     var entity = await Table.SingleOrDefaultAsync();
@@ -118,12 +124,17 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     return hasChanges;
   }
 
-  public IQueryable<TEntity> Select(Expression<Func<TEntity, bool>> predicate) {
+  public IQueryable<TEntity> GetAll() {
+    var query = Table.AsQueryable();
+    return query;
+  }
+
+  public IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate) {
     var query = Table.Where(predicate);
     return query;
   }
 
-  public IEnumerable<TEntity> Select<TKey>(
+  public IQueryable<TEntity> Get<TKey>(
     Expression<Func<TEntity, bool>>? predicateExpression = null, 
     Expression<Func<TEntity, TKey>>? orderByExpression = null, 
     bool isDescending = false,
@@ -142,11 +153,10 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
       queryable = isDescending ? queryable.OrderByDescending(orderByExpression) : queryable.OrderBy(orderByExpression);
     var skipped = skip.HasValue ? queryable.Skip(skip.Value) : queryable;
     var taken = take.HasValue ? skipped.Take(take.Value) : skipped;
-    return taken.AsEnumerable();
+    return taken;
   }
 
-  public TEntity? Find<TKey>(Expression<Func<TEntity, TKey>> keySelector) {
-    var keys = keySelector.Parameters.Select(p => p.Name).Cast<object>().Where(x => x is not null).ToArray();
+  public  TEntity? Find(params object[] keys) {
     var entity = Table.Find(keys);
     return entity;
   }

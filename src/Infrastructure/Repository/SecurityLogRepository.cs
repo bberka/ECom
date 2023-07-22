@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class SecurityLogRepository : GenericRepository<SecurityLog, EComDbContext>
+public class SecurityLogRepository : RepositoryBase<SecurityLog>
 {
-  public SecurityLogRepository(EComDbContext context) : base(context) {
+  public SecurityLogRepository(DbContext context) : base(context) {
   }
 }

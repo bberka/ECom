@@ -1,4 +1,4 @@
-﻿using EasMe.EntityFrameworkCore;
+﻿
 
 namespace ECom.Domain.Entities;
 

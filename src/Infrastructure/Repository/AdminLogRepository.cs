@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class AdminLogRepository : GenericRepository<AdminLog, EComDbContext>
+public class AdminLogRepository : RepositoryBase<AdminLog>
 {
-  public AdminLogRepository(EComDbContext context) : base(context) {
+  public AdminLogRepository(DbContext context) : base(context) {
   }
 }

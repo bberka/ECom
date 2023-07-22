@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class EmailVerifyTokenRepository : GenericRepository<EmailVerifyToken, EComDbContext>
+public class EmailVerifyTokenRepository : RepositoryBase<EmailVerifyToken>
 {
-  public EmailVerifyTokenRepository(EComDbContext context) : base(context) {
+  public EmailVerifyTokenRepository(DbContext context) : base(context) {
   }
 }

@@ -10,15 +10,17 @@ public interface IRepository<TEntity> : IRepositoryAsync<TEntity>, IRepositorySy
 public interface IRepositoryAsync<TEntity>
   where TEntity : class, IEntity, new()
 {
-  Task<IQueryable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate);
-  Task<IEnumerable<TEntity>> SelectAsync<TKey>(
+  Task<IQueryable<TEntity>> GetAllAsync();
+  Task<IQueryable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
+  Task<IQueryable<TEntity>> GetAsync<TKey>(
     Expression<Func<TEntity, bool>>? predicateExpression = null, 
     Expression<Func<TEntity, TKey>>? orderByExpression = null, 
     bool isDescending = false,
     int? skip = null,
     int? take = null,
     params Expression<Func<TEntity, object>>[] includeProperties);
-  Task<TEntity?> FindAsync<TKey>(Expression<Func<TEntity, TKey>> keySelector);
+   Task<TEntity?> FindAsync(params object[] keys);
+
   Task<TEntity?> SingleOrDefaultAsync();
   Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
   Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
@@ -38,15 +40,16 @@ public interface IRepositoryAsync<TEntity>
 public interface IRepositorySync<TEntity>
   where TEntity : class, IEntity, new()
 {
-  IQueryable<TEntity> Select(Expression<Func<TEntity, bool>> predicate);
-  IEnumerable<TEntity> Select<TKey>(
+  IQueryable<TEntity> GetAll();
+  IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate);
+  IQueryable<TEntity> Get<TKey>(
     Expression<Func<TEntity, bool>>? predicateExpression = null,
     Expression<Func<TEntity, TKey>>? orderByExpression = null,
     bool isDescending = false,
     int? skip = null,
     int? take = null,
     params Expression<Func<TEntity, object>>[] includeProperties);
-  TEntity? Find<TKey>(Expression<Func<TEntity, TKey>> keySelector);
+  TEntity? Find(params object[] keys);
   TEntity? SingleOrDefault();
   TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
   TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);

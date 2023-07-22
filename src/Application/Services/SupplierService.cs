@@ -12,13 +12,13 @@ public class SupplierService : ISupplierService
 
   public List<Supplier> GetSuppliers() {
     return _unitOfWork.SupplierRepository
-      .Get()
+      .GetAll()
       .OrderByDescending(x => x.RegisterDate)
       .ToList();
   }
 
   public CustomResult<Supplier> GetSupplier(int id) {
-    var supplier = _unitOfWork.SupplierRepository.GetById(id);
+    var supplier = _unitOfWork.SupplierRepository.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
     return supplier;
   }
@@ -33,7 +33,7 @@ public class SupplierService : ISupplierService
   }
 
   public CustomResult DeleteSupplier(int id) {
-    var supplier = _unitOfWork.SupplierRepository.GetById(id);
+    var supplier = _unitOfWork.SupplierRepository.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
     _unitOfWork.SupplierRepository.Delete(supplier);
     var res = _unitOfWork.Save();

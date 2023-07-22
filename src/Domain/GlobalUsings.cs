@@ -11,6 +11,7 @@ global using ECom.Shared.DTOs.CategoryDto;
 global using ECom.Shared.DTOs.CollectionDto;
 global using ECom.Shared.DTOs.ProductDto;
 global using ECom.Shared.DTOs.StockChangeDto;
+global using ECom.Domain.EfAbstractions;
 global using ECom.Shared.DTOs.UserDto;
 global using System;
 global using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using EasMe.EntityFrameworkCore;
+
 
 namespace ECom.Domain.Entities;
 

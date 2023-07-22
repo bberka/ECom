@@ -1,47 +1,43 @@
-﻿using EasMe.EntityFrameworkCore;
-using ECom.Domain.Entities;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork : IUnitOfWorkBase
 {
-  IGenericRepository<Address> AddressRepository { get; }
-  IGenericRepository<Admin> AdminRepository { get; }
-  IGenericRepository<AdminLog> AdminLogRepository { get; }
-  IGenericRepository<Announcement> AnnouncementRepository { get; }
-  IGenericRepository<CargoOption> CargoOptionRepository { get; }
-  IGenericRepository<Cart> CartRepository { get; }
-  IGenericRepository<Category> CategoryRepository { get; }
-  IGenericRepository<CategoryDiscount> CategoryDiscountRepository { get; }
-  IGenericRepository<Collection> CollectionRepository { get; }
-  IGenericRepository<CollectionProduct> CollectionProductRepository { get; }
-  IGenericRepository<CompanyInformation> CompanyInformationRepository { get; }
-  IGenericRepository<DiscountCoupon> DiscountCouponRepository { get; }
-  IGenericRepository<DiscountNotify> DiscountNotifyRepository { get; }
-  IGenericRepository<EmailVerifyToken> EmailVerifyTokenRepository { get; }
-  IGenericRepository<FavoriteProduct> FavoriteProductRepository { get; }
-  IGenericRepository<Image> ImageRepository { get; }
-  IGenericRepository<Option> OptionRepository { get; }
-  IGenericRepository<Order> OrderRepository { get; }
-  IGenericRepository<PasswordResetToken> PasswordResetTokenRepository { get; }
-  IGenericRepository<PaymentOption> PaymentOptionRepository { get; }
-  IGenericRepository<Permission> PermissionRepository { get; }
-  IGenericRepository<Product> ProductRepository { get; }
-  IGenericRepository<ProductComment> ProductCommentRepository { get; }
-  IGenericRepository<ProductDetail> ProductDetailRepository { get; }
-  IGenericRepository<ShowCase> ShowCaseRepository { get; }
-  IGenericRepository<ProductCategory> ProductCategoryRepository { get; }
-  IGenericRepository<ProductVariant> ProductVariantRepository { get; }
-  IGenericRepository<Role> RoleRepository { get; }
-  IGenericRepository<PermissionRole> PermissionRoleRepository { get; }
-  IGenericRepository<SecurityLog> SecurityLogRepository { get; }
-  IGenericRepository<Slider> SliderRepository { get; }
-  IGenericRepository<SmtpOption> SmtpOptionRepository { get; }
-  IGenericRepository<StockChange> StockChangeRepository { get; }
+  IRepository<Address> AddressRepository { get; }
+  IRepository<Admin> AdminRepository { get; }
+  IRepository<AdminLog> AdminLogRepository { get; }
+  IRepository<Announcement> AnnouncementRepository { get; }
+  IRepository<CargoOption> CargoOptionRepository { get; }
+  IRepository<Cart> CartRepository { get; }
+  IRepository<Category> CategoryRepository { get; }
+  IRepository<CategoryDiscount> CategoryDiscountRepository { get; }
+  IRepository<Collection> CollectionRepository { get; }
+  IRepository<CollectionProduct> CollectionProductRepository { get; }
+  IRepository<CompanyInformation> CompanyInformationRepository { get; }
+  IRepository<DiscountCoupon> DiscountCouponRepository { get; }
+  IRepository<DiscountNotify> DiscountNotifyRepository { get; }
+  IRepository<EmailVerifyToken> EmailVerifyTokenRepository { get; }
+  IRepository<FavoriteProduct> FavoriteProductRepository { get; }
+  IRepository<Image> ImageRepository { get; }
+  IRepository<Option> OptionRepository { get; }
+  IRepository<Order> OrderRepository { get; }
+  IRepository<PasswordResetToken> PasswordResetTokenRepository { get; }
+  IRepository<PaymentOption> PaymentOptionRepository { get; }
+  IRepository<Permission> PermissionRepository { get; }
+  IRepository<Product> ProductRepository { get; }
+  IRepository<ProductComment> ProductCommentRepository { get; }
+  IRepository<ProductDetail> ProductDetailRepository { get; }
+  IRepository<ShowCase> ShowCaseRepository { get; }
+  IRepository<ProductCategory> ProductCategoryRepository { get; }
+  IRepository<ProductVariant> ProductVariantRepository { get; }
+  IRepository<Role> RoleRepository { get; }
+  IRepository<PermissionRole> PermissionRoleRepository { get; }
+  IRepository<SecurityLog> SecurityLogRepository { get; }
+  IRepository<Slider> SliderRepository { get; }
+  IRepository<SmtpOption> SmtpOptionRepository { get; }
+  IRepository<StockChange> StockChangeRepository { get; }
+  IRepository<Supplier> SupplierRepository { get; }
+  IRepository<User> UserRepository { get; }
 
-  //IGenericRepository<SubCategory> SubCategoryRepository { get; }
-  IGenericRepository<Supplier> SupplierRepository { get; }
-  IGenericRepository<User> UserRepository { get; }
-  bool Save();
-  Task<bool> SaveAsync();
 }

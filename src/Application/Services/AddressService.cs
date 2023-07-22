@@ -49,7 +49,7 @@ public class AddressService : IAddressService
   }
 
   public CustomResult<Address> GetAddress(Guid addressId) {
-    var address = _unitOfWork.AddressRepository.GetById(addressId);
+    var address = _unitOfWork.AddressRepository.Find(addressId);
     if (address is null) return DomainResult.NotFound(nameof(Address));
     if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
     return address;

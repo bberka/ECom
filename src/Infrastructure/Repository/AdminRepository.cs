@@ -2,8 +2,8 @@
 
 namespace ECom.Infrastructure.Repository;
 
-public class AdminRepository : GenericRepository<Admin, EComDbContext>
+public class AdminRepository : RepositoryBase<Admin>
 {
-  public AdminRepository(EComDbContext context) : base(context) {
+  public AdminRepository(DbContext context) : base(context) {
   }
 }

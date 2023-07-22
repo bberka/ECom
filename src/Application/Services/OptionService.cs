@@ -53,7 +53,7 @@ public class OptionService : IOptionService
   public Option GetOption() {
     var cache = _memoryCache.Get<Option>("option");
     if (cache is not null) return cache;
-    cache = _unitOfWork.OptionRepository.GetFirstOrDefault(x => x.Key == true);
+    cache = _unitOfWork.OptionRepository.FirstOrDefault(x => x.Key == true);
     if (cache is null) throw new NotFoundException(nameof(Option));
     _memoryCache.Set("option", cache, TimeSpan.FromMinutes(5));
     return cache;
