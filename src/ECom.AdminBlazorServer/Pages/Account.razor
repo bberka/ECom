@@ -75,7 +75,7 @@
     <RadzenCard Variant="Variant.Filled">
       <RadzenFieldset Text="@Loc["permissions"]">
         <RadzenListBox TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
-                       Data="@adminDto.Permissions"  AllowClear="true" Style="width: 100%; max-width: 400px; height: 300px" />
+                       Data="@adminDto.Permissions" AllowSelectAll="false" AllowClear="true" Style="width: 100%; max-width: 400px; height: 300px" />
       </RadzenFieldset>
     </RadzenCard>
   </RadzenColumn>

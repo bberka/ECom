@@ -10,10 +10,16 @@ public class RoleService : IRoleService
     _unitOfWork = unitOfWork;
   }
 
+  public List<Permission> GetPermissions() {
+    return _unitOfWork.PermissionRepository
+      .Get()
+      .ToList();
+  }
+
   public List<Role> GetRoles() {
     return _unitOfWork.RoleRepository
       .Get()
-      .Include(x => x.PermissionRoles)
+      //.Include(x => x.PermissionRoles)
       .ToList();
   }
 
@@ -26,7 +32,31 @@ public class RoleService : IRoleService
 
 
   public bool RoleExists(string roleId) {
-    if(string.IsNullOrEmpty(roleId)) return false;
+    if (string.IsNullOrEmpty(roleId)) return false;
     return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
+  }
+
+  public CustomResult UpdatePermissions(string roleId, List<string> permissions) {
+    var role = _unitOfWork.RoleRepository.GetById(roleId);
+    if (role is null) return DomainResult.NotFound(nameof(Role));
+    var permissionRoles = _unitOfWork.PermissionRoleRepository
+      .Get(x => x.RoleId == roleId)
+      .ToList();
+    var permissionsToAdd = permissions
+      .Where(x => permissionRoles.All(y => y.PermissionId != x))
+      .Select(x => new PermissionRole { PermissionId = x, RoleId = roleId })
+      .ToList() ?? new();
+    var permissionsToRemove = permissionRoles
+      .Where(x => permissions.All(y => y != x.PermissionId))
+      .ToList() ?? new();
+    var isNeedUpdate = permissionsToAdd.Any() || permissionsToRemove.Any();
+    if (!isNeedUpdate) return DomainResult.OkNotChanged(nameof(Role));
+    if (permissionsToRemove.Count > 0)
+      _unitOfWork.PermissionRoleRepository.DeleteRange(permissionsToRemove);
+    if (permissionsToAdd.Count > 0)
+      _unitOfWork.PermissionRoleRepository.InsertRange(permissionsToAdd);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdatePermissions));
+    return DomainResult.OkUpdated(nameof(Role));
   }
 }

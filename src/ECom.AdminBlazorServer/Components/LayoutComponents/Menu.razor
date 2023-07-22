@@ -15,7 +15,7 @@
       }
     </RadzenMenuItem>
     <RadzenMenuItem Text="@Loc["theme"]" Icon="payment">
-      @foreach (var item in _themes) {
+      @foreach (var item in Themes) {
         <RadzenMenuItem Text="@item.Value"  Click="(() => OnThemeChange(item.Key))"></RadzenMenuItem>
       }
     </RadzenMenuItem>
@@ -26,7 +26,7 @@
 @code {
   private string? _selectedTheme;
 
-  private static readonly Dictionary<string, string> _themes = new Dictionary<string, string>() {
+  private static readonly Dictionary<string, string> Themes = new() {
     { "dark-base.css", "Standard Dark"},
     { "standard-base.css", "Standard Light"},
     { "material-base.css", "Material"},
@@ -46,7 +46,7 @@
     if (string.IsNullOrWhiteSpace(theme)) {
       theme = "dark-base.css";
     }
-    var isSupported = _themes.TryGetValue(theme, out _);
+    var isSupported = Themes.TryGetValue(theme, out _);
     if (!isSupported) {
       theme = "dark-base.css";
     }
@@ -61,7 +61,7 @@
     if (string.IsNullOrWhiteSpace(theme)) {
       theme = "dark-base.css";
     }
-    var isSupported = _themes.TryGetValue(theme, out _);
+    var isSupported = Themes.TryGetValue(theme, out _);
     if (!isSupported) {
       theme = "dark-base.css";
     }
@@ -77,7 +77,6 @@
   }
 
   private void OnCultureChange() {
-  //var context = HttpContextAccessor.HttpContext;
 
     var redirectPath = new Uri(Nav.Uri)
       .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);

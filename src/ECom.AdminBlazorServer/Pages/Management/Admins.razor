@@ -8,16 +8,16 @@
 @inherits SharedBasePage
 @attribute [RequirePermission(AdminPermission.ManageAdmins)]
 @inject TooltipService TooltipService
-<PageTitle>Admins</PageTitle>
+<PageTitle>@Loc["admins"]</PageTitle>
 
 
 <RadzenCard Variant="Variant.Filled">
   <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
-    <RadzenText TextStyle="TextStyle.H4">Admins</RadzenText>
+    <RadzenText TextStyle="TextStyle.H4">@Loc["admins"]</RadzenText>
     <RadzenButton Text="@Loc["create"]" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
   </RadzenStack>
   <CustomHr></CustomHr>
-  <RadzenDataGrid @ref="grid" EmptyText="@Loc["empty_table"]" Data="@admins" TItem="AdminDto" Context="admin" PageNumbersCount="10" AllowAlternatingRows="false" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" ColumnWidth="auto" LogicalFilterOperator="LogicalFilterOperator.Or">
+  <RadzenDataGrid @ref="grid" EmptyText="@Loc["empty_table"]" Data="@admins" TItem="AdminDto" Context="admin" PageNumbersCount="10" AllowAlternatingRows="false" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" ColumnWidth="auto" LogicalFilterOperator="LogicalFilterOperator.Or">
     <Columns>
       <RadzenDataGridColumn MinWidth="280px" Width="300px" TItem="AdminDto" Property="Id" Title="@Loc["id"]" TextAlign="TextAlign.Center" Frozen="true" />
       <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="AdminDto" Property="RegisterDate" Title="@(Loc["register"] + Loc["date"])" FormatString="{0:d}" />

@@ -132,6 +132,9 @@
   <data name="admins" xml:space="preserve">
     <value>Admins</value>
   </data>
+  <data name="admin_roles" xml:space="preserve">
+    <value>Admin Roles</value>
+  </data>
   <data name="already_deleted" xml:space="preserve">
     <value>{name} is already deleted</value>
     <comment>0: name</comment>
@@ -297,6 +300,9 @@
   <data name="management" xml:space="preserve">
     <value>Management</value>
   </data>
+  <data name="moderator_roles" xml:space="preserve">
+    <value>Moderator Roles</value>
+  </data>
   <data name="must_be_in_range" xml:space="preserve">
     <value>{name} must be between {min}-{max}</value>
   </data>
@@ -351,6 +357,12 @@
   <data name="options" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="owner_permissions_can_not_be_updated" xml:space="preserve">
+    <value>Owner permissions can not be updated</value>
+  </data>
+  <data name="owner_roles" xml:space="preserve">
+    <value>Owner Roles</value>
+  </data>
   <data name="panel_settings" xml:space="preserve">
     <value>Panel Settings</value>
   </data>
@@ -371,6 +383,9 @@
   </data>
   <data name="permissions" xml:space="preserve">
     <value>Permissions</value>
+  </data>
+  <data name="permission_count" xml:space="preserve">
+    <value>Permission count</value>
   </data>
   <data name="price" xml:space="preserve">
     <value>Price</value>
@@ -435,6 +450,9 @@
   <data name="select_language" xml:space="preserve">
     <value>Select language</value>
   </data>
+  <data name="select_permissions" xml:space="preserve">
+    <value>Select permissions</value>
+  </data>
   <data name="select_theme" xml:space="preserve">
     <value>Select theme</value>
   </data>
@@ -449,6 +467,9 @@
   </data>
   <data name="success_password_reset" xml:space="preserve">
     <value>Password has been reset successfully</value>
+  </data>
+  <data name="support_roles" xml:space="preserve">
+    <value>Support Roles</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Theme</value>
