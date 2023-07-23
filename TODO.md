@@ -7,3 +7,4 @@
 - [ ] Account page two factor implementation
 - [ ] Account page change password implementation
 - [ ] GetAuthenticationStateAsync data is not being cached and each time JSRuntime is called, The custom AuthStateProvider logic can be moved to AuthenticationService and can access current user through it
+- [ ] Remove swagger API docs on production and disable endpoints as well ?

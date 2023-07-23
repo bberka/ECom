@@ -24,8 +24,7 @@ public class AdminAuthenticationStateProvider : RevalidatingServerAuthentication
     _cookieUtil = cookieUtil;
     _authenticationService = authenticationService;
     _authenticationService.UserChanged += newUser => {
-      NotifyAuthenticationStateChanged(
-        Task.FromResult(new AuthenticationState(newUser)));
+      NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(newUser)));
     };
   }
 

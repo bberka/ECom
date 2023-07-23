@@ -68,7 +68,9 @@ builder.Services.AddScoped<ContextMenuService>();
 
 
 //LOCALIZATION
-builder.Services.AddLocalization(x => { x.ResourcesPath = "Resources"; });
+builder.Services.AddLocalization(x => {
+  x.ResourcesPath = "Resources";
+});
 
 var cultures = builder.Configuration.GetSection("Cultures")
   .GetChildren()
