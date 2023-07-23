@@ -1,11 +1,12 @@
 ﻿@inherits LayoutComponentBase
-<RadzenDialog/>
-<RadzenNotification/>
-<RadzenContextMenu/>
-<RadzenTooltip/>
+@inject AdminAuthenticationStateProvider StateProvider
+<RadzenDialog />
+<RadzenNotification />
+<RadzenContextMenu />
+<RadzenTooltip />
 
-<RadzenLayout>
-  <AuthorizeView>
+<RadzenLayout >
+  <AuthorizeView >
     <ChildContent>
       <LayoutSideNavBar></LayoutSideNavBar>
       <RadzenBody>
@@ -25,3 +26,12 @@
 
 </RadzenLayout>
 <LayoutFooter></LayoutFooter>
+@code {
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
+    await base.OnAfterRenderAsync(firstRender);
+    //var authState = await StateProvider.GetAuthenticationStateAsync();
+  }
+
+
+}

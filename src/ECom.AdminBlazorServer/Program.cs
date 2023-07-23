@@ -1,15 +1,19 @@
 using Bers.Blazor.Ext.Javascript;
+using Blazored.SessionStorage;
 using ECom.AdminBlazorServer.Common;
+using ECom.Application.Filters;
 using ECom.Application.Middlewares;
 using ECom.Application.Setup;
 using ECom.Domain;
 using ECom.Domain.Abstract;
+using ECom.Shared;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Mvc;
 using Radzen;
 
 EComLoggerHelper.Configure(true);
@@ -21,23 +25,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<HttpClient>();
-builder.Services.AddAuthenticationCore();
+//builder.Services.AddAuthenticationCore();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredSessionStorage();
+//builder.AddAuthenticationPolicies();
 
+// This needs to be setup after setting up Blazor
+//builder.Services.AddAuthentication(x => {
+//  x.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//  x.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+//  x.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//  x.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+//}).AddCookie();
+//builder.Services.AddAuthenticationCore();
 builder.Services.AddAuthentication(options =>
   {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
   })
   .AddCookie();
-
-// This needs to be setup after setting up Blazor
-builder.Services.AddScoped<ProtectedSessionStorage>();
+//builder.Services.AddScoped<ProtectedSessionStorage>();
+//builder.Services.AddScoped<ProtectedBrowserStorage>();
+builder.Services.AddScoped<ProtectedLocalStorage>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, AdminAuthenticationStateProvider>();
-builder.Services.AddScoped<ServerAuthenticationStateProvider, AdminAuthenticationStateProvider>();
 builder.Services.AddScoped<RevalidatingServerAuthenticationStateProvider, AdminAuthenticationStateProvider>();
 builder.Services.AddScoped<AdminAuthenticationStateProvider>();
 
@@ -78,8 +92,23 @@ var localizationOptions = new RequestLocalizationOptions()
 
 //SHARED BASE SERVICES
 builder.Services.AddOptions();
-builder.AddApplicationControllers();
+//builder.AddApplicationControllers();
+builder.Services
+  .AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); })
+  .ConfigureApiBehaviorOptions(
+    options => {
+      options.InvalidModelStateResponseFactory = c => {
+        var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
+        var errors = c.ModelState.Values
+          .Where(v => v.Errors.Count > 0)
+          .SelectMany(v => v.Errors)
+          .Select(v => v.ErrorMessage)
+          .ToArray();
+        return new BadRequestObjectResult(DomainResult.Validation(firstModelTypeName, errors.FirstOrDefault()));
+      };
+    });
 builder.Services.AddEndpointsApiExplorer();
+
 //builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddResponseCaching(); //useless in blazor
@@ -185,13 +214,14 @@ app.UseRequestLocalization(localizationOptions);
 //}
 //app.UseMiddleware<AdminAuthenticationBearerMiddleware>();
 //app.UseMiddleware<LoggingMiddleware>();
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseAuthentication();
 app.UseRouting();
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapBlazorHub();

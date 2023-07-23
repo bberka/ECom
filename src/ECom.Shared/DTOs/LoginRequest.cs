@@ -9,4 +9,5 @@ public class LoginRequest
   public string Password { get; set; }
 
   public bool IsHashed { get; set; } = false;
+  public bool RememberMe { get; set; }
 }

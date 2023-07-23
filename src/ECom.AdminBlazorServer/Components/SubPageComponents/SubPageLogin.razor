@@ -74,21 +74,10 @@
   }
 
   private async Task OnSubmit() {
-    //var authState = await AuthTask;
-    //if (authState.IsAuthenticated()) {
-    //  Nav.NavigateTo(Nav.Uri, true);
-    //  return;
-    //}
-
-    //var isValid = LoginRequest.IsValidModel();
-    //if (!isValid) {
-    //  ShowNotification(NotificationSeverity.Error, Loc["form_state_invalid"]); //LOC ?
-    //  return;
-    //}
-
     var result = AdminService.AdminLogin(LoginRequest);
     if (result.Status) {
-      await AdminAuthenticationStateProvider.Login(result.Data);
+      var admin = result.Data!;
+      await AdminAuthenticationStateProvider.Login(admin);
       Nav.NavigateTo(Nav.Uri, true);
       return;
     }

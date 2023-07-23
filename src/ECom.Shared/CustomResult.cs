@@ -1,4 +1,7 @@
-﻿namespace ECom.Shared;
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
+namespace ECom.Shared;
 
 public enum CustomResultLevel
 {
@@ -62,6 +65,9 @@ public class CustomResult<T>
 
   public CustomResultLevel Level { get; internal init; } = CustomResultLevel.None;
 
+  [IgnoreDataMember]
+  [JsonIgnore]
+  [Newtonsoft.Json.JsonIgnore]
   public Exception? Exception { get; internal init; }
 
 
