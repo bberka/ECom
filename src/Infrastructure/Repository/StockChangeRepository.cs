@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class StockChangeRepository : GenericRepository<StockChange, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class StockChangeRepository : RepositoryBase<StockChange>
 {
-  public StockChangeRepository(EComDbContext context) : base(context) {
+  public StockChangeRepository(DbContext context) : base(context) {
   }
 }

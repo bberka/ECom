@@ -1,11 +1,11 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain;
+using ECom.Domain.Entities;
 
 namespace ECom.WebApi.Endpoints.CartEndpoints;
 
 [AllowAnonymous]
 [EndpointRoute(typeof(RemoveProduct))]
-public class RemoveProduct : EndpointBaseSync.WithRequest<int>.WithResult<CustomResult>
+public class RemoveProduct : EndpointBaseSync.WithRequest<Guid>.WithResult<CustomResult>
 {
   private readonly ICartService _cartService;
   private readonly ILogService _logService;
@@ -16,14 +16,15 @@ public class RemoveProduct : EndpointBaseSync.WithRequest<int>.WithResult<Custom
   }
 
   [HttpPost]
-  [EndpointSwaggerOperation(typeof(RemoveProduct),"Removes product from cart")]
-  public override CustomResult Handle(int id) {
+  [EndpointSwaggerOperation(typeof(RemoveProduct), "Removes product from cart")]
+  public override CustomResult Handle(Guid id) {
     if (HttpContext.IsUserAuthenticated()) {
       var userId = HttpContext.GetUserId();
       var res = _cartService.RemoveOrDecreaseProduct(userId, id);
       _logService.UserLog(res, userId, "Cart.RemoveOrDecreaseProduct", id);
       return res;
     }
+
     HttpContext.RemoveOrDecreaseInCart(id);
     return DomainResult.OkRemoved(nameof(Cart));
   }

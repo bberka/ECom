@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.DTOs.CollectionDto;
+using ECom.Shared.DTOs.CollectionDto;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 
@@ -7,7 +7,6 @@ namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 [EndpointRoute(typeof(Update))]
 public class Update : EndpointBaseSync.WithRequest<UpdateCollectionRequest>.WithResult<CustomResult>
 {
-
   private readonly ICollectionService _collectionService;
   private readonly ILogService _logService;
 
@@ -15,11 +14,13 @@ public class Update : EndpointBaseSync.WithRequest<UpdateCollectionRequest>.With
     _collectionService = collectionService;
     _logService = logService;
   }
+
   [HttpPost]
-  [EndpointSwaggerOperation(typeof(Update),"Updates product collection")]
+  [EndpointSwaggerOperation(typeof(Update), "Updates product collection")]
   public override CustomResult Handle(UpdateCollectionRequest request) {
-    var res = _collectionService.UpdateCollection(request);
-    _logService.UserLog(res, request.AuthenticatedUserId, "Collection.Update", request.ToJsonString());
+    var authId = HttpContext.GetUserId();
+    var res = _collectionService.UpdateCollection(authId, request);
+    _logService.UserLog(res, authId, "Collection.Update", request.ToJsonString());
     return res;
   }
 }

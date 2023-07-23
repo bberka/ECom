@@ -1,5 +1,5 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.StockChangeDto;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 
@@ -19,9 +19,10 @@ public class StockChangeService : IStockChangeService
   }
 
   public CustomResult AddStockChange(AddStockChangeRequest model) {
+    var productExists = _unitOfWork.ProductRepository.Any(x => x.Id == model.ProductId);
     var productExist = _productService.Exists(model.ProductId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
-    var supplierExist = _supplierService.Exists(model.SupplierId);
+    var supplierExist = _unitOfWork.SupplierRepository.Any(x => x.Id == model.SupplierId);
     if (!supplierExist) return DomainResult.NotFound(nameof(Supplier));
     var stockChange = new StockChange {
       ProductId = model.ProductId,

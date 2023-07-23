@@ -1,6 +1,4 @@
-﻿using Ardalis.ApiEndpoints;
-using ECom.Application.Attributes;
-using Microsoft.AspNetCore.Authorization;
+﻿using ECom.Application.Attributes;
 
 namespace ECom.WebApi.Endpoints;
 

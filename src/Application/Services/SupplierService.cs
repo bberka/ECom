@@ -1,4 +1,4 @@
-﻿using ECom.Domain;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -12,24 +12,20 @@ public class SupplierService : ISupplierService
 
   public List<Supplier> GetSuppliers() {
     return _unitOfWork.SupplierRepository
-      .Get()
+      .GetAll()
       .OrderByDescending(x => x.RegisterDate)
       .ToList();
   }
 
-  public bool Exists(int id) {
-    return _unitOfWork.SupplierRepository.Any(x => x.Id == id);
-  }
-
   public CustomResult<Supplier> GetSupplier(int id) {
-    var supplier = _unitOfWork.SupplierRepository.GetById(id);
+    var supplier = _unitOfWork.SupplierRepository.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
     return supplier;
   }
 
   public CustomResult UpdateSupplier(Supplier supplier) {
-    var exist = Exists(supplier.Id);
-    if (!exist) return DomainResult.NotFound(nameof(Supplier));
+    var exists = _unitOfWork.SupplierRepository.Any(x => x.Id == supplier.Id);
+    if (!exists) return DomainResult.NotFound(nameof(Supplier));
     _unitOfWork.SupplierRepository.Update(supplier);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateSupplier));
@@ -37,7 +33,7 @@ public class SupplierService : ISupplierService
   }
 
   public CustomResult DeleteSupplier(int id) {
-    var supplier = _unitOfWork.SupplierRepository.GetById(id);
+    var supplier = _unitOfWork.SupplierRepository.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
     _unitOfWork.SupplierRepository.Delete(supplier);
     var res = _unitOfWork.Save();

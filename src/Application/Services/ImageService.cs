@@ -1,5 +1,4 @@
-﻿using ECom.Domain;
-using Microsoft.AspNetCore.Http;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -12,23 +11,22 @@ public class ImageService : IImageService
     _unitOfWork = unitOfWork;
   }
 
-  public CustomResult<Image> GetImage(int id) {
-    var image = _unitOfWork.ImageRepository.GetById(id);
+  public CustomResult<Image> GetImage(Guid id) {
+    var image = _unitOfWork.ImageRepository.Find(id);
     if (image is null) return DomainResult.NotFound(nameof(Image));
     return image;
   }
 
-  public string GetImageBase64String(int id) {
-    var imageData = _unitOfWork.ImageRepository
-      .Get(x => x.Id == id)
-      .Select(x => x.Data)
+  public string GetImageBase64String(Guid id) {
+    var imageData = Enumerable.Select(_unitOfWork.ImageRepository
+        .Get(x => x.Id == id), x => x.Data)
       .FirstOrDefault();
     if (imageData is null) return $"data:image/jpg;base64,{DefaultImageBase64String}";
     var imageBase64Data = Convert.ToBase64String(imageData);
     return $"data:image/jpg;base64,{imageBase64Data}";
   }
 
-  public CustomResult<int> UploadImage(IFormFile file) {
+  public CustomResult<Guid> UploadImage(IFormFile file) {
     var img = new Image();
     var ms = new MemoryStream();
     file.CopyTo(ms);

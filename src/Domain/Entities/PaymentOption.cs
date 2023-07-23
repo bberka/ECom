@@ -1,65 +1,32 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("PaymentOptions", Schema = "ECOption")]
 public class PaymentOption : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  /// <summary>
-  ///   None = 0,
-  ///   Iyzico = 1,
-  ///   PayTR = 2,
-  ///   Shopier = 3,
-  ///   Stripe = 4,
-  ///   Transfer = 5,
-  ///   CashOnDelivery = 6,
-  /// </summary>
-
-  public int Type { get; set; }
-
-  /// <summary>
-  ///   None = 0,
-  ///   Iyzico = 1,
-  ///   PayTR = 2,
-  ///   Shopier = 3,
-  ///   Stripe = 4,
-  ///   Transfer = 5,
-  ///   CashOnDelivery = 6,
-  /// </summary>
-
-  [MaxLength(32)]
-  public string TypeName { get; set; }
-
-
-  public bool IsValid { get; set; }
-
-
-  [MaxLength(64)]
-  public string Name { get; set; }
-
-
+  public PaymentType Type { get; set; }
+  
   public float Tax { get; set; }
 
-
-  [MaxLength(512)]
+  [MaxLength(ValidationSettings.MaxTokenLength)]
   public string? SecretKey { get; set; }
 
-  [MaxLength(512)]
+  [MaxLength(ValidationSettings.MaxTokenLength)]
   public string? ClientId { get; set; }
 
-  [MaxLength(512)]
+  [MaxLength(ValidationSettings.MaxTokenLength)]
   public string? ApiKey { get; set; }
 
-  [MaxLength(512)]
+  [MaxLength(ValidationSettings.MaxTokenLength)]
   public string? Username { get; set; }
-
-  [MaxLength(512)]
+  [MaxLength(ValidationSettings.MaxTokenLength)]
   public string? Password { get; set; }
 
-
-  [MinLength(2)]
-  [MaxLength(4)]
-  public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 }

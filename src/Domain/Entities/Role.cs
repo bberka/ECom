@@ -1,18 +1,15 @@
-﻿namespace ECom.Domain.Entities;
+﻿
 
-[Table("Roles", Schema = "ECOperation")]
+namespace ECom.Domain.Entities;
+
+[Table("Roles", Schema = "ECEnum")]
 public class Role : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
+  public string Id { get; set; }
 
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
-  public string Name { get; set; }
+  public virtual List<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
 
-  public bool IsValid { get; set; } = true;
-
-  //Virtual
-  public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
 }

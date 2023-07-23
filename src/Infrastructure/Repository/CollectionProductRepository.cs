@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class CollectionProductRepository : GenericRepository<CollectionProduct, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class CollectionProductRepository : RepositoryBase<CollectionProduct>
 {
-  public CollectionProductRepository(EComDbContext context) : base(context) {
+  public CollectionProductRepository(DbContext context) : base(context) {
   }
 }

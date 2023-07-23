@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Validators;
+﻿using ECom.Shared.Constants;
+
+namespace ECom.Application.Validators;
 
 public class ChangePasswordRequestValidator : AbstractValidator<ChangePasswordRequest>,
   IValidator<ChangePasswordRequest>

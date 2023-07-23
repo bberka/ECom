@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECom.Infrastructure.Configurations;
 
@@ -16,20 +18,15 @@ internal class PermissionRoleConfiguration : IEntityTypeConfiguration<Permission
       .HasForeignKey(x => x.PermissionId);
 
     builder.Navigation(x => x.Permission).AutoInclude();
-    //builder.Navigation(x => x.Role).AutoInclude(); //This may not be necessary
 
-
-
-    var names = Enum.GetValues(typeof(AdminOperationType));
+    var names = Enum.GetNames(typeof(AdminPermission));
     var permissions = new List<PermissionRole>();
-    foreach (var name in names) {
-      permissions.Add(new PermissionRole() {
-        PermissionId = (int)name,
-        RoleId = 1
+    foreach (var name in names)
+      permissions.Add(new PermissionRole {
+        PermissionId = name,
+        RoleId = "Owner"
       });
-    }
 
     builder.HasData(permissions);
-  
   }
 }

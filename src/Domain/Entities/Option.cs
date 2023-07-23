@@ -1,12 +1,13 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("Options", Schema = "ECOption")]
 public class Option : IEntity
 {
   [Key]
-  public bool IsRelease { get; set; } = true;
+  public bool Key { get; set; } = true;
   public bool IsOpen { get; set; } = true;
-  public bool IsAdminOpen { get; set; } = true;
   public bool RequireUpperCaseInPassword { get; set; } = false;
   public bool RequireLowerCaseInPassword { get; set; } = false;
   public bool RequireSpecialCharacterInPassword { get; set; } = false;
@@ -17,9 +18,8 @@ public class Option : IEntity
 
   [Range(15, 43200)]
   public int PasswordResetTimeoutMinutes { get; set; } = 30;
-
-  [MaxLength(12)]
-  public string SelectedCurrency { get; set; } = "Lira";
+  
+  public Currency DefaultCurrency { get; set; } = Currency.Lira;
 
   public bool ShowStock { get; set; } = false;
   public byte PagingProductCount { get; set; } = 20;

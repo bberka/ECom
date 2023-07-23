@@ -1,12 +1,13 @@
 ﻿using System.Configuration;
+using ECom.Domain.Entities;
 using ECom.Infrastructure.Configurations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ECom.Infrastructure;
 
 public class EComDbContext : DbContext
 {
-
   public DbSet<Image> Images { get; set; }
 
   public DbSet<StockChange> StockChanges { get; set; }
@@ -19,19 +20,14 @@ public class EComDbContext : DbContext
   public DbSet<ProductImage> ProductImages { get; set; }
   public DbSet<ProductVariant> ProductVariants { get; set; }
   public DbSet<ProductComment> ProductComments { get; set; }
-
   public DbSet<DiscountCoupon> DiscountCoupons { get; set; }
   public DbSet<CategoryDiscount> CategoryDiscounts { get; set; }
   public DbSet<DiscountNotify> DiscountNotifies { get; set; }
 
-
   public DbSet<Category> Categories { get; set; }
-  public DbSet<LocalizationString> LocalizationStrings { get; set; }
-  //public DbSet<SubCategory> SubCategories { get; set; }
   public DbSet<ProductCategory> ProductSubCategories { get; set; }
 
 
-  public DbSet<UserLog> UserLogs { get; set; }
   public DbSet<AdminLog> AdminLogs { get; set; }
   public DbSet<SecurityLog> SecurityLogs { get; set; }
 
@@ -50,9 +46,7 @@ public class EComDbContext : DbContext
 
   public DbSet<Slider> Sliders { get; set; }
   public DbSet<Announcement> Announcements { get; set; }
-  public DbSet<ShowCaseImage> ShowCaseImages { get; set; }
-  public DbSet<ProductShowCase> ProductShowCases { get; set; }
-
+  public DbSet<ShowCase> ShowCases { get; set; }
 
   public DbSet<User> Users { get; set; }
   public DbSet<Cart> Carts { get; set; }
@@ -86,10 +80,11 @@ public class EComDbContext : DbContext
     //}
     try {
       context.Database.Migrate();
-    } catch {
+    }
+    catch {
       //ignored
     }
-    context.Dispose();
 
+    context.Dispose();
   }
 }

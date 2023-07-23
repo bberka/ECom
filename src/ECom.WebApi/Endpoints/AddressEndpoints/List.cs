@@ -1,10 +1,11 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Entities;
 
 namespace ECom.WebApi.Endpoints.AddressEndpoints;
 
 [Authorize]
 [EndpointRoute(typeof(Update))]
-public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Domain.Entities.Address>>
+public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Address>>
 {
   private readonly IAddressService _addressService;
   private readonly ILogService _logService;
@@ -13,9 +14,10 @@ public class List : EndpointBaseSync.WithoutRequest.WithResult<List<Domain.Entit
     _addressService = addressService;
     _logService = logService;
   }
+
   [HttpGet]
-  [EndpointSwaggerOperation(typeof(List),"Lists all addresses for the current user")]
-  public override List<Domain.Entities.Address> Handle() {
+  [EndpointSwaggerOperation(typeof(List), "Lists all addresses for the current user")]
+  public override List<Address> Handle() {
     var user = HttpContext.GetUser();
     var res = _addressService.GetUserAddresses(user.Id);
     return res;

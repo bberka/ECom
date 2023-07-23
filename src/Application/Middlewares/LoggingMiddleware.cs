@@ -1,7 +1,4 @@
 ﻿using System.Diagnostics;
-using ECom.Domain.Extensions;
-using Microsoft.AspNetCore.Http;
-using Serilog;
 
 namespace ECom.Application.Middlewares;
 
@@ -21,8 +18,9 @@ public class LoggingMiddleware
     var responseStatus = context.Response.StatusCode;
     //var fullUrl = context.Request.GetRequestQuery();
     var authLogString = "No-Auth";
-    if (context.IsUserAuthenticated()) authLogString = $"User({context.GetUserId()})";
-    if (context.IsAdminAuthenticated()) authLogString = $"Admin({context.GetAdminId()})";
+    //TODO log user id
+    //if (context.IsUserAuthenticated()) authLogString = $"User({context.GetUserId()})";
+    //if (context.IsAdminAuthenticated()) authLogString = $"Admin({context.GetAdminId()})";
     Log.Information("Request Log: {ResponseStatus} {Auth} {TimeElapsed}", responseStatus, authLogString,
       $"TimeElapsed({timer.ElapsedMilliseconds}ms)");
   }

@@ -1,6 +1,5 @@
 ﻿using ECom.Domain;
-using ECom.Domain.DTOs.UserDto;
-using ECom.Domain.Extensions;
+using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -19,12 +18,17 @@ public class UserService : IUserService
     _validationService = validationService;
   }
 
+
   public CustomResult RegisterUser(RegisterUserRequest model) {
-    var user = model.ToUserEntity();
+    var user = User.FromRegisterRequest(model);
     _unitOfWork.UserRepository.Insert(user);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(RegisterUser));
     return DomainResult.OkUpdated(nameof(User));
+  }
+
+  public List<User> GetUsers() {
+    return _unitOfWork.UserRepository.GetAll().ToList();
   }
 
   public CustomResult<UserDto> LoginUser(LoginRequest model) {
@@ -32,7 +36,8 @@ public class UserService : IUserService
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data!;
     var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
-    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal)) return DomainResult.NotFound(nameof(User)); //Or invalid password
+    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal))
+      return DomainResult.NoAccountFound(nameof(User)); //Or invalid password
     if (user.TwoFactorType != 0) {
       //TODO: implement two factor
     }
@@ -52,43 +57,37 @@ public class UserService : IUserService
   }
 
   public CustomResult<User> GetUser(string email) {
-    var user = _unitOfWork.UserRepository.GetFirstOrDefault(x => x.EmailAddress == email);
-    if (user is null) return DomainResult.NotFound(nameof(User));
-    if (!user.IsValid) return DomainResult.Invalid(nameof(User));
-    if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
+    var user = _unitOfWork.UserRepository.FirstOrDefault(x => x.EmailAddress == email);
+    if (user is null) return DomainResult.NoAccountFound(nameof(User));
+    if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
   }
 
-  public CustomResult<User> GetUser(int id) {
-    var user = _unitOfWork.UserRepository.GetById(id);
+  public CustomResult<User> GetUser(Guid id) {
+    var user = _unitOfWork.UserRepository.Find(id);
     if (user is null) return DomainResult.NotFound(nameof(User));
-    if (!user.IsValid) return DomainResult.Invalid(nameof(User));
-    if (user.DeletedDate.HasValue) return DomainResult.Deleted(nameof(User));
+    if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
   }
 
 
-  public bool UserExists(string email) {
-    return _unitOfWork.UserRepository.Any(x => x.EmailAddress == email);
-  }
 
 
-  public CustomResult ChangePassword(ChangePasswordRequest model) {
-    var userResult = GetUser(model.AuthenticatedUserId);
+  public CustomResult ChangePassword(Guid userId, ChangePasswordRequest model) {
+    var userResult = GetUser(userId);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
-    if (user.Password != model.EncryptedOldPassword) return DomainResult.NotFound("User");
-    user.Password = Convert.ToBase64String(model.NewPassword.MD5Hash());
+    var encryptedPassword = model.NewPassword.ToEncryptedText();
+    if (user.Password != encryptedPassword) return DomainResult.NotFound("User");
+    user.Password = encryptedPassword;
     _unitOfWork.UserRepository.Update(user);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public CustomResult UpdateUser(UpdateUserRequest model) {
-    var userId = model.AuthenticatedUserId;
-    if (userId < 1) throw new InvalidOperationException("UserNo can not be negative");
-    var user = _unitOfWork.UserRepository.GetById(userId);
+  public CustomResult UpdateUser(Guid userId, UpdateUserRequest model) {
+    var user = _unitOfWork.UserRepository.Find(userId);
     if (user is null) return DomainResult.NotFound(nameof(User));
     user.EmailAddress = model.EmailAddress;
     user.CitizenShipNumber = model.CitizenShipNumber;
@@ -102,7 +101,4 @@ public class UserService : IUserService
     return DomainResult.OkUpdated(nameof(User));
   }
 
-  public bool UserExists(int id) {
-    return _unitOfWork.UserRepository.Any(x => x.Id == id);
-  }
 }

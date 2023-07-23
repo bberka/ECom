@@ -1,33 +1,36 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("ProductDetails", Schema = "ECPrivate")]
 public class ProductDetail : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string Name { get; set; }
 
-  [MaxLength(512)]
-  [MinLength(8)]
+  [MinLength(ValidationSettings.MinProductShortLength)]
+  [MaxLength(ValidationSettings.MaxProductShortLength)]
   public string ShortDescription { get; set; }
 
-  [MaxLength(10000)]
-  [MinLength(64)]
+  [MinLength(ValidationSettings.MinProductDescriptionLength)]
   public string DescriptionMarkdown { get; set; }
 
-  [MaxLength(10000)]
-  [MinLength(32)]
+  [MinLength(ValidationSettings.MinProductDescriptionLength)]
   public string? TechnicalInformationMarkdown { get; set; }
 
-  public int ProductId { get; set; }
+  public Guid ProductId { get; set; }
 
-  [MinLength(2)]
-  [MaxLength(4)]
+  [MinLength(ValidationSettings.MinCultureLength)]
+  [MaxLength(ValidationSettings.MaxCultureLength)]
   public string Culture { get; set; } = ConstantMgr.DefaultCulture;
+
   //virtual
   public virtual Product Product { get; set; }
 }

@@ -1,8 +1,7 @@
 ﻿namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 
-public class ListProducts  
+public class ListProducts
 {
-
   private readonly ICollectionService _collectionService;
   private readonly ILogService _logService;
 
@@ -18,5 +17,4 @@ public class ListProducts
   //  _logService.UserLog(res.ToResult(), userId, "Collection.GetProducts", id, page, culture);
   //  return res.ToActionResult();
   //}
-
 }

@@ -1,17 +1,28 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("PasswordResetTokens", Schema = "ECPrivate")]
+[Index(nameof(Token))]
 public class PasswordResetToken : IEntity
 {
   [Key]
-  [MaxLength(512)]
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime ExpireDate { get; set; }
+  public DateTime? UseDate { get; set; }
+
+  [MaxLength(ValidationSettings.MaxTokenLength)]
+  [MinLength(ValidationSettings.MinTokenLength)]
   public string Token { get; set; }
 
-  public bool IsUsed { get; set; }
-  public DateTime RegisterDate { get; set; }
-  public DateTime ExpireDate { get; set; }
-  public int UserId { get; set; }
+  [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
+  public string EmailAddress { get; set; }
+  
 
-  //Virtual
+  public Guid UserId { get; set; }
+
+  //virtual
   public virtual User User { get; set; }
 }

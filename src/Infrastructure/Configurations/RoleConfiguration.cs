@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECom.Infrastructure.Configurations;
 
@@ -6,23 +8,13 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
   public void Configure(EntityTypeBuilder<Role> builder) {
     builder.Navigation(x => x.PermissionRoles).AutoInclude();
-    builder.HasData(_roles);
+    var names = Enum.GetValues(typeof(RoleType));
+    var roles = new List<Role>();
+    foreach (var name in names)
+      roles.Add(new Role {
+        Id = name.ToString()
+      });
+
+    builder.HasData(roles);
   }
-  private static readonly List<Role> _roles = new() {
-    new Role {
-      IsValid = true,
-      Name = "Owner",
-      Id = 1
-    },
-    new Role {
-      IsValid = true,
-      Name = "Admin",
-      Id = 2,
-    },
-    new Role {
-      IsValid = true,
-      Name = "Moderator",
-      Id = 3,
-    }
-  };
 }

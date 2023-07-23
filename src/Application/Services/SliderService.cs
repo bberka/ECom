@@ -1,4 +1,4 @@
-﻿using ECom.Domain;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -11,7 +11,7 @@ public class SliderService : ISliderService
   }
 
   public CustomResult<Slider> GetSlider(int sliderId) {
-    var slider = _unitOfWork.SliderRepository.GetById(sliderId);
+    var slider = _unitOfWork.SliderRepository.Find(sliderId);
     if (slider is null) return DomainResult.NotFound(nameof(Slider));
     if (slider.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Slider));
     return slider;

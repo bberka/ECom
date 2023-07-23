@@ -1,25 +1,24 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("SmtpOptions", Schema = "ECOption")]
 public class SmtpOption : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
 
-  public bool IsValid { get; set; } = true;
-
-
-  [MaxLength(255)]
+  [MaxLength(500)]
   public string Host { get; set; }
 
-
-  [MaxLength(ConstantMgr.EmailMaxLength)]
   [EmailAddress]
   public string Email { get; set; }
 
-  [MaxLength(255)]
+  [MaxLength(500)]
   public string Password { get; set; }
 
 

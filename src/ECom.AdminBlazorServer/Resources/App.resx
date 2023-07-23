@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="account_found" xml:space="preserve">
+    <value>No account found matching given information</value>
+  </data>
+  <data name="actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="admins" xml:space="preserve">
+    <value>Admins</value>
+  </data>
+  <data name="admin_permissions" xml:space="preserve">
+    <value>Admin Permissions</value>
+  </data>
+  <data name="admin_roles" xml:space="preserve">
+    <value>Admin Roles</value>
+  </data>
+  <data name="already_deleted" xml:space="preserve">
+    <value>{name} is already deleted</value>
+    <comment>0: name</comment>
+  </data>
+  <data name="already_exists" xml:space="preserve">
+    <value>{name} is already exists</value>
+    <comment>0: name</comment>
+  </data>
+  <data name="already_in_use" xml:space="preserve">
+    <value>{name} is already is in use</value>
+    <comment>0: name</comment>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="announcements" xml:space="preserve">
+    <value>Announcements</value>
+  </data>
+  <data name="authorizing" xml:space="preserve">
+    <value>Authorizing please wait...</value>
+  </data>
+  <data name="author_name" xml:space="preserve">
+    <value>ZDK Network</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="cargo" xml:space="preserve">
+    <value>Cargo</value>
+  </data>
+  <data name="categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="change_password" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="confirm_reset_password" xml:space="preserve">
+    <value>Are you sure you want to reset your password ?</value>
+  </data>
+  <data name="confirm_reset_password_other_admin" xml:space="preserve">
+    <value>Are you sure you want to reset selected admin password ?</value>
+  </data>
+  <data name="copyright" xml:space="preserve">
+    <value>© 2022 - Today by ZDK Network. All Rights Reserved</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="datetime" xml:space="preserve">
+    <value>Datetime</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="delete_date" xml:space="preserve">
+    <value>Delete Date</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="email_address" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="empty_table" xml:space="preserve">
+    <value>No data found</value>
+  </data>
+  <data name="enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="end_date" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="expiration_date" xml:space="preserve">
+    <value>Expiration Date</value>
+  </data>
+  <data name="fatal" xml:space="preserve">
+    <value>Fatal</value>
+  </data>
+  <data name="footer_text" xml:space="preserve">
+    <value>© 2021 - Today by ZDK Network. All Rights Reserved</value>
+  </data>
+  <data name="forgot_password" xml:space="preserve">
+    <value>Forgot password</value>
+  </data>
+  <data name="general" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="generated_new_password" xml:space="preserve">
+    <value>Here is the new generated password: {password}</value>
+  </data>
+  <data name="go_to_home_page" xml:space="preserve">
+    <value>Go to home page</value>
+  </data>
+  <data name="hello" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="http_status_404" xml:space="preserve">
+    <value>Page you looking for is not found</value>
+  </data>
+  <data name="id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="images" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="invalid" xml:space="preserve">
+    <value>{name} is invalid</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="length_must_be_in_between" xml:space="preserve">
+    <value>{name} must be between {min}-{max} number of characters</value>
+  </data>
+  <data name="list" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="login_page_message" xml:space="preserve">
+    <value>Admin Panel by ZDK Network</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="moderator_permissions" xml:space="preserve">
+    <value>Moderator Permissions</value>
+  </data>
+  <data name="moderator_roles" xml:space="preserve">
+    <value>Moderator Roles</value>
+  </data>
+  <data name="must_be_in_range" xml:space="preserve">
+    <value>{name} must be between {min}-{max}</value>
+  </data>
+  <data name="must_select" xml:space="preserve">
+    <value>You must select {name}</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="navigating" xml:space="preserve">
+    <value>Navigating</value>
+  </data>
+  <data name="new_password" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="not_changed" xml:space="preserve">
+    <value>{name} is not changed</value>
+  </data>
+  <data name="not_found" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="ok_added" xml:space="preserve">
+    <value>{name} is added successfully</value>
+  </data>
+  <data name="ok_created" xml:space="preserve">
+    <value>{name} is created successfully</value>
+  </data>
+  <data name="ok_deleted" xml:space="preserve">
+    <value>{name} is deleted successfully</value>
+  </data>
+  <data name="ok_disabled" xml:space="preserve">
+    <value>{name} is disabled successfully</value>
+  </data>
+  <data name="ok_enabled" xml:space="preserve">
+    <value>{name} is enabled successfully</value>
+  </data>
+  <data name="ok_not_changed" xml:space="preserve">
+    <value>None of {name} properties changed</value>
+  </data>
+  <data name="ok_recovered" xml:space="preserve">
+    <value>{name} is recovered successfully</value>
+  </data>
+  <data name="ok_updated" xml:space="preserve">
+    <value>{name} is updated successfully</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="option" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="owner_permissions" xml:space="preserve">
+    <value>Owner Permissions</value>
+  </data>
+  <data name="owner_permissions_can_not_be_updated" xml:space="preserve">
+    <value>Owner permissions can not be updated</value>
+  </data>
+  <data name="owner_roles" xml:space="preserve">
+    <value>Owner Roles</value>
+  </data>
+  <data name="panel_settings" xml:space="preserve">
+    <value>Panel Settings</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="passwords" xml:space="preserve">
+    <value>Passwords</value>
+  </data>
+  <data name="passwords_must_be_same" xml:space="preserve">
+    <value>Passwords must be same</value>
+  </data>
+  <data name="payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="permission" xml:space="preserve">
+    <value>Permission</value>
+  </data>
+  <data name="permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="permission_count" xml:space="preserve">
+    <value>Permission count</value>
+  </data>
+  <data name="price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="project_name" xml:space="preserve">
+    <value>Admin Panel</value>
+  </data>
+  <data name="p_already_deleted" xml:space="preserve">
+    <value>Already deleted</value>
+  </data>
+  <data name="p_already_exists" xml:space="preserve">
+    <value>Already exists</value>
+  </data>
+  <data name="p_already_in_use" xml:space="preserve">
+    <value>Already in use</value>
+  </data>
+  <data name="p_invalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="p_not_changed" xml:space="preserve">
+    <value>Not changed</value>
+  </data>
+  <data name="p_required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="recover" xml:space="preserve">
+    <value>Recover</value>
+  </data>
+  <data name="redirecting" xml:space="preserve">
+    <value>Redirecting</value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="register_date" xml:space="preserve">
+    <value>Register Date</value>
+  </data>
+  <data name="remember_me" xml:space="preserve">
+    <value>Remember Me</value>
+  </data>
+  <data name="repeat_new_password" xml:space="preserve">
+    <value>Repeat New Password</value>
+  </data>
+  <data name="required" xml:space="preserve">
+    <value>{name} field is required</value>
+  </data>
+  <data name="reset_password" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="select_language" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="select_permissions" xml:space="preserve">
+    <value>Select permissions</value>
+  </data>
+  <data name="select_theme" xml:space="preserve">
+    <value>Select theme</value>
+  </data>
+  <data name="simple_dialog_confirmation" xml:space="preserve">
+    <value>Are you sure you want to {action} {name} ?</value>
+  </data>
+  <data name="smtp" xml:space="preserve">
+    <value>Smtp</value>
+  </data>
+  <data name="stock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="success_password_reset" xml:space="preserve">
+    <value>Password has been reset successfully</value>
+  </data>
+  <data name="support_permissions" xml:space="preserve">
+    <value>Support Permissions</value>
+  </data>
+  <data name="support_roles" xml:space="preserve">
+    <value>Support Roles</value>
+  </data>
+  <data name="theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="too_long" xml:space="preserve">
+    <value>{name} can not be longer than {limit} characters</value>
+  </data>
+  <data name="too_short" xml:space="preserve">
+    <value>{name} can not be shorter than {limit} characters</value>
+  </data>
+  <data name="two_factor" xml:space="preserve">
+    <value>Two Factor</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="update_date" xml:space="preserve">
+    <value>Update Date</value>
+  </data>
+  <data name="upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="warn" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="welcome_message" xml:space="preserve">
+    <value>Welcome to {companyName}</value>
+    <comment>this text is shown at login page</comment>
+  </data>
+  <data name="wrong_password" xml:space="preserve">
+    <value>Wrong password</value>
+  </data>
+  <data name="your_new_password" xml:space="preserve">
+    <value>Your new password: {password}</value>
+  </data>
+</root>

@@ -1,19 +1,23 @@
-﻿namespace ECom.Domain.Entities;
+﻿
 
+namespace ECom.Domain.Entities;
 
 [Table("Categories", Schema = "ECPrivate")]
 [PrimaryKey(nameof(NameKey))]
-[Index(nameof(NameKey),nameof(ParentNameKey))]
+[Index(nameof(NameKey), nameof(ParentNameKey))]
 public class Category : IEntity
 {
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
   public bool IsValid { get; set; } = true;
+  public int Order { get; set; }
 
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string NameKey { get; set; }
 
-  [MinLength(ConstantMgr.NameMinLength)]
-  [MaxLength(ConstantMgr.NameMaxLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string? ParentNameKey { get; set; }
-
 }

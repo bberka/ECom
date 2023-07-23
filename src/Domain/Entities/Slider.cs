@@ -1,32 +1,30 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("Sliders", Schema = "ECPrivate")]
 public class Slider : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
-
-  public DateTime RegisterDate { get; set; } = DateTime.Now;
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
   public DateTime? DeleteDate { get; set; }
 
-  [MaxLength(50)]
+  [MaxLength(ValidationSettings.MaxTitleLength)]
   public string Title { get; set; }
 
-  [MaxLength(50)]
+  [MaxLength(ValidationSettings.MaxImageAltLength)]
   public string Alt { get; set; }
-
-
+  
   public int Order { get; set; }
+  
+  public Guid ImageId { get; set; }
 
-  [ForeignKey(nameof(Image))]
-  public int ImageId { get; set; }
-
-  [MinLength(2)]
-  [MaxLength(4)]
+  [MinLength(ValidationSettings.MinCultureLength)]
+  [MaxLength(ValidationSettings.MaxCultureLength)]
   public string Culture { get; set; } = ConstantMgr.DefaultCulture;
-
-
+  
   //virtual
   public virtual Image Image { get; set; }
 }

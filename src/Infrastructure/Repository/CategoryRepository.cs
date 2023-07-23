@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class CategoryRepository : GenericRepository<Category, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class CategoryRepository : RepositoryBase<Category>
 {
-  public CategoryRepository(EComDbContext context) : base(context) {
+  public CategoryRepository(DbContext context) : base(context) {
   }
 }

@@ -1,46 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECom.Infrastructure.Configurations;
 
 public class AdminConfiguration : IEntityTypeConfiguration<Admin>
 {
-  public void Configure(EntityTypeBuilder<Admin> builder) {
-    builder.Navigation(x => x.Role).AutoInclude();
-    builder.HasData(_admins);
-
-  }
   private static readonly List<Admin> _admins = new() {
     new Admin {
       EmailAddress = "owner@mail.com",
       Password = "25f9e794323b453885f5181f1b624d0b", //123456789
-      RoleId = 1,
-      TwoFactorType = 0,
-      Id = 1,
-      DeletedDate = null,
+      RoleId = "Owner",
+      TwoFactorType = TwoFactorType.None,
+      Id = new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"),
+      DeleteDate = null,
       RegisterDate = ConstantMgr.DefaultDateTime,
       TwoFactorKey = null,
-
+    
     },
-    new Admin {
-      EmailAddress = "admin@mail.com",
-      Password = "25f9e794323b453885f5181f1b624d0b", //123456789
-      RoleId = 2,
-      TwoFactorType = 0,
-      Id = 2,
-      DeletedDate = null,
-      RegisterDate = ConstantMgr.DefaultDateTime,
-      TwoFactorKey = null,
-    },
-    new Admin {
-      EmailAddress = "mod@admin.com",
-      Password = "25f9e794323b453885f5181f1b624d0b", //123456789
-      RoleId = 3,
-      TwoFactorType = 0,
-      Id = 3,
-      DeletedDate = null,
-      RegisterDate = ConstantMgr.DefaultDateTime,
-      TwoFactorKey = null,
-    }
-
   };
+
+  public void Configure(EntityTypeBuilder<Admin> builder) {
+    builder.Navigation(x => x.Role).AutoInclude();
+    builder.HasData(_admins);
+    builder.Property(x => x.TwoFactorType)
+      .HasConversion(new EnumToNumberConverter<TwoFactorType, byte>())
+      .HasDefaultValue(TwoFactorType.None);
+  }
 }

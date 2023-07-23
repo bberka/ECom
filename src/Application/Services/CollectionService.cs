@@ -1,6 +1,5 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.CollectionDto;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using ECom.Domain.Entities;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Services;
 
@@ -12,10 +11,10 @@ public class CollectionService : ICollectionService
     _unitOfWork = unitOfWork;
   }
 
-  public CustomResult CreateCollection(AddCollectionRequest model) {
+  public CustomResult CreateCollection(Guid userId, AddCollectionRequest model) {
     var clc = new Collection {
       RegisterDate = DateTime.Now,
-      UserId = model.AuthenticatedUserId,
+      UserId = userId,
       Name = model.Name
     };
     _unitOfWork.CollectionRepository.Insert(clc);
@@ -24,48 +23,48 @@ public class CollectionService : ICollectionService
     return DomainResult.OkAdded(nameof(Collection));
   }
 
-  public CustomResult DeleteCollection(int userId, int collectionId) {
+  public CustomResult DeleteCollection(Guid userId, Guid collectionId) {
     var collectionResult = GetCollection(userId, collectionId);
     if (!collectionResult.Status) return collectionResult;
-    var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId).Include(x =>x.Collection);
+    var collectionProducts = _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId)
+      .Include(x => x.Collection);
     if (collectionProducts.Any()) _unitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
-    _unitOfWork.CollectionRepository.Delete(collectionId);
+    _unitOfWork.CollectionRepository.Delete(collectionResult.Data!);
     var res = _unitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteCollection));
     return DomainResult.OkDeleted(nameof(Collection));
   }
 
-  public CustomResult<Collection> GetCollection(int id) {
-    var collection = _unitOfWork.CollectionRepository.GetById(id);
+  public CustomResult<Collection> GetCollection(Guid id) {
+    var collection = _unitOfWork.CollectionRepository.Find(id);
     if (collection is null) return DomainResult.NotFound(nameof(Collection));
     return collection;
   }
 
-  public CustomResult<Collection> GetCollection(int userId, int id) {
-    var collection = _unitOfWork.CollectionRepository.GetById(id);
+  public CustomResult<Collection> GetCollection(Guid userId, Guid id) {
+    var collection = _unitOfWork.CollectionRepository.Find(id);
     if (collection is null) return DomainResult.NotFound(nameof(Collection));
     if (collection.UserId == userId) return DomainResult.Unauthorized();
     return collection;
   }
 
 
-  public CustomResult<List<CollectionProduct>> GetCollectionProducts(int userId, int id, ushort page,
+  public CustomResult<List<CollectionProduct>> GetCollectionProducts(Guid userId, Guid id, ushort page,
     string culture = ConstantMgr.DefaultCulture) {
     var collectionResult = GetCollection(userId, id);
     if (!collectionResult.Status) return collectionResult.ToResult();
-    return _unitOfWork.CollectionProductRepository
-      .Get(x => x.CollectionId == id)
+    return _unitOfWork.CollectionProductRepository.Get(x => x.CollectionId == id)
       .Include(x => x.Product)
       //.ThenInclude(x => x.ProductDetails)
       .ToList();
   }
 
-  public List<Collection> GetCollections(int userId) {
+  public List<Collection> GetCollections(Guid userId) {
     return _unitOfWork.CollectionRepository.Get(x => x.UserId == userId).ToList();
   }
 
-  public CustomResult UpdateCollection(UpdateCollectionRequest model) {
-    var collectionResult = GetCollection(model.AuthenticatedUserId, model.CollectionId);
+  public CustomResult UpdateCollection(Guid userId, UpdateCollectionRequest model) {
+    var collectionResult = GetCollection(userId, model.CollectionId);
     if (!collectionResult.Status) return collectionResult;
     collectionResult.Data!.Name = model.CollectionName;
     _unitOfWork.CollectionRepository.Update(collectionResult.Data);

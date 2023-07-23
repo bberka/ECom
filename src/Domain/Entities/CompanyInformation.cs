@@ -1,50 +1,55 @@
-﻿using Newtonsoft.Json;
+﻿
 
 namespace ECom.Domain.Entities;
 
-[Table("CompanyInformations", Schema = "ECPrivate")]
+[Table("CompanyInformation", Schema = "ECOperation")]
 public class CompanyInformation : IEntity
 {
   [Key]
-  [JsonIgnore]
-  public bool IsRelease { get; set; }
+  public bool Key { get; set; } = true;
 
-  [MaxLength(128)]
-  public string DomainUrl { get; set; }
+  [MaxLength(ValidationSettings.MaxDomainLength)]
+  public string DomainUrl { get; set; } = "https://";
 
-  [MaxLength(128)]
-  public string WebApiUrl { get; set; }
 
-  [MaxLength(128)]
-  public string CompanyName { get; set; }
+  [MaxLength(ValidationSettings.MaxDomainLength)]
+  public string WebApiUrl { get; set; } = "https://";
 
-  [MaxLength(1024)]
-  public string Description { get; set; }
 
-  public string PhoneNumber { get; set; }
+  [MaxLength(ValidationSettings.MaxNameLength)]
+  public string CompanyName { get; set; } = "CompanyName";
 
-  [MaxLength(255)]
-  public string ContactEmail { get; set; }
+  [MaxLength(ValidationSettings.MaxDescriptionLength)]
+  public string Description { get; set; } = "Description";
 
-  [MaxLength(16)]
-  public string? WhatsApp { get; set; }
+  [MaxLength(ValidationSettings.MaxPhoneLength)]
+  [MinLength(ValidationSettings.MinPhoneLength)]
+  public string PhoneNumber { get; set; } = "00000000000";
 
-  [MaxLength(255)]
+  [EmailAddress]
+  public string ContactEmail { get; set; } = "contact@mail.com";
+
+  [MaxLength(ValidationSettings.MaxPhoneLength)]
+  [MinLength(ValidationSettings.MinPhoneLength)]
+  public string? WhatsApp { get; set; } 
+
+  [MaxLength(ValidationSettings.MaxAddressLength)]
+  [MinLength(ValidationSettings.MinAddressLength)]
   public string CompanyAddress { get; set; }
 
-  [MaxLength(255)]
+  [MaxLength(ValidationSettings.MaxDomainLength)]
+
   public string? FacebookLink { get; set; }
 
-  [MaxLength(255)]
+  [MaxLength(ValidationSettings.MaxDomainLength)]
+
   public string? InstagramLink { get; set; }
 
-  [MaxLength(255)]
+  [MaxLength(ValidationSettings.MaxDomainLength)]
+
   public string? YoutubeLink { get; set; }
 
-
-  [ForeignKey("LogoImageId")]
-  public int? LogoImageId { get; set; }
-
-  [ForeignKey("FavIcoImageId")]
-  public int? FavIcoImageId { get; set; }
+  
+  public Guid? LogoImageId { get; set; }
+  public Guid? FavIcoImageId { get; set; }
 }

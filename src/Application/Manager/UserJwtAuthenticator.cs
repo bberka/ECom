@@ -1,4 +1,5 @@
-﻿using ECom.Domain.DTOs.UserDto;
+﻿using ECom.Domain;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Manager;
 

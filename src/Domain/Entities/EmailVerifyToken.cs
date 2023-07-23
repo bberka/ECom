@@ -1,23 +1,26 @@
-﻿namespace ECom.Domain.Entities;
+﻿using System.Runtime.InteropServices;
+
+
+namespace ECom.Domain.Entities;
 
 [Table("EmailVerifyTokens", Schema = "ECPrivate")]
+[Index(nameof(Token))]
 public class EmailVerifyToken : IEntity
 {
   [Key]
-  [MaxLength(512)]
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime ExpireDate { get; set; }
+  public DateTime? UseDate { get; set; }
+  [MaxLength(ValidationSettings.MaxTokenLength)]
+  [MinLength(ValidationSettings.MinTokenLength)]
   public string Token { get; set; }
 
-  [MaxLength(ConstantMgr.EmailMaxLength)]
   [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   public string EmailAddress { get; set; }
-
-  public bool IsUsed { get; set; } = false;
-
-  public DateTime RegisterDate { get; set; } = DateTime.Now;
-  public DateTime ExpireDate { get; set; }
-
-  public int UserId { get; set; }
-
+  
+  public Guid UserId { get; set; }
 
   //virtual
   public virtual User User { get; set; }

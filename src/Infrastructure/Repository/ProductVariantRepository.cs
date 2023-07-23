@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class ProductVariantRepository : GenericRepository<ProductVariant, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class ProductVariantRepository : RepositoryBase<ProductVariant>
 {
-  public ProductVariantRepository(EComDbContext context) : base(context) {
+  public ProductVariantRepository(DbContext context) : base(context) {
   }
 }   

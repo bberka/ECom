@@ -1,20 +1,20 @@
-﻿namespace ECom.Domain.Entities;
+﻿
+
+namespace ECom.Domain.Entities;
 
 [Table("Collections", Schema = "ECPrivate")]
 public class Collection : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-  public DateTime RegisterDate { get; set; }
-
-  [MaxLength(128)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
+  [MinLength(ValidationSettings.MinNameLength)]
   public string Name { get; set; }
-
-  public int UserId { get; set; }
-
-
+  public Guid UserId { get; set; }
   //Virtual
   public virtual User User { get; set; }
 }

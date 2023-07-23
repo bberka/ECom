@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class ProductCommentRepository : GenericRepository<ProductComment, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class ProductCommentRepository : RepositoryBase<ProductComment>
 {
-  public ProductCommentRepository(EComDbContext context) : base(context) {
+  public ProductCommentRepository(DbContext context) : base(context) {
   }
 }

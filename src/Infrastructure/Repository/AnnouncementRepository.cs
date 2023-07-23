@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class AnnouncementRepository : GenericRepository<Announcement, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class AnnouncementRepository : RepositoryBase<Announcement>
 {
-  public AnnouncementRepository(EComDbContext context) : base(context) {
+  public AnnouncementRepository(DbContext context) : base(context) {
   }
 }

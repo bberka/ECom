@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ECom.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace ECom.Domain.Abstract;
 
 public interface IImageService
 {
-  CustomResult<int> UploadImage(IFormFile file);
+  CustomResult<Guid> UploadImage(IFormFile file);
 
-  string GetImageBase64String(int id);
+  string GetImageBase64String(Guid id);
 
-  CustomResult<Image> GetImage(int id);
+  CustomResult<Image> GetImage(Guid id);
 }

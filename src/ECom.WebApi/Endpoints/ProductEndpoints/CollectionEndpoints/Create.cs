@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain.DTOs.CollectionDto;
+using ECom.Shared.DTOs.CollectionDto;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 
@@ -16,10 +16,11 @@ public class Create : EndpointBaseSync.WithRequest<AddCollectionRequest>.WithRes
   }
 
   [HttpPost]
-  [EndpointSwaggerOperation(typeof(Create),"Creates product collection")]
+  [EndpointSwaggerOperation(typeof(Create), "Creates product collection")]
   public override CustomResult Handle(AddCollectionRequest request) {
-    var res = _collectionService.CreateCollection(request);
-    _logService.UserLog(res, request.AuthenticatedUserId, "Collection.Create", request.ToJsonString());
+    var authId = HttpContext.GetUserId();
+    var res = _collectionService.CreateCollection(authId, request);
+    _logService.UserLog(res, authId, "Collection.Create", request.ToJsonString());
     return res;
   }
 }

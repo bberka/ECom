@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿
 
 namespace ECom.Domain.Entities;
 
@@ -6,21 +6,19 @@ namespace ECom.Domain.Entities;
 public class CargoOption : IEntity
 {
   [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+  public Guid Id { get; set; }
+  public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
+  public DateTime? UpdateDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
-
-  public bool IsValid { get; set; }
-
-
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
   public string Name { get; set; }
-
 
   public int FreeShippingMinCost { get; set; }
 
-
   [ForeignKey("ImageId")]
-  public int ImageId { get; set; }
+  public Guid ImageId { get; set; }
 
   [JsonIgnore]
   [System.Text.Json.Serialization.JsonIgnore]

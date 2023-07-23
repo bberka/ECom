@@ -1,0 +1,15 @@
+﻿
+
+<RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+  <RadzenStack Orientation="Orientation.Horizontal">
+    <RadzenButton Text=@Loc["update"] Click="OnUpdate" ButtonType="ButtonType.Submit" />
+    <RadzenButton Text=@Loc["cancel"] Click="OnCancel" ButtonStyle="ButtonStyle.Light" />
+  </RadzenStack>
+</RadzenStack>
+@code {
+  [Parameter]
+  public EventCallback<MouseEventArgs> OnCancel { get; set; }
+
+  [Parameter]
+  public EventCallback<MouseEventArgs> OnUpdate { get; set; }
+}

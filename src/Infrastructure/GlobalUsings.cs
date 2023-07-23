@@ -1,10 +1,7 @@
-﻿global using EasMe;
-global using EasMe.EntityFrameworkCore;
-global using ECom.Domain.Constants;
-global using ECom.Domain.Entities;
-global using ECom.Domain.Lib;
+﻿
+global using ECom.Domain.Abstract;
 global using Microsoft.EntityFrameworkCore;
 global using System;
 global using System.Collections.Generic;
-global using ECom.Domain.Abstract;
-global using Ninject.Activation;
+global using ECom.Domain.Entities;
+global using ECom.Infrastructure.Abstract;

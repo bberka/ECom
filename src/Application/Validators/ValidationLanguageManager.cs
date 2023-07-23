@@ -1,4 +1,5 @@
-﻿using FluentValidation.Resources;
+﻿using ECom.Shared.Constants;
+using FluentValidation.Resources;
 
 namespace ECom.Application.Validators;
 

@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class OptionRepository : GenericRepository<Option, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class OptionRepository : RepositoryBase<Option>
 {
-  public OptionRepository(EComDbContext context) : base(context) {
+  public OptionRepository(DbContext context) : base(context) {
   }
 }

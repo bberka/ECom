@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.CollectionDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class UpdateCollectionRequestValidator : AbstractValidator<UpdateCollectionRequest>,
   IValidator<UpdateCollectionRequest>
@@ -10,7 +8,5 @@ public class UpdateCollectionRequestValidator : AbstractValidator<UpdateCollecti
       .MinimumLength(3)
       .MaximumLength(32);
 
-    RuleFor(x => x.CollectionId)
-      .GreaterThan(0);
   }
 }

@@ -1,4 +1,4 @@
-﻿using ECom.Domain;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -17,10 +17,10 @@ public class CartService : ICartService
     _productService = productService;
   }
 
-  public CustomResult AddOrIncreaseProduct(int userId, int productId) {
+  public CustomResult AddOrIncreaseProduct(Guid userId, Guid productId) {
     var productExist = _productService.Exists(productId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
-    var existing = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+    var existing = _unitOfWork.CartRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (existing != null) {
       existing.Count++;
       _unitOfWork.CartRepository.Update(existing);
@@ -31,7 +31,8 @@ public class CartService : ICartService
         RegisterDate = DateTime.Now,
         ProductId = productId,
         UserId = userId,
-        LastUpdateDate = DateTime.Now
+        UpdateDate = DateTime.Now,
+        DeleteDate = null,
       };
       _unitOfWork.CartRepository.Insert(newBasket);
     }
@@ -41,8 +42,8 @@ public class CartService : ICartService
     return DomainResult.OkAdded(nameof(Cart));
   }
 
-  public CustomResult RemoveOrDecreaseProduct(int userId, int productId) {
-    var exist = _unitOfWork.CartRepository.GetFirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+  public CustomResult RemoveOrDecreaseProduct(Guid userId, Guid productId) {
+    var exist = _unitOfWork.CartRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (exist is null) return DomainResult.NotFound(nameof(Cart));
     if (exist.Count > 1) {
       exist.Count--;
@@ -58,15 +59,15 @@ public class CartService : ICartService
     return DomainResult.OkRemoved(nameof(Cart));
   }
 
-  public int GetBasketProductCount(int userId) {
+  public int GetBasketProductCount(Guid userId) {
     return _unitOfWork.CartRepository.Count(x => x.UserId == userId);
   }
 
-  public List<Cart> ListBasketProducts(int userId) {
+  public List<Cart> ListBasketProducts(Guid userId) {
     return _unitOfWork.CartRepository.Get(x => x.UserId == userId).ToList();
   }
 
-  public CustomResult ClearCartProducts(int userId) {
+  public CustomResult ClearCartProducts(Guid userId) {
     var list = _unitOfWork.CartRepository.Get(x => x.UserId == userId);
     _unitOfWork.CartRepository.DeleteRange(list);
     var res = _unitOfWork.Save();

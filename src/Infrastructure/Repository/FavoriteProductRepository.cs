@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class FavoriteProductRepository : GenericRepository<FavoriteProduct, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class FavoriteProductRepository : RepositoryBase<FavoriteProduct>
 {
-  public FavoriteProductRepository(EComDbContext context) : base(context) {
+  public FavoriteProductRepository(DbContext context) : base(context) {
   }
 }

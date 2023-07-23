@@ -1,6 +1,4 @@
-﻿using ECom.Domain.DTOs.UserDto;
-
-namespace ECom.Application.Validators;
+﻿namespace ECom.Application.Validators;
 
 public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>, IValidator<UpdateUserRequest>
 {

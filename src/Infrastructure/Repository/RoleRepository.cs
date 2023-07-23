@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class RoleRepository : GenericRepository<Role, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class RoleRepository : RepositoryBase<Role>
 {
-  public RoleRepository(EComDbContext context) : base(context) {
+  public RoleRepository(DbContext context) : base(context) {
   }
 }

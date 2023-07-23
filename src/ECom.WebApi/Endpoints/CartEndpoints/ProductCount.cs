@@ -11,8 +11,9 @@ public class ProductCount : EndpointBaseSync.WithoutRequest.WithResult<int>
   public ProductCount(ICartService cartService) {
     _cartService = cartService;
   }
+
   [HttpGet]
-  [EndpointSwaggerOperation(typeof(ProductCount),"Gets cart product count")]
+  [EndpointSwaggerOperation(typeof(ProductCount), "Gets cart product count")]
   public override int Handle() {
     if (!HttpContext.IsUserAuthenticated()) return HttpContext.GetCart().Count;
     var userId = HttpContext.GetUserId();

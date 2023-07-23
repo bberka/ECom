@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class DiscountNotifyRepository : GenericRepository<DiscountNotify, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class DiscountNotifyRepository : RepositoryBase<DiscountNotify>
 {
-  public DiscountNotifyRepository(EComDbContext context) : base(context) {
+  public DiscountNotifyRepository(DbContext context) : base(context) {
   }
 }

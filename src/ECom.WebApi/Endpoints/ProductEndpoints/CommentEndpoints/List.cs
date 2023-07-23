@@ -1,4 +1,6 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Entities;
+using ECom.Shared.DTOs;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CommentEndpoints;
 
@@ -11,8 +13,9 @@ public class List : EndpointBaseSync.WithRequest<PageRequestWithId>.WithResult<L
   public List(IProductService productService) {
     _productService = productService;
   }
+
   [HttpGet]
-  [EndpointSwaggerOperation(typeof(List),"Gets product comments")]
+  [EndpointSwaggerOperation(typeof(List), "Gets product comments")]
   public override List<ProductComment> Handle(PageRequestWithId request) {
     return _productService.GetProductComments(request.Id, request.Page);
   }

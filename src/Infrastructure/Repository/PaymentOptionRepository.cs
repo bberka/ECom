@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class PaymentOptionRepository : GenericRepository<PaymentOption, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class PaymentOptionRepository : RepositoryBase<PaymentOption>
 {
-  public PaymentOptionRepository(EComDbContext context) : base(context) {
+  public PaymentOptionRepository(DbContext context) : base(context) {
   }
 }

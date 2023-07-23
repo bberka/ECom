@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class DiscountCouponRepository : GenericRepository<DiscountCoupon, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class DiscountCouponRepository : RepositoryBase<DiscountCoupon>
 {
-  public DiscountCouponRepository(EComDbContext context) : base(context) {
+  public DiscountCouponRepository(DbContext context) : base(context) {
   }
 }

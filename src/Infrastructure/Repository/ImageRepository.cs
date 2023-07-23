@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class ImageRepository : GenericRepository<Image, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class ImageRepository : RepositoryBase<Image>
 {
-  public ImageRepository(EComDbContext context) : base(context) {
+  public ImageRepository(DbContext context) : base(context) {
   }
 }

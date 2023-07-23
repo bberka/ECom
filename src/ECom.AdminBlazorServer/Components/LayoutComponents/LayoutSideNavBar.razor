@@ -1,0 +1,73 @@
+﻿@using ECom.Shared.DTOs
+@using Microsoft.AspNetCore.Localization
+@inherits ComponentBase
+@inject SupportedCultures SupportedCultures
+<AuthorizeView>
+
+
+  <RadzenHeader>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+      <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+        <RadzenSidebarToggle Click="@ToggleSideBar" />
+        <RadzenLabel Text="@Loc["company"]" />
+      </RadzenStack>
+      <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+        @*<DropDownTheme></DropDownTheme>*@
+        @*<DropDownCulture></DropDownCulture>*@
+        <UserMenu></UserMenu>
+      </RadzenStack>
+    </RadzenStack>
+  </RadzenHeader>
+  <RadzenSidebar @bind-Expanded="@_sideBarExpanded">
+
+
+    <RadzenStack AlignItems="AlignItems.Center">
+
+      <RadzenPanelMenu Style="width: 100%" Multiple="false">
+        <RadzenPanelMenuItem Text="@Loc["dashboard"]" Path="dashboard" Icon="home" />
+
+        <RadzenPanelMenuItem Text="@Loc["management"]" Icon="account_box">
+          <RadzenPanelMenuItem Text="@Loc["admins"]" Path="management/admins" />
+          <RadzenPanelMenuItem Text="@(Loc["roles"])" Path="management/roles" />
+        </RadzenPanelMenuItem>
+
+        <RadzenPanelMenuItem Text="@Loc["categories"]" Path="categories" />
+        <RadzenPanelMenuItem Text="@Loc["announcements"]" Path="announcements" />
+
+        <RadzenPanelMenuItem Text="@Loc["images"]">
+          <RadzenPanelMenuItem Text="@(Loc["image"] + " " + Loc["list"])" Path="image/list" />
+          <RadzenPanelMenuItem Text="@(Loc["upload"] + " " + Loc["image"])" Path="image/upload" />
+        </RadzenPanelMenuItem>
+
+        <RadzenPanelMenuItem Text="@Loc["options"]">
+          <RadzenPanelMenuItem Text="@(Loc["general"] + " " +  Loc["options"])" Path="options/general" />
+          <RadzenPanelMenuItem Text="@(Loc["smtp"] + " "+ Loc["options"])" Path="options/smtp" />
+          <RadzenPanelMenuItem Text="@(Loc["payment"] + " "+ Loc["options"])" Path="options/payment" />
+          <RadzenPanelMenuItem Text="@(Loc["cargo"] + " "+Loc["options"])" Path="options/cargo" />
+          <RadzenPanelMenuItem Text="@(Loc["company"] + " "+Loc["info"])" Path="options/company" />
+        </RadzenPanelMenuItem>
+        
+        <RadzenPanelMenuItem Text="@(Loc["panel_settings"])" Path="PanelSettings" />
+
+        
+
+      </RadzenPanelMenu>
+
+    </RadzenStack>
+
+  </RadzenSidebar>
+
+</AuthorizeView>
+
+@code {
+  bool _sideBarExpanded = true;
+
+
+
+
+  private void ToggleSideBar() {
+    _sideBarExpanded = !_sideBarExpanded;
+  }
+
+  }
+}

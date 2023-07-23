@@ -1,5 +1,4 @@
-﻿using ECom.Domain.DTOs.AdminDto;
-using ECom.Domain.DTOs.UserDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 

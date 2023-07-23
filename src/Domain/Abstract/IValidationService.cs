@@ -2,7 +2,6 @@
 
 public interface IValidationService
 {
-  bool AllowTester(bool isTesterAccount);
   bool HasLowerCase(string password);
   bool HasNumber(string password);
   bool NotHasSpace(string password);
@@ -10,5 +9,4 @@ public interface IValidationService
   bool HasUpperCase(string password);
   bool NotUsedEmail_Admin(string email);
   bool NotUsedEmail_User(string email);
-  bool IsRelease();
 }

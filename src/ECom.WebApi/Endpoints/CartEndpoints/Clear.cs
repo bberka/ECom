@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Domain;
+using ECom.Domain.Entities;
 
 namespace ECom.WebApi.Endpoints.CartEndpoints;
 
@@ -14,8 +14,9 @@ public class Clear : EndpointBaseSync.WithoutRequest.WithResult<CustomResult>
     _cartService = cartService;
     _logService = logService;
   }
+
   [HttpDelete]
-  [EndpointSwaggerOperation(typeof(Clear),"Clears cart")]
+  [EndpointSwaggerOperation(typeof(Clear), "Clears cart")]
   public override CustomResult Handle() {
     if (HttpContext.IsUserAuthenticated()) {
       var userId = HttpContext.GetUserId();
@@ -23,6 +24,7 @@ public class Clear : EndpointBaseSync.WithoutRequest.WithResult<CustomResult>
       _logService.UserLog(res, userId, "Cart.Clear");
       return res;
     }
+
     HttpContext.ClearCart();
     return DomainResult.OkCleared(nameof(Cart));
   }

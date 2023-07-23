@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class PasswordResetTokenRepository : GenericRepository<PasswordResetToken, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class PasswordResetTokenRepository : RepositoryBase<PasswordResetToken>
 {
-  public PasswordResetTokenRepository(EComDbContext context) : base(context) {
+  public PasswordResetTokenRepository(DbContext context) : base(context) {
   }
 }

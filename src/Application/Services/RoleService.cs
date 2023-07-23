@@ -1,5 +1,4 @@
-﻿using ECom.Domain;
-using ECom.Domain.DTOs.RoleDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Application.Services;
 
@@ -11,38 +10,59 @@ public class RoleService : IRoleService
     _unitOfWork = unitOfWork;
   }
 
-  public List<RoleDto> GetRolesWithPermissions() {
-    return _unitOfWork.RoleRepository
-      .Get()
-      .Select(x => new RoleDto(x))
+  public List<Permission> GetPermissions() {
+    return _unitOfWork.PermissionRepository
+      .GetAll()
       .ToList();
   }
 
-  public CustomResult<Role> GetRole(int roleId) {
-    var role = _unitOfWork.RoleRepository.GetById(roleId);
+  public List<Role> GetRoles() {
+    return _unitOfWork.RoleRepository
+      .GetAll()
+      //.Include(x => x.PermissionRoles)
+      .ToList();
+  }
+
+  public CustomResult<Role> GetRole(string roleId) {
+    if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
+    var role = _unitOfWork.RoleRepository.Find(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));
     return role;
   }
 
-  public CustomResult<Role> GetRoleByName(string roleName) {
-    var role = _unitOfWork.RoleRepository.GetFirstOrDefault(x => x.Name == roleName);
-    if (role is null) return DomainResult.NotFound(nameof(Role));
-    return role;
-  }
 
-
-  public HashSet<Permission> GetRolePermissions(int roleId) {
-    var role = _unitOfWork.RoleRepository
-      .Get(x => x.Id == roleId)
-      //.Include(x => x.Permissions)
-      .FirstOrDefault();
-    if (role is null) return new HashSet<Permission>();
-    //return role.Permissions;
-    return new HashSet<Permission>();
-  }
-
-  public bool RoleExists(int roleId) {
-    if(roleId < 1) return false;
+  public bool RoleExists(string roleId) {
+    if (string.IsNullOrEmpty(roleId)) return false;
     return _unitOfWork.RoleRepository.Any(x => x.Id == roleId);
+  }
+
+  public bool HasPermission(Guid adminId, string permissionId) {
+    var hasPermission = _unitOfWork.AdminRepository
+      .Any(x => x.Id == adminId && x.Role.PermissionRoles.Any(y => y.PermissionId == permissionId));
+    return hasPermission;
+  }
+
+  public CustomResult UpdatePermissions(Guid requesterAdminId, string roleId, List<string> permissions) {
+    if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
+    var role = _unitOfWork.RoleRepository.Find(roleId);
+    if (role is null) return DomainResult.NotFound(nameof(Role));
+    var permissionRoles = _unitOfWork.PermissionRoleRepository.Get(x => x.RoleId == roleId)
+      .ToList();
+    var permissionsToAdd = permissions
+      .Where(x => permissionRoles.All(y => y.PermissionId != x))
+      .Select(x => new PermissionRole { PermissionId = x, RoleId = roleId })
+      .ToList() ?? new();
+    var permissionsToRemove = permissionRoles
+      .Where(x => permissions.All(y => y != x.PermissionId))
+      .ToList() ?? new();
+    var isNeedUpdate = permissionsToAdd.Any() || permissionsToRemove.Any();
+    if (!isNeedUpdate) return DomainResult.OkNotChanged(nameof(Role));
+    if (permissionsToRemove.Count > 0)
+      _unitOfWork.PermissionRoleRepository.DeleteRange(permissionsToRemove);
+    if (permissionsToAdd.Count > 0)
+      _unitOfWork.PermissionRoleRepository.InsertRange(permissionsToAdd);
+    var res = _unitOfWork.Save();
+    if (!res) return DomainResult.DbInternalError(nameof(UpdatePermissions));
+    return DomainResult.OkUpdated(nameof(Role));
   }
 }

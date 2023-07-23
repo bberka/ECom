@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿
 
-public class AddressRepository : GenericRepository<Address, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class AddressRepository : RepositoryBase<Address>
 {
-  public AddressRepository(EComDbContext context) : base(context) {
+  public AddressRepository(DbContext context) : base(context) {
   }
 }

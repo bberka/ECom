@@ -1,7 +1,9 @@
-﻿namespace ECom.Infrastructure.Repository;
+﻿using ECom.Domain.Entities;
 
-public class CargoOptionRepository : GenericRepository<CargoOption, EComDbContext>
+namespace ECom.Infrastructure.Repository;
+
+public class CargoOptionRepository : RepositoryBase<CargoOption>
 {
-  public CargoOptionRepository(EComDbContext context) : base(context) {
+  public CargoOptionRepository(DbContext context) : base(context) {
   }
 }

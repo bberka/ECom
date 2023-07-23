@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+<RadzenDialog/>
+<RadzenNotification/>
+<RadzenContextMenu/>
+<RadzenTooltip/>
+
+<RadzenLayout>
+  <AuthorizeView>
+    <ChildContent>
+      <LayoutSideNavBar></LayoutSideNavBar>
+      <RadzenBody>
+        <div class="rz-p-4">
+          @Body
+        </div>
+      </RadzenBody>
+
+    </ChildContent>
+    <Authorizing>
+      <SubPageAuthorizing></SubPageAuthorizing>
+    </Authorizing>
+    <NotAuthorized>
+      <SubPageLogin></SubPageLogin>
+    </NotAuthorized>
+  </AuthorizeView>
+
+</RadzenLayout>
+<LayoutFooter></LayoutFooter>

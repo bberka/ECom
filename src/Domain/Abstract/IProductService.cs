@@ -1,12 +1,12 @@
-﻿using ECom.Domain.DTOs.ProductDto;
+﻿using ECom.Domain.Entities;
 
 namespace ECom.Domain.Abstract;
 
 public interface IProductService
 {
-  bool Exists(int id);
+  bool Exists(Guid id);
 
-  CustomResult<Product> GetProduct(long productNo);
+  CustomResult<Product> GetProduct(Guid productNo);
 
   /// <summary>
   /// </summary>
@@ -18,7 +18,7 @@ public interface IProductService
   ///   <see cref="ProductImage" />, <see cref="ProductDetail" />
   ///   without including <see cref="ProductComment" /> or related data
   /// </returns>
-  List<Product> GetProducts(List<int> productIds, ushort page, string culture = ConstantMgr.DefaultCulture);
+  List<Product> GetProducts(List<Guid> productIds, ushort page, string culture = ConstantMgr.DefaultCulture);
 
   /// <summary>
   /// </summary>
@@ -41,7 +41,7 @@ public interface IProductService
   ///   <see cref="ProductComment" /> list by given parameters with including <see cref="ProductCommentImage" />,
   ///   <see cref="ProductCommentStar" />
   /// </returns>
-  List<ProductComment> GetProductComments(List<int> productIds, ushort page);
+  List<ProductComment> GetProductComments(List<Guid> productIds, ushort page);
 
   /// <summary>
   /// </summary>
@@ -52,11 +52,11 @@ public interface IProductService
   ///   <see cref="ProductComment" /> list by given parameters with including <see cref="ProductCommentImage" />,
   ///   <see cref="ProductCommentStar" />
   /// </returns>
-  List<ProductComment> GetProductComments(int productId, ushort page);
+  List<ProductComment> GetProductComments(Guid productId, ushort page);
 
-  CustomResult<int> AddProductComment(AddProductCommentRequest model);
+  CustomResult<int> AddProductComment(Guid userId, AddProductCommentRequest model);
 
-  //CustomResult<int> AddCommentImage(IFormFile file, int userId,int commentId);
+  //CustomResult<int> AddCommentImage(IFormFile file, Guid UserId,int commentId);
   //ListProducts<ProductDetail>? GetProductDetails(long productNo);
   //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
   //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
