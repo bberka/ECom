@@ -5,7 +5,10 @@
 @using System.Globalization
 @inherits SharedBasePage
 @inject AuthenticationService AuthenticationService
+
+<PageTitle>@Loc["account"]</PageTitle>
 <RadzenRow Gap="5rem" class="m-2">
+  
   <RadzenColumn SizeMD="12" SizeLG="6">
     <RadzenCard Variant="Variant.Filled">
       <RadzenFieldset Text="@Loc["account"]">
