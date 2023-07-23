@@ -53,7 +53,8 @@ builder.Services.AddScoped<ProtectedLocalStorage>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, AdminAuthenticationStateProvider>();
 builder.Services.AddScoped<RevalidatingServerAuthenticationStateProvider, AdminAuthenticationStateProvider>();
-builder.Services.AddScoped<AdminAuthenticationStateProvider>();
+//builder.Services.AddScoped<AdminAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationService>();
 
 builder.Services.AddSingleton<LoginStateCacheProvider>();
 //RADZEN SERVICES

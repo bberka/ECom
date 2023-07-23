@@ -3,8 +3,8 @@
   
   <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-      <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-      </RouteView>
+      <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+      </AuthorizeRouteView>
       <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>

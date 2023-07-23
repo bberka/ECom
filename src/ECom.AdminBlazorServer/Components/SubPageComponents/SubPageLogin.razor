@@ -8,7 +8,7 @@
 @using System.Security.Claims
 @using System.Security.Principal
 @inherits SharedBasePage
-@inject AdminAuthenticationStateProvider AdminAuthenticationStateProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <RadzenBody>
   <div class="rz-p-4">
@@ -77,7 +77,7 @@
     var result = AdminService.AdminLogin(LoginRequest);
     if (result.Status) {
       var admin = result.Data!;
-      await AdminAuthenticationStateProvider.Login(admin);
+      await ((AdminAuthenticationStateProvider)AuthenticationStateProvider).Login(admin);
       Nav.NavigateTo(Nav.Uri, true);
       return;
     }

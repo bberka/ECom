@@ -11,7 +11,21 @@ namespace ECom.AdminBlazorServer.Common;
 
 public static class AuthExtensions
 {
-
+  public static ClaimsPrincipal CreatePrincipal(this AdminDto admin) {
+    var claims = new List<Claim> {
+      //claims.Add(new Claim("AdminOnly", "true"));
+      new(ClaimTypes.Role, admin.RoleId),
+      new(ClaimTypes.NameIdentifier, admin.Id.ToString()),
+      new(ClaimTypes.Name, admin.EmailAddress),
+      new(ClaimTypes.Email, admin.EmailAddress),
+      new("TwoFactorType", admin.TwoFactorType.ToString()),
+      new("RegisterDate", admin.RegisterDate.ToString(CultureInfo.InvariantCulture)),
+      new(ClaimTypes.Hash, admin.Password)
+    };
+    var permissions = admin.Permissions.ToList().CreatePermissionString();
+    claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
+    return new ClaimsPrincipal(new ClaimsIdentity(claims, "admin-auth"));
+  }
   public static AdminDto GetAdmin(this ClaimsPrincipal user) {
     try {
       var adminDto = new AdminDto();
