@@ -87,16 +87,19 @@
   private AdminDto adminDto = new AdminDto();
   private ChangePasswordRequest _changePassword = new ChangePasswordRequest();
 
+  [CascadingParameter]
+  public Task<AuthenticationState> AuthTask { get; set; }
+
   protected override async Task OnAfterRenderAsync(bool firstRender) {
     if (firstRender) {
-      var auth = await AuthProvider.GetAuthenticationStateAsync();
+      var auth = await AuthTask;
       adminDto = auth.User.GetAdmin();
       StateHasChanged();
     }
   }
 
   private async Task SubmitChangePassword(ChangePasswordRequest obj) {
-    var auth = await AuthProvider.GetAuthenticationStateAsync();
+    var auth = await AuthTask;
     var id = auth.User.GetAdmin().Id;
     var result = AdminService.ChangePassword(id, obj);
 

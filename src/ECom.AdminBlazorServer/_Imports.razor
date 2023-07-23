@@ -26,9 +26,14 @@
 @using ECom.AdminBlazorServer.Components.SubPageComponents
 @using Microsoft.Extensions.Localization
 @using ECom.Domain.Extensions
+@using Microsoft.AspNetCore.Components.Server
 
-@inject IAdminAuthenticationStateProvider AuthProvider
+@*@inject IAdminAuthenticationStateProvider AuthProvider*@
 @inject NavigationManager Nav
+@inject TooltipService TooltipService
+@inject DialogService DialogService
+@*@inject AuthenticationStateProvider AuthProvider*@
+
 @inject IStringLocalizer<App> Loc
 @inject IJsCookieUtil JsCookieUtil
 @inject IJsUtil JsUtil

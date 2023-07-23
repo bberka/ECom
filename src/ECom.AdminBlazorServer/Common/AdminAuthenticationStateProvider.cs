@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
 using System.Security.Claims;
 using AspNetCore.Authorization.Extender;
+using Bers.Blazor.Ext.Javascript;
 using ECom.Domain.Abstract;
 using ECom.Shared.DTOs.AdminDto;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Serilog;
 
@@ -11,7 +13,7 @@ namespace ECom.AdminBlazorServer.Common;
 
 
 
-public class AdminAuthenticationStateProvider : AuthenticationStateProvider, IAdminAuthenticationStateProvider
+public class AdminAuthenticationStateProvider : RevalidatingServerAuthenticationStateProvider
 {
   private const string AdminLoginKey = "admin-login";
   private const string AdminAuthType = "admin-auth";
@@ -20,9 +22,16 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider, IAd
 
 
   private readonly ProtectedSessionStorage _protectedSessionStorage;
+  private readonly IJsSessionUtil _jsSessionUtil;
 
-  public AdminAuthenticationStateProvider(ProtectedSessionStorage protectedSessionStorage) {
+
+  public AdminAuthenticationStateProvider(ILoggerFactory loggerFactory, 
+    LoginStateCacheProvider cacheProvider,
+    ProtectedSessionStorage protectedSessionStorage,
+    IJsSessionUtil jsSessionUtil) : base(loggerFactory) {
+    _cacheProvider = cacheProvider;
     _protectedSessionStorage = protectedSessionStorage;
+    _jsSessionUtil = jsSessionUtil;
   }
 
   //public async Task<bool> IsAuthenticated() {
@@ -45,35 +54,68 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider, IAd
   //  //adminDto.TwoFactorType = Enum.Parse<TwoFactorType>(authState?.User?.FindFirstValue("TwoFactorType") ?? "0");
   //  //return adminDto;
   //}
+  private readonly LoginStateCacheProvider _cacheProvider;
 
+
+  
+  protected override async Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState, CancellationToken cancellationToken) {
+    var user = authenticationState.User;
+    var isAuthenticated = user.Identity?.IsAuthenticated ?? false;
+    if (!isAuthenticated) return false;
+    var sid = user.GetAdminId().ToString();
+    var loginState = _cacheProvider.Validate(sid);
+    return loginState;
+
+  }
+
+  //Default is 10 seconds according to microsoft docs
+  protected override TimeSpan RevalidationInterval { get; } = TimeSpan.FromSeconds(5);
   public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
     //var identity = _anonymous.Identity as ClaimsIdentity;
     try {
       var login = await _protectedSessionStorage.GetAsync<AdminDto>(AdminLoginKey);
       var session = login.Success ? login.Value : null;
-      if (session == null) return new AuthenticationState(_anonymous);
+      if (session == null) {
+        return new AuthenticationState(_anonymous);
+      }
+      var isValid = _cacheProvider.Validate(session.Id.ToString());
+      if (!isValid) {
+
+        return new AuthenticationState(_anonymous);
+      }
       var principal = CreatePrincipalFromLoginResponse(session);
-      return await Task.FromResult(new AuthenticationState(principal));
+      var state = new AuthenticationState(principal);
+      return await Task.FromResult(state);
     }
     catch (Exception ex) {
-      Log.Error(ex, "Error getting authentication state");
+      //Log.Error(ex, "Error getting authentication state");
       return new AuthenticationState(_anonymous);
     }
   }
 
   public async Task Logout() {
-    await _protectedSessionStorage.DeleteAsync(AdminLoginKey);
+    var authState = await GetAuthenticationStateAsync();
+    var sid = authState.User.GetAdminId().ToString();
+    _cacheProvider.Remove(sid);
+    //await _protectedSessionStorage.DeleteAsync(AdminLoginKey);
     NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
+    await _jsSessionUtil.RemoveValue(AdminLoginKey);
   }
 
   public async Task Login(AdminDto admin) {
     if (admin == null) throw new ArgumentNullException(nameof(admin));
+    var authState = await GetAuthenticationStateAsync();
+    if (authState.User.Identity?.IsAuthenticated == true) {
+      await Logout();
+    }
     await _protectedSessionStorage.SetAsync(AdminLoginKey, admin);
     var claimsPrincipal = CreatePrincipalFromLoginResponse(admin);
+    var sid = claimsPrincipal.GetAdminId().ToString();
+    _cacheProvider.Add(sid);
     NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
   }
 
-  private static ClaimsPrincipal CreatePrincipalFromLoginResponse(AdminDto admin) {
+  public static ClaimsPrincipal CreatePrincipalFromLoginResponse(AdminDto admin) {
     var claims = new List<Claim> {
       //claims.Add(new Claim("AdminOnly", "true"));
       new(ClaimTypes.Role, admin.RoleId),
@@ -88,4 +130,21 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider, IAd
     claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
     return new ClaimsPrincipal(new ClaimsIdentity(claims, AdminAuthType));
   }
+
+  //protected override async Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState, CancellationToken cancellationToken) {
+  //  var login = await _protectedSessionStorage.GetAsync<AdminDto>(AdminLoginKey);
+  //  var session = login.Success ? login.Value : null;
+  //  if (session == null) return false;
+  //  var principal = CreatePrincipalFromLoginResponse(session);
+  //  var newAuthState = new AuthenticationState(principal);
+  //  var currentAuthState = await GetAuthenticationStateAsync();
+  //  var isAuthenticated = currentAuthState.User.Identity.IsAuthenticated;
+  //  if (isAuthenticated != newAuthState.User.Identity.IsAuthenticated) {
+  //    NotifyAuthenticationStateChanged(Task.FromResult(newAuthState));
+  //  }
+  //  return newAuthState.User.Identity.IsAuthenticated;
+    
+  //}
+
+  //protected override TimeSpan RevalidationInterval { get; }
 }

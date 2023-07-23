@@ -11,6 +11,7 @@ namespace ECom.AdminBlazorServer.Common;
 
 public static class AuthExtensions
 {
+
   public static AdminDto GetAdmin(this ClaimsPrincipal user) {
     try {
       var adminDto = new AdminDto();

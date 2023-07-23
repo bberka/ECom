@@ -39,6 +39,9 @@
 
 
 @code {
+  [CascadingParameter]
+  public Task<AuthenticationState> AuthTask { get; set; }
+
   private static List<Role> roles = new List<Role>();
   private static List<Permission> allPermissions = new List<Permission>();
   private RadzenDataGrid<Role> grid;
@@ -76,7 +79,7 @@
     if (result != true) {
       return;
     }
-    var auth = await AuthProvider.GetAuthenticationStateAsync();
+    var auth = await AuthTask;
     var adminId = auth.GetAdminId();
     var dbResult = RoleService.UpdatePermissions(adminId, value.Id, _editPermissions);
     if (dbResult.Status) {

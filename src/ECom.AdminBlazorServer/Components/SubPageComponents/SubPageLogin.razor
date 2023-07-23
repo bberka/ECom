@@ -3,8 +3,12 @@
 @using EasMe.Extensions
 @using ECom.Shared.Constants
 @using ECom.Shared.DTOs
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc
+@using System.Security.Claims
+@using System.Security.Principal
 @inherits SharedBasePage
+@inject AdminAuthenticationStateProvider AdminAuthenticationStateProvider
 
 <RadzenBody>
   <div class="rz-p-4">
@@ -41,65 +45,55 @@
 
 @code {
 
-  [Parameter]
-  [FromQuery]
-  public string? Redirect { get; set; }
-
+  [CascadingParameter]
+  public Task<AuthenticationState> AuthTask { get; set; }
+  
   private static string? companyName;
   private static string welcomeMessage;
   private LoginRequest LoginRequest { get; set; } = new();
   protected override async Task OnInitializedAsync() {
     companyName = CompanyInformationService.GetCompanyInformation().CompanyName;
     welcomeMessage = Loc["welcome_message"].Format("companyName", companyName);
+    var debugLoginRequest = new LoginRequest() {
+      Password = "123456789",
+      EmailAddress = "owner@mail.com"
+    };
+    LoginRequest = debugLoginRequest;
   }
 
   protected override async Task OnAfterRenderAsync(bool firstRender) {
-    var authState = await AuthProvider.GetAuthenticationStateAsync();
+    var authState = await AuthTask;
     if (authState.IsAuthenticated()) {
-      NavigatePage();
+      Nav.NavigateTo(Nav.Uri, true);
       return;
     }
     if (ConstantMgr.IsDevelopment()) {
-      var debugLoginRequest = new LoginRequest() {
-          Password = "123456789",
-          EmailAddress = "owner@mail.com"
-        };
-      LoginRequest = debugLoginRequest;
-      await OnSubmit();
+      
+      //await OnSubmit();
     }
   }
 
   private async Task OnSubmit() {
-    var authState = await AuthProvider.GetAuthenticationStateAsync();
-    if (authState.IsAuthenticated()) {
-      NavigatePage();
-      return;
-    }
+    //var authState = await AuthTask;
+    //if (authState.IsAuthenticated()) {
+    //  Nav.NavigateTo(Nav.Uri, true);
+    //  return;
+    //}
 
-    var isValid = LoginRequest.IsValidModel();
-    if (!isValid) {
-      ShowNotification(NotificationSeverity.Error, Loc["form_state_invalid"]); //LOC ?
-      return;
-    }
+    //var isValid = LoginRequest.IsValidModel();
+    //if (!isValid) {
+    //  ShowNotification(NotificationSeverity.Error, Loc["form_state_invalid"]); //LOC ?
+    //  return;
+    //}
 
     var result = AdminService.AdminLogin(LoginRequest);
     if (result.Status) {
-      await AuthProvider.Login(result.Data!);
-      NavigatePage();
+      await AdminAuthenticationStateProvider.Login(result.Data);
+      Nav.NavigateTo(Nav.Uri, true);
       return;
     }
     ShowResultNotification(result);
   }
 
-  private void NavigatePage() {
-    Nav.NavigateTo(Nav.Uri, true);
-  //Nav.NavigateTo("/", true);
-
-  //if (string.IsNullOrEmpty(Redirect)) {
-  //  Nav.NavigateTo("/dashboard", true);
-  //  return;
-  //}
-  //Nav.NavigateTo(Redirect, true);
-  }
 
 }
