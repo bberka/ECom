@@ -4,13 +4,13 @@
 @inject SupportedCultures SupportedCultures
 
 <RadzenRow Style="max-width: 450px">
-<RadzenColumn >
-  <RadzenCard  Variant="Variant.Filled">
-    <RadzenFieldset Text="@Loc["panel_settings"]" >
+  <RadzenColumn >
+    <RadzenCard Variant="Variant.Filled">
+      <RadzenFieldset Text="@Loc["panel_settings"]">
         <RadzenColumn >
           <RadzenRow class="my-4" JustifyContent="JustifyContent.SpaceBetween">
             <RadzenColumn>
-              <RadzenText Class="mx-2 --rz-primary-dark" TextAlign="TextAlign.Start" TextStyle="TextStyle.H6" Text="@Loc["language"]" />
+              <RadzenText Class="mx-2 --rz-primary-dark" TextAlign="TextAlign.Start" TextStyle="TextStyle.H6" Text="@Loc["language"]"/>
             </RadzenColumn>
             <RadzenColumn >
               <RadzenDropDown class="mx-2 rz-shadow-3" Style="width: 170px" TValue="string" Data="SupportedCultures.Dictionary" ValueProperty="Key" @bind-Value="_selectedCulture" Change="OnChangeCulture" TextProperty="Value" Name="CultureSelect"></RadzenDropDown>
@@ -18,7 +18,7 @@
           </RadzenRow>
           <RadzenRow class="my-3">
             <RadzenColumn >
-              <RadzenText Class="mx-2 --rz-primary-dark" TextAlign="TextAlign.Start" TextStyle="TextStyle.H6" Text="@Loc["theme"]" />
+              <RadzenText Class="mx-2 --rz-primary-dark" TextAlign="TextAlign.Start" TextStyle="TextStyle.H6" Text="@Loc["theme"]"/>
             </RadzenColumn>
             <RadzenColumn >
               <RadzenDropDown class="mx-2 rz-shadow-3 " Style="width: 170px" TValue="string" Data="_themes" ValueProperty="Key" @bind-Value="_selectedTheme" Change="OnChangeTheme" TextProperty="Value" Name="ThemeSelect"></RadzenDropDown>
@@ -26,9 +26,9 @@
             </RadzenColumn>
           </RadzenRow>
         </RadzenColumn>
-    </RadzenFieldset>
-  </RadzenCard>
-</RadzenColumn>
+      </RadzenFieldset>
+    </RadzenCard>
+  </RadzenColumn>
 </RadzenRow>
 
 
@@ -60,15 +60,15 @@
 
   private string? _selectedTheme;
 
-  private static readonly Dictionary<string, string> _themes = new Dictionary<string, string>() {
-    { "dark-base.css", "Standard Dark"},
-    { "standard-base.css", "Standard Light"},
-    { "material-base.css", "Material"},
-    { "default-base.css", "Default"},
-    { "humanistic-base.css", "Humanistic"},
-    { "software-base.css", "Software"},
-
+  private static readonly Dictionary<string, string> _themes = new() {
+    { "dark-base.css", "Standard Dark" },
+    { "standard-base.css", "Standard Light" },
+    { "material-base.css", "Material" },
+    { "default-base.css", "Default" },
+    { "humanistic-base.css", "Humanistic" },
+    { "software-base.css", "Software" }
   };
+
   protected override async Task OnInitializedAsync() {
     _selectedTheme = await JsCookieUtil.GetValue("selected-theme");
     if (string.IsNullOrEmpty(_selectedTheme)) _selectedTheme = "dark-base.css"; //default
@@ -88,4 +88,5 @@
     JsCookieUtil.SetValue("selected-theme", theme, TimeSpan.FromDays(365));
     Nav.NavigateTo(redirectPath, true);
   }
+
 }

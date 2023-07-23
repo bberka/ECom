@@ -1,12 +1,7 @@
 ﻿@inject ICompanyInformationService CompanyInformationService
 @inject IAdminService AdminService
-@using EasMe.Extensions
-@using ECom.Shared.Constants
 @using ECom.Shared.DTOs
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Mvc
-@using System.Security.Claims
-@using System.Security.Principal
+@using ECom.Shared.Constants
 @inherits SharedBasePage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -47,14 +42,15 @@
 
   [CascadingParameter]
   public Task<AuthenticationState> AuthTask { get; set; }
-  
+
   private static string? companyName;
   private static string welcomeMessage;
   private LoginRequest LoginRequest { get; set; } = new();
+
   protected override async Task OnInitializedAsync() {
     companyName = CompanyInformationService.GetCompanyInformation().CompanyName;
     welcomeMessage = Loc["welcome_message"].Format("companyName", companyName);
-    var debugLoginRequest = new LoginRequest() {
+    var debugLoginRequest = new LoginRequest {
       Password = "123456789",
       EmailAddress = "owner@mail.com"
     };
@@ -68,8 +64,7 @@
       return;
     }
     if (ConstantMgr.IsDevelopment()) {
-      
-      //await OnSubmit();
+  //await OnSubmit();
     }
   }
 

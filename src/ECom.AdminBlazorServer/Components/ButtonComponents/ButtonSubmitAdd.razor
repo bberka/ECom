@@ -1,15 +1,16 @@
-﻿
-
-<RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+﻿<RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
   <RadzenStack Orientation="Orientation.Horizontal">
-    <RadzenButton Text=@Loc["add"] Click="OnAdd" ButtonType="ButtonType.Submit" />
-    <RadzenButton Text=@Loc["cancel"] Click="OnCancel" ButtonStyle="ButtonStyle.Light" />
+    <RadzenButton Text=@Loc["add"] Click="OnAdd" ButtonType="ButtonType.Submit"/>
+    <RadzenButton Text=@Loc["cancel"] Click="OnCancel" ButtonStyle="ButtonStyle.Light"/>
   </RadzenStack>
 </RadzenStack>
+
 @code {
+
   [Parameter]
   public EventCallback<MouseEventArgs> OnCancel { get; set; }
 
   [Parameter]
   public EventCallback<MouseEventArgs> OnAdd { get; set; }
+
 }

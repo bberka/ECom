@@ -9,7 +9,7 @@ public class LoginStateCacheProvider
 
   public void Add(string token) {
     if (token == null) throw new ArgumentNullException(nameof(token));
-    if(_tokens.Contains(token)) return;
+    if (_tokens.Contains(token)) return;
     _tokens.Add(token);
   }
 
@@ -22,5 +22,4 @@ public class LoginStateCacheProvider
     if (!exist) return;
     _tokens.TryTake(out _);
   }
-
 }

@@ -1,31 +1,45 @@
 ﻿@page "/account"
+@inject IAdminService AdminService
 @using ECom.Shared.DTOs.AdminDto
 @using ECom.Shared.DTOs
 @using System.Globalization
-@using EasMe.Extensions
-@using ECom.Domain.Entities
-@inject IAdminService AdminService
 @inherits SharedBasePage
-
+@inject AuthenticationService AuthenticationService
 <RadzenRow Gap="5rem" class="m-2">
   <RadzenColumn SizeMD="12" SizeLG="6">
     <RadzenCard Variant="Variant.Filled">
       <RadzenFieldset Text="@Loc["account"]">
         <RadzenRow class="my-3">
-          <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel class="text-center" Text="@Loc["id"]" /></RadzenColumn>
-          <RadzenColumn SizeSM="12" SizeMD="8"><RadzenTextBox class="w-100" Name="Id" ReadOnly="true" Value="@adminDto.Id.ToString()"></RadzenTextBox></RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="4">
+            <RadzenLabel class="text-center" Text="@Loc["id"]"/>
+          </RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="8">
+            <RadzenTextBox class="w-100" Name="Id" ReadOnly="true" Value="@adminDto.Id.ToString()"></RadzenTextBox>
+          </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="my-3">
-          <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["register_date"]" /></RadzenColumn>
-          <RadzenColumn SizeSM="12" SizeMD="8"><RadzenTextBox class="w-100" Name="RegisterDate" ReadOnly="true" Value="@adminDto.RegisterDate.ToString(CultureInfo.InvariantCulture)"></RadzenTextBox></RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="4">
+            <RadzenLabel Text="@Loc["register_date"]"/>
+          </RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="8">
+            <RadzenTextBox class="w-100" Name="RegisterDate" ReadOnly="true" Value="@adminDto.RegisterDate.ToString(CultureInfo.InvariantCulture)"></RadzenTextBox>
+          </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="my-3">
-          <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["email_address"]" /></RadzenColumn>
-          <RadzenColumn SizeSM="12" SizeMD="8"><RadzenTextBox class="w-100" Name="EmailAddress" ReadOnly="true" Value="@adminDto.EmailAddress"></RadzenTextBox></RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="4">
+            <RadzenLabel Text="@Loc["email_address"]"/>
+          </RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="8">
+            <RadzenTextBox class="w-100" Name="EmailAddress" ReadOnly="true" Value="@adminDto.EmailAddress"></RadzenTextBox>
+          </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="my-3">
-          <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["role"]" /></RadzenColumn>
-          <RadzenColumn SizeSM="12" SizeMD="8"> <RadzenTextBox class="w-100" Name="RoleId" ReadOnly="true" Value="@adminDto.RoleId"></RadzenTextBox></RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="4">
+            <RadzenLabel Text="@Loc["role"]"/>
+          </RadzenColumn>
+          <RadzenColumn SizeSM="12" SizeMD="8">
+            <RadzenTextBox class="w-100" Name="RoleId" ReadOnly="true" Value="@adminDto.RoleId"></RadzenTextBox>
+          </RadzenColumn>
         </RadzenRow>
 
       </RadzenFieldset>
@@ -39,22 +53,34 @@
         <RadzenTemplateForm TItem="ChangePasswordRequest" Data="@_changePassword" Submit="@(SubmitChangePassword)">
 
           <RadzenRow class="my-3">
-            <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["old_password"]" /></RadzenColumn>
-            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="OldPassword" @bind-Value="@_changePassword.OldPassword"></RadzenPassword></RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="4">
+              <RadzenLabel Text="@Loc["old_password"]"/>
+            </RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="8">
+              <RadzenPassword class="w-100" Name="OldPassword" @bind-Value="@_changePassword.OldPassword"></RadzenPassword>
+            </RadzenColumn>
           </RadzenRow>
           <RadzenRow class="my-3">
-            <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["new_password"]" /></RadzenColumn>
-            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="NewPassword" @bind-Value="@_changePassword.NewPassword"></RadzenPassword></RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="4">
+              <RadzenLabel Text="@Loc["new_password"]"/>
+            </RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="8">
+              <RadzenPassword class="w-100" Name="NewPassword" @bind-Value="@_changePassword.NewPassword"></RadzenPassword>
+            </RadzenColumn>
           </RadzenRow>
           <RadzenRow class="my-3">
-            <RadzenColumn SizeSM="12" SizeMD="4"><RadzenLabel Text="@Loc["repeat_new_password"]" /></RadzenColumn>
-            <RadzenColumn SizeSM="12" SizeMD="8"><RadzenPassword class="w-100" Name="RepeatNewPassword" @bind-Value="@_changePassword.NewPasswordConfirm"></RadzenPassword></RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="4">
+              <RadzenLabel Text="@Loc["repeat_new_password"]"/>
+            </RadzenColumn>
+            <RadzenColumn SizeSM="12" SizeMD="8">
+              <RadzenPassword class="w-100" Name="RepeatNewPassword" @bind-Value="@_changePassword.NewPasswordConfirm"></RadzenPassword>
+            </RadzenColumn>
           </RadzenRow>
           <RadzenCompareValidator Text="@Loc["passwords_must_be_same"]" Component="RepeatNewPassword" @bind-Value="@_changePassword.NewPassword"></RadzenCompareValidator>
 
           <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
             <RadzenStack Orientation="Orientation.Horizontal">
-              <RadzenButton Visible="true" Text=@Loc["change_password"] Click="() => {  }" ButtonType="ButtonType.Submit" Style="width: auto;" />
+              <RadzenButton Visible="true" Text=@Loc["change_password"] Click="() => { }" ButtonType="ButtonType.Submit" Style="width: auto;"/>
             </RadzenStack>
           </RadzenStack>
 
@@ -76,7 +102,7 @@
     <RadzenCard Variant="Variant.Filled">
       <RadzenFieldset Text="@Loc["permissions"]">
         <RadzenListBox TValue="string" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
-                       Data="@adminDto.Permissions" AllowSelectAll="false" AllowClear="true" Style="width: 100%; max-width: 400px; height: 300px" />
+                       Data="@adminDto.Permissions" AllowSelectAll="false" AllowClear="true" Style="height: 300px; max-width: 400px; width: 100%;"/>
       </RadzenFieldset>
     </RadzenCard>
   </RadzenColumn>
@@ -84,26 +110,25 @@
 
 
 @code {
-  private AdminDto adminDto = new AdminDto();
-  private ChangePasswordRequest _changePassword = new ChangePasswordRequest();
+  private AdminDto adminDto = new();
+  private readonly ChangePasswordRequest _changePassword = new();
 
-  [CascadingParameter]
-  public Task<AuthenticationState> AuthTask { get; set; }
+  //[CascadingParameter]
+  //public Task<AuthenticationState> AuthTask { get; set; }
 
-  protected override async Task OnAfterRenderAsync(bool firstRender) {
+  protected override void OnAfterRender(bool firstRender) {
     if (firstRender) {
-      var auth = await AuthTask;
-      adminDto = auth.User.GetAdmin();
+  //var auth = await AuthTask;
+      adminDto = AuthenticationService.CurrentUser.GetAdmin();
       StateHasChanged();
     }
   }
 
-  private async Task SubmitChangePassword(ChangePasswordRequest obj) {
-    var auth = await AuthTask;
-    var id = auth.User.GetAdmin().Id;
+  private void SubmitChangePassword(ChangePasswordRequest obj) {
+  //var auth = await AuthTask;
+    var id = AuthenticationService.CurrentUser.GetAdminId();
     var result = AdminService.ChangePassword(id, obj);
-
   }
 
- 
+
 }

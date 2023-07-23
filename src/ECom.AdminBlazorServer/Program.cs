@@ -2,10 +2,8 @@ using Bers.Blazor.Ext.Javascript;
 using Blazored.SessionStorage;
 using ECom.AdminBlazorServer.Common;
 using ECom.Application.Filters;
-using ECom.Application.Middlewares;
 using ECom.Application.Setup;
 using ECom.Domain;
-using ECom.Domain.Abstract;
 using ECom.Shared;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -41,8 +39,7 @@ builder.Services.AddBlazoredSessionStorage();
 
 //}).AddCookie();
 //builder.Services.AddAuthenticationCore();
-builder.Services.AddAuthentication(options =>
-  {
+builder.Services.AddAuthentication(options => {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
   })
@@ -88,7 +85,6 @@ var localizationOptions = new RequestLocalizationOptions()
 
 //builder.Configuration.Bind("AppSettings", new AppSettings());
 //builder.Services.AddSingleton<AppSettings>();
-
 
 
 //SHARED BASE SERVICES
@@ -206,7 +202,6 @@ app.UseCors(x => x
   .AllowCredentials()
   //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins seperated with comma
   .SetIsOriginAllowed(origin => true)); // Allow any origin  
-
 
 
 app.UseRequestLocalization(localizationOptions);

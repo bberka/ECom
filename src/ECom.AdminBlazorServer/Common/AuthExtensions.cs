@@ -1,5 +1,4 @@
-﻿using System.Data.SqlTypes;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Security.Claims;
 using AspNetCore.Authorization.Extender;
 using ECom.Shared.Constants;
@@ -26,22 +25,24 @@ public static class AuthExtensions
     claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
     return new ClaimsPrincipal(new ClaimsIdentity(claims, "admin-auth"));
   }
+
   public static AdminDto GetAdmin(this ClaimsPrincipal user) {
     try {
       var adminDto = new AdminDto();
       adminDto.Id = Guid.Parse(user?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
       adminDto.EmailAddress = user?.FindFirstValue(ClaimTypes.Email) ?? "";
       adminDto.RoleId = user?.FindFirstValue(ClaimTypes.Role) ?? "";
-      adminDto.Permissions = user?.FindFirstValue(ExtClaimTypes.EndPointPermissions)?.Split(',') ?? Array.Empty<string>();
+      adminDto.Permissions =
+        user?.FindFirstValue(ExtClaimTypes.EndPointPermissions)?.Split(',') ?? Array.Empty<string>();
       adminDto.Password = user?.FindFirstValue(ClaimTypes.Hash) ?? "";
       adminDto.RegisterDate = DateTime.Parse(user?.FindFirstValue("RegisterDate") ?? "", CultureInfo.InvariantCulture);
       adminDto.TwoFactorType = Enum.Parse<TwoFactorType>(user?.FindFirstValue("TwoFactorType") ?? "0");
       return adminDto;
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
       Log.Error(ex, "AuthExtensions.GetAdmin");
       return new AdminDto();
     }
-
   }
 
   public static Guid GetAdminId(this ClaimsPrincipal user) {
@@ -49,7 +50,7 @@ public static class AuthExtensions
     return val == null ? Guid.Empty : Guid.Parse(val);
   }
 
-  public static bool IsAuthenticated(this AuthenticationState authenticationState) {
+  public static bool IsAuthenticated(this AuthenticationState? authenticationState) {
     return authenticationState?.User?.Identity?.IsAuthenticated == true;
   }
 
@@ -60,6 +61,4 @@ public static class AuthExtensions
   public static Guid GetAdminId(this AuthenticationState state) {
     return state.User.GetAdminId();
   }
-
-
 }

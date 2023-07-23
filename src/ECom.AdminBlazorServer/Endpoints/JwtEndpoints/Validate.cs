@@ -1,7 +1,5 @@
 ﻿using Ardalis.ApiEndpoints;
-using EasMe.Extensions;
 using ECom.Application.Attributes;
-using ECom.Domain;
 using ECom.Domain.Abstract;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -17,9 +15,10 @@ public class Validate : EndpointBaseSync.WithRequest<ValidateTokenRequest>.WithR
   public Validate(IAdminJwtAuthenticator adminJwtAuthenticator) {
     _adminJwtAuthenticator = adminJwtAuthenticator;
   }
+
   [HttpPost]
   [AllowAnonymous]
-  [EndpointSwaggerOperation(typeof(Validate),"Validates JWT token")]
+  [EndpointSwaggerOperation(typeof(Validate), "Validates JWT token")]
   public override bool Handle(ValidateTokenRequest request) {
     return _adminJwtAuthenticator.Validate(request);
   }

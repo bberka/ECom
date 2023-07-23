@@ -23,29 +23,31 @@
     var text = Loc[error.error].Format("name", error.name);
 
     var message = new NotificationMessage {
-          Severity = SeverityFromResultLevel(result.Level),
-          Summary = Loc[result.LevelText],
-          Detail = text,
-          Duration = duration
-        };
+      Severity = SeverityFromResultLevel(result.Level),
+      Summary = Loc[result.LevelText],
+      Detail = text,
+      Duration = duration
+    };
     Notification.Notify(message);
   }
+
   protected void ShowNotification(CustomResultLevel severity, string text, int duration = 3000) {
     var message = new NotificationMessage {
-          Severity = (NotificationSeverity)(int)severity,
-          Summary = Loc[severity.ToString().ToLower()],
-          Detail = text,
-          Duration = duration
-        };
+      Severity = (NotificationSeverity)(int)severity,
+      Summary = Loc[severity.ToString().ToLower()],
+      Detail = text,
+      Duration = duration
+    };
     Notification.Notify(message);
   }
+
   protected void ShowNotification(NotificationSeverity severity, string text, int duration = 3000) {
     var message = new NotificationMessage {
-          Severity = severity,
-          Summary = Loc[severity.ToString().ToLower()],
-          Detail = text,
-          Duration = duration
-        };
+      Severity = severity,
+      Summary = Loc[severity.ToString().ToLower()],
+      Detail = text,
+      Duration = duration
+    };
     Notification.Notify(message);
   }
 
@@ -53,18 +55,18 @@
     var error = result.GetErrorAndName();
     var text = Loc[error.error].Format("name", error.name);
     _ = await Dialog.OpenAsync(Loc[result.LevelText], ds =>
-    @<RadzenStack>
-      <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
-      <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenStack Orientation="Orientation.Horizontal">
-          <RadzenButton Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;" />
+      @<RadzenStack>
+        <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+          <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenButton Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;"/>
+          </RadzenStack>
         </RadzenStack>
       </RadzenStack>
-    </RadzenStack>
-    , new DialogOptions {
-      Height = "auto",
-      Width = "350px"
-    });
+      , new DialogOptions {
+        Height = "auto",
+        Width = "350px"
+      });
   }
 
 
@@ -74,53 +76,54 @@
     var showCancelButton = type.ShowCancelButton();
 
     var result = await Dialog.OpenAsync(title, ds =>
-    @<RadzenStack Gap="1.5rem">
-      <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
-      <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenStack Orientation="Orientation.Horizontal">
-          <RadzenButton Visible="showOkButton" Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;" />
-          <RadzenButton Visible="showCancelButton" Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+      @<RadzenStack Gap="1.5rem">
+        <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+          <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenButton Visible="showOkButton" Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;"/>
+            <RadzenButton Visible="showCancelButton" Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
+          </RadzenStack>
         </RadzenStack>
       </RadzenStack>
-    </RadzenStack>
-  , new DialogOptions {
+      , new DialogOptions {
         Height = "auto",
         Width = "320px"
       });
     return result == true;
   }
-  protected async Task<bool> ShowSimpleDialog(string text, string title) {
 
+  protected async Task<bool> ShowSimpleDialog(string text, string title) {
     var result = await Dialog.OpenAsync(title, ds =>
-    @<RadzenStack Gap="1.5rem">
-      <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
-      <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenStack Orientation="Orientation.Horizontal">
-          <RadzenButton Text="@Loc["confirm"]" Click="() => { ds.Close(true); }" Style="width: 120px;" />
-          <RadzenButton Text="@Loc["cancel"]" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+      @<RadzenStack Gap="1.5rem">
+        <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+          <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenButton Text="@Loc["confirm"]" Click="() => { ds.Close(true); }" Style="width: 120px;"/>
+            <RadzenButton Text="@Loc["cancel"]" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
+          </RadzenStack>
         </RadzenStack>
       </RadzenStack>
-    </RadzenStack>
-  , new DialogOptions {
+      , new DialogOptions {
         Height = "auto",
         Width = "320px"
       });
     return result == true;
   }
+
   protected async Task<bool> ShowSimpleResultDialog(string text, string title) {
     var result = await Dialog.OpenAsync(title, ds =>
-    @<RadzenStack Gap="1.5rem">
-      <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
-      <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenStack Orientation="Orientation.Horizontal">
-          <RadzenButton Text="@Loc["ok"]" Click="() => { ds.Close(true); }" Style="width: 120px;" />
+      @<RadzenStack Gap="1.5rem">
+        <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+          <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenButton Text="@Loc["ok"]" Click="() => { ds.Close(true); }" Style="width: 120px;"/>
+          </RadzenStack>
         </RadzenStack>
       </RadzenStack>
-    </RadzenStack>
-  , new DialogOptions {
-    Height = "auto",
-    Width = "320px"
-  });
+      , new DialogOptions {
+        Height = "auto",
+        Width = "320px"
+      });
     return result == true;
   }
 
@@ -131,56 +134,62 @@
       CustomResultLevel.Error => NotificationSeverity.Error,
       CustomResultLevel.Critical => NotificationSeverity.Error,
       _ => NotificationSeverity.Error
-    };
-  }//background: var(--rz-primary-light)
+      };
+  } //background: var(--rz-primary-light)
 
-  private static TooltipOptions defaultTooltipOptions = new TooltipOptions() {
-      Position = TooltipPosition.Bottom,
-    };
+  private static readonly TooltipOptions defaultTooltipOptions = new() {
+    Position = TooltipPosition.Bottom
+  };
+
   protected void ShowTooltip(ElementReference elementReference, string text) {
     Tooltip.Open(elementReference, text, defaultTooltipOptions);
   }
+
   protected void ShowTooltipDanger(ElementReference elementReference, string text) {
     var options = new TooltipOptions {
-        Position = TooltipPosition.Bottom,
-        Style = "background-color: var(--rz-danger); color: var(--rz-danger-contrast);",
-      };
+      Position = TooltipPosition.Bottom,
+      Style = "background-color: var(--rz-danger); color: var(--rz-danger-contrast);"
+    };
     Tooltip.Open(elementReference, text, options);
   }
+
   protected void ShowTooltipInfo(ElementReference elementReference, string text) {
     var options = new TooltipOptions {
-        Position = TooltipPosition.Bottom,
-        Style = "background-color: var(--rz-info); color: var(--rz-info-contrast);",
-      };
+      Position = TooltipPosition.Bottom,
+      Style = "background-color: var(--rz-info); color: var(--rz-info-contrast);"
+    };
     Tooltip.Open(elementReference, text, options);
   }
+
   protected void ShowTooltipWarn(ElementReference elementReference, string text) {
     var options = new TooltipOptions {
-        Position = TooltipPosition.Bottom,
-        Style = "background-color: var(--rz-warning); color: var(--rz-warn-contrast);",
-      };
+      Position = TooltipPosition.Bottom,
+      Style = "background-color: var(--rz-warning); color: var(--rz-warn-contrast);"
+    };
     Tooltip.Open(elementReference, text, options);
   }
+
   protected void ShowTooltipSuccess(ElementReference elementReference, string text) {
     var options = new TooltipOptions {
-        Position = TooltipPosition.Bottom,
-        Style = "background-color: var(--rz-success); color: var(--rz-success-contrast);",
-      };
+      Position = TooltipPosition.Bottom,
+      Style = "background-color: var(--rz-success); color: var(--rz-success-contrast);"
+    };
     Tooltip.Open(elementReference, text, options);
   }
+
   protected void ShowTooltipPrimary(ElementReference elementReference, string text) {
     var options = new TooltipOptions {
-        Position = TooltipPosition.Bottom,
-        Style = "background-color: var(--rz-primary); color: var(--rz-primary-contrast);",
-      };
+      Position = TooltipPosition.Bottom,
+      Style = "background-color: var(--rz-primary); color: var(--rz-primary-contrast);"
+    };
     Tooltip.Open(elementReference, text, options);
   }
 
   protected void ShowTooltipSecondary(ElementReference elementReference, string text) {
     var options = new TooltipOptions {
-        Position = TooltipPosition.Bottom,
-        Style = "background-color: var(--rz-secondary); color: var(--rz-secondary-contrast);",
-      };
+      Position = TooltipPosition.Bottom,
+      Style = "background-color: var(--rz-secondary); color: var(--rz-secondary-contrast);"
+    };
     Tooltip.Open(elementReference, text, options);
   }
 

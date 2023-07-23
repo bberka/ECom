@@ -1,13 +1,13 @@
 ﻿using Ardalis.ApiEndpoints;
+using EasMe.Extensions;
 using ECom.Application.Attributes;
+using ECom.Domain;
 using ECom.Domain.Abstract;
-using ECom.Shared.DTOs.AdminDto;
-using ECom.Shared.DTOs;
 using ECom.Shared;
+using ECom.Shared.DTOs;
+using ECom.Shared.DTOs.AdminDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EasMe.Extensions;
-using ECom.Domain;
 
 namespace ECom.AdminBlazorServer.Endpoints.JwtEndpoints;
 
@@ -19,6 +19,7 @@ public class Refresh : EndpointBaseSync.WithRequest<RefreshTokenRequest>.WithRes
   public Refresh(IAdminJwtAuthenticator adminJwtAuthenticator) {
     _adminJwtAuthenticator = adminJwtAuthenticator;
   }
+
   [HttpPost]
   [AllowAnonymous]
   [EndpointSwaggerOperation(typeof(Refresh), "Creates JWT token")]
@@ -33,11 +34,9 @@ public class Refresh : EndpointBaseSync.WithRequest<RefreshTokenRequest>.WithRes
       SameSite = SameSiteMode.Strict,
       Secure = true,
       Domain = JwtOption.This.Issuer,
-      IsEssential = true,
+      IsEssential = true
     };
     HttpContext.Response.Cookies.Append(JwtOption.This.CookieName, token.Token, cookieOptions);
     return result;
   }
-
-
 }

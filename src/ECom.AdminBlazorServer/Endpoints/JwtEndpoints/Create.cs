@@ -3,7 +3,6 @@ using EasMe.Extensions;
 using ECom.Application.Attributes;
 using ECom.Domain;
 using ECom.Domain.Abstract;
-using ECom.Domain.Entities;
 using ECom.Shared;
 using ECom.Shared.DTOs;
 using ECom.Shared.DTOs.AdminDto;
@@ -20,9 +19,10 @@ public class Create : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<Cust
   public Create(IAdminJwtAuthenticator adminJwtAuthenticator) {
     _adminJwtAuthenticator = adminJwtAuthenticator;
   }
+
   [HttpPost]
   [AllowAnonymous]
-  [EndpointSwaggerOperation(typeof(Create),"Creates JWT token")]
+  [EndpointSwaggerOperation(typeof(Create), "Creates JWT token")]
   public override CustomResult<AdminLoginResponse> Handle(LoginRequest request) {
     var result = _adminJwtAuthenticator.Authenticate(request);
     if (!result.Status) return result;
@@ -34,7 +34,7 @@ public class Create : EndpointBaseSync.WithRequest<LoginRequest>.WithResult<Cust
       SameSite = SameSiteMode.Strict,
       Secure = true,
       Domain = JwtOption.This.Issuer,
-      IsEssential = true,
+      IsEssential = true
     };
     HttpContext.Response.Cookies.Append(JwtOption.This.CookieName, token.Token, cookieOptions);
     return result;
