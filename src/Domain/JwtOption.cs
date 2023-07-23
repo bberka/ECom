@@ -27,4 +27,5 @@ public class JwtOption
   public bool ValidateAudience => !Audience.IsNullOrEmpty();
   public int TokenExpireMinutes { get; } = 720;
   public int SessionExpireMinutes { get; } = 720;
+  public string CookieName { get; set; }
 }

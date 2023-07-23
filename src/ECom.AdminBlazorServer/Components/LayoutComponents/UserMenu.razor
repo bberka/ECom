@@ -3,7 +3,7 @@
 
 <RadzenProfileMenu >
   <Template >
-      <RadzenLabel Text="@_emailAddress"></RadzenLabel>
+    <RadzenLabel Text="@_emailAddress"></RadzenLabel>
 
   </Template>
   <ChildContent>
@@ -13,17 +13,19 @@
 
   </ChildContent>
 </RadzenProfileMenu>
+
 @code {
-  private string _emailAddress = "" ;
+  private string _emailAddress = "";
+
   [CascadingParameter]
   public Task<AuthenticationState> AuthTask { get; set; }
+
   protected override async Task OnAfterRenderAsync(bool firstRender) {
     if (firstRender) {
       var state = await AuthTask;
       _emailAddress = state.User.Identity?.Name ?? "";
       StateHasChanged();
     }
-
   }
 
 

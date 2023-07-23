@@ -54,7 +54,7 @@ public class AdminService : IAdminService
   public CustomResult<AdminDto> AdminLogin(LoginRequest model) {
     var admin = _unitOfWork.AdminRepository
       .Get(x => x.EmailAddress == model.EmailAddress)
-      .Select(x => Admin.ToDto(x))
+      .Select(x => Admin.ToDto(x))  
       .FirstOrDefault();
     if (admin is null) return DomainResult.NoAccountFound(nameof(Admin));
     if (admin.DeletedDate.HasValue) return DomainResult.Invalid(nameof(Admin));

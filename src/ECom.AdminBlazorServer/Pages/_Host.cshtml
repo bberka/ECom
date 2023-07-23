@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using Bers.Blazor.Ext.Javascript
 @using Microsoft.AspNetCore.Components.Web
 @namespace ECom.AdminBlazorServer.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -7,14 +6,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <base href="~/" />
-  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-  <link href="css/site.css" rel="stylesheet" />
-  <link href="ECom.AdminBlazorServer.styles.css" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <base href="~/"/>
+  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
+  <link href="css/site.css" rel="stylesheet"/>
+  <link href="ECom.AdminBlazorServer.styles.css" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered"/>
+<title>ECom.AdminBlazorServer</title>
   @*<link rel="stylesheet"  href="_content/Radzen.Blazor/css/standard-base.css">*@
   @*<link rel="stylesheet"  href="_content/Radzen.Blazor/css/material-base.css">*@
   @*<link rel="stylesheet"  href="_content/Radzen.Blazor/css/default-base.css">*@
@@ -22,7 +22,7 @@
   @*<link rel="stylesheet" href="_content/Radzen.Blazor/css/software-base.css">*@
   @*<link rel="stylesheet"  href="_content/Radzen.Blazor/css/dark-base.css">*@
 
-@*  <link rel="stylesheet alternate" class="theme" title="Light" id="standard-base" href="_content/Radzen.Blazor/css/standard-base.css">
+  @*  <link rel="stylesheet alternate" class="theme" title="Light" id="standard-base" href="_content/Radzen.Blazor/css/standard-base.css">
   <link rel="stylesheet alternate" class="theme" title="Light" id="material-base" href="_content/Radzen.Blazor/css/material-base.css">
   <link rel="stylesheet alternate" class="theme" title="Light" id="default-base" href="_content/Radzen.Blazor/css/default-base.css">
   <link rel="stylesheet alternate" class="theme" title="Light" id="humanistic-base" href="_content/Radzen.Blazor/css/humanistic-base.css">
@@ -32,7 +32,7 @@
 
 </head>
 <body>
-<component type="typeof(App)" render-mode="ServerPrerendered" />
+<component type="typeof(App)" render-mode="ServerPrerendered"/>
 
 <div id="blazor-error-ui">
   <environment include="Staging,Production">
@@ -51,4 +51,3 @@
 
 </body>
 </html>
-

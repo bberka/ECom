@@ -1,16 +1,15 @@
 ﻿@page "/logout"
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-@using Microsoft.AspNetCore.Identity
-@inject AdminAuthenticationStateProvider AuthenticationProvider
-
+@inject AuthenticationStateProvider AuthenticationProvider
+<PageTitle>@Loc["logout"]</PageTitle>
 
 @code {
+
   [CascadingParameter]
   public Task<AuthenticationState> AuthTask { get; set; }
 
   protected override async Task OnInitializedAsync() {
-    await AuthenticationProvider.Logout();
-    Nav.NavigateTo(Nav.Uri.Replace("logout",""), true);
+    await ((AdminAuthenticationStateProvider)AuthenticationProvider).Logout();
+    Nav.NavigateTo(Nav.Uri.Replace("logout", ""), true);
   }
 
 }

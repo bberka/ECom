@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components
-@using ECom.Domain.Entities
-@using ECom.Shared.DTOs.AdminDto
-@using ECom.Application.Services
+﻿@using ECom.Domain.Entities
 @using System.Globalization
 @inherits BaseValueChangedComponent<string>
 
@@ -9,7 +6,7 @@
 
 <div class="mb-2">
   <RadzenFormField class="my-2 w-100" Component="RoleId" Text="@Loc["role"]" Variant="Variant.Filled">
-    <RadzenDropDown @bind-Value="Value" Name="RoleId" TValue="string" Data="@roles" ValueProperty="@nameof(Role.Id)" TextProperty="@nameof(Role.Id)" Culture="CultureInfo.CurrentCulture" />
+    <RadzenDropDown @bind-Value="Value" Name="RoleId" TValue="string" Data="@roles" ValueProperty="@nameof(Role.Id)" TextProperty="@nameof(Role.Id)" Culture="CultureInfo.CurrentCulture"/>
   </RadzenFormField>
   <RadzenRequiredValidator Component="RoleId" Text="@Loc["required"].Format("name", Loc["role"])"></RadzenRequiredValidator>
   @*<RadzenCustomValidator Component="RoleId" Text="@Loc["required"].Format("name",Loc["role"])" Validator="IsValid"></RadzenCustomValidator>*@
@@ -17,6 +14,7 @@
 
 @code {
   private List<Role> roles;
+
   protected override void OnInitialized() {
     roles = RoleService.GetRoles();
   }
@@ -24,4 +22,5 @@
   private bool IsValid() {
     return roles.Any(r => r.Id == Value);
   }
+
 }

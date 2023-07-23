@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
     <PackageReference Include="EasMe" Version="4.0.3" />
     <PackageReference Include="FluentValidation" Version="11.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
@@ -24,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\JwtEndpoints\" />
     <Folder Include="Pages\Announcement\" />
   </ItemGroup>
 

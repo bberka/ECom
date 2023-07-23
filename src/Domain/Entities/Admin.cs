@@ -32,13 +32,14 @@ public class Admin : IEntity
 
   public string RoleId { get; set; }
 
-
+  [MaxLength(ValidationSettings.MaxTokenLength)]
+  public string? RefreshJwtToken { get; set; } = null;
   //virtual
   public Role Role { get; set; } = null!;
   public virtual List<AdminLog> AdminLogs { get; set; }
 
 
-  public static AdminDto ToDto(Admin admin) {
+  public static AdminDto ToDto(Admin? admin) {
     return new AdminDto {
       Id = admin.Id,
       EmailAddress = admin.EmailAddress,

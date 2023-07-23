@@ -1,150 +1,98 @@
-﻿using System.Globalization;
+﻿using System.Collections.Concurrent;
 using System.Security.Claims;
-using AspNetCore.Authorization.Extender;
 using Bers.Blazor.Ext.Javascript;
-using ECom.Domain.Abstract;
+using EasMe;
+using ECom.Shared;
 using ECom.Shared.DTOs.AdminDto;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using Serilog;
 
 namespace ECom.AdminBlazorServer.Common;
 
-
-
 public class AdminAuthenticationStateProvider : RevalidatingServerAuthenticationStateProvider
 {
-  private const string AdminLoginKey = "admin-login";
-  private const string AdminAuthType = "admin-auth";
-
+  private const int CookieExpireMinutes = 1440;
   private static readonly ClaimsPrincipal _anonymous = new(new ClaimsIdentity());
+  private readonly AuthenticationService _authenticationService;
 
+  private readonly IJsCookieUtil _cookieUtil;
 
-  private readonly ProtectedSessionStorage _protectedSessionStorage;
-  private readonly IJsSessionUtil _jsSessionUtil;
-
-
-  public AdminAuthenticationStateProvider(ILoggerFactory loggerFactory, 
-    LoginStateCacheProvider cacheProvider,
-    ProtectedSessionStorage protectedSessionStorage,
-    IJsSessionUtil jsSessionUtil) : base(loggerFactory) {
-    _cacheProvider = cacheProvider;
-    _protectedSessionStorage = protectedSessionStorage;
-    _jsSessionUtil = jsSessionUtil;
+  public AdminAuthenticationStateProvider(ILoggerFactory loggerFactory,
+    IJsCookieUtil cookieUtil,
+    AuthenticationService authenticationService
+  ) : base(loggerFactory) {
+    _cookieUtil = cookieUtil;
+    _authenticationService = authenticationService;
+    _authenticationService.UserChanged += newUser => {
+      NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(newUser)));
+    };
   }
 
-  //public async Task<bool> IsAuthenticated() {
-  //  var authState = await GetAuthenticationStateAsync();
-  //  return authState?.User?.Identity?.IsAuthenticated == true;
-  //}
-
-  //public async Task<AdminDto> GetAdmin() {
-  //  var authState = await GetAuthenticationStateAsync();
-  //  return authState.User.GetAdmin();
-  //  //var adminDto = new AdminDto();
-  //  //adminDto.Id = Guid.Parse(authState?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-  //  //adminDto.EmailAddress = authState?.User?.FindFirstValue(ClaimTypes.Email) ?? "";
-  //  //adminDto.RoleId = authState?.User?.FindFirstValue(ClaimTypes.Role) ?? "";
-  //  //adminDto.Permissions =
-  //  //  authState?.User?.FindFirstValue(ExtClaimTypes.EndPointPermissions)?.Split(',') ?? new string[0];
-  //  //adminDto.Password = authState?.User?.FindFirstValue(ClaimTypes.Hash) ?? "";
-  //  //adminDto.RegisterDate =
-  //  //  DateTime.Parse(authState?.User?.FindFirstValue("RegisterDate") ?? "", CultureInfo.InvariantCulture);
-  //  //adminDto.TwoFactorType = Enum.Parse<TwoFactorType>(authState?.User?.FindFirstValue("TwoFactorType") ?? "0");
-  //  //return adminDto;
-  //}
-  private readonly LoginStateCacheProvider _cacheProvider;
-
-
-  
-  protected override async Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState, CancellationToken cancellationToken) {
-    var user = authenticationState.User;
-    var isAuthenticated = user.Identity?.IsAuthenticated ?? false;
-    if (!isAuthenticated) return false;
-    var sid = user.GetAdminId().ToString();
-    var loginState = _cacheProvider.Validate(sid);
-    return loginState;
-
-  }
-
-  //Default is 10 seconds according to microsoft docs
+  private static ConcurrentDictionary<string, AdminLoginSession> Sessions { get; } = new();
   protected override TimeSpan RevalidationInterval { get; } = TimeSpan.FromSeconds(5);
+
+
+  protected override async Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState,
+    CancellationToken cancellationToken) {
+    var authState = await GetAuthenticationStateAsync();
+    return authState.IsAuthenticated();
+  }
+
+
   public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
     //var identity = _anonymous.Identity as ClaimsIdentity;
     try {
-      var login = await _protectedSessionStorage.GetAsync<AdminDto>(AdminLoginKey);
-      var session = login.Success ? login.Value : null;
-      if (session == null) {
-        return new AuthenticationState(_anonymous);
+      var sessionId = await _cookieUtil.GetValue("admin-auth");
+      if (string.IsNullOrEmpty(sessionId)) return await Task.FromResult(new AuthenticationState(_anonymous));
+      Sessions.TryGetValue(sessionId, out var adminSession);
+      if (adminSession is null) {
+        _authenticationService.CurrentUser = _anonymous;
+        return await Task.FromResult(new AuthenticationState(_authenticationService.CurrentUser));
       }
-      var isValid = _cacheProvider.Validate(session.Id.ToString());
-      if (!isValid) {
 
-        return new AuthenticationState(_anonymous);
+      var isExpired = adminSession.ExpireTime < DateTime.Now;
+      if (isExpired) {
+        Sessions.TryRemove(sessionId, out _);
+        _authenticationService.CurrentUser = _anonymous;
+        return await Task.FromResult(new AuthenticationState(_anonymous));
       }
-      var principal = CreatePrincipalFromLoginResponse(session);
-      var state = new AuthenticationState(principal);
-      return await Task.FromResult(state);
+
+      var principal = adminSession.Admin.CreatePrincipal();
+      _authenticationService.CurrentUser = principal;
+      return await Task.FromResult(new AuthenticationState(_authenticationService.CurrentUser));
     }
     catch (Exception ex) {
       //Log.Error(ex, "Error getting authentication state");
-      return new AuthenticationState(_anonymous);
+      _authenticationService.CurrentUser = _anonymous;
+      return await Task.FromResult(new AuthenticationState(_anonymous));
     }
   }
 
   public async Task Logout() {
-    var authState = await GetAuthenticationStateAsync();
-    var sid = authState.User.GetAdminId().ToString();
-    _cacheProvider.Remove(sid);
-    //await _protectedSessionStorage.DeleteAsync(AdminLoginKey);
-    NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
-    await _jsSessionUtil.RemoveValue(AdminLoginKey);
-  }
-
-  public async Task Login(AdminDto admin) {
-    if (admin == null) throw new ArgumentNullException(nameof(admin));
-    var authState = await GetAuthenticationStateAsync();
-    if (authState.User.Identity?.IsAuthenticated == true) {
-      await Logout();
+    var sessionId = await _cookieUtil.GetValue("admin-auth");
+    if (!string.IsNullOrEmpty(sessionId)) {
+      await _cookieUtil.RemoveValue("admin-auth");
+      Sessions.TryRemove(sessionId, out _);
     }
-    await _protectedSessionStorage.SetAsync(AdminLoginKey, admin);
-    var claimsPrincipal = CreatePrincipalFromLoginResponse(admin);
-    var sid = claimsPrincipal.GetAdminId().ToString();
-    _cacheProvider.Add(sid);
-    NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+
+    _authenticationService.CurrentUser = _anonymous;
   }
 
-  public static ClaimsPrincipal CreatePrincipalFromLoginResponse(AdminDto admin) {
-    var claims = new List<Claim> {
-      //claims.Add(new Claim("AdminOnly", "true"));
-      new(ClaimTypes.Role, admin.RoleId),
-      new(ClaimTypes.NameIdentifier, admin.Id.ToString()),
-      new(ClaimTypes.Name, admin.EmailAddress),
-      new(ClaimTypes.Email, admin.EmailAddress),
-      new("TwoFactorType", admin.TwoFactorType.ToString()),
-      new("RegisterDate", admin.RegisterDate.ToString(CultureInfo.InvariantCulture)),
-      new(ClaimTypes.Hash, admin.Password)
-    };
-    var permissions = admin.Permissions.ToList().CreatePermissionString();
-    claims.Add(new Claim(ExtClaimTypes.EndPointPermissions, permissions));
-    return new ClaimsPrincipal(new ClaimsIdentity(claims, AdminAuthType));
+  private static string GetUniqueSessionId() {
+    var sessionId = EasGenerate.RandomString(2048);
+    return Sessions.ContainsKey(sessionId) ? GetUniqueSessionId() : sessionId;
   }
 
-  //protected override async Task<bool> ValidateAuthenticationStateAsync(AuthenticationState authenticationState, CancellationToken cancellationToken) {
-  //  var login = await _protectedSessionStorage.GetAsync<AdminDto>(AdminLoginKey);
-  //  var session = login.Success ? login.Value : null;
-  //  if (session == null) return false;
-  //  var principal = CreatePrincipalFromLoginResponse(session);
-  //  var newAuthState = new AuthenticationState(principal);
-  //  var currentAuthState = await GetAuthenticationStateAsync();
-  //  var isAuthenticated = currentAuthState.User.Identity.IsAuthenticated;
-  //  if (isAuthenticated != newAuthState.User.Identity.IsAuthenticated) {
-  //    NotifyAuthenticationStateChanged(Task.FromResult(newAuthState));
-  //  }
-  //  return newAuthState.User.Identity.IsAuthenticated;
-    
-  //}
-
-  //protected override TimeSpan RevalidationInterval { get; }
+  public async Task<CustomResult> Login(AdminDto admin) {
+    if (admin == null) throw new ArgumentNullException(nameof(admin));
+    if (_authenticationService.CurrentUser.Identity?.IsAuthenticated == true) await Logout();
+    var expire = TimeSpan.FromMinutes(CookieExpireMinutes);
+    var resp = AdminLoginSession.Create(admin, expire);
+    var sessionId = GetUniqueSessionId();
+    Sessions.TryAdd(sessionId, resp);
+    var claimsPrincipal = admin.CreatePrincipal();
+    await _cookieUtil.SetValue("admin-auth", sessionId, expire);
+    _authenticationService.CurrentUser = claimsPrincipal;
+    return DomainResult.Ok(nameof(Login));
+  }
 }

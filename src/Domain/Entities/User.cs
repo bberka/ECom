@@ -68,6 +68,8 @@ public class User : IEntity
   [MaxLength(ValidationSettings.MaxCultureLength)]
   public string Culture { get; set; } = ConstantMgr.DefaultCulture;
 
+  [MaxLength(ValidationSettings.MaxTokenLength)]
+  public string? RefreshJwtToken { get; set; } = null;
 
   //Virtual
   public virtual List<Address> Addresses { get; set; }
