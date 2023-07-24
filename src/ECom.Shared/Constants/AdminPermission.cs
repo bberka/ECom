@@ -1,6 +1,9 @@
 ﻿namespace ECom.Shared.Constants;
 
-public enum AdminPermission
+/// <summary>
+/// Defined admin permissions for the application. The order does not matter the string name is taken as id.
+/// </summary>
+public enum AdminPermission 
 {
   ManageAdmins,
   ManageCategories,
@@ -9,10 +12,7 @@ public enum AdminPermission
   ManageCoupons,
   ManageReports,
   ManageSettings,
-  ManageThemes,
-  ManagePlugins,
-  ManageLanguages,
-  ManageCurrencies,
+  ManageQuestions,
   ManageShipping,
   ManagePayments,
   ManageSmtpOption,
@@ -24,8 +24,8 @@ public enum AdminPermission
   ManageAnnouncements,
   ManageCompanyInformation,
   ManageUserAccounts,
-  ManageRolesAndPermissions,
   ManageLocalization,
-  ManagePluginsAndThemes,
-  ManageCargoOptions
+  ManageCargoOptions,
+  ManageLoginSessions,
+  ManageRoles
 }

@@ -1,4 +1,62 @@
 ﻿@page "/announcements"
+@using Microsoft.AspNetCore.Components
+@using ECom.Domain.Entities
+@using ECom.Shared.DTOs.AdminDto
+@using Swashbuckle.AspNetCore.Annotations
+@inject IAnnouncementService AnnouncementService
+@inject IJSRuntime JsRuntime
+
 <PageTitle>@Loc["announcements"]</PageTitle>
 
-  
+
+
+<RadzenCard Variant="Variant.Filled">
+  <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
+    <RadzenText TextStyle="TextStyle.H4">@Loc["announcements"]</RadzenText>
+    <RadzenButton Text="@Loc["create"]" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
+  </RadzenStack>
+  <CustomHr></CustomHr>
+  @*  <RadzenListBox id="sortable-list" TValue="Announcement" ValueProperty="Id" TextProperty="Message" Data="_announcements" AllowClear="false" AllowFiltering="false" AllowSelectAll="false" AllowVirtualization="false" FilterAsYouType="false" >
+
+  </RadzenListBox>
+  *@
+  <RadzenRow Gap="2">
+    <RadzenColumn SizeSM="12" SizeMD="12" SizeLG="8" SizeXL="6">
+      <div id="nestablelist" class="list-group col" style="cursor: move;">
+        @foreach (var item in _announcements.OrderBy(x => x.Order)) {
+          <div id="@item.Id" data-id="@item.Id" class="list-group-item nested-1">@item.Message</div>
+        }
+      </div>
+    </RadzenColumn>
+  </RadzenRow>
+  <RadzenStack class="mt-4" Orientation="Orientation.Horizontal">
+    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Text="@Loc["apply_changes"]"></RadzenButton>
+    <RadzenButton Icon="settings_backup_restore" ButtonStyle="ButtonStyle.Danger" Text="@Loc["reset"]"></RadzenButton>
+
+  </RadzenStack>
+    
+</RadzenCard>
+
+
+
+
+@code {
+
+  private List<Announcement> _announcements = new List<Announcement>();
+  protected override async Task OnInitializedAsync() {
+    await base.OnInitializedAsync();
+    _announcements = AnnouncementService.ListAnnouncements();
+
+
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
+    await base.OnAfterRenderAsync(firstRender);
+    await JsRuntime.InvokeVoidAsync("eval", "NestableCreate('nestablelist')");
+  }
+
+  private Task ShowCreateDialog() {
+    throw new NotImplementedException();
+  }
+
+}

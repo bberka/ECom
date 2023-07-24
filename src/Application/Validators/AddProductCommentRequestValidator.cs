@@ -5,8 +5,7 @@ public class AddProductCommentRequestValidator : AbstractValidator<AddProductCom
 {
   public AddProductCommentRequestValidator() {
     RuleFor(x => x.Comment)
-      .MinimumLength(8)
-      .MaximumLength(1000);
+      .ApplyProductCommentRule();
 
   }
 }

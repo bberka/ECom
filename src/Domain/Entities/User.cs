@@ -88,7 +88,7 @@ public class User : IEntity
       DeleteDate = null,
       EmailAddress = request.EmailAddress,
       PhoneNumber = request.PhoneNumber,
-      Password = request.Password.ToEncryptedText(),
+      Password = request.Password.ToHashedText(),
       IsEmailVerified = false,
       TaxNumber = request.TaxNumber,
       TwoFactorType = 0,

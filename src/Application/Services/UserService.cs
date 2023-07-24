@@ -35,7 +35,7 @@ public class UserService : IUserService
     var userResult = GetUser(model.EmailAddress);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data!;
-    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
+    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToHashedText();
     if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal))
       return DomainResult.NoAccountFound(nameof(User)); //Or invalid password
     if (user.TwoFactorType != 0) {
@@ -77,7 +77,7 @@ public class UserService : IUserService
     var userResult = GetUser(userId);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
-    var encryptedPassword = model.NewPassword.ToEncryptedText();
+    var encryptedPassword = model.NewPassword.ToHashedText();
     if (user.Password != encryptedPassword) return DomainResult.NotFound("User");
     user.Password = encryptedPassword;
     _unitOfWork.UserRepository.Update(user);

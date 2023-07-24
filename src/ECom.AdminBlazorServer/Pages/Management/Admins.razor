@@ -2,9 +2,10 @@
 @inject IAdminService AdminService
 @using ECom.Shared.DTOs.AdminDto
 @using AspNetCore.Authorization.Extender
+@using ECom.Application.Attributes
 @using ECom.Shared.Constants
 @inherits SharedBasePage
-@attribute [RequirePermission(AdminPermission.ManageAdmins)]
+@attribute [AdminAuthorize(AdminPermission.ManageAdmins)]
 <PageTitle>@Loc["admins"]</PageTitle>
 
 
@@ -102,10 +103,14 @@
     var result = await DialogService.OpenAsync(Loc["create"], ds =>
       @<RadzenTemplateForm TItem="AddAdminRequest" Data="@addAdmin" Submit="@(OnAddSubmit)">
 
+
         <RadzenStack Orientation="Orientation.Vertical">
           <FieldInputEmailAddress @bind-Value="@addAdmin.EmailAddress"></FieldInputEmailAddress>
+
           <FieldDropdownAdminRole @bind-Value="@addAdmin.RoleId"></FieldDropdownAdminRole>
+
           <FieldInputPassword @bind-Value="@addAdmin.Password"></FieldInputPassword>
+
 
           <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
             <RadzenStack Orientation="Orientation.Horizontal">

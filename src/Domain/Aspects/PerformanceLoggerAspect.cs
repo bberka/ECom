@@ -4,6 +4,10 @@ using Serilog;
 
 namespace ECom.Domain.Aspects;
 
+
+/// <summary>
+/// Performance Logger Aspect for logging long running actions, with a default threshold of 1000 ms. Desired threshold can be set in constructor.
+/// </summary>
 [Aspect(Scope.PerInstance)]
 [Injection(typeof(PerformanceLoggerAspect))]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
@@ -18,11 +22,10 @@ public class PerformanceLoggerAspect : Attribute
   }
   private readonly int _logThresholdMilliseconds;
 
-  [Advice(Kind.Around)] // you can have also After (async-aware), and Around(Wrap/Instead) kinds
+  [Advice(Kind.Around)] 
   public object Intercept(
     [Argument(Source.Target)] Func<object[], object> target,
     [Argument(Source.Arguments)] object[] args,
-    //[Argument(Source.Instance)] object instance,
     [Argument(Source.Name)] string methodName,
     [Argument(Source.Type)] Type type,
     [Argument(Source.ReturnType)] Type returnType) {
@@ -41,20 +44,3 @@ public class PerformanceLoggerAspect : Attribute
   }
 }
 
-
-//public CustomResult<T> Intercept<T>(Func<CustomResult<T>> method) {
-//  try {
-//    return method();
-//  } catch (Exception ex) {
-//    Log.Error(ex, "Interceptor exception");
-//    return DomainResult.Exception(ex, "Interceptor exception");
-//  }
-//}
-//public CustomResult Intercept(Func<CustomResult> method) {
-//  try {
-//    return method();
-//  } catch (Exception ex) {
-//    Log.Error(ex, "Interceptor exception");
-//    return DomainResult.Exception(ex, "Interceptor exception");
-//  }
-//}

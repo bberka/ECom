@@ -73,7 +73,7 @@ public class Admin : IEntity
       EmailAddress = request.EmailAddress,
       TwoFactorType = 0,
       RoleId = request.RoleId,
-      Password = request.Password.ToEncryptedText(),
+      Password = request.Password.ToHashedText(),
     };
   }
 }

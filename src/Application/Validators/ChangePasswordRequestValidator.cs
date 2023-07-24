@@ -7,16 +7,13 @@ public class ChangePasswordRequestValidator : AbstractValidator<ChangePasswordRe
 {
   public ChangePasswordRequestValidator(IValidationService validationService) {
     RuleFor(x => x.OldPassword)
-      .MinimumLength(6)
-      .MaximumLength(32);
+      .ApplyPasswordRule();
 
     RuleFor(x => x.NewPassword)
-      .MinimumLength(6)
-      .MaximumLength(32);
+      .ApplyPasswordRule();
 
     RuleFor(x => x.NewPasswordConfirm)
-      .MinimumLength(6)
-      .MaximumLength(32);
+      .ApplyPasswordRule();
 
     RuleFor(x => x.NewPassword)
       .Equal(x => x.NewPasswordConfirm)

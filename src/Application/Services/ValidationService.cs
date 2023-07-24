@@ -42,7 +42,7 @@ public class ValidationService : IValidationService
     return !_option.RequireUpperCaseInPassword || password.Any(char.IsUpper);
   }
 
-  public bool NotHasSpace(string password) {
+  public  bool NotHasSpace(string password) {
     return password.All(x => x != ' ');
   }
 

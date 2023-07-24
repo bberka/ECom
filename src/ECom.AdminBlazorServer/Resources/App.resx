@@ -156,6 +156,9 @@
   <data name="announcements" xml:space="preserve">
     <value>Announcements</value>
   </data>
+  <data name="apply_changes" xml:space="preserve">
+    <value>Apply Changes</value>
+  </data>
   <data name="authorizing" xml:space="preserve">
     <value>Authorizing please wait...</value>
   </data>
@@ -441,6 +444,9 @@
   <data name="required" xml:space="preserve">
     <value>{name} field is required</value>
   </data>
+  <data name="reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="reset_password" xml:space="preserve">
     <value>Reset password</value>
   </data>
@@ -486,11 +492,23 @@
   <data name="theme" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="today_sales_count" xml:space="preserve">
+    <value>Procuts sold Today</value>
+  </data>
+  <data name="today_sales_money" xml:space="preserve">
+    <value>Sales earn Today</value>
+  </data>
   <data name="too_long" xml:space="preserve">
     <value>{name} can not be longer than {limit} characters</value>
   </data>
   <data name="too_short" xml:space="preserve">
     <value>{name} can not be shorter than {limit} characters</value>
+  </data>
+  <data name="total_sales_count" xml:space="preserve">
+    <value>Products sold Total</value>
+  </data>
+  <data name="total_sales_money" xml:space="preserve">
+    <value>Sales earn Total</value>
   </data>
   <data name="two_factor" xml:space="preserve">
     <value>Two Factor</value>

@@ -1,3 +1,4 @@
+using AspNetCore.Authorization.Extender;
 using Bers.Blazor.Ext.Javascript;
 using Blazored.SessionStorage;
 using ECom.AdminBlazorServer.Common;
@@ -5,6 +6,7 @@ using ECom.Application.Filters;
 using ECom.Application.Setup;
 using ECom.Domain;
 using ECom.Shared;
+using ECom.Shared.Constants;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -44,6 +46,15 @@ builder.Services.AddAuthentication(options => {
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
   })
   .AddCookie();
+
+var dictionary = new Dictionary<object, object>();
+var permissions = Enum.GetNames(typeof(AdminPermission));
+foreach (var permission in permissions) {
+  dictionary.Add(permission, permission);
+}
+builder.Services.AddAuthorization(x => {
+  x.AddRequiredPermissionPolicies(dictionary);
+});
 //builder.Services.AddScoped<ProtectedSessionStorage>();
 //builder.Services.AddScoped<ProtectedBrowserStorage>();
 builder.Services.AddScoped<ProtectedLocalStorage>();
@@ -53,7 +64,7 @@ builder.Services.AddScoped<RevalidatingServerAuthenticationStateProvider, AdminA
 //builder.Services.AddScoped<AdminAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationService>();
 
-builder.Services.AddSingleton<LoginStateCacheProvider>();
+//builder.Services.AddSingleton<LoginStateCacheProvider>();
 //RADZEN SERVICES
 
 builder.Services.AddScoped<DialogService>();
@@ -149,37 +160,10 @@ builder.AddValidators();
 
 
 builder.Services.AddSwaggerGen(c => {
-  //c.SwaggerDoc("AdminBlazorServerApi", new OpenApiInfo { Title = "ECom.AdminBlazorServerApi", Version = "v0.1.0" });
-  //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-  //  Description = @$"JWT Authorization header using the Bearer scheme. 
-  //                      {Environment.NewLine}{Environment.NewLine}Enter 'Your token in the text input below.
-  //                    {Environment.NewLine}{Environment.NewLine}Example: '12345abcdef'",
-  //  Name = "Authorization",
-  //  In = ParameterLocation.Header,
-  //  Type = SecuritySchemeType.Http,
-  //  Scheme = "Bearer"
-  //});
-  ////c.SwaggerDoc("User", new OpenApiInfo { Title = "User API", Version = "v1" });
-  //c.SwaggerDoc("Admin", new OpenApiInfo { Title = "Admin API", Version = "v0.1.0" });
   c.DocInclusionPredicate((groupName, apiDescription) => {
-    // Filter the API descriptions based on the group name
     if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) return true;
     return false;
   });
-  //c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-  //  {
-  //    new OpenApiSecurityScheme {
-  //      Reference = new OpenApiReference {
-  //        Type = ReferenceType.SecurityScheme,
-  //        Id = "Bearer"
-  //      },
-  //      Scheme = "Http",
-  //      Name = "Bearer",
-  //      In = ParameterLocation.Header
-  //    },
-  //    new List<string>()
-  //  }
-  //});
 });
 builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
@@ -207,11 +191,7 @@ app.UseCors(x => x
 
 
 app.UseRequestLocalization(localizationOptions);
-//if (app.Environment.IsDevelopment()) {
-//  app.UseMiddleware<DebugAdminAuthenticationMiddleware>();
-//}
-//app.UseMiddleware<AdminAuthenticationBearerMiddleware>();
-//app.UseMiddleware<LoggingMiddleware>();
+
 
 
 app.UseSwagger();

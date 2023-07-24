@@ -1,5 +1,5 @@
 ﻿@*@inject AdminAuthenticationStateProvider Auth*@
-
+@inject AuthenticationService AuthenticationService
 
 <RadzenProfileMenu >
   <Template >
@@ -17,13 +17,13 @@
 @code {
   private string _emailAddress = "";
 
-  [CascadingParameter]
-  public Task<AuthenticationState> AuthTask { get; set; }
+  //[CascadingParameter]
+  //public Task<AuthenticationState> AuthTask { get; set; }
 
   protected override async Task OnAfterRenderAsync(bool firstRender) {
     if (firstRender) {
-      var state = await AuthTask;
-      _emailAddress = state.User.Identity?.Name ?? "";
+      //var state = await AuthTask;
+      _emailAddress = AuthenticationService.CurrentUser.Identity?.Name ?? "";
       StateHasChanged();
     }
   }

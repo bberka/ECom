@@ -38,7 +38,7 @@ public class AdminService : IAdminService
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
     if (admin.DeleteDate.HasValue) return DomainResult.Invalid(nameof(Admin));
     var newPassword = EasGenerate.RandomString(12);
-    admin.Password = newPassword.ToEncryptedText();
+    admin.Password = newPassword.ToHashedText();
     admin.UpdateDate = DateTime.UtcNow;
     _unitOfWork.AdminRepository.Update(admin);
     var result = _unitOfWork.Save();
@@ -58,7 +58,7 @@ public class AdminService : IAdminService
       .FirstOrDefault();
     if (admin is null) return DomainResult.NoAccountFound(nameof(Admin));
     if (admin.DeletedDate.HasValue) return DomainResult.Invalid(nameof(Admin));
-    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToEncryptedText();
+    var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToHashedText();
     if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
       return DomainResult.NoAccountFound(nameof(Admin));
     if (admin.Permissions.Length == 0) return DomainResult.None(nameof(Permission));
@@ -108,7 +108,7 @@ public class AdminService : IAdminService
   public CustomResult ChangePassword(Guid adminId, ChangePasswordRequest model) {
     var admin = _unitOfWork.AdminRepository.Find(adminId);
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
-    var password = model.NewPassword.ToEncryptedText();
+    var password = model.NewPassword.ToHashedText();
     if (admin.Password != password) return DomainResult.WrongPassword();
     admin.Password = password;
     admin.UpdateDate = DateTime.UtcNow;
@@ -159,7 +159,7 @@ public class AdminService : IAdminService
     var isAllSame = admin.EmailAddress == request.EmailAddress && admin.RoleId == request.RoleId;
     if (request.UpdatePassword && !string.IsNullOrEmpty(request.Password)) {
       var tempPass = admin.Password;
-      admin.Password = request.Password.ToEncryptedText();
+      admin.Password = request.Password.ToHashedText();
       isAllSame = isAllSame && admin.Password == tempPass;
     }
 

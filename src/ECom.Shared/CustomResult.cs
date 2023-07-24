@@ -54,7 +54,7 @@ public class CustomResult<T>
 
   //public string Name { get; internal init; }
   public string ErrorCode { get; internal init; }
-  public string[] Params { get; internal init; }
+  public object[] Params { get; internal init; }
 
 
   //public ValidationError[] ValidationErrors { get; internal init; }  
@@ -98,44 +98,49 @@ public class CustomResult<T>
   }
 
 
-  public static CustomResult<T> Warn(string name, string error) {
+  public static CustomResult<T> Warn(string name, string error, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = $"{name}.{error}",
-      Level = CustomResultLevel.Warning
+      Level = CustomResultLevel.Warning,
+      Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Error(string name, string error) {
+  public static CustomResult<T> Error(string name, string error,params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = $"{name}.{error}",
-      Level = CustomResultLevel.Error
+      Level = CustomResultLevel.Error,
+      Params =  paramStrings
     };
   }
 
-  public static CustomResult<T> Critical(string name, string error) {
+  public static CustomResult<T> Critical(string name, string error, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = $"{name}.{error}",
-      Level = CustomResultLevel.Critical
+      Level = CustomResultLevel.Critical,
+      Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Validation(string name, string message) {
+  public static CustomResult<T> Validation(string name, string message, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = $"{name}." + message,
-      Level = CustomResultLevel.Warning
+      Level = CustomResultLevel.Warning,
+      Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Critical(Exception? exception, string name) {
+  public static CustomResult<T> Critical(Exception? exception, string name, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = $"{name}.Exception",
       Level = CustomResultLevel.Critical,
-      Exception = exception
+      Exception = exception,
+      Params = paramStrings
     };
   }
 

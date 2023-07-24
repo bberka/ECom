@@ -5,10 +5,10 @@ public class AddStockChangeRequestValidator : AbstractValidator<AddStockChangeRe
 {
   public AddStockChangeRequestValidator() {
     RuleFor(x => x.Cost)
-      .GreaterThan(0);
+      .ApplyMoneyRule();
 
     RuleFor(x => x.Count)
-      .GreaterThan(0);
+      .ApplyCountRule();
 
   }
 }

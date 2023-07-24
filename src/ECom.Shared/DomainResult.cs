@@ -163,4 +163,12 @@ public static class DomainResult
   }
 
   #endregion
+  public static CustomResult MaxCountReached(string announcementName,int maxCountParam) {
+    return CustomResult.Error(announcementName, "max_count_reached", maxCountParam);
+  }
+
+  public static CustomResult CannotSetExpired(string announcementName) {
+    return CustomResult.Error(announcementName, "can_not_set_expired");
+
+  }
 }

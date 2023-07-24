@@ -1,5 +1,5 @@
 ﻿@page "/management/roles"
-@attribute [RequirePermission(AdminPermission.ManageRolesAndPermissions)]
+@attribute [AdminAuthorize(AdminPermission.ManageAdmins)]
 @inject TooltipService TooltipService
 @inject DialogService DialogService
 @inject IRoleService RoleService

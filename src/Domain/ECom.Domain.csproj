@@ -8,15 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Aspects\RequireAdminPermissionAspect.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Folder Include="Properties\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Aspects\RequireAdminPermissionAspect.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AspectInjector" Version="2.8.2" />
