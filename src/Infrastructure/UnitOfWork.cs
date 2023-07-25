@@ -1,6 +1,7 @@
-﻿using ECom.Domain.Entities;
-using ECom.Infrastructure.Abstract;
+﻿using ECom.Infrastructure.Abstract;
 using ECom.Infrastructure.Repository;
+using ECom.Shared.Abstract;
+using ECom.Shared.Entities;
 using Serilog;
 
 namespace ECom.Infrastructure;

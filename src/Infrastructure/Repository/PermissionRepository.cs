@@ -1,4 +1,4 @@
-﻿using ECom.Domain.Entities;
+﻿using ECom.Shared.Entities;
 
 namespace ECom.Infrastructure.Repository;
 

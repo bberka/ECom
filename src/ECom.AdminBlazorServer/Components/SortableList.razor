@@ -2,15 +2,22 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Diagnostics
 @using EasMe.Extensions
-@using ECom.Domain.Entities
 @typeparam TValue where TValue : class
 @inject IJSRuntime JsRuntime
 @inject IJsLocalStorageUtil JsLocalStorageUtil
 
 <div id="@_elementId" class="list-group col">
   @foreach (var item in GetOrdered()) {
-    <div id="@Guid.NewGuid().ToString().Replace("-","")" data-id="@GetValuePropertyValue(item)" style="cursor: move;" class="prevent-select list-group-item nested-1 @GetIsDisabledClass(item)">
-      @GetTextPropertyValue(item)
+    <div id="@Guid.NewGuid().ToString().Replace("-", "")" data-id="@GetValuePropertyValue(item)" style="cursor: move;" class="prevent-select list-group-item nested-1 @GetIsDisabledClass(item)">
+      @if (Template is null) {
+        <p class="text-break">
+          @*@GetTextPropertyValue(item)*@
+        </p>
+      }
+      else {
+        @Template.Invoke(item)
+      }
+
     </div>
   }
 </div>
@@ -39,6 +46,9 @@
 
   [Parameter]
   public int InvertedSwapThreshold { get; set; } = 0;
+
+  [Parameter]
+  public RenderFragment<TValue>? Template { get; set; }
 
   [Parameter]
   public int Delay { get; set; } = 0;

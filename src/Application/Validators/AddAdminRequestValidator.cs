@@ -1,4 +1,4 @@
-﻿using ECom.Domain.Abstract.Services;
+﻿using ECom.Shared.Abstract.Services;
 using ECom.Shared.Constants;
 using Microsoft.AspNetCore.Routing;
 
@@ -11,8 +11,8 @@ public class AddAdminRequestValidator : AbstractValidator<AddAdminRequest>
       .EmailAddress();
     RuleFor(x => x.Password)
       .ApplyPasswordRule();
-    RuleFor(x => x.RoleId)
-      .ApplyRoleRule();
+    //RuleFor(x => x.RoleId)
+    //  .ApplyRoleRule();
 
 
   }

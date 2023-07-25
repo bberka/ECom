@@ -6,10 +6,6 @@ using ECom.Application.Filters;
 using ECom.Application.Services.AdminServices;
 using ECom.Application.Setup;
 using ECom.Domain;
-using ECom.Domain.Abstract.Services.Admin;
-using ECom.Domain.Abstract.Services.Base;
-using ECom.Domain.Abstract.Services.User;
-using ECom.Domain.Abstract.Services;
 using ECom.Domain.Lib;
 using ECom.Shared;
 using ECom.Shared.Constants;
@@ -21,8 +17,11 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using Radzen;
-using IAdminAccountService = ECom.Domain.Abstract.Services.Admin.IAdminAccountService;
+using IAdminAccountService = ECom.Shared.Abstract.Services.Admin.IAdminAccountService;
 using ECom.Application.Services;
+using ECom.Shared.Abstract.Services;
+using ECom.Shared.Abstract.Services.Admin;
+using ECom.Shared.Abstract.Services.Base;
 
 EComLoggerHelper.Configure(true);
 

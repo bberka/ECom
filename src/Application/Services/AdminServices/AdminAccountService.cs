@@ -1,10 +1,10 @@
 ﻿using ECom.Domain;
-using ECom.Domain.Abstract.Services;
-using ECom.Domain.Abstract.Services.Admin;
-using ECom.Domain.Abstract.Services.Base;
 using ECom.Domain.Aspects;
-using ECom.Domain.Entities;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services;
+using ECom.Shared.Abstract.Services.Admin;
 using ECom.Shared.Constants;
+using ECom.Shared.Entities;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace ECom.Application.Services.AdminServices;

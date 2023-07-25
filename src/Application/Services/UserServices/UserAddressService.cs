@@ -1,6 +1,7 @@
 ﻿using ECom.Application.Services.BaseServices;
-using ECom.Domain.Abstract.Services.User;
-using ECom.Domain.Entities;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services.User;
+using ECom.Shared.Entities;
 
 namespace ECom.Application.Services.UserServices;
 

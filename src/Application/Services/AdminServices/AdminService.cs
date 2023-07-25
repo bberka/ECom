@@ -1,8 +1,9 @@
 ﻿using ECom.Application.Services.BaseServices;
 using ECom.Domain;
-using ECom.Domain.Abstract.Services.Admin;
 using ECom.Domain.Aspects;
-using ECom.Domain.Entities;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services.Admin;
+using ECom.Shared.Entities;
 using Newtonsoft.Json.Linq;
 
 namespace ECom.Application.Services.AdminServices;

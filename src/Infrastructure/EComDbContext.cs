@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
-using ECom.Domain.Entities;
 using ECom.Infrastructure.Configurations;
+using ECom.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

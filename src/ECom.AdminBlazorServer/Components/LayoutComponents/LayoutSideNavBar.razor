@@ -18,7 +18,7 @@
       </RadzenStack>
     </RadzenStack>
   </RadzenHeader>
-  <RadzenSidebar @bind-Expanded="@_sideBarExpanded">
+  <RadzenSidebar @bind-Expanded="@_sideBarExpanded" Responsive="true" >
 
 
     <RadzenStack AlignItems="AlignItems.Center">
@@ -29,25 +29,25 @@
 
         <AuthorizeView Policy="@(AdminPermission.ManageCategories.ToString())">
           <Authorized>
-            <RadzenPanelMenuItem Text="@Loc["categories"]" Path="categories"/>
+          <RadzenPanelMenuItem Text="@Loc["categories"]" Path="categories" Icon="category" />
           </Authorized>
         </AuthorizeView>
 
         <AuthorizeView Policy="@(AdminPermission.ManageAnnouncements.ToString())">
           <Authorized>
-            <RadzenPanelMenuItem Text="@Loc["announcements"]" Path="announcements"/>
+          <RadzenPanelMenuItem Text="@Loc["announcements"]" Path="announcements" Icon="campaign" />
           </Authorized>
         </AuthorizeView>
         <AuthorizeView Policy="@(AdminPermission.ManageImages.ToString())">
           <Authorized>
-            <RadzenPanelMenuItem Text="@Loc["images"]">
+          <RadzenPanelMenuItem Text="@Loc["images"]" Icon="image">
               <RadzenPanelMenuItem Text="@(Loc["image"] + " " + Loc["list"])" Path="image/list"/>
               <RadzenPanelMenuItem Text="@(Loc["upload"] + " " + Loc["image"])" Path="image/upload"/>
             </RadzenPanelMenuItem>
           </Authorized>
         </AuthorizeView>
-        
-        <RadzenPanelMenuItem Text="@Loc["options"]">
+
+      <RadzenPanelMenuItem Text="@Loc["options"]" Icon="tune">
           <AuthorizeView Policy="@(AdminPermission.ManageGeneralOptions.ToString())">
             <Authorized>
               <RadzenPanelMenuItem Text="@(Loc["general"] + " " + Loc["options"])" Path="options/general"/>
@@ -78,16 +78,16 @@
         </RadzenPanelMenuItem>
         <AuthorizeView Policy="@(AdminPermission.ManageAdmins.ToString())">
           <Authorized>
-            <RadzenPanelMenuItem Text="@Loc["admins"]" Path="management/admins" />
+          <RadzenPanelMenuItem Text="@Loc["admins"]" Path="admins" Icon="manage_accounts" />
           </Authorized>
         </AuthorizeView>
         <AuthorizeView Policy="@(AdminPermission.ManageRoles.ToString())">
           <Authorized>
-            <RadzenPanelMenuItem Text="@Loc["roles"]" Path="management/roles" />
+          <RadzenPanelMenuItem Text="@Loc["roles"]" Icon="admin_panel_settings" Path="roles" />
           </Authorized>
         </AuthorizeView>
 
-        <RadzenPanelMenuItem Text="@(Loc["panel_settings"])" Path="PanelSettings" />
+      <RadzenPanelMenuItem Text="@(Loc["panel_settings"])" Icon="settings" Path="PanelSettings" />
 
 
       </RadzenPanelMenu>

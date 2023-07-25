@@ -1,8 +1,9 @@
 ﻿using ECom.Application.Services.BaseServices;
-using ECom.Domain.Abstract.Services.Admin;
-using ECom.Domain.Abstract.Services.Base;
 using ECom.Domain.Aspects;
-using ECom.Domain.Entities;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services.Admin;
+using ECom.Shared.Abstract.Services.Base;
+using ECom.Shared.Entities;
 
 namespace ECom.Application.Services.AdminServices;
 
@@ -19,7 +20,7 @@ public class AdminAnnouncementService : AnnouncementService, IAdminAnnouncementS
     var isAlreadyExpired = dbData.ExpireDate < DateTime.Now;
     var isSetExpired = data.ExpireDate < DateTime.Now;
     if (isSetExpired && !isAlreadyExpired) return DomainResult.CannotSetExpired(nameof(Announcement));
-    var maxCount = UnitOfWork.AnnouncementRepository.Count(x => !x.DeleteDate.HasValue && x.ExpireDate > DateTime.Now);
+    var maxCount = UnitOfWork.AnnouncementRepository.Count(x =>  x.ExpireDate > DateTime.Now);
     //Checks equals because can not update an expired announcement without setting expire date to future
     if (maxCount >= MaxAnnouncementCount) return DomainResult.MaxCountReached(nameof(Announcement), MaxAnnouncementCount);
     dbData.Order = data.Order;
@@ -49,7 +50,7 @@ public class AdminAnnouncementService : AnnouncementService, IAdminAnnouncementS
   public CustomResult AddAnnouncement(AddAnnouncementRequest data) {
     var existsSameMessage = UnitOfWork.AnnouncementRepository.Any(x => x.Message == data.Message);
     if (existsSameMessage) return DomainResult.AlreadyExists(nameof(Announcement));
-    var maxCount = UnitOfWork.AnnouncementRepository.Count(x => !x.DeleteDate.HasValue && x.ExpireDate > DateTime.Now);
+    var maxCount = UnitOfWork.AnnouncementRepository.Count(x => x.ExpireDate > DateTime.Now);
     if (maxCount > MaxAnnouncementCount) return DomainResult.MaxCountReached(nameof(Announcement), MaxAnnouncementCount);
     UnitOfWork.AnnouncementRepository.Insert(Announcement.FromDto(data));
     var res = UnitOfWork.Save();
@@ -58,28 +59,17 @@ public class AdminAnnouncementService : AnnouncementService, IAdminAnnouncementS
   }
 
   public List<Announcement> ListAnnouncements() {
-    return UnitOfWork.AnnouncementRepository.Get(x => x.ExpireDate > DateTime.Now && !x.DeleteDate.HasValue).ToList();
+    return UnitOfWork.AnnouncementRepository.Get(x => x.ExpireDate > DateTime.Now).ToList();
   }
 
   public CustomResult DeleteAnnouncement(Guid id) {
     var data = UnitOfWork.AnnouncementRepository.Find(id);
     if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    data.DeleteDate = DateTime.UtcNow;
-    data.UpdateDate = DateTime.UtcNow;
-    UnitOfWork.AnnouncementRepository.Update(data);
+    UnitOfWork.AnnouncementRepository.Delete(data);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteAnnouncement));
     return DomainResult.OkDeleted(nameof(Announcement));
   }
 
-  public CustomResult RecoverAnnouncement(Guid id) {
-    var data = UnitOfWork.AnnouncementRepository.Find(id);
-    if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    data.DeleteDate = null;
-    data.UpdateDate = DateTime.UtcNow;
-    UnitOfWork.AnnouncementRepository.Update(data);
-    var res = UnitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(DeleteAnnouncement));
-    return DomainResult.OkRecovered(nameof(Announcement));
-  }
+ 
 }

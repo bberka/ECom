@@ -1,5 +1,4 @@
-﻿using ECom.Domain.Abstract.Services.Admin;
-using ECom.Domain.Abstract.Services.Base;
+﻿using ECom.Shared.Abstract.Services.Admin;
 
 namespace ECom.Application.Middlewares;
 

@@ -6,5 +6,5 @@ public class AddAnnouncementRequest
 
     [MaxLength(128)]
     public string Message { get; set; } = null!;
-    public DateTime ExpireDate { get; set; }
+    public DateTime ExpireDate { get; set; } = DateTime.Now.AddDays(1);
 }

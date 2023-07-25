@@ -129,6 +129,12 @@
   <data name="add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="add_announcement" xml:space="preserve">
+    <value>Add announcement</value>
+  </data>
+  <data name="add_role" xml:space="preserve">
+    <value>Add role</value>
+  </data>
   <data name="admins" xml:space="preserve">
     <value>Admins</value>
   </data>
@@ -201,6 +207,12 @@
   <data name="create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="create_announcement" xml:space="preserve">
+    <value>Create announcement</value>
+  </data>
+  <data name="create_role" xml:space="preserve">
+    <value>Create role</value>
+  </data>
   <data name="critical" xml:space="preserve">
     <value>Critical</value>
   </data>
@@ -246,6 +258,9 @@
   <data name="expiration_date" xml:space="preserve">
     <value>Expiration Date</value>
   </data>
+  <data name="expire_date" xml:space="preserve">
+    <value>Expire date</value>
+  </data>
   <data name="fatal" xml:space="preserve">
     <value>Fatal</value>
   </data>
@@ -277,7 +292,7 @@
     <value>Image</value>
   </data>
   <data name="images" xml:space="preserve">
-    <value>Upload</value>
+    <value>Images</value>
   </data>
   <data name="info" xml:space="preserve">
     <value>Info</value>
@@ -306,6 +321,12 @@
   <data name="management" xml:space="preserve">
     <value>Management</value>
   </data>
+  <data name="max_count_reached" xml:space="preserve">
+    <value>Max count has been reached {count}</value>
+  </data>
+  <data name="message" xml:space="preserve">
+    <value>Message</value>
+  </data>
   <data name="moderator_permissions" xml:space="preserve">
     <value>Moderator Permissions</value>
   </data>
@@ -332,6 +353,12 @@
   </data>
   <data name="not_found" xml:space="preserve">
     <value>Not found</value>
+  </data>
+  <data name="no_announcements_found" xml:space="preserve">
+    <value>No announcements found</value>
+  </data>
+  <data name="no_data_found" xml:space="preserve">
+    <value>No data found</value>
   </data>
   <data name="ok_added" xml:space="preserve">
     <value>{name} is added successfully</value>
@@ -459,8 +486,14 @@
   <data name="roles" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="role_name" xml:space="preserve">
+    <value>Role name</value>
+  </data>
   <data name="save_changes" xml:space="preserve">
     <value>Save changes</value>
+  </data>
+  <data name="selected_announcement" xml:space="preserve">
+    <value />
   </data>
   <data name="select_language" xml:space="preserve">
     <value>Select language</value>
@@ -488,6 +521,9 @@
   </data>
   <data name="support_roles" xml:space="preserve">
     <value>Support Roles</value>
+  </data>
+  <data name="table_is_empty" xml:space="preserve">
+    <value>Table is empty</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Theme</value>

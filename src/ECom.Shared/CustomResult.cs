@@ -66,7 +66,7 @@ public class CustomResult<T>
   public CustomResultLevel Level { get; internal init; } = CustomResultLevel.None;
 
   [IgnoreDataMember]
-  [JsonIgnore]
+  [System.Text.Json.Serialization.JsonIgnore]
   [Newtonsoft.Json.JsonIgnore]
   public Exception? Exception { get; internal init; }
 

@@ -103,14 +103,6 @@ public static class FluentValidationExtensions
       .MaximumLength(ValidationSettings.MaxMemoLength);
   }
 
-  public static IRuleBuilderOptions<T, string> ApplyRoleRule<T>(this IRuleBuilder<T, string> ruleBuilder) {
-    return ruleBuilder
-      .Must(x => {
-        var values = Enum.GetValues(typeof(RoleType));
-        return (from RoleType role in values select role.ToString().Equals(x, StringComparison.OrdinalIgnoreCase)).Any(isMatch => isMatch);
-      });
-
-  }
 
   public static IRuleBuilderOptions<T, string> ApplyProductCommentRule<T>(this IRuleBuilder<T, string> ruleBuilder) {
     return ruleBuilder

@@ -1,6 +1,7 @@
-﻿using ECom.Domain.Abstract.Services.Base;
-using ECom.Domain.Entities;
+﻿using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services.Base;
 using ECom.Shared.Constants;
+using ECom.Shared.Entities;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ECom.Application.Services.BaseServices;

@@ -1,5 +1,6 @@
 ﻿using ECom.Application.Validators;
-using ECom.Domain.Abstract.Services;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 

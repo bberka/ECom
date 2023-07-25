@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using ECom.Domain.Abstract.Services;
-using ECom.Domain.Entities;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services;
 using ECom.Shared.Constants;
+using ECom.Shared.Entities;
 
 namespace ECom.Application.Services;
 
@@ -32,7 +33,7 @@ public class DebugService : IDebugService
     public Admin GetAdmin()
     {
         CheckAndThrowDebug();
-        return _unitOfWork.AdminRepository.Get(x => x.RoleId == RoleType.Owner.ToString())
+        return _unitOfWork.AdminRepository.Get(x => x.RoleId == "Owner")
           .Include(x => x.Role)
           .ThenInclude(x => x.PermissionRoles)
           .Single();

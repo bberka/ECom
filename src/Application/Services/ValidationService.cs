@@ -1,6 +1,7 @@
-﻿using ECom.Domain.Abstract.Services;
-using ECom.Domain.Abstract.Services.Base;
-using ECom.Domain.Entities;
+﻿using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services;
+using ECom.Shared.Abstract.Services.Base;
+using ECom.Shared.Entities;
 
 namespace ECom.Application.Services;
 

@@ -1,5 +1,4 @@
-﻿global using ECom.Domain.Abstract;
-global using EasMe.Extensions;
+﻿global using EasMe.Extensions;
 global using ECom.Domain.Exceptions;
 global using ECom.Domain.Lib;
 global using ECom.Shared;

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
-using IEntity = ECom.Domain.Abstract.IEntity;
+using ECom.Shared.Abstract;
+using IEntity = ECom.Shared.Abstract.IEntity;
 
 namespace ECom.Infrastructure.Abstract;
 public abstract class RepositoryBase<TEntity> : IRepository<TEntity>

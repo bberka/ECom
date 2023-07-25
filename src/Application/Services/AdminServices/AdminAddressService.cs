@@ -1,9 +1,8 @@
 ﻿using ECom.Application.Services.BaseServices;
-using ECom.Domain.Abstract.Services.Admin;
-using ECom.Domain.Abstract.Services.Base;
-using ECom.Domain.Abstract.Services.User;
 using ECom.Domain.Aspects;
-using ECom.Domain.Entities;
+using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services.Admin;
+using ECom.Shared.Entities;
 
 namespace ECom.Application.Services.AdminServices;
 

@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Abstract.Services.Base;
+﻿using ECom.Shared.Abstract;
+using ECom.Shared.Abstract.Services.Base;
 
 namespace ECom.Application.Services.BaseServices;
 
