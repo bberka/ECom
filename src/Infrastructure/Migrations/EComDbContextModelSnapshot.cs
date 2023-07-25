@@ -226,9 +226,6 @@ namespace ECom.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
@@ -319,9 +316,6 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -868,19 +862,7 @@ namespace ECom.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "ManageThemes"
-                        },
-                        new
-                        {
-                            Id = "ManagePlugins"
-                        },
-                        new
-                        {
-                            Id = "ManageLanguages"
-                        },
-                        new
-                        {
-                            Id = "ManageCurrencies"
+                            Id = "ManageQuestions"
                         },
                         new
                         {
@@ -928,19 +910,19 @@ namespace ECom.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "ManageRolesAndPermissions"
-                        },
-                        new
-                        {
                             Id = "ManageLocalization"
                         },
                         new
                         {
-                            Id = "ManagePluginsAndThemes"
+                            Id = "ManageCargoOptions"
                         },
                         new
                         {
-                            Id = "ManageCargoOptions"
+                            Id = "ManageLoginSessions"
+                        },
+                        new
+                        {
+                            Id = "ManageRoles"
                         });
                 });
 
@@ -997,22 +979,7 @@ namespace ECom.Infrastructure.Migrations
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManageThemes"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
-                            PermissionId = "ManagePlugins"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
-                            PermissionId = "ManageLanguages"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
-                            PermissionId = "ManageCurrencies"
+                            PermissionId = "ManageQuestions"
                         },
                         new
                         {
@@ -1072,22 +1039,22 @@ namespace ECom.Infrastructure.Migrations
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManageRolesAndPermissions"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
                             PermissionId = "ManageLocalization"
                         },
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManagePluginsAndThemes"
+                            PermissionId = "ManageCargoOptions"
                         },
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManageCargoOptions"
+                            PermissionId = "ManageLoginSessions"
+                        },
+                        new
+                        {
+                            RoleId = "Owner",
+                            PermissionId = "ManageRoles"
                         });
                 });
 
@@ -1268,18 +1235,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Roles", "ECEnum");
 
                     b.HasData(
-                        new
-                        {
-                            Id = "Support"
-                        },
-                        new
-                        {
-                            Id = "Moderator"
-                        },
-                        new
-                        {
-                            Id = "Admin"
-                        },
                         new
                         {
                             Id = "Owner"

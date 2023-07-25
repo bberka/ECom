@@ -1,4 +1,4 @@
-﻿using ECom.Domain.EfAbstractions;
+﻿using ECom.Shared.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

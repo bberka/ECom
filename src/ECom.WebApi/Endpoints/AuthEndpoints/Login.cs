@@ -1,4 +1,6 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.User;
 using ECom.Shared.DTOs;
 using ECom.Shared.DTOs.UserDto;
 

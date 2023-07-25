@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECom.Domain.Entities;
+using ECom.Shared.Entities;
 
 namespace ECom.Domain.Lib;
 

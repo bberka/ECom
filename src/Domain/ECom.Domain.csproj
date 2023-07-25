@@ -8,7 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Properties\" />
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AspectInjector" Version="2.8.2" />

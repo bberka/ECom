@@ -1,14 +1,14 @@
 ﻿@*@inject AdminAuthenticationStateProvider Auth*@
 @inject AuthenticationService AuthenticationService
 
-<RadzenProfileMenu >
+<RadzenProfileMenu class="h-100 w-100 p-0 m-0 mw-100 mh-100 ">
   <Template >
-    <RadzenLabel Text="@_emailAddress"></RadzenLabel>
+    <RadzenLabel   class="p-3 " Text="@_emailAddress"></RadzenLabel>
 
   </Template>
   <ChildContent>
 
-    <RadzenProfileMenuItem Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
+    <RadzenProfileMenuItem  Text="@Loc["account"]" Path="account" Icon="account_circle"></RadzenProfileMenuItem>
     <RadzenProfileMenuItem Text="@Loc["logout"]" Icon="logout" Path="logout"/>
 
   </ChildContent>

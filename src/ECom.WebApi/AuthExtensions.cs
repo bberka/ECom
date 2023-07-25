@@ -1,6 +1,6 @@
 ﻿using ECom.Domain.Exceptions;
 using ECom.Shared.Constants;
-using ECom.Shared.DTOs.UserDto;
+using ECom.Shared.DTOs;
 
 namespace ECom.WebApi;
 

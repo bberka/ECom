@@ -1,6 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using ECom.Application.Attributes;
-using ECom.Domain.Abstract;
+using ECom.Shared.Abstract.Services.Admin;
 using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

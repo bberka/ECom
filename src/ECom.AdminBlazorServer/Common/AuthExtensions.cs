@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using AspNetCore.Authorization.Extender;
 using ECom.Shared.Constants;
-using ECom.Shared.DTOs.AdminDto;
+using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Serilog;
 

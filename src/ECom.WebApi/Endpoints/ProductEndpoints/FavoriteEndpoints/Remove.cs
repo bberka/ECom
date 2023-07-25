@@ -1,4 +1,6 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.Base;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.FavoriteEndpoints;
 

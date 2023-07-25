@@ -1,5 +1,7 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Shared.DTOs.UserDto;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.User;
+using ECom.Shared.DTOs;
 
 namespace ECom.WebApi.Endpoints.AccountEndpoints;
 
@@ -8,9 +10,9 @@ namespace ECom.WebApi.Endpoints.AccountEndpoints;
 public class Update : EndpointBaseSync.WithRequest<UpdateUserRequest>.WithResult<CustomResult>
 {
   private readonly ILogService _logService;
-  private readonly IUserService _userService;
+  private readonly IUserAccountService _userService;
 
-  public Update(IUserService userService, ILogService logService) {
+  public Update(IUserAccountService userService, ILogService logService) {
     _userService = userService;
     _logService = logService;
   }

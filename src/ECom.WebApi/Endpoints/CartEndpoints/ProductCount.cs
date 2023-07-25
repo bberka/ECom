@@ -1,4 +1,5 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services.Base;
 
 namespace ECom.WebApi.Endpoints.CartEndpoints;
 

@@ -1,4 +1,6 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.User;
 using ECom.Shared.DTOs;
 using Serilog;
 
@@ -9,9 +11,9 @@ namespace ECom.WebApi.Endpoints.AccountEndpoints;
 public class ChangePassword : EndpointBaseSync.WithRequest<ChangePasswordRequest>.WithResult<CustomResult>
 {
   private readonly ILogService _logService;
-  private readonly IUserService _userService;
+  private readonly IUserAccountService _userService;
 
-  public ChangePassword(ILogService logService, IUserService userService) {
+  public ChangePassword(ILogService logService, IUserAccountService userService) {
     _logService = logService;
     _userService = userService;
   }

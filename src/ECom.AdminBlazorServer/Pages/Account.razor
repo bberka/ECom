@@ -1,8 +1,8 @@
 ﻿@page "/account"
-@inject IAdminService AdminService
-@using ECom.Shared.DTOs.AdminDto
+@inject IAdminAccountService AdminAccountService
 @using ECom.Shared.DTOs
 @using System.Globalization
+@using ECom.Shared.Abstract.Services.Admin
 @inherits SharedBasePage
 @inject AuthenticationService AuthenticationService
 
@@ -130,7 +130,7 @@
   private void SubmitChangePassword(ChangePasswordRequest obj) {
   //var auth = await AuthTask;
     var id = AuthenticationService.CurrentUser.GetAdminId();
-    var result = AdminService.ChangePassword(id, obj);
+    var result = AdminAccountService.ChangePassword(id, obj);
   }
 
 

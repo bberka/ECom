@@ -1,18 +1,9 @@
-﻿global using ECom.Domain.Abstract;
-global using EasMe.Extensions;
+﻿global using EasMe.Extensions;
 global using ECom.Domain.Exceptions;
 global using ECom.Domain.Lib;
 global using ECom.Shared;
 global using ECom.Shared.Constants;
 global using ECom.Shared.DTOs;
-global using ECom.Shared.DTOs.AdminDto;
-global using ECom.Shared.DTOs.AnnouncementDto;
-global using ECom.Shared.DTOs.CategoryDto;
-global using ECom.Shared.DTOs.CollectionDto;
-global using ECom.Shared.DTOs.ProductDto;
-global using ECom.Shared.DTOs.StockChangeDto;
-global using ECom.Domain.EfAbstractions;
-global using ECom.Shared.DTOs.UserDto;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
@@ -23,3 +14,4 @@ global using System.Runtime.Serialization;
 global using Newtonsoft.Json;
 global using Newtonsoft.Json.Converters;
 global using Microsoft.EntityFrameworkCore;
+

@@ -67,11 +67,11 @@ a, .btn-link {
     content: "An error has occurred."
   }
 
-/*.prevent-select {
+.prevent-select {
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-}*/
+}
 
 ul.validation-errors {
   list-style: none;
