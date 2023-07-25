@@ -189,6 +189,12 @@
   <data name="company" xml:space="preserve">
     <value>Company</value>
   </data>
+  <data name="company_address" xml:space="preserve">
+    <value>Company Address</value>
+  </data>
+  <data name="company_name" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
   <data name="confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
@@ -200,6 +206,9 @@
   </data>
   <data name="confirm_reset_password_other_admin" xml:space="preserve">
     <value>Are you sure you want to reset selected admin password ?</value>
+  </data>
+  <data name="contact_email" xml:space="preserve">
+    <value>Contact Email Address</value>
   </data>
   <data name="copyright" xml:space="preserve">
     <value>© 2022 - Today by ZDK Network. All Rights Reserved</value>
@@ -237,6 +246,9 @@
   <data name="disable" xml:space="preserve">
     <value>Disable</value>
   </data>
+  <data name="domain_url" xml:space="preserve">
+    <value>Domain Url</value>
+  </data>
   <data name="edit" xml:space="preserve">
     <value>Edit</value>
   </data>
@@ -260,6 +272,9 @@
   </data>
   <data name="expire_date" xml:space="preserve">
     <value>Expire date</value>
+  </data>
+  <data name="facebook_link" xml:space="preserve">
+    <value>Facebook Link</value>
   </data>
   <data name="fatal" xml:space="preserve">
     <value>Fatal</value>
@@ -296,6 +311,9 @@
   </data>
   <data name="info" xml:space="preserve">
     <value>Info</value>
+  </data>
+  <data name="instagram_link" xml:space="preserve">
+    <value>Instagram Link</value>
   </data>
   <data name="invalid" xml:space="preserve">
     <value>{name} is invalid</value>
@@ -426,6 +444,9 @@
   <data name="permission_count" xml:space="preserve">
     <value>Permission count</value>
   </data>
+  <data name="phone_number" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
   <data name="price" xml:space="preserve">
     <value>Price</value>
   </data>
@@ -510,6 +531,9 @@
   <data name="smtp" xml:space="preserve">
     <value>Smtp</value>
   </data>
+  <data name="social_media" xml:space="preserve">
+    <value>Social media</value>
+  </data>
   <data name="stock" xml:space="preserve">
     <value>Stock</value>
   </data>
@@ -561,11 +585,20 @@
   <data name="upload" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="urls" xml:space="preserve">
+    <value>Urls</value>
+  </data>
   <data name="username" xml:space="preserve">
     <value>Username</value>
   </data>
   <data name="warn" xml:space="preserve">
     <value>Warning</value>
+  </data>
+  <data name="web_api_url" xml:space="preserve">
+    <value>Web API Url</value>
   </data>
   <data name="welcome" xml:space="preserve">
     <value>Welcome</value>
@@ -574,10 +607,16 @@
     <value>Welcome to {companyName}</value>
     <comment>this text is shown at login page</comment>
   </data>
+  <data name="whatsapp" xml:space="preserve">
+    <value>Whatsapp</value>
+  </data>
   <data name="wrong_password" xml:space="preserve">
     <value>Wrong password</value>
   </data>
   <data name="your_new_password" xml:space="preserve">
     <value>Your new password: {password}</value>
+  </data>
+  <data name="youtube_link" xml:space="preserve">
+    <value>Youtube Link</value>
   </data>
 </root>

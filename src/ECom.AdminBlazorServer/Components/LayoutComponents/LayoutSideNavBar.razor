@@ -1,15 +1,16 @@
 ﻿@using ECom.Shared.DTOs
 @using ECom.Shared.Constants
+@using ECom.Shared.Abstract.Services.Admin
 @inherits ComponentBase
 @inject SupportedCultures SupportedCultures
-
+@inject IAdminCompanyInformationService CompanyInformationService
 
 
   <RadzenHeader>
     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
       <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
         <RadzenSidebarToggle Click="@ToggleSideBar" />
-        <RadzenLabel Text="@Loc["company"]" />
+        <RadzenLabel Text="@CompanyInformationService.GetCompanyInformation().CompanyName" />
       </RadzenStack>
       <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
         @*<DropDownTheme></DropDownTheme>*@

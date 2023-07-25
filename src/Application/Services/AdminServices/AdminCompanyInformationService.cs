@@ -12,12 +12,12 @@ public class AdminCompanyInformationService : CompanyInformationService, IAdminC
 {
   public AdminCompanyInformationService(IMemoryCache memoryCache, IUnitOfWork unitOfWork) : base(memoryCache, unitOfWork) {
   }
-  public CustomResult UpdateOrAddCompanyInformation(CompanyInformation info) {
+  public CustomResult UpdateCompanyInformation(CompanyInformation info) {
     var current = UnitOfWork.CompanyInformationRepository.FirstOrDefault(x => x.Key == info.Key);
     if (current != null) UnitOfWork.CompanyInformationRepository.Delete(current);
     UnitOfWork.CompanyInformationRepository.Insert(info);
     var res = UnitOfWork.Save();
-    if (!res) return DomainResult.DbInternalError(nameof(UpdateOrAddCompanyInformation));
+    if (!res) return DomainResult.DbInternalError(nameof(UpdateCompanyInformation));
     return DomainResult.OkUpdated(nameof(CompanyInformation));
   }
 }

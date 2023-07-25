@@ -20,6 +20,10 @@ public class CompanyInformation : IEntity
   [MaxLength(ValidationSettings.MaxDescriptionLength)]
   public string Description { get; set; } = "Description";
 
+  [MaxLength(ValidationSettings.MaxAddressLength)]
+  [MinLength(ValidationSettings.MinAddressLength)]
+  public string CompanyAddress { get; set; }
+
   [MaxLength(ValidationSettings.MaxPhoneLength)]
   [MinLength(ValidationSettings.MinPhoneLength)]
   public string PhoneNumber { get; set; } = "00000000000";
@@ -31,9 +35,6 @@ public class CompanyInformation : IEntity
   [MinLength(ValidationSettings.MinPhoneLength)]
   public string? WhatsApp { get; set; } 
 
-  [MaxLength(ValidationSettings.MaxAddressLength)]
-  [MinLength(ValidationSettings.MinAddressLength)]
-  public string CompanyAddress { get; set; }
 
   [MaxLength(ValidationSettings.MaxDomainLength)]
 

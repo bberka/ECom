@@ -5,5 +5,5 @@ namespace ECom.Shared.Abstract.Services.Admin;
 
 public interface IAdminCompanyInformationService : ICompanyInformationService
 {
-  CustomResult UpdateOrAddCompanyInformation(CompanyInformation info);
+  CustomResult UpdateCompanyInformation(CompanyInformation info);
 }
