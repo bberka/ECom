@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("Orders", Schema = "ECPrivate")]
 public class Order : IEntity

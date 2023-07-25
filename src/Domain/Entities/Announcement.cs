@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("Announcements", Schema = "ECPrivate")]
 public class Announcement : IEntity
@@ -12,6 +10,7 @@ public class Announcement : IEntity
   public DateTime? DeleteDate { get; set; }
   public DateTime ExpireDate { get; set; }
 
+  public bool IsDisabled => DeleteDate.HasValue || ExpireDate < DateTime.Now;
   public int Order { get; set; }
 
   [MaxLength(ValidationSettings.MaxMessageLength)]

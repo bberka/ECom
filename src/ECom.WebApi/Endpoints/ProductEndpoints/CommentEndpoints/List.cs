@@ -1,4 +1,5 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services.Base;
 using ECom.Domain.Entities;
 using ECom.Shared.DTOs;
 

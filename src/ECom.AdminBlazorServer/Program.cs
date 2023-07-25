@@ -3,8 +3,14 @@ using Bers.Blazor.Ext.Javascript;
 using Blazored.SessionStorage;
 using ECom.AdminBlazorServer.Common;
 using ECom.Application.Filters;
+using ECom.Application.Services.AdminServices;
 using ECom.Application.Setup;
 using ECom.Domain;
+using ECom.Domain.Abstract.Services.Admin;
+using ECom.Domain.Abstract.Services.Base;
+using ECom.Domain.Abstract.Services.User;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Lib;
 using ECom.Shared;
 using ECom.Shared.Constants;
 using ECom.Shared.DTOs;
@@ -15,6 +21,8 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using Radzen;
+using IAdminAccountService = ECom.Domain.Abstract.Services.Admin.IAdminAccountService;
+using ECom.Application.Services;
 
 EComLoggerHelper.Configure(true);
 
@@ -67,13 +75,21 @@ builder.Services.AddScoped<AuthenticationService>();
 //builder.Services.AddSingleton<LoginStateCacheProvider>();
 //RADZEN SERVICES
 
+
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
 
+
+
 //AUTH SERVICES
+
+
+
+
+
 
 //builder.Services.AddScoped<IAdminAuthenticationStateProvider,AdminAuthenticationStateProvider>();
 
@@ -154,7 +170,27 @@ builder.Services.Configure<CookiePolicyOptions>(options => {
 });
 //--END Cookie
 //Application project services
-builder.AddApplicationServices();
+
+builder.AddDbDependencies();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<IDebugService, DebugService>();
+builder.Services.AddScoped<ICompanyInformationService, AdminCompanyInformationService>();
+builder.Services.AddScoped<IImageService, AdminImageService>();
+builder.Services.AddScoped<IOptionService, AdminOptionService>();
+
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminOptionService, AdminOptionService>();
+builder.Services.AddScoped<IAdminCompanyInformationService, AdminCompanyInformationService>();
+builder.Services.AddScoped<IAdminImageService, AdminImageService>();
+builder.Services.AddScoped<IAnnouncementService, AdminAnnouncementService>();
+builder.Services.AddScoped<IAdminAnnouncementService, AdminAnnouncementService>();
+builder.Services.AddScoped<IAdminAccountService, AdminAccountService>();
+builder.Services.AddScoped<IAdminRoleService, AdminRoleService>();
+
+
+
 //builder.AddAuthenticationPolicies();
 builder.AddValidators();
 
@@ -168,6 +204,8 @@ builder.Services.AddSwaggerGen(c => {
 builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
 builder.Services.AddBlazorExt();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
-﻿using ECom.Shared.Constants;
+﻿using ECom.Domain.Abstract.Services;
+using ECom.Shared.Constants;
 
 namespace ECom.Application.Validators;
 

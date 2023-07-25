@@ -8,13 +8,6 @@ global using ECom.Domain.Extensions;
 global using ECom.Infrastructure;
 global using ECom.Shared;
 global using ECom.Shared.DTOs;
-global using ECom.Shared.DTOs.AdminDto;
-global using ECom.Shared.DTOs.AnnouncementDto;
-global using ECom.Shared.DTOs.CategoryDto;
-global using ECom.Shared.DTOs.CollectionDto;
-global using ECom.Shared.DTOs.ProductDto;
-global using ECom.Shared.DTOs.StockChangeDto;
-global using ECom.Shared.DTOs.UserDto;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Http;
@@ -30,3 +23,4 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Security.Claims;
 global using System.Threading.Tasks;
+

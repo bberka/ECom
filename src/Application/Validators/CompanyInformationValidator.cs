@@ -1,4 +1,5 @@
-﻿using ECom.Domain.Entities;
+﻿using ECom.Domain.Abstract.Services;
+using ECom.Domain.Entities;
 
 namespace ECom.Application.Validators;
 

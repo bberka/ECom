@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("ProductComments", Schema = "ECPrivate")]
 public class ProductComment : IEntity

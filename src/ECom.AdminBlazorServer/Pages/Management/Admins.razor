@@ -1,9 +1,11 @@
 ﻿@page "/management/admins"
 @inject IAdminService AdminService
-@using ECom.Shared.DTOs.AdminDto
+@using ECom.Shared.DTOs
 @using AspNetCore.Authorization.Extender
 @using ECom.Application.Attributes
+@using ECom.Domain.Abstract.Services.Admin
 @using ECom.Shared.Constants
+@using ECom.Shared.DTOs
 @inherits SharedBasePage
 @attribute [AdminAuthorize(AdminPermission.ManageAdmins)]
 <PageTitle>@Loc["admins"]</PageTitle>
@@ -100,7 +102,7 @@
 
 
   async Task ShowCreateDialog() {
-    var result = await DialogService.OpenAsync(Loc["create"], ds =>
+    var result = await Dialog.OpenAsync(Loc["create"], ds =>
       @<RadzenTemplateForm TItem="AddAdminRequest" Data="@addAdmin" Submit="@(OnAddSubmit)">
 
 
@@ -133,7 +135,7 @@
       if (actionResult.Status) {
         LoadAdmins();
         addAdmin = new AddAdminRequest();
-        DialogService.Close(true);
+        Dialog.Close(true);
       }
       ShowResultNotification(actionResult);
     }
@@ -148,7 +150,7 @@
       Id = model.Id,
       UpdatePassword = updateAdmin.UpdatePassword
     };
-    var result = await DialogService.OpenAsync(Loc["update"], ds =>
+    var result = await Dialog.OpenAsync(Loc["update"], ds =>
       @<RadzenTemplateForm TItem="UpdateAdminAccountRequest" Data="@updateAdmin" Submit="@(OnUpdateSubmit)">
         <RadzenStack Orientation="Orientation.Vertical">
           <FieldInputEmailAddress @bind-Value="@updateAdmin.EmailAddress"></FieldInputEmailAddress>
@@ -176,7 +178,7 @@
       if (actionResult.Status) {
         LoadAdmins();
         updateAdmin = new UpdateAdminAccountRequest();
-        DialogService.Close();
+        Dialog.Close();
       }
       ShowResultNotification(actionResult);
     }

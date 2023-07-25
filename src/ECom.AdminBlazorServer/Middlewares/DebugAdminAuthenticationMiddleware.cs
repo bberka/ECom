@@ -1,4 +1,4 @@
-﻿using ECom.Domain.Abstract;
+﻿using ECom.Domain.Abstract.Services.Admin;
 
 namespace ECom.AdminBlazorServer.Middlewares;
 

@@ -2,9 +2,10 @@
 @attribute [AdminAuthorize(AdminPermission.ManageAdmins)]
 @inject TooltipService TooltipService
 @inject DialogService DialogService
-@inject IRoleService RoleService
+@inject IAdminRoleService AdminRoleService
 @using ECom.Domain.Entities
 @using AspNetCore.Authorization.Extender
+@using ECom.Domain.Abstract.Services.Admin
 @using ECom.Shared.Constants
 @inherits SharedBasePage
 
@@ -49,9 +50,9 @@
 
   protected override void OnInitialized() {
     if (roles.Count == 0)
-      roles = RoleService.GetRoles().ToList();
+      roles = AdminRoleService.GetRoles().ToList();
     if (allPermissions.Count == 0)
-      allPermissions = RoleService.GetPermissions();
+      allPermissions = AdminRoleService.GetPermissions();
   }
 
   //<RadzenDropDown MaxSelectedLabels="2" Style="min-width: 300px" @bind-Value="@_editPermissions" Multiple="true" TValue="List<Permission>" AllowVirtualization="true" AllowFiltering="true" Data=@(allPermissions) TextProperty="Id" ValueProperty="Id">
@@ -79,9 +80,9 @@
     }
     var auth = await AuthTask;
     var adminId = auth.GetAdminId();
-    var dbResult = RoleService.UpdatePermissions(adminId, value.Id, _editPermissions);
+    var dbResult = AdminRoleService.UpdatePermissions(adminId, value.Id, _editPermissions);
     if (dbResult.Status) {
-      roles = RoleService.GetRoles().ToList();
+      roles = AdminRoleService.GetRoles().ToList();
       await grid.Reload();
       await ShowResultDialog(dbResult);
     }

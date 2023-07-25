@@ -1,4 +1,5 @@
-﻿using ECom.Shared.Constants;
+﻿using ECom.Domain.Abstract.Services;
+using ECom.Shared.Constants;
 using Microsoft.AspNetCore.Routing;
 
 namespace ECom.Application.Validators;

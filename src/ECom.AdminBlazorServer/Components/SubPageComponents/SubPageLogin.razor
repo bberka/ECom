@@ -1,7 +1,8 @@
-﻿@inject ICompanyInformationService CompanyInformationService
-@inject IAdminService AdminService
+﻿@inject IAdminCompanyInformationService CompanyInformationService
+@inject IAdminAccountService AdminAccountService
 @using ECom.Shared.DTOs
 @using ECom.Shared.Constants
+@using ECom.Domain.Abstract.Services.Admin
 @inherits SharedBasePage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -70,7 +71,7 @@
   }
 
   private async Task OnSubmit() {
-    var result = AdminService.AdminLogin(LoginRequest);
+    var result = AdminAccountService.Login(LoginRequest);
     if (result.Status) {
       var admin = result.Data!;
       await ((AdminAuthenticationStateProvider)AuthenticationStateProvider).Login(admin);

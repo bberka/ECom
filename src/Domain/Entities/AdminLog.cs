@@ -1,8 +1,4 @@
-﻿
-
-
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("AdminLogs", Schema = "ECLog")]
 public class AdminLog : IEntity

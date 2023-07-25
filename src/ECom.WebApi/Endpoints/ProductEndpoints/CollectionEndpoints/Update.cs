@@ -1,5 +1,7 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Shared.DTOs.CollectionDto;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.Base;
+using ECom.Shared.DTOs;
 
 namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 

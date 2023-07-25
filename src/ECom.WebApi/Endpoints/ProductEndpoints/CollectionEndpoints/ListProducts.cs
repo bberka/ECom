@@ -1,4 +1,7 @@
-﻿namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
+﻿using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.Base;
+
+namespace ECom.WebApi.Endpoints.ProductEndpoints.CollectionEndpoints;
 
 public class ListProducts
 {

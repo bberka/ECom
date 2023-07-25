@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Validators;
+﻿using ECom.Domain.Abstract.Services;
+
+namespace ECom.Application.Validators;
 
 public class CategoryUpdateRequestValidator : AbstractValidator<AddOrUpdateCategoryRequest>
 {

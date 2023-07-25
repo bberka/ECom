@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("ProductDetails", Schema = "ECPrivate")]
 public class ProductDetail : IEntity

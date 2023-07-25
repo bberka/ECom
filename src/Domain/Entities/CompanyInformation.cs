@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("CompanyInformation", Schema = "ECOperation")]
 public class CompanyInformation : IEntity

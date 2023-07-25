@@ -1,4 +1,5 @@
-﻿using ECom.Shared.Constants;
+﻿using ECom.Domain.Abstract.Services.User;
+using ECom.Shared.Constants;
 using ECom.Shared.DTOs;
 
 namespace ECom.WebApi.Middlewares;
@@ -7,12 +8,12 @@ public class DebugUserAuthenticationMiddleware
 {
   private readonly RequestDelegate _next;
   private readonly IUserJwtAuthenticator _userJwtAuthenticator;
-  private readonly IUserService _userService;
+  private readonly IUserAccountService _userService;
 
   public DebugUserAuthenticationMiddleware(
     RequestDelegate next,
     IUserJwtAuthenticator userJwtAuthenticator,
-    IUserService userService) {
+    IUserAccountService userService) {
     _next = next;
     _userJwtAuthenticator = userJwtAuthenticator;
     _userService = userService;

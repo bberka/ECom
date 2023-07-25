@@ -1,5 +1,4 @@
-﻿using ECom.Domain.EfAbstractions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ECom.Infrastructure.Abstract;

@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("PermissionRoles", Schema = "ECOperation")]
 [PrimaryKey(nameof(RoleId),nameof(PermissionId))]

@@ -1,4 +1,6 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.Base;
 using ECom.Domain.Entities;
 
 namespace ECom.WebApi.Endpoints.AddressEndpoints;
@@ -10,7 +12,7 @@ public class Add : EndpointBaseSync.WithRequest<Address>.WithResult<CustomResult
   private readonly IAddressService _addressService;
   private readonly ILogService _logService;
 
-  public Add(IAddressService addressService, ILogService logService) {
+  public Add(IUserAddressService addressService, ILogService logService) {
     _addressService = addressService;
     _logService = logService;
   }

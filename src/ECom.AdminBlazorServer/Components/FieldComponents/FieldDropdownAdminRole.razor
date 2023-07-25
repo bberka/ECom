@@ -1,8 +1,11 @@
 ﻿@using ECom.Domain.Entities
 @using System.Globalization
+@using ECom.Domain.Entities
+@using System.Globalization
+@using ECom.Domain.Abstract.Services.Admin
 @inherits BaseValueChangedComponent<string>
 
-@inject IRoleService RoleService
+@inject IAdminRoleService RoleService
 
 <div class="mb-2">
   <RadzenFormField class="my-2 w-100" Component="RoleId" Text="@Loc["role"]" Variant="Variant.Filled">

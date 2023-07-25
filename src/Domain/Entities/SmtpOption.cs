@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("SmtpOptions", Schema = "ECOption")]
 public class SmtpOption : IEntity

@@ -1,4 +1,7 @@
-﻿namespace ECom.Application.Middlewares;
+﻿using ECom.Domain.Abstract.Services.Admin;
+using ECom.Domain.Abstract.Services.Base;
+
+namespace ECom.Application.Middlewares;
 
 public class MaintenanceCheckMiddleware
 {
@@ -8,7 +11,7 @@ public class MaintenanceCheckMiddleware
     _next = next;
   }
 
-  public async Task InvokeAsync(HttpContext context, IOptionService optionService) {
+  public async Task InvokeAsync(HttpContext context, IAdminOptionService optionService) {
     var url = context.Request.Path.ToString();
     if (!optionService.GetOption().IsOpen) {
       context.Response.StatusCode = 503;

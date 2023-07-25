@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("CargoOptions", Schema = "ECOption")]
 public class CargoOption : IEntity

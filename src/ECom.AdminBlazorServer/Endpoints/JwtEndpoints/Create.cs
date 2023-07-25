@@ -2,10 +2,9 @@
 using EasMe.Extensions;
 using ECom.Application.Attributes;
 using ECom.Domain;
-using ECom.Domain.Abstract;
+using ECom.Domain.Abstract.Services.Admin;
 using ECom.Shared;
 using ECom.Shared.DTOs;
-using ECom.Shared.DTOs.AdminDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

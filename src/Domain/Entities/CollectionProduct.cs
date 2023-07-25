@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [PrimaryKey(nameof(ProductId), nameof(CollectionId))]
 [Table("CollectionProducts", Schema = "ECPrivate")]

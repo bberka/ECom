@@ -1,6 +1,4 @@
-﻿
-
-namespace ECom.Domain.Entities;
+﻿namespace ECom.Domain.Entities;
 
 [Table("PasswordResetTokens", Schema = "ECPrivate")]
 [Index(nameof(Token))]

@@ -1,5 +1,4 @@
-﻿    using ECom.Domain.EfAbstractions;
-using ECom.Domain.Entities;
+﻿using ECom.Domain.Entities;
 using ECom.Infrastructure.Abstract;
 using ECom.Infrastructure.Repository;
 using Serilog;

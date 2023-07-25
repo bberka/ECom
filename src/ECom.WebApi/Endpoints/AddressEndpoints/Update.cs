@@ -1,4 +1,5 @@
 ﻿using ECom.Application.Attributes;
+using ECom.Domain.Abstract.Services;
 using ECom.Domain.Entities;
 
 namespace ECom.WebApi.Endpoints.AddressEndpoints;
