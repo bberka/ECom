@@ -18,7 +18,6 @@
 
           <RadzenText TextStyle="TextStyle.DisplayH4" TagName="TagName.H4" Class="rz-color-white rz-mb-6">@welcomeMessage</RadzenText>
           <RadzenText TextStyle="TextStyle.Body1" Class="rz-color-white">@Loc["login_page_message"]</RadzenText>
-          @*<RadzenText TextStyle="TextStyle.Body2" Class="rz-color-white">Let's get started with your <strong>30 days</strong> trial.</RadzenText>*@
         </RadzenCard>
       </RadzenColumn>
       <RadzenColumn Size="12" SizeMD="6">
@@ -27,8 +26,6 @@
             @Loc["login"]
           </RadzenText>
           <RadzenTemplateForm TItem="LoginRequest" Data="LoginRequest" Submit="@OnSubmit">
-            @*   <DataAnnotationsValidator />
-            <ValidationSummary />*@
             <FieldInputEmailAddress @bind-Value="@LoginRequest.EmailAddress"></FieldInputEmailAddress>
             <FieldInputPassword @bind-Value="LoginRequest.Password"></FieldInputPassword>
             <ButtonSubmitLogin></ButtonSubmitLogin>

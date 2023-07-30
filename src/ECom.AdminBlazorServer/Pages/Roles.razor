@@ -31,7 +31,7 @@
             </RadzenButton>
           }
           else {
-            <RadzenText TextStyle="TextStyle.Body1" Text="@Loc["owner_permissions_can_not_be_updated"]"></RadzenText>
+            @*<RadzenText TextStyle="TextStyle.Body1" Text="@Loc["owner_permissions_can_not_be_updated"]"></RadzenText>*@
           }
        
 
@@ -62,8 +62,6 @@
       allPermissions = AdminRoleService.GetPermissions();
   }
 
-  //<RadzenDropDown MaxSelectedLabels="2" Style="min-width: 300px" @bind-Value="@_editPermissions" Multiple="true" TValue="List<Permission>" AllowVirtualization="true" AllowFiltering="true" Data=@(allPermissions) TextProperty="Id" ValueProperty="Id">
-  //</RadzenDropDown>
   private async Task ShowEditDialog(Role value) {
     _editPermissions = value.PermissionRoles.Select(y => y.Permission.Id).ToList();
     var result = await DialogService.OpenAsync(Loc["edit"] + " " + Loc[value.Id.ToLower() + "_permissions"], ds =>

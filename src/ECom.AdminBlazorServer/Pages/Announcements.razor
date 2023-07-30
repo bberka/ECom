@@ -9,54 +9,50 @@
 <PageTitle>@Loc["announcements"]</PageTitle>
 
 <RadzenRow>
-<RadzenColumn SizeMD="6" SizeLG="6" SizeSM="12">
-  <RadzenCard Variant="Variant.Filled">
-    <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
-      <RadzenText TextStyle="TextStyle.H4">@Loc["announcements"]</RadzenText>
-      <RadzenButton Text="@Loc["create"]" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
-    </RadzenStack>
-    <CustomHr></CustomHr>
-    @*  <RadzenListBox id="sortable-list" TValue="Announcement" ValueProperty="Id" TextProperty="Message" Data="_announcements" AllowClear="false" AllowFiltering="false" AllowSelectAll="false" AllowVirtualization="false" FilterAsYouType="false" >
-
-  </RadzenListBox>
-  *@
-    <RadzenRow Gap="2">
-      <RadzenColumn SizeSM="12" SizeMD="12" SizeLG="8" SizeXL="6">
-        <SortableList @ref="_sortableListRef" InvertSwap="@true" InvertedSwapThreshold="15" TValue="Announcement" Data="_announcements" ValueProperty="@nameof(Announcement.Id)" DisabledProperty="@nameof(Announcement.IsDisabled)" OrderProperty="@nameof(Announcement.Order)" TextProperty="@nameof(Announcement.Message)">
-          <Template Context="item">
-            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start">
-              <RadzenColumn Size="2" class="p-2">
-                <RadzenButton Style="max-width: 30px !important; width: 30px" MouseEnter="@(args => ShowTooltipDanger(args, Loc["delete"]))" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="(() => ConfirmDelete(item.Id,item.Message))">
-                </RadzenButton>
-              </RadzenColumn>
-              <RadzenColumn Size="10" class="pt-2">
-                <p class="text-break">
-                  @item.Message
-                </p>
-              </RadzenColumn>
-
-
-            </RadzenStack>
-
-          </Template>
-
-        </SortableList>
-      </RadzenColumn>
-    </RadzenRow>
-    @if (_announcements.Count != 0) {
-      <RadzenStack class="mt-4" Orientation="Orientation.Horizontal">
-        <RadzenButton Click="ApplyChanges" Icon="check" ButtonStyle="ButtonStyle.Success" Text="@Loc["apply_changes"]"></RadzenButton>
-        @* <RadzenButton Click="ResetSortableList" Icon="settings_backup_restore" ButtonStyle="ButtonStyle.Danger" Text="@Loc["reset"]"></RadzenButton> *@
-
+  <RadzenColumn SizeMD="6" SizeLG="6" SizeSM="12">
+    <RadzenCard Variant="Variant.Filled">
+      <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
+        <RadzenText TextStyle="TextStyle.H4">@Loc["announcements"]</RadzenText>
+        <RadzenButton Text="@Loc["create"]" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
       </RadzenStack>
-    }
-    else {
-      <RadzenLabel>@Loc["no_announcements_found"]</RadzenLabel>
-    }
+      <CustomHr></CustomHr>
+      <RadzenRow Gap="2">
+        <RadzenColumn SizeSM="12" SizeMD="12" SizeLG="8" SizeXL="6">
+          <SortableList @ref="_sortableListRef" InvertSwap="@true" InvertedSwapThreshold="15" TValue="Announcement" OrderedData="_announcements" ValueProperty="@nameof(Announcement.Id)" DisabledProperty="@nameof(Announcement.IsDisabled)" OrderProperty="@nameof(Announcement.Order)" TextProperty="@nameof(Announcement.Message)">
+            <Template Context="item">
+              <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start">
+                <RadzenColumn Size="2" class="p-2">
+                  <RadzenButton Style="max-width: 30px !important; width: 30px" MouseEnter="@(args => ShowTooltipDanger(args, Loc["delete"]))" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="(() => ConfirmDelete(item.Id,item.Message))">
+                  </RadzenButton>
+                </RadzenColumn>
+                <RadzenColumn Size="10" class="pt-2">
+                  <p class="text-break">
+                    @item.Message
+                  </p>
+                </RadzenColumn>
 
 
-  </RadzenCard>
-</RadzenColumn>
+              </RadzenStack>
+
+            </Template>
+
+          </SortableList>
+        </RadzenColumn>
+      </RadzenRow>
+      @if (_announcements.Count > 1) {
+        <RadzenStack class="mt-4" Orientation="Orientation.Horizontal">
+          <RadzenButton Click="ApplyChanges" Icon="check" ButtonStyle="ButtonStyle.Success" Text="@Loc["apply_changes"]"></RadzenButton>
+          @* <RadzenButton Click="ResetSortableList" Icon="settings_backup_restore" ButtonStyle="ButtonStyle.Danger" Text="@Loc["reset"]"></RadzenButton> *@
+
+        </RadzenStack>
+      }
+      else if (_announcements.Count == 0) {
+
+        <RadzenLabel>@Loc["no_announcements_found"]</RadzenLabel>
+      }
+
+    </RadzenCard>
+  </RadzenColumn>
 </RadzenRow>
 
 
@@ -64,7 +60,6 @@
 
 @code {
 
-  private List<Announcement> _orderedList { get; set; } = new();
 
   private SortableList<Announcement>? _sortableListRef;
   private void ResetSortableList() {
@@ -84,30 +79,30 @@
   private Announcement _editedAnnouncement = new();
   private async Task ShowCreateDialog() {
     var result = await Dialog.OpenAsync(Loc["create_announcement"], ds =>
-    @<RadzenTemplateForm TItem="AddAnnouncementRequest" Data="@_addedAnnouncement" Submit="@(OnAddSubmit)">
-      <RadzenStack Orientation="Orientation.Vertical">
-        <div class="mb-2">
-          <RadzenFormField class="mw-100 w-100" Component="AnnouncementMessage" Text="@Loc["message"]" Variant="Variant.Filled">
-            <RadzenTextArea class="mw-100 w-100 " style="min-width: 300px" @bind-Value="@_addedAnnouncement.Message" Name="AnnouncementMessage"></RadzenTextArea>
-          </RadzenFormField>
-          <RadzenRequiredValidator Component="AnnouncementMessage" Text="@Loc["required"].Format("name", Loc["message"])"></RadzenRequiredValidator>
-          <RadzenLengthValidator Component="AnnouncementMessage" Min="3" Text="@Loc["too_short"].Format("name", Loc["message"]).Format("limit", 3)"></RadzenLengthValidator>
-          <RadzenLengthValidator Component="AnnouncementMessage" Max="128" Text="@Loc["too_long"].Format("name", Loc["message"]).Format("limit", 128)"></RadzenLengthValidator>
-        </div>
-        <div class="mb-2">
-          <RadzenFormField class="mw-100 w-100" Component="AnnouncementExpire" Text="@Loc["expire_date"]" Variant="Variant.Filled">
-            <RadzenDatePicker class="mw-100 w-100" Min="DateTime.Now" Max="DateTime.Now.AddDays(90)" @bind-Value="@_addedAnnouncement.ExpireDate" Name="AnnouncementExpire"></RadzenDatePicker>
-          </RadzenFormField>
-          <RadzenRequiredValidator Component="AnnouncementExpire" Text="@Loc["required"].Format("name", Loc["expire_date"])"></RadzenRequiredValidator>
-        </div>
-        <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-          <RadzenStack Orientation="Orientation.Horizontal">
-            <RadzenButton Text=@Loc["create"] Click="() => { }" ButtonType="ButtonType.Submit" Style="width: 120px;" />
-            <RadzenButton Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
-          </RadzenStack>
+  @<RadzenTemplateForm TItem="AddAnnouncementRequest" Data="@_addedAnnouncement" Submit="@(OnAddSubmit)">
+    <RadzenStack Orientation="Orientation.Vertical">
+      <div class="mb-2">
+        <RadzenFormField class="mw-100 w-100" Component="AnnouncementMessage" Text="@Loc["message"]" Variant="Variant.Filled">
+          <RadzenTextArea class="mw-100 w-100 " style="min-width: 300px" @bind-Value="@_addedAnnouncement.Message" Name="AnnouncementMessage"></RadzenTextArea>
+        </RadzenFormField>
+        <RadzenRequiredValidator Component="AnnouncementMessage" Text="@Loc["required"].Format("name", Loc["message"])"></RadzenRequiredValidator>
+        <RadzenLengthValidator Component="AnnouncementMessage" Min="3" Text="@Loc["too_short"].Format("name", Loc["message"]).Format("limit", 3)"></RadzenLengthValidator>
+        <RadzenLengthValidator Component="AnnouncementMessage" Max="128" Text="@Loc["too_long"].Format("name", Loc["message"]).Format("limit", 128)"></RadzenLengthValidator>
+      </div>
+      <div class="mb-2">
+        <RadzenFormField class="mw-100 w-100" Component="AnnouncementExpire" Text="@Loc["expire_date"]" Variant="Variant.Filled">
+          <RadzenDatePicker class="mw-100 w-100" Min="DateTime.Now" Max="DateTime.Now.AddDays(90)" @bind-Value="@_addedAnnouncement.ExpireDate" Name="AnnouncementExpire"></RadzenDatePicker>
+        </RadzenFormField>
+        <RadzenRequiredValidator Component="AnnouncementExpire" Text="@Loc["required"].Format("name", Loc["expire_date"])"></RadzenRequiredValidator>
+      </div>
+      <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal">
+          <RadzenButton Text=@Loc["create"] Click="() => { }" ButtonType="ButtonType.Submit" Style="width: 120px;" />
+          <RadzenButton Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
         </RadzenStack>
       </RadzenStack>
-    </RadzenTemplateForm>
+    </RadzenStack>
+  </RadzenTemplateForm>
   , new DialogOptions {
     AutoFocusFirstElement = true,
     Height = "auto",

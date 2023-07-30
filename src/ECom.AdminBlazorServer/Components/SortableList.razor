@@ -7,11 +7,12 @@
 @inject IJsLocalStorageUtil JsLocalStorageUtil
 
 <div id="@_elementId" class="list-group col">
-  @foreach (var item in GetOrdered()) {
+  @foreach (var item in OrderedData) {
     <div id="@Guid.NewGuid().ToString().Replace("-", "")" data-id="@GetValuePropertyValue(item)" style="cursor: move;" class="prevent-select list-group-item nested-1 @GetIsDisabledClass(item)">
       @if (Template is null) {
         <p class="text-break">
-          @*@GetTextPropertyValue(item)*@
+
+          @GetTextPropertyValue(item)
         </p>
       }
       else {
@@ -25,7 +26,7 @@
 @code {
   [Parameter]
   [Required]
-  public List<TValue> Data { get; set; } = new();
+  public List<TValue> OrderedData { get; set; } = new();
 
   [Parameter]
   public Orientation Orientation { get; set; } = Orientation.Vertical;
@@ -122,7 +123,7 @@
   }
 
   private List<TValue> GetOrdered() {
-    var ordered = Data.OrderBy(x => _orderProperty.GetValue(x)).ToList();
+    var ordered = OrderedData.OrderBy(x => _orderProperty.GetValue(x)).ToList();
     return ordered;
   }
 
@@ -138,7 +139,7 @@
     var orderedList = new List<TValue>();
     var order = 0;
     foreach (var id in orderedIdList) {
-      var item = Data.FirstOrDefault(x => GetValuePropertyValue(x) == id.ToString());
+      var item = OrderedData.FirstOrDefault(x => GetValuePropertyValue(x) == id.ToString());
       if (item is null) continue;
       _orderProperty.SetValue(item, order++);
       orderedList.Add(item);

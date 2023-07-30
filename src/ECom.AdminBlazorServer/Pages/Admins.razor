@@ -22,8 +22,6 @@
       <RadzenDataGridColumn MinWidth="280px" Width="300px" TItem="AdminDto" Property="Id" Title="@Loc["id"]"  Frozen="true"/>
       <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="AdminDto" Property="RegisterDate" Title="@(Loc["register"] + Loc["date"])" FormatString="{0:d}"/>
       <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="EmailAddress" Title="@Loc["email_address"]"/>
-      @*<RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="TwoFactorType" Title="@Lang.Get("two_factor","type")" />*@
-      @*<RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="RoleId" Title="@Lang.Get("role","id")" />*@
       <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="RoleId" Title="@(Loc["role"])"/>
       <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="DeletedDate" Title="@(Loc["delete"] + " " + Loc["date"])" FormatString="{0:d}"/>
       <RadzenDataGridColumn MinWidth="240px" TItem="AdminDto" Title="@Loc["actions"]">

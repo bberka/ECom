@@ -26,11 +26,11 @@ public class DebugAdminAuthenticationMiddleware
     //  var adminResult = adminService.GetAdmin(1);
     //  if (adminResult.Status) {
     //    var tokenResult = adminJwtAuthenticator.Authenticate(new LoginRequest {
-    //      Password = adminResult.Data.Password,
-    //      EmailAddress = adminResult.Data.EmailAddress,
+    //      Password = adminResult.OrderedData.Password,
+    //      EmailAddress = adminResult.OrderedData.EmailAddress,
     //      IsHashed = true
     //    });
-    //    if (tokenResult.Status) token = tokenResult.Data.Token.Token!;
+    //    if (tokenResult.Status) token = tokenResult.OrderedData.Token.Token!;
     //    context.Session.SetString("token", token);
     //  }
     //}
