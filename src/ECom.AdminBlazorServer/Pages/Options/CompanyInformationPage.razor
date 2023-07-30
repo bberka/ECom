@@ -7,33 +7,29 @@
   <RadzenColumn>
     <RadzenCard>
       <RadzenTemplateForm TItem="CompanyInformation" Data="_editedCompanyInformation" Submit="UpdateCompanyInfo">
-        <RadzenRow Gap="25" class="my-3 mx-2">
-          <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="4">
-
-            <RadzenFieldset Text="@Loc["general"]">
+        <RadzenTabs @bind-SelectedIndex=@selectedIndex>
+          <Tabs>
+            <RadzenTabsItem Text="@Loc["general"]">
               <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
-                <RadzenFormField class="w-100" Text="@Loc["company_name"]" Variant="Variant.Filled">
+                <RadzenFormField class="w-100 " Style="max-width:500px" Text="@Loc["company_name"]" Variant="Variant.Filled">
                   <RadzenTextBox @bind-Value="_editedCompanyInformation.CompanyName" MaxLength="@ValidationSettings.MaxNameLength"></RadzenTextBox>
                 </RadzenFormField>
-                <RadzenFormField  class="w-100" Text="@Loc["description"]" Variant="Variant.Filled">
+                
+                <RadzenFormField class="w-100" Style="max-width:500px" Text="@Loc["phone_number"]" Variant="Variant.Filled">
+                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_editedCompanyInformation.CompanyAddress" />
+                </RadzenFormField>
+                <RadzenFormField class="w-100" Style="max-width:500px" Text="@Loc["contact_email"]" Variant="Variant.Filled">
+                  <RadzenMask Pattern="@ValidationSettings.RegexEmail" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_editedCompanyInformation.ContactEmail" />
+                </RadzenFormField>
+                <RadzenFormField class="w-100" Text="@Loc["description"]" Variant="Variant.Filled">
                   <RadzenTextArea Style="min-height: 70px" @bind-Value="_editedCompanyInformation.Description" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
                 </RadzenFormField>
                 <RadzenFormField class="w-100" Text="@Loc["company_address"]" Variant="Variant.Filled">
                   <RadzenTextArea Style="min-height: 70px" @bind-Value="_editedCompanyInformation.CompanyAddress" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
                 </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["phone_number"]" Variant="Variant.Filled">
-                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_editedCompanyInformation.CompanyAddress"/>
-                </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["contact_email"]" Variant="Variant.Filled">
-                  <RadzenMask Pattern="@ValidationSettings.RegexEmail" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_editedCompanyInformation.ContactEmail"/>
-                </RadzenFormField>
               </RadzenStack>
-             
-
-            </RadzenFieldset>
-          </RadzenColumn>
-          <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="4">
-            <RadzenFieldset Text="@Loc["social_media"]">
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="@Loc["social_media"]">
               <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
                 <RadzenFormField class="w-100" Text="@Loc["facebook_link"]" Variant="Variant.Filled">
                   <RadzenTextBox @bind-Value="_editedCompanyInformation.FacebookLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
@@ -45,15 +41,11 @@
                   <RadzenTextBox @bind-Value="_editedCompanyInformation.YoutubeLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
                 <RadzenFormField class="w-100" Text="@Loc["whatsapp"]" Variant="Variant.Filled">
-                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_editedCompanyInformation.WhatsApp"/>
+                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_editedCompanyInformation.WhatsApp" />
                 </RadzenFormField>
               </RadzenStack>
-            </RadzenFieldset>
-          </RadzenColumn>
-        </RadzenRow>
-        <RadzenRow Gap="25" class="my-3 mx-2">
-          <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="4">
-            <RadzenFieldset Text="@Loc["urls"]">
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="@Loc["urls"]">
               <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
                 <RadzenFormField class="w-100" Text="@Loc["domain_url"]" Variant="Variant.Filled">
                   <RadzenTextBox @bind-Value="_editedCompanyInformation.DomainUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
@@ -62,20 +54,17 @@
                   <RadzenTextBox @bind-Value="_editedCompanyInformation.WebApiUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
               </RadzenStack>
-            </RadzenFieldset>
-          </RadzenColumn>
-
-        
-          <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" SizeXL="4">
-            <RadzenFieldset Text="@Loc["images"]">
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="@Loc["images"]">
               @*
                 TODO: add image view on button click for both images
                 TODO: add image upload on button click for both images
 
               *@
-            </RadzenFieldset>
-          </RadzenColumn>
-        </RadzenRow>
+            </RadzenTabsItem>
+          </Tabs>
+        </RadzenTabs>
+        
       </RadzenTemplateForm>
     </RadzenCard>
   </RadzenColumn>
@@ -85,6 +74,7 @@
 
 
 @code {
+  int selectedIndex = 0;
   private CompanyInformation _companyInformation = new CompanyInformation();
   private CompanyInformation _editedCompanyInformation = new CompanyInformation();
   protected override void OnInitialized() {
