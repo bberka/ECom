@@ -194,13 +194,13 @@ builder.Services.AddScoped<IAdminRoleService, AdminRoleService>();
 builder.AddValidators();
 
 
-builder.Services.AddSwaggerGen(c => {
-  c.DocInclusionPredicate((groupName, apiDescription) => {
-    if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) return true;
-    return false;
-  });
-});
-builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
+//builder.Services.AddSwaggerGen(c => {
+//  c.DocInclusionPredicate((groupName, apiDescription) => {
+//    if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) return true;
+//    return false;
+//  });
+//});
+//builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
 builder.Services.AddBlazorExt();
 
@@ -231,8 +231,8 @@ app.UseRequestLocalization(localizationOptions);
 
 
 
-app.UseSwagger();
-app.UseSwaggerUI();
+//app.UseSwagger();
+//app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseRouting();
