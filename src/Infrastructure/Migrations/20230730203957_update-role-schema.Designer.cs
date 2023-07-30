@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Infrastructure.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20230721115640_role_table_update")]
-    partial class role_table_update
+    [Migration("20230730203957_update-role-schema")]
+    partial class updateroleschema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,6 +108,10 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("RefreshJwtToken")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
@@ -867,19 +871,7 @@ namespace ECom.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "ManageThemes"
-                        },
-                        new
-                        {
-                            Id = "ManagePlugins"
-                        },
-                        new
-                        {
-                            Id = "ManageLanguages"
-                        },
-                        new
-                        {
-                            Id = "ManageCurrencies"
+                            Id = "ManageQuestions"
                         },
                         new
                         {
@@ -927,19 +919,19 @@ namespace ECom.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "ManageRolesAndPermissions"
-                        },
-                        new
-                        {
                             Id = "ManageLocalization"
                         },
                         new
                         {
-                            Id = "ManagePluginsAndThemes"
+                            Id = "ManageCargoOptions"
                         },
                         new
                         {
-                            Id = "ManageCargoOptions"
+                            Id = "ManageLoginSessions"
+                        },
+                        new
+                        {
+                            Id = "ManageRoles"
                         });
                 });
 
@@ -996,22 +988,7 @@ namespace ECom.Infrastructure.Migrations
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManageThemes"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
-                            PermissionId = "ManagePlugins"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
-                            PermissionId = "ManageLanguages"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
-                            PermissionId = "ManageCurrencies"
+                            PermissionId = "ManageQuestions"
                         },
                         new
                         {
@@ -1071,22 +1048,22 @@ namespace ECom.Infrastructure.Migrations
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManageRolesAndPermissions"
-                        },
-                        new
-                        {
-                            RoleId = "Owner",
                             PermissionId = "ManageLocalization"
                         },
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManagePluginsAndThemes"
+                            PermissionId = "ManageCargoOptions"
                         },
                         new
                         {
                             RoleId = "Owner",
-                            PermissionId = "ManageCargoOptions"
+                            PermissionId = "ManageLoginSessions"
+                        },
+                        new
+                        {
+                            RoleId = "Owner",
+                            PermissionId = "ManageRoles"
                         });
                 });
 
@@ -1264,7 +1241,7 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "ECEnum");
+                    b.ToTable("Roles", "ECOperation");
 
                     b.HasData(
                         new
@@ -1582,6 +1559,10 @@ namespace ECom.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("RefreshJwtToken")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");

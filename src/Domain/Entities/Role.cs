@@ -2,7 +2,7 @@
 
 namespace ECom.Domain.Entities;
 
-[Table("Roles", Schema = "ECEnum")]
+[Table("Roles", Schema = "ECOperation")]
 public class Role : IEntity
 {
   [Key]
