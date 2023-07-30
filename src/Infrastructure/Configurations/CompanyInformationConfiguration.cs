@@ -1,4 +1,4 @@
-﻿using ECom.Domain.Entities;
+﻿using ECom.Shared.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECom.Infrastructure.Configurations;

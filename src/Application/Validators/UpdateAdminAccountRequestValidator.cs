@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Validators;
+﻿using ECom.Shared.Abstract.Services;
+
+namespace ECom.Application.Validators;
 
 public class UpdateAdminAccountRequestValidator : AbstractValidator<UpdateAdminAccountRequest>,
   IValidator<UpdateAdminAccountRequest>

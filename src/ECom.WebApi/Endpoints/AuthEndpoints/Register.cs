@@ -1,5 +1,7 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Shared.DTOs.UserDto;
+using ECom.Domain.Abstract.Services;
+using ECom.Domain.Abstract.Services.User;
+using ECom.Shared.DTOs;
 
 namespace ECom.WebApi.Endpoints.AuthEndpoints;
 
@@ -8,9 +10,9 @@ namespace ECom.WebApi.Endpoints.AuthEndpoints;
 public class Register : EndpointBaseSync.WithRequest<RegisterUserRequest>.WithResult<CustomResult>
 {
   private readonly ILogService _logService;
-  private readonly IUserService _userService;
+  private readonly IUserAccountService _userService;
 
-  public Register(IUserService userService, ILogService logService) {
+  public Register(IUserAccountService userService, ILogService logService) {
     _userService = userService;
     _logService = logService;
   }

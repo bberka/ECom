@@ -1,0 +1,154 @@
+﻿@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+@using System.Diagnostics
+@using EasMe.Extensions
+@typeparam TValue where TValue : class
+@inject IJSRuntime JsRuntime
+@inject IJsLocalStorageUtil JsLocalStorageUtil
+
+<div id="@_elementId" class="list-group col">
+  @foreach (var item in GetOrdered()) {
+    <div id="@Guid.NewGuid().ToString().Replace("-", "")" data-id="@GetValuePropertyValue(item)" style="cursor: move;" class="prevent-select list-group-item nested-1 @GetIsDisabledClass(item)">
+      @if (Template is null) {
+        <p class="text-break">
+          @*@GetTextPropertyValue(item)*@
+        </p>
+      }
+      else {
+        @Template.Invoke(item)
+      }
+
+    </div>
+  }
+</div>
+
+@code {
+  [Parameter]
+  [Required]
+  public List<TValue> Data { get; set; } = new();
+
+  [Parameter]
+  public Orientation Orientation { get; set; } = Orientation.Vertical;
+  [Parameter]
+  public string Group { get; set; } = Guid.NewGuid().ToString();
+
+  [Parameter]
+  public bool RemoveCloneOnHide { get; set; } = false;
+
+  [Parameter]
+  public bool InvertSwap { get; set; } = false;
+
+  [Parameter]
+  public bool Disabled { get; set; } = false;
+
+  [Parameter]
+  public int SwapThreshold { get; set; } = 1;
+
+  [Parameter]
+  public int InvertedSwapThreshold { get; set; } = 0;
+
+  [Parameter]
+  public RenderFragment<TValue>? Template { get; set; }
+
+  [Parameter]
+  public int Delay { get; set; } = 0;
+
+  [Parameter]
+  public int Animation { get; set; } = 150;
+
+  [Parameter]
+  [Required]
+  public string TextProperty { get; set; }
+  [Parameter]
+  [Required]
+  public string ValueProperty { get; set; }
+  [Parameter]
+  public string? DisabledProperty { get; set; }
+  [Parameter]
+  [Required]
+  public string OrderProperty { get; set; }
+
+
+  //[Parameter]
+  //public EventCallback<DragEventArgs> DragStart { get; set; }
+
+  //[Parameter]
+  //public EventCallback<DragEventArgs> DragOver { get; set; }
+
+  //[Parameter]
+  //public EventCallback<DragEventArgs> Drop { get; set; }
+
+
+  private PropertyInfo _valueProperty;
+  private PropertyInfo _textProperty;
+  private PropertyInfo _orderProperty;
+  private PropertyInfo? _disableProperty;
+  private Type? _genericType;
+  private PropertyInfo[]? _properties;
+
+  private string _elementId = Guid.NewGuid().ToString().Replace("-", "");
+  private List<TValue> OrderedNewList { get; set; } = new();
+
+
+  protected override async Task OnInitializedAsync() {
+    _genericType = typeof(TValue);
+    _properties = _genericType.GetProperties();
+
+    _valueProperty = _genericType.GetProperty(ValueProperty);
+    _textProperty = _genericType.GetProperty(TextProperty);
+    _disableProperty = DisabledProperty == null ? null : _genericType.GetProperty(DisabledProperty);
+    _orderProperty = _genericType.GetProperty(OrderProperty);
+
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
+    var jsFuncString = $"NestableCreate('{_elementId}','{Orientation.ToString().ToLower()}','{Group}',{Animation},{Disabled.ToString().ToLower()},{Delay},{InvertSwap.ToString().ToLower()},{RemoveCloneOnHide.ToString().ToLower()},{SwapThreshold},{InvertedSwapThreshold})";
+    await JsRuntime.InvokeVoidAsync("eval", jsFuncString);
+  }
+
+
+  private string? GetValuePropertyValue(TValue item) {
+    return _valueProperty.GetValue(item)?.ToString();
+  }
+
+  private string? GetTextPropertyValue(TValue item) {
+    return _textProperty.GetValue(item)?.ToString();
+  }
+  private string GetIsDisabledClass(TValue item) {
+    var value = _disableProperty?.GetValue(item);
+    if (value is null) return "";
+    if (value.ToString() == true.ToString()) return "disabled";
+    return "";
+  }
+
+  private List<TValue> GetOrdered() {
+    var ordered = Data.OrderBy(x => _orderProperty.GetValue(x)).ToList();
+    return ordered;
+  }
+
+  public void ResetListOrder() {
+
+    StateHasChanged();
+  }
+
+  public async Task<List<TValue>> GetNewOrderedList() {
+    //This data can be get from LocalStorage: sortable-%ELEMENTID%
+    var orderedIdList = await JsRuntime.InvokeAsync<object[]?>("eval", $"NestableGetOrder('{_elementId}')");
+    if (orderedIdList is null) return new List<TValue>();
+    var orderedList = new List<TValue>();
+    var order = 0;
+    foreach (var id in orderedIdList) {
+      var item = Data.FirstOrDefault(x => GetValuePropertyValue(x) == id.ToString());
+      if (item is null) continue;
+      _orderProperty.SetValue(item, order++);
+      orderedList.Add(item);
+    }
+    return orderedList;
+  }
+
+
+  [JSInvokable("on_sort")]
+  public async Task OnSort(object eventArgs) {
+    OrderedNewList = await GetNewOrderedList();
+  }
+}

@@ -226,9 +226,6 @@ namespace ECom.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
@@ -319,9 +316,6 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -1241,18 +1235,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Roles", "ECOperation");
 
                     b.HasData(
-                        new
-                        {
-                            Id = "Support"
-                        },
-                        new
-                        {
-                            Id = "Moderator"
-                        },
-                        new
-                        {
-                            Id = "Admin"
-                        },
                         new
                         {
                             Id = "Owner"

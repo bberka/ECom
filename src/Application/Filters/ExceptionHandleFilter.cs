@@ -19,16 +19,5 @@ public class ExceptionHandleFilter : IExceptionFilter
       context.HttpContext.Response.StatusCode = 500;
       Log.Fatal(context.Exception, $"Query({query})");
     }
-    //if(baseType is not null)
-    //{
-    //    if (baseType.Equals(typeof(CustomException)))
-    //    {
-    //        var errCode = type.Name.Replace("Exception", "");
-    //        var paramArray = context.Exception.Message.Split(':').ToArray();
-    //        var body = Result.Error(100, errCode, paramArray);
-    //        context.Result = new OkObjectResult(body);
-    //        logger.Warn(query, body.ErrorCode,body.Parameters);
-    //    }
-    //}
   }
 }

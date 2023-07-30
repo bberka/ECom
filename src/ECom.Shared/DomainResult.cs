@@ -171,4 +171,10 @@ public static class DomainResult
     return CustomResult.Error(announcementName, "can_not_set_expired");
 
   }
+  public static CustomResult CanNotDelete(string name) {
+    return CustomResult.Error(name, "can_not_delete");
+  }
+  public static CustomResult CanNotDeleteBcRelation(string name,string relationName) {
+    return CustomResult.Error(name, "can_not_delete",relationName);
+  }
 }

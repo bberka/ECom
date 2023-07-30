@@ -1,5 +1,5 @@
 ﻿using ECom.Application.Attributes;
-using ECom.Shared.DTOs.UserDto;
+using ECom.Shared.DTOs;
 
 namespace ECom.WebApi.Endpoints.AccountEndpoints;
 

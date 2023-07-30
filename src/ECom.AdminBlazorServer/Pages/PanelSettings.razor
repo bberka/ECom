@@ -13,7 +13,7 @@
               <RadzenText Class="mx-2 --rz-primary-dark" TextAlign="TextAlign.Start" TextStyle="TextStyle.H6" Text="@Loc["language"]"/>
             </RadzenColumn>
             <RadzenColumn >
-              <RadzenDropDown class="mx-2 rz-shadow-3" Style="width: 170px" TValue="string" Data="SupportedCultures.Dictionary" ValueProperty="Key" @bind-Value="_selectedCulture" Change="OnChangeCulture" TextProperty="Value" Name="CultureSelect"></RadzenDropDown>
+              <RadzenDropDown class="mx-2 " Style="width: 170px" TValue="string" Data="SupportedCultures.Dictionary" ValueProperty="Key" @bind-Value="_selectedCulture" Change="OnChangeCulture" TextProperty="Value" Name="CultureSelect"></RadzenDropDown>
             </RadzenColumn>
           </RadzenRow>
           <RadzenRow class="my-3">
@@ -21,7 +21,7 @@
               <RadzenText Class="mx-2 --rz-primary-dark" TextAlign="TextAlign.Start" TextStyle="TextStyle.H6" Text="@Loc["theme"]"/>
             </RadzenColumn>
             <RadzenColumn >
-              <RadzenDropDown class="mx-2 rz-shadow-3 " Style="width: 170px" TValue="string" Data="_themes" ValueProperty="Key" @bind-Value="_selectedTheme" Change="OnChangeTheme" TextProperty="Value" Name="ThemeSelect"></RadzenDropDown>
+              <RadzenDropDown class="mx-2  " Style="width: 170px" TValue="string" Data="_themes" ValueProperty="Key" @bind-Value="_selectedTheme" Change="OnChangeTheme" TextProperty="Value" Name="ThemeSelect"></RadzenDropDown>
 
             </RadzenColumn>
           </RadzenRow>

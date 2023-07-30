@@ -2,6 +2,7 @@
 
 public static class ValidationSettings
 {
+  public const string RegexEmail = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
   public const int MinGlobalStringLength = 1;
   public const int MaxGlobalStringLength = 1000;
   public const int MinPasswordLength = 6;

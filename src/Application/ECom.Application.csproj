@@ -25,4 +25,8 @@
 		<ProjectReference Include="..\Infrastructure\ECom.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\UserServices\" />
+	</ItemGroup>
+
 </Project>

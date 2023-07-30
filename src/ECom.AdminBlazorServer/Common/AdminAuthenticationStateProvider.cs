@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Bers.Blazor.Ext.Javascript;
 using EasMe;
 using ECom.Shared;
-using ECom.Shared.DTOs.AdminDto;
+using ECom.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 

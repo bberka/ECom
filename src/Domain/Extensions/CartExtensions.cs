@@ -1,4 +1,4 @@
-﻿using ECom.Domain.Entities;
+﻿using ECom.Shared.Entities;
 using ECom.Shared.Models;
 using Microsoft.AspNetCore.Http;
 
