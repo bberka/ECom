@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\JwtEndpoints\" />
     <Folder Include="Pages\Announcement\" />
   </ItemGroup>
 
