@@ -132,7 +132,7 @@
   }
 
   private async Task ConfirmDelete(Guid id, string message) {
-    var dialogResult = await ShowSimpleDialogLocalized(SimpleDialogType.Delete, Loc["selected_announcement"]);
+    var dialogResult = await ShowSimpleDialogLocalized(SimpleDialogType.delete, Loc["selected_announcement"]);
     if (dialogResult != true) {
       return;
     }

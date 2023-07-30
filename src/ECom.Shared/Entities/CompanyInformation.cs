@@ -1,7 +1,7 @@
 ﻿namespace ECom.Shared.Entities;
 
 [Table("CompanyInformation", Schema = "ECOperation")]
-public class CompanyInformation : IEntity
+public class CompanyInformation : IEntity, ICloneable
 {
   [Key]
   public bool Key { get; set; } = true;
@@ -51,4 +51,10 @@ public class CompanyInformation : IEntity
   
   public Guid? LogoImageId { get; set; }
   public Guid? FavIcoImageId { get; set; }
+  public object Clone() {
+    return MemberwiseClone();
+  }
+  public CompanyInformation CloneCast() {
+    return (CompanyInformation)MemberwiseClone();
+  }
 }

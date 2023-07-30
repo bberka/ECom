@@ -31,7 +31,7 @@
 
   protected void ShowNotification(CustomResultLevel severity, string text, int duration = 3000) {
     var message = new NotificationMessage {
-      Severity = (NotificationSeverity)(int)severity,
+      Severity = (NotificationSeverity)(int)severity + 1,
       Summary = Loc[severity.ToString().ToLower()],
       Detail = text,
       Duration = duration

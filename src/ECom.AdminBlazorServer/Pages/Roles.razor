@@ -151,7 +151,7 @@
   }
 
   private async Task DeleteRole(Role value) {
-    var dialogResult = await ShowSimpleDialogLocalized(SimpleDialogType.Delete, value.Id + " " + Loc["role"]);
+    var dialogResult = await ShowSimpleDialogLocalized(SimpleDialogType.delete, value.Id + " " + Loc["role"]);
     if (dialogResult != true) {
       return;
     }

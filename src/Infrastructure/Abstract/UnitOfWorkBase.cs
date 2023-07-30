@@ -1,6 +1,7 @@
 ﻿using ECom.Shared.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Serilog;
 
 namespace ECom.Infrastructure.Abstract;
 
@@ -22,22 +23,28 @@ public abstract class UnitOfWorkBase : IUnitOfWorkBase
     DbContext = dbContext;
     IsTransactionBegan = false;
   }
+
+  
   public DbActionResult SaveResult() {
     try {
       BeginTransaction();
       var hasChanges = HasChanges();
       if (!hasChanges) {
+        Log.Debug("Db save failed: no changes");
         return new DbActionResult(false, false, 0, null);
       }
       var affectedRows = DbContext.SaveChanges();
       if (affectedRows > 0) {
         Transaction!.CommitAsync();
+        Log.Debug("Db saved successfully");
         return new DbActionResult(true, false, affectedRows, null);
       }
       Transaction!.Rollback();
+      Log.Debug("Db save failed: affected rows 0");
       return new DbActionResult(false, true, 0, null);
     } catch (Exception ex) {
       Transaction!.Rollback();
+      Log.Fatal(ex,"InternalDbError");
       return new DbActionResult(false, true, 0, ex);
     } finally {
       ResetTransaction();
@@ -94,6 +101,7 @@ public abstract class UnitOfWorkBase : IUnitOfWorkBase
 
 
   public bool HasChanges() {
+    if (!DbContext.ChangeTracker.AutoDetectChangesEnabled) throw new InvalidOperationException("DbSave can not be called if auto detect changes is off");
     return DbContext.ChangeTracker.HasChanges();
   }
 

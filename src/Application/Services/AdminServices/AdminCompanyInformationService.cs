@@ -13,11 +13,19 @@ public class AdminCompanyInformationService : CompanyInformationService, IAdminC
   public AdminCompanyInformationService(IMemoryCache memoryCache, IUnitOfWork unitOfWork) : base(memoryCache, unitOfWork) {
   }
   public CustomResult UpdateCompanyInformation(CompanyInformation info) {
-    var current = UnitOfWork.CompanyInformationRepository.FirstOrDefault(x => x.Key == info.Key);
-    if (current != null) UnitOfWork.CompanyInformationRepository.Delete(current);
-    UnitOfWork.CompanyInformationRepository.Insert(info);
+    var isValidModel = info.IsValidModel();
+    if (!isValidModel) {
+      return DomainResult.InvalidState(nameof(CompanyInformation));
+    }
+    info.Key = Key;
+    var dbData = UnitOfWork.CompanyInformationRepository.GetAll();
+    UnitOfWork.CompanyInformationRepository.DeleteRange(dbData);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateCompanyInformation));
+    UnitOfWork.CompanyInformationRepository.Insert(info);
+    var res2 = UnitOfWork.Save();
+    if (!res2) return DomainResult.DbInternalError(nameof(UpdateCompanyInformation));
+    SetCacheValue(info);
     return DomainResult.OkUpdated(nameof(CompanyInformation));
   }
 }

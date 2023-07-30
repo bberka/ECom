@@ -8,8 +8,8 @@ namespace ECom.Application.Services.BaseServices;
 
 public abstract class CompanyInformationService : ICompanyInformationService
 {
-  protected const byte CACHE_REFRESH_INTERVAL_MINS = 1;
-  protected const string CACHE_KEY = "company_info";
+  protected const byte CacheRefreshIntervalMinutes = 1;
+  protected const string CacheKey = "company_info";
   protected readonly IMemoryCache MemoryCache;
   protected readonly IUnitOfWork UnitOfWork;
   protected const bool Key = true;
@@ -18,15 +18,28 @@ public abstract class CompanyInformationService : ICompanyInformationService
     UnitOfWork = unitOfWork;
   }
   public CompanyInformation GetCompanyInformation() {
-    var cache = MemoryCache.Get<CompanyInformation>(CACHE_KEY);
-    if (cache is not null) return cache;
-    var companyInformation = UnitOfWork.CompanyInformationRepository.FirstOrDefault(x => x.Key == Key);
-    if (companyInformation is not null)
-      MemoryCache.Set(CACHE_KEY, companyInformation, TimeSpan.FromMinutes(CACHE_REFRESH_INTERVAL_MINS));
-    return new CompanyInformation();
+    var val = GetFromCache();
+    if (val != null) return val;
+    val = GetFromDb();
+    SetCacheValue(val);
+    return val;
   }
 
+  protected void ClearCache() {
+    MemoryCache.Remove(CacheKey);
+  }
 
+  protected void SetCacheValue(CompanyInformation companyInformation) {
+    MemoryCache.Set(CacheKey, companyInformation, TimeSpan.FromMinutes(CacheRefreshIntervalMinutes));
+  }
 
+  protected CompanyInformation? GetFromCache() {
+    var cache = MemoryCache.Get<CompanyInformation>(CacheKey);
+    return cache;
+  }
 
+  protected CompanyInformation GetFromDb() {
+    var companyInformation = UnitOfWork.CompanyInformationRepository.Get(x => x.Key == Key).AsNoTracking().Single();
+    return companyInformation;
+  }
 }

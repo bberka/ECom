@@ -4,11 +4,13 @@ public enum SimpleDialogType
 {
   //Add,
   //Update,
-  Delete,
-  Disable,
-  Enable,
+  delete,
+  disable,
+  enable,
 
-  Recover
+
+  recover,
+  update
   //Edit,
 }
 

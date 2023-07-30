@@ -192,6 +192,9 @@
   <data name="company_address" xml:space="preserve">
     <value>Company Address</value>
   </data>
+  <data name="company_information" xml:space="preserve">
+    <value />
+  </data>
   <data name="company_name" xml:space="preserve">
     <value>Company Name</value>
   </data>

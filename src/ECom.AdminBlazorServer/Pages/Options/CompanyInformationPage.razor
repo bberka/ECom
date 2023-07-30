@@ -1,57 +1,58 @@
 ﻿@using ECom.Shared.Abstract.Services.Admin
 @using ECom.Shared.Entities
+@using EasMe.Extensions
 @inherits SharedBasePage
 @inject IAdminCompanyInformationService CompanyInformationService
 @page "/options/company"
 <RadzenRow class="mb-5">
   <RadzenColumn>
-    <RadzenCard>
-      <RadzenTemplateForm TItem="CompanyInformation" Data="_editedCompanyInformation" Submit="UpdateCompanyInfo">
-        <RadzenTabs @bind-SelectedIndex=@selectedIndex>
-          <Tabs>
+    <RadzenCard  Style="max-width:500px">
+      <RadzenTemplateForm TItem="CompanyInformation" @bind-Data="_edited" Submit="UpdateCompanyInfo">
+        <RadzenTabs @bind-SelectedIndex=@_selectedIndex RenderMode="TabRenderMode.Client" >
+          <Tabs >
             <RadzenTabsItem Text="@Loc["general"]">
               <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
-                <RadzenFormField class="w-100 " Style="max-width:500px" Text="@Loc["company_name"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_editedCompanyInformation.CompanyName" MaxLength="@ValidationSettings.MaxNameLength"></RadzenTextBox>
+                <RadzenFormField class="w-100 "  Text="@Loc["company_name"]" Variant="Variant.Filled">
+                  <RadzenTextBox @bind-Value="_edited.CompanyName" MaxLength="@ValidationSettings.MaxNameLength"></RadzenTextBox>
                 </RadzenFormField>
                 
-                <RadzenFormField class="w-100" Style="max-width:500px" Text="@Loc["phone_number"]" Variant="Variant.Filled">
-                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_editedCompanyInformation.CompanyAddress" />
+                <RadzenFormField class="w-100"  Text="@Loc["phone_number"]" Variant="Variant.Filled">
+                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_edited.PhoneNumber" />
                 </RadzenFormField>
-                <RadzenFormField class="w-100" Style="max-width:500px" Text="@Loc["contact_email"]" Variant="Variant.Filled">
-                  <RadzenMask Pattern="@ValidationSettings.RegexEmail" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_editedCompanyInformation.ContactEmail" />
+                <RadzenFormField class="w-100"  Text="@Loc["contact_email"]" Variant="Variant.Filled">
+                  <RadzenMask Pattern="@ValidationSettings.RegexEmail" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_edited.ContactEmail" />
                 </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["description"]" Variant="Variant.Filled">
-                  <RadzenTextArea Style="min-height: 70px" @bind-Value="_editedCompanyInformation.Description" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
+                <RadzenFormField class="w-100"  Text="@Loc["description"]" Variant="Variant.Filled">
+                  <RadzenTextArea Style="min-height: 100px" @bind-Value="_edited.Description" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
                 </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["company_address"]" Variant="Variant.Filled">
-                  <RadzenTextArea Style="min-height: 70px" @bind-Value="_editedCompanyInformation.CompanyAddress" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
+                <RadzenFormField class="w-100"  Text="@Loc["company_address"]" Variant="Variant.Filled">
+                  <RadzenTextArea Style="min-height: 100px" @bind-Value="_edited.CompanyAddress" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
                 </RadzenFormField>
               </RadzenStack>
             </RadzenTabsItem>
             <RadzenTabsItem Text="@Loc["social_media"]">
               <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
                 <RadzenFormField class="w-100" Text="@Loc["facebook_link"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_editedCompanyInformation.FacebookLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                  <RadzenTextBox @bind-Value="_edited.FacebookLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
                 <RadzenFormField class="w-100" Text="@Loc["instagram_link"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_editedCompanyInformation.InstagramLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                  <RadzenTextBox @bind-Value="_edited.InstagramLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
                 <RadzenFormField class="w-100" Text="@Loc["youtube_link"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_editedCompanyInformation.YoutubeLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                  <RadzenTextBox @bind-Value="_edited.YoutubeLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
                 <RadzenFormField class="w-100" Text="@Loc["whatsapp"]" Variant="Variant.Filled">
-                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_editedCompanyInformation.WhatsApp" />
+                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_edited.WhatsApp" />
                 </RadzenFormField>
               </RadzenStack>
             </RadzenTabsItem>
             <RadzenTabsItem Text="@Loc["urls"]">
               <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
                 <RadzenFormField class="w-100" Text="@Loc["domain_url"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_editedCompanyInformation.DomainUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                  <RadzenTextBox @bind-Value="_edited.DomainUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
                 <RadzenFormField class="w-100" Text="@Loc["web_api_url"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_editedCompanyInformation.WebApiUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                  <RadzenTextBox @bind-Value="_edited.WebApiUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
                 </RadzenFormField>
               </RadzenStack>
             </RadzenTabsItem>
@@ -64,7 +65,12 @@
             </RadzenTabsItem>
           </Tabs>
         </RadzenTabs>
-        
+        <RadzenStack class="mt-4 mx-3" Orientation="Orientation.Horizontal">
+          <RadzenButton ButtonType="ButtonType.Submit" Icon="check" ButtonStyle="ButtonStyle.Success" Text="@Loc["apply_changes"]"></RadzenButton>
+          <RadzenButton ButtonType="ButtonType.Button"  Icon="settings_backup_restore" Click="ResetForm" ButtonStyle="ButtonStyle.Danger" Text="@Loc["reset"]"></RadzenButton>
+          @* <RadzenButton Click="ResetSortableList" Icon="settings_backup_restore" ButtonStyle="ButtonStyle.Danger" Text="@Loc["reset"]"></RadzenButton> *@
+
+        </RadzenStack>
       </RadzenTemplateForm>
     </RadzenCard>
   </RadzenColumn>
@@ -74,16 +80,31 @@
 
 
 @code {
-  int selectedIndex = 0;
-  private CompanyInformation _companyInformation = new CompanyInformation();
-  private CompanyInformation _editedCompanyInformation = new CompanyInformation();
+  int _selectedIndex = 0;
+  private CompanyInformation _original = new CompanyInformation();
+  private CompanyInformation _edited = new CompanyInformation();
   protected override void OnInitialized() {
-    base.OnInitialized();
-    _companyInformation = CompanyInformationService.GetCompanyInformation();
-    _editedCompanyInformation = _companyInformation;
+    _original = CompanyInformationService.GetCompanyInformation();
+    _edited = _original.CloneCast();
   }
 
-  private void UpdateCompanyInfo(CompanyInformation obj) {
+  private async Task UpdateCompanyInfo(CompanyInformation obj) {
+    var dialogResult = await ShowSimpleDialogLocalized(SimpleDialogType., "company_information");
+    if(!dialogResult) return;
+    var result = CompanyInformationService.UpdateCompanyInformation(_edited);
+    ShowResultNotification(result);
+    if (!result.Status) return;
+    _original = CompanyInformationService.GetCompanyInformation();
+    _edited = _original.CloneCast();
+
+  }
+
+  private void ResetForm() {
+    _edited = CompanyInformationService.GetCompanyInformation();
+    _edited = _original.CloneCast();
+
+    StateHasChanged();
+    ShowResultNotification(DomainResult.Success("reset_successful"));
 
   }
 

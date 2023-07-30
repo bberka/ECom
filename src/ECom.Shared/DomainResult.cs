@@ -5,6 +5,9 @@ public static class DomainResult
   public static CustomResult Exception(Exception exception, string name) {
     return CustomResult.Critical(exception, name);
   }
+  public static CustomResult InvalidState(string name) {
+    return CustomResult.Warn(name, "invalid_state");
+  }
 
   public static CustomResult NotDeleted(string name) {
     return CustomResult.Warn(name, "not_deleted");
@@ -32,6 +35,9 @@ public static class DomainResult
 
   #region OK
 
+  public static CustomResult Success(string error, string name = "") {
+    return CustomResult.Ok(name, error);
+  }
   public static CustomResult Ok(string name) {
     return CustomResult.Ok(name, "success");
   }
