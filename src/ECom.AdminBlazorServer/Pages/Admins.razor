@@ -26,9 +26,9 @@
       <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="deletedDate" Title="@(Loc["delete"] + " " + Loc["date"])" FormatString="{0:d}"/>
       <RadzenDataGridColumn MinWidth="240px" TItem="AdminDto" Title="@Loc["actions"]">
         <Template Context="admin">
-          <RadzenButton MouseEnter="@(args => ShowTooltipDanger(args, Loc["delete"]))" Visible="!admin.DeletedDate.HasValue" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="() => Show(SimpleDialogType.delete, admin)">
+          <RadzenButton MouseEnter="@(args => ShowTooltipDanger(args, Loc["delete"]))" Visible="!admin.DeletedDate.HasValue" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="() => Show(SimpleActionType.delete, admin)">
           </RadzenButton>
-          <RadzenButton MouseEnter="@(args => ShowTooltipSuccess(args, Loc["recover"]))" Visible="admin.DeletedDate.HasValue" Icon="done" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Button" Click="() => Show(SimpleDialogType.recover, admin)">
+          <RadzenButton MouseEnter="@(args => ShowTooltipSuccess(args, Loc["recover"]))" Visible="admin.DeletedDate.HasValue" Icon="done" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Button" Click="() => Show(SimpleActionType.recover, admin)">
           </RadzenButton>
           <RadzenButton MouseEnter="@(args => ShowTooltipInfo(args, Loc["edit"]))" Visible="!admin.DeletedDate.HasValue" Icon="edit" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Button" Click="() => ShowEditDialog(admin)">
           </RadzenButton>
@@ -85,7 +85,7 @@
     await ShowResultDialog(result);
   }
 
-  async Task Show(SimpleDialogType type, AdminDto model) {
+  async Task Show(SimpleActionType type, AdminDto model) {
     var dialogResult = await ShowSimpleDialogLocalized(type, model.EmailAddress);
     if (dialogResult != true) {
       return;
@@ -196,10 +196,10 @@
   }
 
 
-  private CustomResult PerformSimpleAction(SimpleDialogType type, AdminDto model) {
+  private CustomResult PerformSimpleAction(SimpleActionType type, AdminDto model) {
     var actionResult = type switch {
-      SimpleDialogType.delete => AdminService.DeleteAdmin(AuthenticatedAdminId, model.Id),
-      SimpleDialogType.recover => AdminService.RecoverAdmin(AuthenticatedAdminId, model.Id),
+      SimpleActionType.delete => AdminService.DeleteAdmin(AuthenticatedAdminId, model.Id),
+      SimpleActionType.recover => AdminService.RecoverAdmin(AuthenticatedAdminId, model.Id),
       _ => DomainResult.NotSupported()
       };
     return actionResult;

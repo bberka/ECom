@@ -6,55 +6,117 @@
 @page "/options/company"
 <RadzenRow class="mb-5">
   <RadzenColumn>
-    <RadzenCard  Style="max-width:500px">
+    <RadzenCard  Style="max-width:750px">
       <RadzenTemplateForm TItem="CompanyInformation" @bind-Data="_edited" Submit="UpdateCompanyInfo">
         <RadzenTabs @bind-SelectedIndex=@_selectedIndex RenderMode="TabRenderMode.Client" >
           <Tabs >
             <RadzenTabsItem Text="@Loc["general"]">
-              <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
-                <RadzenFormField class="w-100 "  Text="@Loc["company_name"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_edited.CompanyName" MaxLength="@ValidationSettings.MaxNameLength"></RadzenTextBox>
-                </RadzenFormField>
-                
-                <RadzenFormField class="w-100"  Text="@Loc["phone_number"]" Variant="Variant.Filled">
-                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_edited.PhoneNumber" />
-                </RadzenFormField>
-                <RadzenFormField class="w-100"  Text="@Loc["contact_email"]" Variant="Variant.Filled">
-                  <RadzenMask Pattern="@ValidationSettings.RegexEmail" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_edited.ContactEmail" />
-                </RadzenFormField>
-                <RadzenFormField class="w-100"  Text="@Loc["description"]" Variant="Variant.Filled">
-                  <RadzenTextArea Style="min-height: 100px" @bind-Value="_edited.Description" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
-                </RadzenFormField>
-                <RadzenFormField class="w-100"  Text="@Loc["company_address"]" Variant="Variant.Filled">
-                  <RadzenTextArea Style="min-height: 100px" @bind-Value="_edited.CompanyAddress" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
-                </RadzenFormField>
-              </RadzenStack>
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["company_name"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenTextBox class="w-100" @bind-Value="_edited.CompanyName" MaxLength="@ValidationSettings.MaxNameLength"></RadzenTextBox>
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["phone_number"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenMask class="w-100" Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_edited.PhoneNumber" />
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["contact_email"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenMask class="w-100" Pattern="@ValidationSettings.RegexEmail" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_edited.ContactEmail" />
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["description"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenTextArea class="w-100" Style="min-height: 100px" @bind-Value="_edited.Description" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["company_address"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenTextArea class="w-100" Style="min-height: 100px" @bind-Value="_edited.CompanyAddress" MaxLength="@ValidationSettings.MaxDescriptionLength"></RadzenTextArea>
+                </RadzenColumn>
+              </RadzenRow>
+              
             </RadzenTabsItem>
             <RadzenTabsItem Text="@Loc["social_media"]">
-              <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
-                <RadzenFormField class="w-100" Text="@Loc["facebook_link"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_edited.FacebookLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
-                </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["instagram_link"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_edited.InstagramLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
-                </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["youtube_link"]" Variant="Variant.Filled">
-                  <RadzenTextBox @bind-Value="_edited.YoutubeLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
-                </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["whatsapp"]" Variant="Variant.Filled">
-                  <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_edited.WhatsApp" />
-                </RadzenFormField>
-              </RadzenStack>
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["facebook_link"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenTextBox class="w-100" @bind-Value="_edited.FacebookLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["instagram_link"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenTextBox class="w-100" @bind-Value="_edited.InstagramLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["instagram_link"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenTextBox class="w-100" @bind-Value="_edited.YoutubeLink" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
+                </RadzenColumn>
+              </RadzenRow>
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["whatsapp"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
+                  <RadzenMask class="w-100" Mask="(***) ***-****" CharacterPattern="[0-9]" MaxLength="@ValidationSettings.MaxPhoneLength" Placeholder="(000) 000-0000" @bind-Value="_edited.WhatsApp" />
+                </RadzenColumn>
+              </RadzenRow>
+
+
+
             </RadzenTabsItem>
             <RadzenTabsItem Text="@Loc["urls"]">
-              <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap="20">
-                <RadzenFormField class="w-100" Text="@Loc["domain_url"]" Variant="Variant.Filled">
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["domain_url"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
                   <RadzenTextBox @bind-Value="_edited.DomainUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
-                </RadzenFormField>
-                <RadzenFormField class="w-100" Text="@Loc["web_api_url"]" Variant="Variant.Filled">
+                </RadzenColumn>
+              </RadzenRow>
+              
+              
+              <RadzenRow class="my-3">
+                <RadzenColumn SizeSM="12" SizeMD="4">
+                  <RadzenLabel class="text-center" Text="@Loc["web_api_url"]" />
+                </RadzenColumn>
+                <RadzenColumn SizeSM="12" SizeMD="8">
                   <RadzenTextBox @bind-Value="_edited.WebApiUrl" MaxLength="@ValidationSettings.MaxDomainLength"></RadzenTextBox>
-                </RadzenFormField>
-              </RadzenStack>
+                </RadzenColumn>
+              </RadzenRow>
+              
             </RadzenTabsItem>
             <RadzenTabsItem Text="@Loc["images"]">
               @*
@@ -89,7 +151,7 @@
   }
 
   private async Task UpdateCompanyInfo(CompanyInformation obj) {
-    var dialogResult = await ShowSimpleDialogLocalized(SimpleDialogType., "company_information");
+    var dialogResult = await ShowSimpleDialogLocalized(SimpleActionType.update, "company_information");
     if(!dialogResult) return;
     var result = CompanyInformationService.UpdateCompanyInformation(_edited);
     ShowResultNotification(result);

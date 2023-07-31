@@ -68,18 +68,16 @@
   }
 
 
-  protected async Task<bool> ShowSimpleDialogLocalized(SimpleDialogType type, string name, string title = "Confirm") {
+  protected async Task<bool> ShowSimpleDialogLocalized(SimpleActionType type, string name, string title = "Confirm") {
     var text = Loc["simple_dialog_confirmation"].Format("action", Loc[type.ToString().ToLower()].ToString().ToLower()).Format("name", name);
-    var showOkButton = type.ShowOkButton();
-    var showCancelButton = type.ShowCancelButton();
 
     var result = await Dialog.OpenAsync(title, ds =>
       @<RadzenStack Gap="1.5rem">
         <RadzenText TextStyle="TextStyle.Body1" TagName="TagName.P">@text</RadzenText>
         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
           <RadzenStack Orientation="Orientation.Horizontal">
-            <RadzenButton Visible="showOkButton" Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;"/>
-            <RadzenButton Visible="showCancelButton" Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
+            <RadzenButton Visible="true" Text="Ok" Click="() => { ds.Close(true); }" Style="width: 120px;"/>
+            <RadzenButton Visible="true" Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
           </RadzenStack>
         </RadzenStack>
       </RadzenStack>

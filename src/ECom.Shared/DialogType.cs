@@ -1,6 +1,6 @@
 ﻿namespace ECom.Shared;
 
-public enum SimpleDialogType
+public enum SimpleActionType
 {
   //Add,
   //Update,
