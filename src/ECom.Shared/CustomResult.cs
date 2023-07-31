@@ -78,66 +78,76 @@ public class CustomResult<T>
     return (name, error);
   }
 
-  public static CustomResult<T> Ok(string name, string error, T? data = default) {
+  public static CustomResult<T> Ok(string error, T? data = default,params object[] paramStrings) {
     return new CustomResult<T> {
       Status = true,
-      ErrorCode = $"{name}.{error}",
+      ErrorCode =error,
       Exception = null,
       Data = data,
-      Level = CustomResultLevel.Info
+      Level = CustomResultLevel.Info,
+      Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Ok(T? data = default) {
+  public static CustomResult<T> OkData(T data,params object[] paramStrings) {
     return new CustomResult<T> {
       Status = true,
-      ErrorCode = $"{data?.GetType().Name}.Success",
+      ErrorCode = $"success",
       Data = data,
-      Level = CustomResultLevel.Info
+      Level = CustomResultLevel.Info,
+      Params = paramStrings
     };
   }
-
-
-  public static CustomResult<T> Warn(string name, string error, params object[] paramStrings) {
+  public static CustomResult<T> OkParam(string error,params object[] paramStrings) {
+    return new CustomResult<T> {
+      Status = true,
+      ErrorCode =error,
+      Exception = null,
+      Data = default,
+      Level = CustomResultLevel.Info,
+      Params = paramStrings
+    };
+  }
+  public static CustomResult<T> Warn(string error, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
-      ErrorCode = $"{name}.{error}",
+      ErrorCode = error,
       Level = CustomResultLevel.Warning,
       Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Error(string name, string error,params object[] paramStrings) {
+  public static CustomResult<T> Error( string error,params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
-      ErrorCode = $"{name}.{error}",
+      ErrorCode = error,
       Level = CustomResultLevel.Error,
       Params =  paramStrings
     };
   }
 
-  public static CustomResult<T> Critical(string name, string error, params object[] paramStrings) {
+  public static CustomResult<T> Critical( string error, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
-      ErrorCode = $"{name}.{error}",
+      ErrorCode = error,
       Level = CustomResultLevel.Critical,
       Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Validation(string name, string message, params object[] paramStrings) {
+  public static CustomResult<T> Validation(string message, params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
-      ErrorCode = $"{name}." + message,
+      ErrorCode =  message,
       Level = CustomResultLevel.Warning,
       Params = paramStrings
     };
   }
 
-  public static CustomResult<T> Critical(Exception? exception, string name, params object[] paramStrings) {
+  public static CustomResult<T> Critical(Exception? exception,  params object[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
-      ErrorCode = $"{name}.Exception",
+      ErrorCode = $"Exception",
       Level = CustomResultLevel.Critical,
       Exception = exception,
       Params = paramStrings
