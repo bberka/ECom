@@ -45,7 +45,7 @@ public class Admin : IEntity
       //Permissions = string.Join(",", admin.Role.Permissions.Select(x => x.Name).ToArray()),
       RoleId = admin.RoleId,
       DeletedDate = admin.DeleteDate,
-      Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.Id)?.ToArray() ?? Array.Empty<string>(),
+      Permissions = admin.Role?.Permissions?.Select(x => x.Id)?.ToArray() ?? Array.Empty<string>(),
       Password = admin.Password,
       RegisterDate = admin.RegisterDate,
       

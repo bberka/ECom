@@ -32,7 +32,6 @@ public interface IUnitOfWork : IUnitOfWorkBase
   DbSet<ProductCategory> ProductCategoryRepository { get; }
   DbSet<ProductVariant> ProductVariantRepository { get; }
   DbSet<Role> RoleRepository { get; }
-  DbSet<PermissionRole> PermissionRoleRepository { get; }
   DbSet<SecurityLog> SecurityLogRepository { get; }
   DbSet<Slider> SliderRepository { get; }
   DbSet<SmtpOption> SmtpOptionRepository { get; }

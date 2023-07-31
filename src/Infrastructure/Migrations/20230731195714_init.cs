@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace ECom.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -36,7 +34,6 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Order = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false)
@@ -55,7 +52,6 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
                     Order = table.Column<int>(type: "int", nullable: false),
                     ParentNameKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
@@ -74,10 +70,10 @@ namespace ECom.Infrastructure.Migrations
                     WebApiUrl = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
-                    ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WhatsApp = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
                     CompanyAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    ContactEmail = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    WhatsApp = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
                     FacebookLink = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     InstagramLink = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     YoutubeLink = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -213,7 +209,7 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "ECEnum",
+                schema: "ECOperation",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
@@ -293,8 +289,8 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -305,7 +301,8 @@ namespace ECom.Infrastructure.Migrations
                     OAuthType = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
                     TwoFactorKey = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
-                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false)
+                    Culture = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    RefreshJwtToken = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -422,11 +419,12 @@ namespace ECom.Infrastructure.Migrations
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     TwoFactorKey = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     TwoFactorType = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)0),
-                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    RefreshJwtToken = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -434,34 +432,33 @@ namespace ECom.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Admins_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "ECEnum",
+                        principalSchema: "ECOperation",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PermissionRoles",
-                schema: "ECOperation",
+                name: "PermissionRole",
                 columns: table => new
                 {
-                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    PermissionId = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    PermissionsId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    RolesId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionRoles", x => new { x.RoleId, x.PermissionId });
+                    table.PrimaryKey("PK_PermissionRole", x => new { x.PermissionsId, x.RolesId });
                     table.ForeignKey(
-                        name: "FK_PermissionRoles_Permissions_PermissionId",
-                        column: x => x.PermissionId,
+                        name: "FK_PermissionRole_Permissions_PermissionsId",
+                        column: x => x.PermissionsId,
                         principalSchema: "ECEnum",
                         principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PermissionRoles_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "ECEnum",
+                        name: "FK_PermissionRole_Roles_RolesId",
+                        column: x => x.RolesId,
+                        principalSchema: "ECOperation",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -532,7 +529,7 @@ namespace ECom.Infrastructure.Migrations
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -557,7 +554,7 @@ namespace ECom.Infrastructure.Migrations
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Token = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -939,80 +936,36 @@ namespace ECom.Infrastructure.Migrations
                     "ManageCategories",
                     "ManageCompanyInformation",
                     "ManageCoupons",
-                    "ManageCurrencies",
                     "ManageGeneralOptions",
                     "ManageImages",
-                    "ManageLanguages",
                     "ManageLocalization",
+                    "ManageLoginSessions",
                     "ManageOrders",
                     "ManagePaymentOptions",
                     "ManagePayments",
-                    "ManagePlugins",
-                    "ManagePluginsAndThemes",
                     "ManageProducts",
+                    "ManageQuestions",
                     "ManageReports",
-                    "ManageRolesAndPermissions",
+                    "ManageRoles",
                     "ManageSettings",
                     "ManageShipping",
                     "ManageShippingOptions",
                     "ManageSmtpOption",
                     "ManageTaxOptions",
-                    "ManageThemes",
                     "ManageUserAccounts"
                 });
 
             migrationBuilder.InsertData(
-                schema: "ECEnum",
+                schema: "ECOperation",
                 table: "Roles",
                 column: "Id",
-                values: new object[]
-                {
-                    "Admin",
-                    "Moderator",
-                    "None",
-                    "Owner",
-                    "Support"
-                });
+                value: "Owner");
 
             migrationBuilder.InsertData(
                 schema: "ECOperation",
                 table: "Admins",
-                columns: new[] { "Id", "DeleteDate", "EmailAddress", "Password", "RegisterDate", "RoleId", "TwoFactorKey", "UpdateDate" },
-                values: new object[] { new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"), null, "owner@mail.com", "25f9e794323b453885f5181f1b624d0b", new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Owner", null, null });
-
-            migrationBuilder.InsertData(
-                schema: "ECOperation",
-                table: "PermissionRoles",
-                columns: new[] { "PermissionId", "RoleId" },
-                values: new object[,]
-                {
-                    { "ManageAdmins", "Owner" },
-                    { "ManageAnnouncements", "Owner" },
-                    { "ManageCargoOptions", "Owner" },
-                    { "ManageCategories", "Owner" },
-                    { "ManageCompanyInformation", "Owner" },
-                    { "ManageCoupons", "Owner" },
-                    { "ManageCurrencies", "Owner" },
-                    { "ManageGeneralOptions", "Owner" },
-                    { "ManageImages", "Owner" },
-                    { "ManageLanguages", "Owner" },
-                    { "ManageLocalization", "Owner" },
-                    { "ManageOrders", "Owner" },
-                    { "ManagePaymentOptions", "Owner" },
-                    { "ManagePayments", "Owner" },
-                    { "ManagePlugins", "Owner" },
-                    { "ManagePluginsAndThemes", "Owner" },
-                    { "ManageProducts", "Owner" },
-                    { "ManageReports", "Owner" },
-                    { "ManageRolesAndPermissions", "Owner" },
-                    { "ManageSettings", "Owner" },
-                    { "ManageShipping", "Owner" },
-                    { "ManageShippingOptions", "Owner" },
-                    { "ManageSmtpOption", "Owner" },
-                    { "ManageTaxOptions", "Owner" },
-                    { "ManageThemes", "Owner" },
-                    { "ManageUserAccounts", "Owner" }
-                });
+                columns: new[] { "Id", "DeleteDate", "EmailAddress", "Password", "RefreshJwtToken", "RegisterDate", "RoleId", "TwoFactorKey", "UpdateDate" },
+                values: new object[] { new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"), null, "owner@mail.com", "25f9e794323b453885f5181f1b624d0b", null, new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Owner", null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
@@ -1129,10 +1082,9 @@ namespace ECom.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PermissionRoles_PermissionId",
-                schema: "ECOperation",
-                table: "PermissionRoles",
-                column: "PermissionId");
+                name: "IX_PermissionRole_RolesId",
+                table: "PermissionRole",
+                column: "RolesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductComments_ProductId",
@@ -1265,8 +1217,7 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECOption");
 
             migrationBuilder.DropTable(
-                name: "PermissionRoles",
-                schema: "ECOperation");
+                name: "PermissionRole");
 
             migrationBuilder.DropTable(
                 name: "ProductCategories",
@@ -1338,7 +1289,7 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "ECEnum");
+                schema: "ECOperation");
 
             migrationBuilder.DropTable(
                 name: "Users",

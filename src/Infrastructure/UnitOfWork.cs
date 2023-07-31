@@ -40,7 +40,6 @@ public class UnitOfWork : UnitOfWorkBase<EComDbContext>, IUnitOfWork
   public virtual DbSet<ProductCategory> ProductCategoryRepository => DbContext.Set<ProductCategory>();
   public virtual DbSet<ProductVariant> ProductVariantRepository => DbContext.Set<ProductVariant>();
   public virtual DbSet<Role> RoleRepository => DbContext.Set<Role>();
-  public virtual DbSet<PermissionRole> PermissionRoleRepository => DbContext.Set<PermissionRole>();
   public virtual DbSet<SecurityLog> SecurityLogRepository => DbContext.Set<SecurityLog>();
   public virtual DbSet<Slider> SliderRepository => DbContext.Set<Slider>();
   public virtual DbSet<SmtpOption> SmtpOptionRepository => DbContext.Set<SmtpOption>();

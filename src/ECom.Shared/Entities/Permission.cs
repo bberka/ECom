@@ -9,6 +9,6 @@ public class Permission : IEntity
   [Key]
   public string Id { get; set; }
   
-  public IEnumerable<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
+  public IEnumerable<Role> Roles { get; set; } = new List<Role>();
 
 }

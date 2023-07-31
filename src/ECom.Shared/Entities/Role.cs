@@ -8,7 +8,7 @@ public class Role : IEntity
   [MaxLength(ValidationSettings.MaxNameLength)]
   public string Id { get; set; }
 
-  public virtual List<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
+  public virtual List<Permission> Permissions { get; set; } = new List<Permission>();
 
   [NotMapped]
   public int AdminCount { get; set; }

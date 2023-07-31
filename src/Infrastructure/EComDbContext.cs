@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using ECom.Infrastructure.Configurations;
+using ECom.Shared.Constants;
 using ECom.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -59,7 +60,6 @@ public class EComDbContext : DbContext
 
   public DbSet<EmailVerifyToken> EmailVerifyTokens { get; set; }
   public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
-  public DbSet<PermissionRole> PermissionRole { get; set; }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
     optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["EComDB"].ConnectionString);
@@ -87,4 +87,6 @@ public class EComDbContext : DbContext
 
     context.Dispose();
   }
+
+
 }

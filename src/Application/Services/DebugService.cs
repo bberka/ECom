@@ -35,7 +35,7 @@ public class DebugService : IDebugService
         CheckAndThrowDebug();
         return _unitOfWork.AdminRepository.Where(x => x.RoleId == "Owner")
           .Include(x => x.Role)
-          .ThenInclude(x => x.PermissionRoles)
+          .ThenInclude(x => x.Permissions)
           .Single();
     }
 

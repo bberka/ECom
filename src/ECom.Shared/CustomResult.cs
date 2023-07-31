@@ -95,7 +95,10 @@ public class CustomResult<T>
     if (localizedErrorCode == null)
       return ErrorCode;
     string result = localizedErrorCode;
-    foreach (var param in Params) result = result.LocFormat(param.Key, param.Value);
+    foreach (var param in Params) {
+      var translatedObjectName = resourceManager.GetString(param.Value.ToString() ?? "", currentCulture) ?? param.Value;
+      result = result.LocFormat(param.Key, translatedObjectName);
+    }
     return result;
   }
   public string GetFormattedMessage(LocalizedString localizedErrorCode) {
