@@ -76,5 +76,5 @@ public static class ValidationSettings
       new (ValidationType.Culture,MinCultureLength, MaxCultureLength, "culture"),
       new (ValidationType.Memo,0, MaxMemoLength, "memo"),
   };
-  public static StringValidation GetValidation(ValidationType type) => Validations.First(x => x.Type == type);
+  public static StringValidation? GetValidation(ValidationType type) => Validations.FirstOrDefault(x => x.Type == type);
 }

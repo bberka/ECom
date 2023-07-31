@@ -1,7 +1,13 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using System.Globalization
+@using ECom.Shared.Constants
+@using ECom.Shared.Models
 
 @code {
+  [Parameter]
+  [Required]
+  public ValidationType ValidationType { get; set; }
+
   [Parameter]
   [Required]
   public string Component { get; set; }
@@ -9,15 +15,26 @@
   [Parameter]
   public bool Popup { get; set; } = false;
 
-  /// <summary>
-  /// Field name for localization
-  /// </summary>
-  [Parameter]
-  [Required]
-  public string LocKey { get; set; }
-
   [Parameter]
   public string Style { get; set; } = "";
 
-  protected CultureInfo CurrentCultureInfo = Thread.CurrentThread.CurrentCulture;
+  [Parameter]
+  public string LocKey { get; set; } = "";
+
+  protected readonly CultureInfo CurrentCultureInfo = Thread.CurrentThread.CurrentCulture;
+
+  protected StringValidation StringValidation => ValidationSettings.GetValidation(ValidationType);
+
+  protected override void OnInitialized() {
+    base.OnInitialized();
+    if (StringValidation is null) {
+      throw new Exception($"ValidationSettings does not contain a validation for {ValidationType}");
+    }
+    if (string.IsNullOrEmpty(Component)) {
+      throw new Exception($"Component is required");
+    }
+    if(string.IsNullOrEmpty(LocKey)) {
+      LocKey = StringValidation.LocKey;
+    }
+  }
 }
