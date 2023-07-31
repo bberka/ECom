@@ -1,4 +1,7 @@
-﻿namespace ECom.Shared;
+﻿using System.Configuration;
+using ECom.Shared.Models;
+
+namespace ECom.Shared;
 
 public static class ValidationSettings
 {
@@ -46,4 +49,32 @@ public static class ValidationSettings
   public const int MaxDomainLength = 512;
   public const int MaxEmailLength = 512;
   public const int MaxReasonLength = 64;
+
+  public static readonly IReadOnlyCollection<StringValidation> Validations = new List<StringValidation>() {
+      new (ValidationType.Address,MinAddressLength, MaxAddressLength, "address"),
+      new (ValidationType.City,MinCityLength, MaxCityLength, "city"),
+      new (ValidationType.Country,MinCountryLength, MaxCountryLength, "country"),
+      new (ValidationType.Coupon,MinCouponLength, MaxCouponLength, "coupon"),
+      new (ValidationType.Description,MinDescriptionLength, MaxDescriptionLength, "description"),
+      new (ValidationType.Domain,0, MaxDomainLength, "domain"),
+      new (ValidationType.EmailAddress,0, MaxEmailLength, "email"),
+      new (ValidationType.ErrorCode,0, MaxErrorCodeLength, "errorCode"),
+      new (ValidationType.Hash,MinHashedPasswordLength, MaxHashedPasswordLength, "hash"),
+      new (ValidationType.ImageAlt,0, MaxImageAltLength, "imageAlt"),
+      new (ValidationType.Message,MinMessageLength, MaxMessageLength, "message"),
+      new (ValidationType.Name,MinNameLength, MaxNameLength, "name"),
+      new (ValidationType.Password,MinPasswordLength, MaxPasswordLength, "password"),
+      new (ValidationType.PhoneNumber,MinPhoneLength, MaxPhoneLength, "phone"),
+      new (ValidationType.PostalCode,MinPostalCodeLength, MaxPostalCodeLength, "postal_code"),
+      new (ValidationType.ProductComment,MinProductCommentLength, MaxProductCommentLength, "product_comment"),
+      new (ValidationType.ProductDescription,MinProductDescriptionLength, MaxProductDescriptionLength, "product_description"),
+      new (ValidationType.ProductShortDescription,MinProductShortLength, MaxProductShortLength, "product_short"),
+      new (ValidationType.Reason,0, MaxReasonLength, "reason"),
+      new (ValidationType.Title,MinTitleLength, MaxTitleLength, "title"),
+      new (ValidationType.Token,MinTokenLength, MaxTokenLength, "token"),
+      new (ValidationType.Operation,0, MaxOperationLength, "operation"),
+      new (ValidationType.Culture,MinCultureLength, MaxCultureLength, "culture"),
+      new (ValidationType.Memo,0, MaxMemoLength, "memo"),
+  };
+  public static StringValidation GetValidation(ValidationType type) => Validations.First(x => x.Type == type);
 }
