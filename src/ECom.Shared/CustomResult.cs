@@ -1,5 +1,10 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Globalization;
+using System.Resources;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using ECom.Shared.Extensions;
+using ECom.Shared.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace ECom.Shared;
 
@@ -29,7 +34,8 @@ public class CustomResult : CustomResult<CustomResult>
       ErrorCode = ErrorCode,
       Data = data,
       Level = Level,
-      Exception = Exception
+      Exception = Exception,
+      Params = Params
       //ValidationErrors = this.ValidationErrors
     };
   }
@@ -37,6 +43,7 @@ public class CustomResult : CustomResult<CustomResult>
 
 public class CustomResult<T>
 {
+
   protected internal CustomResult() {
   }
 
@@ -54,7 +61,7 @@ public class CustomResult<T>
 
   //public string Name { get; internal init; }
   public string ErrorCode { get; internal init; }
-  public object[] Params { get; internal init; }
+  public LocParam[] Params { get; internal init; } = Array.Empty<LocParam>();
 
 
   //public ValidationError[] ValidationErrors { get; internal init; }  
@@ -70,15 +77,33 @@ public class CustomResult<T>
   [Newtonsoft.Json.JsonIgnore]
   public Exception? Exception { get; internal init; }
 
-
-  public (string name, string error) GetErrorAndName() {
-    var split = ErrorCode.Split('.');
-    var name = split[0];
-    var error = split[1];
-    return (name, error);
+  /// <summary>
+  /// Gets localized message for current culture that result is created
+  /// </summary>
+  public string Message {
+    get {
+      _message ??= GetFormattedMessage();
+      return _message;
+    }
   }
+  private string? _message;
 
-  public static CustomResult<T> Ok(string error, T? data = default,params object[] paramStrings) {
+  private string GetFormattedMessage() {
+    var currentCulture = CultureInfo.CurrentCulture;
+    var resourceManager = new ResourceManager(typeof(LocalizedResource));
+    var localizedErrorCode = resourceManager.GetString(ErrorCode, currentCulture);
+    if (localizedErrorCode == null)
+      return ErrorCode;
+    string result = localizedErrorCode;
+    foreach (var param in Params) result = result.LocFormat(param.Key, param.Value);
+    return result;
+  }
+  public string GetFormattedMessage(LocalizedString localizedErrorCode) {
+    LocalizedString result = localizedErrorCode;
+    foreach (var param in Params) result = result.Format(param.Key, param.Value);
+    return result;
+  }
+  public static CustomResult<T> Ok(string error, T? data = default,params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = true,
       ErrorCode =error,
@@ -89,7 +114,7 @@ public class CustomResult<T>
     };
   }
 
-  public static CustomResult<T> OkData(T data,params object[] paramStrings) {
+  public static CustomResult<T> OkData(T data,params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = true,
       ErrorCode = $"success",
@@ -98,7 +123,7 @@ public class CustomResult<T>
       Params = paramStrings
     };
   }
-  public static CustomResult<T> OkParam(string error,params object[] paramStrings) {
+  public static CustomResult<T> OkParam(string error,params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = true,
       ErrorCode =error,
@@ -108,7 +133,7 @@ public class CustomResult<T>
       Params = paramStrings
     };
   }
-  public static CustomResult<T> Warn(string error, params object[] paramStrings) {
+  public static CustomResult<T> Warn(string error, params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = error,
@@ -117,7 +142,7 @@ public class CustomResult<T>
     };
   }
 
-  public static CustomResult<T> Error( string error,params object[] paramStrings) {
+  public static CustomResult<T> Error( string error,params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = error,
@@ -126,7 +151,7 @@ public class CustomResult<T>
     };
   }
 
-  public static CustomResult<T> Critical( string error, params object[] paramStrings) {
+  public static CustomResult<T> Critical( string error, params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = error,
@@ -135,7 +160,7 @@ public class CustomResult<T>
     };
   }
 
-  public static CustomResult<T> Validation(string message, params object[] paramStrings) {
+  public static CustomResult<T> Validation(string message, params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode =  message,
@@ -144,7 +169,7 @@ public class CustomResult<T>
     };
   }
 
-  public static CustomResult<T> Critical(Exception? exception,  params object[] paramStrings) {
+  public static CustomResult<T> Critical(Exception? exception,  params LocParam[] paramStrings) {
     return new CustomResult<T> {
       Status = false,
       ErrorCode = $"Exception",
@@ -160,7 +185,8 @@ public class CustomResult<T>
       Status = Status,
       ErrorCode = ErrorCode,
       Level = Level,
-      Exception = Exception
+      Exception = Exception,
+      Params = Params,
       //ValidationErrors = ValidationErrors,
     };
   }
@@ -172,7 +198,8 @@ public class CustomResult<T>
       ErrorCode = value.ErrorCode,
       Data = null,
       Level = value.Level,
-      Exception = value.Exception
+      Exception = value.Exception,
+      Params = value.Params
       //ValidationErrors = value.ValidationErrors,
     };
   }
@@ -187,7 +214,8 @@ public class CustomResult<T>
       Status = value.Status,
       ErrorCode = value.ErrorCode,
       Level = value.Level,
-      Exception = value.Exception
+      Exception = value.Exception,
+      Params = value.Params
     };
   }
 
@@ -199,7 +227,7 @@ public class CustomResult<T>
         Status = true,
         ErrorCode = $"{typeName}.Success",
         Data = data,
-        Level = CustomResultLevel.Info
+        Level = CustomResultLevel.Info,
       };
     return new CustomResult<T> {
       Status = false,

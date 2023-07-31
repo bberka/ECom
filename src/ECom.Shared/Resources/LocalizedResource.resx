@@ -180,6 +180,12 @@
   <data name="cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="can_not_delete" xml:space="preserve">
+    <value>{name} can not be deleted</value>
+  </data>
+  <data name="can_not_delete_db_relation" xml:space="preserve">
+    <value>You can not delete {objectName} when there is related entries in {relationName}</value>
+  </data>
   <data name="cargo" xml:space="preserve">
     <value>Cargo</value>
   </data>

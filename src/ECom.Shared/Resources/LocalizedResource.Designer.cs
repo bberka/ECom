@@ -232,6 +232,24 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {name} can not be deleted.
+        /// </summary>
+        public static string can_not_delete {
+            get {
+                return ResourceManager.GetString("can_not_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can not delete {objectName} when there is related entries in {relationName}.
+        /// </summary>
+        public static string can_not_delete_db_relation {
+            get {
+                return ResourceManager.GetString("can_not_delete_db_relation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string cancel {
