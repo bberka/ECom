@@ -10,4 +10,6 @@ public class Role : IEntity
 
   public virtual List<PermissionRole> PermissionRoles { get; set; } = new List<PermissionRole>();
 
+  [NotMapped]
+  public int AdminCount { get; set; }
 }

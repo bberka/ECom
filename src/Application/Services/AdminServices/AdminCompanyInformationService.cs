@@ -15,7 +15,7 @@ public class AdminCompanyInformationService : CompanyInformationService, IAdminC
   public CustomResult UpdateCompanyInformation(CompanyInformation info) {
     var isValidModel = info.IsValidModel();
     if (!isValidModel) {
-      return DomainResult.InvalidState(nameof(CompanyInformation));
+      return DomainResult.InvalidState(CompanyInformation.LocKey);
     }
     info.Key = Key;
     var dbData = UnitOfWork.CompanyInformationRepository.GetAll();
@@ -26,6 +26,6 @@ public class AdminCompanyInformationService : CompanyInformationService, IAdminC
     var res2 = UnitOfWork.Save();
     if (!res2) return DomainResult.DbInternalError(nameof(UpdateCompanyInformation));
     SetCacheValue(info);
-    return DomainResult.OkUpdated(nameof(CompanyInformation));
+    return DomainResult.OkUpdated(CompanyInformation.LocKey);
   }
 }

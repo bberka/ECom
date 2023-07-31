@@ -28,7 +28,7 @@
       <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="AdminDto" Property="RegisterDate" Title="@(Loc["register"] + Loc["date"])" FormatString="{0:d}" />
       <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="EmailAddress" Title="@Loc["email_address"]" />
       <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="RoleId" Title="@(Loc["role"])" />
-      <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="deletedDate" Title="@(Loc["delete"] + " " + Loc["date"])" FormatString="{0:d}" />
+      <RadzenDataGridColumn MinWidth="100px" TItem="AdminDto" Property="DeletedDate" Title="@(Loc["delete"] + " " + Loc["date"])" FormatString="{0:d}" />
       <RadzenDataGridColumn MinWidth="240px" TItem="AdminDto" Title="@Loc["actions"]">
         <Template Context="admin">
           <RadzenButton MouseEnter="@(args => ShowTooltipDanger(args, Loc["delete"]))" Visible="!admin.DeletedDate.HasValue" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="() => Show(SimpleActionType.delete, admin)">
@@ -176,9 +176,7 @@
     updateAdmin = new UpdateAdminAccountRequest {
           EmailAddress = model.EmailAddress,
           RoleId = model.RoleId,
-          Password = "",
           Id = model.Id,
-          UpdatePassword = updateAdmin.UpdatePassword
         };
     var result = await Dialog.OpenAsync(Loc["update"], ds =>
       @<RadzenTemplateForm TItem="UpdateAdminAccountRequest" Data="@updateAdmin" Submit="@(OnUpdateSubmit)">
@@ -193,9 +191,9 @@
       
           <div class="mb-2">
             <RadzenFormField class="my-2 w-100" Component="RoleId" Text="@Loc["role"]" Variant="Variant.Filled">
-              <RadzenDropDown @bind-Value="@addAdmin.RoleId" Name="RoleId" TValue="string" Data="@roles" ValueProperty="@nameof(Role.Id)" TextProperty="@nameof(Role.Id)" Culture="CultureInfo.CurrentCulture" />
+              <RadzenDropDown @bind-Value="@updateAdmin.RoleId" Name="RoleId" TValue="string" Data="@roles" ValueProperty="@nameof(Role.Id)" TextProperty="@nameof(Role.Id)" Culture="CultureInfo.CurrentCulture" />
             </RadzenFormField>
-            <ValidationMessage For="() => addAdmin.RoleId"></ValidationMessage>
+        <ValidationMessage For="() => updateAdmin.RoleId"></ValidationMessage>
           </div>
 
           <ButtonSubmitUpdate OnCancel="() => ds.Close(false)"></ButtonSubmitUpdate>
@@ -225,18 +223,7 @@
     }
   }
 
-  private async Task UpdatePasswordCheckBoxValueChange(bool val) {
-    updateAdmin.UpdatePassword = val;
-    var reference = await JsUtil.GetElementById("password-input");
-    if (val) {
-      await reference.AddClass("d-block");
-      await reference.RemoveClass("d-none");
-    }
-    else {
-      await reference.AddClass("d-none");
-      await reference.RemoveClass("d-block");
-    }
-  }
+  
 
 
   private CustomResult PerformSimpleAction(SimpleActionType type, AdminDto model) {

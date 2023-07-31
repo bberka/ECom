@@ -5,6 +5,7 @@ namespace ECom.Shared.Abstract;
 public interface IRepository<TEntity> : IRepositoryAsync<TEntity>, IRepositorySync<TEntity>
    where TEntity : class, IEntity, new()
 {
+  public DbSet<TEntity> Table { get; }
 }
 public interface IRepositoryAsync<TEntity>
   where TEntity : class, IEntity, new()

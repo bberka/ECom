@@ -7,7 +7,7 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
   where TEntity : class, IEntity, new()
 {
   protected readonly DbContext DbContext;
-  protected DbSet<TEntity> Table => DbContext.Set<TEntity>();
+  public DbSet<TEntity> Table => DbContext.Set<TEntity>();
   protected RepositoryBase(DbContext dbContext) {
     DbContext = dbContext;
   }

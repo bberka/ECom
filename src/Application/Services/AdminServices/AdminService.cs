@@ -35,14 +35,14 @@ public class AdminService : IAdminService
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
     if (admin.DeleteDate.HasValue) return DomainResult.Invalid(nameof(Admin));
     var isAllSame = admin.EmailAddress == request.EmailAddress && admin.RoleId == request.RoleId;
-    if (request.UpdatePassword && !string.IsNullOrEmpty(request.Password)) {
-      var tempPass = admin.Password;
-      admin.Password = request.Password.ToHashedText();
-      isAllSame = isAllSame && admin.Password == tempPass;
-    }
+    //if (request.UpdatePassword && !string.IsNullOrEmpty(request.Password)) {
+    //  var tempPass = admin.Password;
+    //  admin.Password = request.Password.ToHashedText();
+    //  isAllSame = isAllSame && admin.Password == tempPass;
+    //}
     if (isAllSame) return DomainResult.OkNotChanged(nameof(Admin));
     if (admin.EmailAddress != request.EmailAddress) {
-      var exists = UnitOfWork.AdminRepository.Any(x => x.EmailAddress == admin.EmailAddress);
+      var exists = UnitOfWork.AdminRepository.Any(x => x.EmailAddress == request.EmailAddress);
       if (exists) return DomainResult.AlreadyExists("email_address");
       admin.EmailAddress = request.EmailAddress;
     }

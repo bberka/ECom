@@ -23,9 +23,16 @@ public class AdminRoleService : IAdminRoleService
   }
 
   public List<Role> GetRoles() {
-    return UnitOfWork.RoleRepository
-      .GetAll()
-      //.Include(x => x.PermissionRoles)
+    return UnitOfWork.RoleRepository.Table
+      .Include(x => x.PermissionRoles)
+      .Join(UnitOfWork.AdminRepository.Table, 
+        x => x.Id, 
+        x => x.RoleId, 
+        (role, admin) => new Role {
+        Id = role.Id,
+        AdminCount = UnitOfWork.AdminRepository.Table.Count(x => x.RoleId == role.Id),
+        PermissionRoles = role.PermissionRoles
+      })
       .ToList();
   }
 

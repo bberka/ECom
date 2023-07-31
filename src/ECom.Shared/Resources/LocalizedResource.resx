@@ -138,6 +138,9 @@
   <data name="admins" xml:space="preserve">
     <value>Admins</value>
   </data>
+  <data name="admin_count" xml:space="preserve">
+    <value>Admin Count</value>
+  </data>
   <data name="admin_permissions" xml:space="preserve">
     <value>Admin Permissions</value>
   </data>
@@ -170,6 +173,9 @@
   </data>
   <data name="author_name" xml:space="preserve">
     <value>ZDK Network</value>
+  </data>
+  <data name="blazor_error" xml:space="preserve">
+    <value>An error has occurred. This application may no longer respond until reloaded.</value>
   </data>
   <data name="cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -309,6 +315,9 @@
   <data name="http_status_404" xml:space="preserve">
     <value>Page you looking for is not found</value>
   </data>
+  <data name="http_status_500" xml:space="preserve">
+    <value>The page you trying to view can not be viewed at the moment, a server error occurred. Please try again later or contact administration.</value>
+  </data>
   <data name="id" xml:space="preserve">
     <value>Id</value>
   </data>
@@ -324,8 +333,14 @@
   <data name="instagram_link" xml:space="preserve">
     <value>Instagram Link</value>
   </data>
+  <data name="internal_error" xml:space="preserve">
+    <value>Internal Error</value>
+  </data>
   <data name="invalid" xml:space="preserve">
     <value>{name} is invalid</value>
+  </data>
+  <data name="invalid_form_submit" xml:space="preserve">
+    <value>Please fix the errors on the form before submitting.</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>Language</value>
@@ -492,6 +507,9 @@
   <data name="register_date" xml:space="preserve">
     <value>Register Date</value>
   </data>
+  <data name="reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
   <data name="remember_me" xml:space="preserve">
     <value>Remember Me</value>
   </data>
@@ -533,6 +551,9 @@
   </data>
   <data name="select_theme" xml:space="preserve">
     <value>Select theme</value>
+  </data>
+  <data name="server_error" xml:space="preserve">
+    <value>Server Error</value>
   </data>
   <data name="simple_dialog_confirmation" xml:space="preserve">
     <value>Are you sure you want to {action} {name} ?</value>

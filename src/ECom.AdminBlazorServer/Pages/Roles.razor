@@ -12,7 +12,7 @@
 @inherits SharedBasePage
 
 <PageTitle>@Loc["roles"]</PageTitle>
-<RadzenCard Variant="Variant.Filled" Style="max-width: 800px">
+<RadzenCard Variant="Variant.Filled" Style="max-width: 850px">
   <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
     <RadzenText TextStyle="TextStyle.H4">@Loc["roles"]</RadzenText>
     <RadzenButton Text="@Loc["create"]" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
@@ -21,7 +21,8 @@
   <RadzenDataGrid @ref="grid" Data="@roles" EmptyText="@Loc["empty_table"]" TItem="Role" Context="role" PageNumbersCount="10" AllowAlternatingRows="false" AllowFiltering="false" AllowColumnResize="false" AllowSorting="true" PageSize="10" ColumnWidth="auto">
     <Columns>
       <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="Role" Property="Id" Title="@(Loc["role"])" FormatString="{0:d}" />
-      <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="Role" Property="PermissionRoles.Count" Title="@(Loc["permission_count"])" />
+      <RadzenDataGridColumn MinWidth="80px" Width="160px" TItem="Role" Property="PermissionRoles.Count" Title="@(Loc["permission_count"])" />
+      <RadzenDataGridColumn MinWidth="80px" Width="160px" TItem="Role" Property="AdminCount" Title="@(Loc["admin_count"])" />
       <RadzenDataGridColumn MinWidth="100px" Width="300px" TItem="Role" Title="@Loc["actions"]">
         <Template Context="role">
           @if (role.Id != "Owner") {
@@ -53,7 +54,7 @@
   private static List<Role> roles = new();
   private static List<Permission> allPermissions = new();
   private RadzenDataGrid<Role> grid;
-  private List<string> _editPermissions = new();
+  private EditPermissionRequest _editPermissions = new();
 
   protected override void OnInitialized() {
     if (roles.Count == 0)
@@ -63,31 +64,31 @@
   }
 
   private async Task ShowEditDialog(Role value) {
-    _editPermissions = value.PermissionRoles.Select(y => y.Permission.Id).ToList();
-    var result = await DialogService.OpenAsync(Loc["edit"] + " " + Loc[value.Id.ToLower() + "_permissions"], ds =>
-      @<RadzenTemplateForm TItem="List<string>">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <RadzenStack Orientation="Orientation.Vertical">
-          <RadzenListBox @bind-Value="@_editPermissions" Data="@allPermissions" TextProperty="Id" ValueProperty="Id"
-                         FilterOperator="StringFilterOperator.Contains" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Multiple="true" AllowClear="true" Placeholder="@Loc["select_permissions"]" Style="height: 300px; min-width: 300px; width: 100%;"/>
-          <ValidationMessage For="@(() => _addRoleRequest.Permissions)"/>
-          <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-            <RadzenStack Orientation="Orientation.Horizontal">
-              <RadzenButton Visible="true" Text=@Loc["update"] Click="() => ds.Close(true)" ButtonType="ButtonType.Submit" Style="width: 120px;"/>
-              <RadzenButton Visible="true" Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
-            </RadzenStack>
-          </RadzenStack>
+    _editPermissions.Permissions = value.PermissionRoles.Select(y => y.Permission.Id).ToList();
+    var result = await DialogService.OpenAsync(Loc["edit"] + " " + value.Id + " " +Loc["permission"], ds =>
+  @<RadzenTemplateForm TItem="EditPermissionRequest" Data="@_editPermissions">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <RadzenStack Orientation="Orientation.Vertical">
+      <RadzenListBox @bind-Value="@_editPermissions.Permissions" Data="@allPermissions" TextProperty="Id" ValueProperty="Id"
+                     FilterOperator="StringFilterOperator.Contains" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Multiple="true" AllowClear="true" Placeholder="@Loc["select_permissions"]" Style="height: 300px; min-width: 300px; width: 100%;" />
+      <ValidationMessage For="@(() => _editPermissions.Permissions)" />
+      <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal">
+          <RadzenButton Visible="true" Text=@Loc["update"] Click="() => ds.Close(true)" ButtonType="ButtonType.Submit" Style="width: 120px;" />
+          <RadzenButton Visible="true" Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
         </RadzenStack>
-      </RadzenTemplateForm>
-    , new DialogOptions {
-      Style = "max-width: 500px"
-    });
+      </RadzenStack>
+    </RadzenStack>
+  </RadzenTemplateForm>
+  , new DialogOptions {
+        Style = "max-width: 500px"
+      });
     if (result != true) {
       return;
     }
     var auth = await AuthTask;
     var adminId = auth.GetAdminId();
-    var dbResult = AdminRoleService.UpdatePermissions(adminId, value.Id, _editPermissions);
+    var dbResult = AdminRoleService.UpdatePermissions(adminId, value.Id, _editPermissions.Permissions);
     ShowResultNotification(dbResult);
 
     if (dbResult.Status) {
@@ -144,11 +145,12 @@
     void OnAddSubmit(AddRoleRequest model) {
       var actionResult = AdminRoleService.AddRole(model);
       ShowResultNotification(actionResult);
-      if (actionResult.Status) {
-        roles = AdminRoleService.GetRoles();
-        _addRoleRequest = new AddRoleRequest();
-        Dialog.Close(true);
+      if (!actionResult.Status) {
+        return;
       }
+      roles = AdminRoleService.GetRoles();
+      _addRoleRequest = new AddRoleRequest();
+      Dialog.Close(true);
     }
   }
 

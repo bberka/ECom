@@ -3,6 +3,9 @@
 [Table("CompanyInformation", Schema = "ECOperation")]
 public class CompanyInformation : IEntity, ICloneable
 {
+
+  public const string LocKey = "company_information";
+
   [Key]
   public bool Key { get; set; } = true;
 

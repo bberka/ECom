@@ -40,6 +40,10 @@
     Notification.Notify(message);
   }
 
+  protected void ShowInvalidFormNotification() {
+    ShowResultNotification(CustomResult.Warn("", "invalid_form_submit"));
+  }
+
   protected void ShowNotification(NotificationSeverity severity, string text, int duration = 3000) {
     var message = new NotificationMessage {
       Severity = severity,

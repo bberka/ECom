@@ -1,19 +1,22 @@
-﻿namespace ECom.Shared.DTOs;
+﻿using ECom.Shared.Resources;
+
+namespace ECom.Shared.DTOs;
 
 public class UpdateAdminAccountRequest : BaseAuthenticatedRequest
 {
     [Required]
     public Guid Id { get; set; }
 
-    [Required]
     [EmailAddress]
-    public string EmailAddress { get; set; } = null!;
-
     [Required]
+    [Display(ResourceType = typeof(LocalizedResource), Name = "email_address")]
+    [MaxLength(ValidationSettings.MaxEmailLength)]
+    public string EmailAddress { get; set; }
+
+    [Display(ResourceType = typeof(LocalizedResource), Name = "role")]
+    [Required]
+    [MinLength(ValidationSettings.MinNameLength)]
+    [MaxLength(ValidationSettings.MaxNameLength)]
     public string RoleId { get; set; }
 
-    public string? Password { get; set; }
-
-    [Required]
-    public bool UpdatePassword { get; set; } = false;
 }

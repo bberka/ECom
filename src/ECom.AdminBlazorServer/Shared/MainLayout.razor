@@ -1,29 +1,73 @@
-﻿@inherits LayoutComponentBase
+﻿@using ECom.Shared.Constants
+@using System.Text.RegularExpressions
+@using System.Web
+@inherits LayoutComponentBase
 <RadzenDialog/>
 <RadzenNotification/>
 <RadzenContextMenu/>
 <RadzenTooltip/>
 
-<RadzenLayout >
-  <AuthorizeView >
-    <ChildContent>
-      <LayoutSideNavBar></LayoutSideNavBar>
-      <RadzenBody>
-        <div class="rz-p-4 pb-2">
-          @Body
-        </div>
-      </RadzenBody>
 
-    </ChildContent>
-@*    <Authorizing>
+<CustomErrorBoundary @ref="@_errorBoundary">
+  <ChildContent>
+    <RadzenLayout >
+      <AuthorizeView >
+        <ChildContent>
+          <LayoutSideNavBar></LayoutSideNavBar>
+          <RadzenBody>
+            <div class="rz-p-4 pb-2">
+              @Body
+            </div>
+          </RadzenBody>
+      
+
+
+        </ChildContent>
+        @*    <Authorizing>
       <SubPageAuthorizing></SubPageAuthorizing>
     </Authorizing>*@
-    <NotAuthorized>
-      <SubPageLogin></SubPageLogin>
-    </NotAuthorized>
-  </AuthorizeView>
+        <NotAuthorized>
+          <SubPageLogin></SubPageLogin>
+        </NotAuthorized>
+      </AuthorizeView>
 
-</RadzenLayout>
+    </RadzenLayout>
+  </ChildContent>
+  <ErrorContent>
+    <PageTitle>@Loc["server_error"]</PageTitle>
+
+    @if (ConstantMgr.IsDevelopment()) {
+        
+      <div class="m-4">
+        <RadzenStack class="mt-5" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Orientation="Orientation.Vertical">
+          <RadzenText Class="my-2 fw-bold" TextAlign="TextAlign.Center" TextStyle="TextStyle.H1">500</RadzenText>
+          <RadzenText Class="my-2 text-center" TextAlign="TextAlign.Center" TextStyle="TextStyle.H6">
+            @_errorBoundary.CurrentException?.Message
+          </RadzenText>
+          <RadzenText Class="my-2 text-center" TextAlign="TextAlign.Start" TextStyle="TextStyle.Body2">
+            @((MarkupString)Regex.Replace(
+              HttpUtility.HtmlEncode(@_errorBoundary.CurrentException?.StackTrace), "\r?\n|\r", "<br />"))
+          </RadzenText>
+          <RadzenButton class="mt-5" Text="@Loc["go_to_home_page"]" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Click="NavigateToHome"></RadzenButton>
+        </RadzenStack>
+      </div>
+
+
+    }
+    else {
+
+      <div class="m-4">
+        <RadzenStack class="mt-5" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Orientation="Orientation.Vertical">
+          <RadzenText Class="my-2 fw-bold" TextAlign="TextAlign.Center" TextStyle="TextStyle.H1">500</RadzenText>
+          <RadzenText Class="my-2 text-center" TextAlign="TextAlign.Center" TextStyle="TextStyle.H3">@Loc["http_status_500"]</RadzenText>
+          <RadzenButton class="mt-5" Text="@Loc["go_to_home_page"]" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Click="NavigateToHome"></RadzenButton>
+        </RadzenStack>
+      </div>
+
+
+    }
+  </ErrorContent>
+</CustomErrorBoundary>
 <LayoutFooter></LayoutFooter>
 
 @code {
@@ -32,6 +76,9 @@
     await base.OnAfterRenderAsync(firstRender);
   //var authState = await StateProvider.GetAuthenticationStateAsync();
   }
+  private CustomErrorBoundary _errorBoundary;
 
-
+  private void NavigateToHome() {
+    Nav.NavigateTo("/",true);
+  }
 }

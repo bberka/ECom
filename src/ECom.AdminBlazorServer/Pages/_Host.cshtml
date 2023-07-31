@@ -1,8 +1,11 @@
 ﻿@page "/"
+@using ECom.Shared.Resources
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Localization
 @namespace ECom.AdminBlazorServer.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
+@inject IStringLocalizer<LocalizedResource> Localizer
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,12 +41,14 @@
 
   <div id="blazor-error-ui">
     <environment include="Staging,Production">
-      An error has occurred. This application may no longer respond until reloaded.
+      @Localizer["blazor_error"]
     </environment>
     <environment include="Development">
       An unhandled exception has occurred. See browser dev tools for details.
     </environment>
-    <a href="" class="reload">Reload</a>
+    <a href="" class="reload">
+      @Localizer["reload"]
+    </a>
     <a class="dismiss">🗙</a>
   </div>
 

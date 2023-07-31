@@ -115,6 +115,15 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admin Count.
+        /// </summary>
+        public static string admin_count {
+            get {
+                return ResourceManager.GetString("admin_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Admin Permissions.
         /// </summary>
         public static string admin_permissions {
@@ -210,6 +219,15 @@ namespace ECom.Shared.Resources {
         public static string authorizing {
             get {
                 return ResourceManager.GetString("authorizing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error has occurred. This application may no longer respond until reloaded..
+        /// </summary>
+        public static string blazor_error {
+            get {
+                return ResourceManager.GetString("blazor_error", resourceCulture);
             }
         }
         
@@ -628,6 +646,15 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The page you trying to view can not be viewed at the moment, a server error occurred. Please try again later or contact administration..
+        /// </summary>
+        public static string http_status_500 {
+            get {
+                return ResourceManager.GetString("http_status_500", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         public static string id {
@@ -673,11 +700,29 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Internal Error.
+        /// </summary>
+        public static string internal_error {
+            get {
+                return ResourceManager.GetString("internal_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {name} is invalid.
         /// </summary>
         public static string invalid {
             get {
                 return ResourceManager.GetString("invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please fix the errors on the form before submitting..
+        /// </summary>
+        public static string invalid_form_submit {
+            get {
+                return ResourceManager.GetString("invalid_form_submit", resourceCulture);
             }
         }
         
@@ -1177,6 +1222,15 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reload.
+        /// </summary>
+        public static string reload {
+            get {
+                return ResourceManager.GetString("reload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remember Me.
         /// </summary>
         public static string remember_me {
@@ -1299,6 +1353,15 @@ namespace ECom.Shared.Resources {
         public static string selected_announcement {
             get {
                 return ResourceManager.GetString("selected_announcement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Error.
+        /// </summary>
+        public static string server_error {
+            get {
+                return ResourceManager.GetString("server_error", resourceCulture);
             }
         }
         

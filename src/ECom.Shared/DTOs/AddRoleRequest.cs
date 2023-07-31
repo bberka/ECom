@@ -7,7 +7,7 @@ namespace ECom.Shared.DTOs;
 public class AddRoleRequest
 {
 
-  [Display(ResourceType = typeof(LocalizedResource), Name = "role")]
+  [Display(ResourceType = typeof(LocalizedResource), Name = "role_name")]
   [Required]
   [MinLength(ValidationSettings.MinNameLength)]
   [MaxLength(ValidationSettings.MaxNameLength)]
