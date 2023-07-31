@@ -14,7 +14,7 @@ public abstract class SupplierService : IAdminSupplierService
 
   public List<Supplier> GetSuppliers() {
     return UnitOfWork.SupplierRepository
-      .GetAll()
+      
       .OrderByDescending(x => x.RegisterDate)
       .ToList();
   }
@@ -37,7 +37,7 @@ public abstract class SupplierService : IAdminSupplierService
   public CustomResult DeleteSupplier(int id) {
     var supplier = UnitOfWork.SupplierRepository.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
-    UnitOfWork.SupplierRepository.Delete(supplier);
+    UnitOfWork.SupplierRepository.Remove(supplier);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError("DeleteSupplier");
     return DomainResult.OkDeleted("Supplier");

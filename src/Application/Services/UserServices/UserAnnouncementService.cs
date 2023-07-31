@@ -11,7 +11,7 @@ public class UserAnnouncementService : AnnouncementService,IUserAnnouncementServ
 
   public List<AnnouncementDto> ListAnnouncements() {
     return UnitOfWork.AnnouncementRepository
-      .Get(x => x.ExpireDate > DateTime.Now)
+      .Where(x => x.ExpireDate > DateTime.Now)
       .Select(x => new AnnouncementDto() {
         Message = x.Message,
         Order = x.Order

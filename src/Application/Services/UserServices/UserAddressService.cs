@@ -33,7 +33,7 @@ public class UserAddressService : AddressService,IUserAddressService
   }
 
   public CustomResult AddAddress(Guid userId, Address address) {
-    UnitOfWork.AddressRepository.Insert(address);
+    UnitOfWork.AddressRepository.Add(address);
     if (!UnitOfWork.Save()) return DomainResult.DbInternalError(nameof(AddAddress));
     return DomainResult.OkAdded(nameof(Address));
   }

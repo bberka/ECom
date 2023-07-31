@@ -20,7 +20,7 @@ public abstract class SliderService : ISliderService
   }
 
   public List<Slider> GetSliders() {
-    return UnitOfWork.SliderRepository.Get(x => !x.DeleteDate.HasValue).ToList();
+    return UnitOfWork.SliderRepository.Where(x => !x.DeleteDate.HasValue).ToList();
   }
 
   public CustomResult UpdateSlider(Slider slider) {
@@ -44,7 +44,7 @@ public abstract class SliderService : ISliderService
   }
 
   public CustomResult AddSlider(Slider slider) {
-    UnitOfWork.SliderRepository.Insert(slider);
+    UnitOfWork.SliderRepository.Add(slider);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddSlider));
     return DomainResult.OkAdded(nameof(Slider));

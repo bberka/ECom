@@ -14,7 +14,7 @@ public class AdminCategoryService : CategoryService, IAdminCategoryService
   }
   public List<Category> ListCategories() {
     return UnitOfWork.CategoryRepository
-      .Get(x => !x.DeleteDate.HasValue)
+      .Where(x => !x.DeleteDate.HasValue)
       .ToList();
   }
   public CustomResult UpdateCategory(AddOrUpdateCategoryRequest model) {
@@ -57,7 +57,7 @@ public class AdminCategoryService : CategoryService, IAdminCategoryService
       NameKey = model.NameKey,
       ParentNameKey = model.ParentNameKey,
     };
-    UnitOfWork.CategoryRepository.Insert(category);
+    UnitOfWork.CategoryRepository.Add(category);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddCategory));
     return DomainResult.OkAdded(nameof(Category));

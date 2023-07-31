@@ -38,7 +38,7 @@ public class StockChangeService : IAdminStockService
             SupplierId = model.SupplierId,
             Type = model.Type
         };
-        _unitOfWork.StockChangeRepository.Insert(stockChange);
+        _unitOfWork.StockChangeRepository.Add(stockChange);
         var res = _unitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(AddStockChange));
         return DomainResult.OkAdded(nameof(StockChange));

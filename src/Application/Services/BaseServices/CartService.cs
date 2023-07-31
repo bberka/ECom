@@ -37,7 +37,7 @@ public abstract class CartService : ICartService
         UpdateDate = DateTime.Now,
         DeleteDate = null,
       };
-      UnitOfWork.CartRepository.Insert(newBasket);
+      UnitOfWork.CartRepository.Add(newBasket);
     }
 
     var res = UnitOfWork.Save();
@@ -53,7 +53,7 @@ public abstract class CartService : ICartService
       UnitOfWork.CartRepository.Update(exist);
     }
     else {
-      UnitOfWork.CartRepository.Delete(exist);
+      UnitOfWork.CartRepository.Remove(exist);
     }
 
     var res = UnitOfWork.Save();
@@ -67,12 +67,12 @@ public abstract class CartService : ICartService
   }
 
   public List<Cart> ListBasketProducts(Guid userId) {
-    return UnitOfWork.CartRepository.Get(x => x.UserId == userId).ToList();
+    return UnitOfWork.CartRepository.Where(x => x.UserId == userId).ToList();
   }
 
   public CustomResult ClearCartProducts(Guid userId) {
-    var list = UnitOfWork.CartRepository.Get(x => x.UserId == userId);
-    UnitOfWork.CartRepository.DeleteRange(list);
+    var list = UnitOfWork.CartRepository.Where(x => x.UserId == userId);
+    UnitOfWork.CartRepository.RemoveRange(list);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ClearCartProducts));
     return DomainResult.OkCleared(nameof(Cart));

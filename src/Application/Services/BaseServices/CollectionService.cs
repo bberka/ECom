@@ -22,7 +22,7 @@ public abstract class CollectionService : ICollectionService
             UserId = userId,
             Name = model.Name
         };
-        UnitOfWork.CollectionRepository.Insert(clc);
+        UnitOfWork.CollectionRepository.Add(clc);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(CreateCollection));
         return DomainResult.OkAdded(nameof(Collection));
@@ -32,10 +32,10 @@ public abstract class CollectionService : ICollectionService
     {
         var collectionResult = GetCollection(userId, collectionId);
         if (!collectionResult.Status) return collectionResult;
-        var collectionProducts = UnitOfWork.CollectionProductRepository.Get(x => x.CollectionId == collectionId)
+        var collectionProducts = UnitOfWork.CollectionProductRepository.Where(x => x.CollectionId == collectionId)
           .Include(x => x.Collection);
-        if (collectionProducts.Any()) UnitOfWork.CollectionProductRepository.DeleteRange(collectionProducts);
-        UnitOfWork.CollectionRepository.Delete(collectionResult.Data!);
+        if (collectionProducts.Any()) UnitOfWork.CollectionProductRepository.RemoveRange(collectionProducts);
+        UnitOfWork.CollectionRepository.Remove(collectionResult.Data!);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(DeleteCollection));
         return DomainResult.OkDeleted(nameof(Collection));
@@ -62,7 +62,7 @@ public abstract class CollectionService : ICollectionService
     {
         var collectionResult = GetCollection(userId, id);
         if (!collectionResult.Status) return collectionResult.ToResult();
-        return UnitOfWork.CollectionProductRepository.Get(x => x.CollectionId == id)
+        return UnitOfWork.CollectionProductRepository.Where(x => x.CollectionId == id)
           .Include(x => x.Product)
           //.ThenInclude(x => x.ProductDetails)
           .ToList();
@@ -70,7 +70,7 @@ public abstract class CollectionService : ICollectionService
 
     public List<Collection> GetCollections(Guid userId)
     {
-        return UnitOfWork.CollectionRepository.Get(x => x.UserId == userId).ToList();
+        return UnitOfWork.CollectionRepository.Where(x => x.UserId == userId).ToList();
     }
 
     public CustomResult UpdateCollection(Guid userId, UpdateCollectionRequest model)

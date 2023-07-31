@@ -64,7 +64,7 @@ function createObjectFromEvent(event) {
     newIndex: event.newIndex,
     oldDraggableIndex: event.oldDraggableIndex,
     newDraggableIndex: event.newDraggableIndex,
-    willInsertAfter: event.willInsertAfter,
+    willAddAfter: event.willAddAfter,
     pullMode: event.pullMode,
   }
   if (event.to) obj.toElementId = event.to.id;

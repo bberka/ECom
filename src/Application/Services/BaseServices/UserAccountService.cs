@@ -24,14 +24,14 @@ public abstract class UserAccountService : IUserAccountService
 
   public CustomResult RegisterUser(RegisterUserRequest model) {
     var user = User.FromRegisterRequest(model);
-    UnitOfWork.UserRepository.Insert(user);
+    UnitOfWork.UserRepository.Add(user);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(RegisterUser));
     return DomainResult.OkUpdated(nameof(User));
   }
 
   public List<User> GetUsers() {
-    return UnitOfWork.UserRepository.GetAll().ToList();
+    return UnitOfWork.UserRepository.ToList();
   }
 
   public CustomResult<UserDto> Login(LoginRequest model) {

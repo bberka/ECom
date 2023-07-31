@@ -52,20 +52,20 @@ public class AdminAnnouncementService : AnnouncementService, IAdminAnnouncementS
     if (existsSameMessage) return DomainResult.AlreadyExists(nameof(Announcement));
     var maxCount = UnitOfWork.AnnouncementRepository.Count(x => x.ExpireDate > DateTime.Now);
     if (maxCount > MaxAnnouncementCount) return DomainResult.MaxCountReached(nameof(Announcement), MaxAnnouncementCount);
-    UnitOfWork.AnnouncementRepository.Insert(Announcement.FromDto(data));
+    UnitOfWork.AnnouncementRepository.Add(Announcement.FromDto(data));
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddAnnouncement));
     return DomainResult.OkAdded(nameof(Announcement));
   }
 
   public List<Announcement> ListAnnouncements() {
-    return UnitOfWork.AnnouncementRepository.Get(x => x.ExpireDate > DateTime.Now).ToList();
+    return UnitOfWork.AnnouncementRepository.Where(x => x.ExpireDate > DateTime.Now).ToList();
   }
 
   public CustomResult DeleteAnnouncement(Guid id) {
     var data = UnitOfWork.AnnouncementRepository.Find(id);
     if (data is null) return DomainResult.NotFound(nameof(Announcement));
-    UnitOfWork.AnnouncementRepository.Delete(data);
+    UnitOfWork.AnnouncementRepository.Remove(data);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteAnnouncement));
     return DomainResult.OkDeleted(nameof(Announcement));

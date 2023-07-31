@@ -1104,7 +1104,7 @@
   },
 
   /**
-   * Detects first nearest empty sortable to X and Y position using emptyInsertThreshold.
+   * Detects first nearest empty sortable to X and Y position using emptyAddThreshold.
    * @param  {Number} x      X position
    * @param  {Number} y      Y position
    * @return {HTMLElement}   Element of the first found nearest Sortable
@@ -1112,7 +1112,7 @@
   _detectNearestEmptySortable = function _detectNearestEmptySortable(x, y) {
     var ret;
     sortables.some(function (sortable) {
-      var threshold = sortable[expando].options.emptyInsertThreshold;
+      var threshold = sortable[expando].options.emptyAddThreshold;
       if (!threshold || lastChild(sortable)) return;
       var rect = getRect(sortable),
           insideHorizontally = x >= rect.left - threshold && x <= rect.right + threshold,
@@ -1185,7 +1185,7 @@
     }, true);
   }
 
-  var nearestEmptyInsertDetectEvent = function nearestEmptyInsertDetectEvent(evt) {
+  var nearestEmptyAddDetectEvent = function nearestEmptyAddDetectEvent(evt) {
     if (dragEl) {
       evt = evt.touches ? evt.touches[0] : evt;
 
@@ -1275,7 +1275,7 @@
         y: 0
       },
       supportPointer: Sortable.supportPointer !== false && 'PointerEvent' in window && !Safari,
-      emptyInsertThreshold: 5
+      emptyAddThreshold: 5
     };
     PluginManager.initializePlugins(this, el, defaults); // Set default options
 
@@ -1504,9 +1504,9 @@
         options.ignore.split(',').forEach(function (criteria) {
           find(dragEl, criteria.trim(), _disableDraggable);
         });
-        on(ownerDocument, 'dragover', nearestEmptyInsertDetectEvent);
-        on(ownerDocument, 'mousemove', nearestEmptyInsertDetectEvent);
-        on(ownerDocument, 'touchmove', nearestEmptyInsertDetectEvent);
+        on(ownerDocument, 'dragover', nearestEmptyAddDetectEvent);
+        on(ownerDocument, 'mousemove', nearestEmptyAddDetectEvent);
+        on(ownerDocument, 'touchmove', nearestEmptyAddDetectEvent);
         on(ownerDocument, 'mouseup', _this._onDrop);
         on(ownerDocument, 'touchend', _this._onDrop);
         on(ownerDocument, 'touchcancel', _this._onDrop); // Make dragEl draggable (must be before delay for FireFox)
@@ -1951,7 +1951,7 @@
           dragEl.parentNode[expando]._isOutsideThisEl(evt.target); // Do not detect for empty insert if already inserted
 
 
-          !insertion && nearestEmptyInsertDetectEvent(evt);
+          !insertion && nearestEmptyAddDetectEvent(evt);
         }
 
         !options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
@@ -2017,7 +2017,7 @@
         var elLastChild = lastChild(el, options.draggable);
 
         if (!elLastChild || _ghostIsLast(evt, vertical, this) && !elLastChild.animated) {
-          // Insert to end of list
+          // Add to end of list
           // If already at end of list: Do not insert
           if (elLastChild === dragEl) {
             return completed(false);
@@ -2048,7 +2048,7 @@
             return completed(true);
           }
         } else if (elLastChild && _ghostIsFirst(evt, vertical, this)) {
-          // Insert to start of list
+          // Add to start of list
           var firstChild = getChild(el, 0, options, true);
 
           if (firstChild === dragEl) {
@@ -2152,9 +2152,9 @@
       off(document, 'mousemove', this._onTouchMove);
       off(document, 'touchmove', this._onTouchMove);
       off(document, 'pointermove', this._onTouchMove);
-      off(document, 'dragover', nearestEmptyInsertDetectEvent);
-      off(document, 'mousemove', nearestEmptyInsertDetectEvent);
-      off(document, 'touchmove', nearestEmptyInsertDetectEvent);
+      off(document, 'dragover', nearestEmptyAddDetectEvent);
+      off(document, 'mousemove', nearestEmptyAddDetectEvent);
+      off(document, 'touchmove', nearestEmptyAddDetectEvent);
     },
     _offUpEvents: function _offUpEvents() {
       var ownerDocument = this.el.ownerDocument;
@@ -2535,7 +2535,7 @@
     evt.cancelable && evt.preventDefault();
   }
 
-  function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvent, willInsertAfter) {
+  function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvent, willAddAfter) {
     var evt,
         sortable = fromEl[expando],
         onMoveFn = sortable.options.onMove,
@@ -2557,7 +2557,7 @@
     evt.draggedRect = dragRect;
     evt.related = targetEl || toEl;
     evt.relatedRect = targetRect || getRect(toEl);
-    evt.willInsertAfter = willInsertAfter;
+    evt.willAddAfter = willAddAfter;
     evt.originalEvent = originalEvent;
     fromEl.dispatchEvent(evt);
 
@@ -2617,7 +2617,7 @@
       } else {
         // Regular
         if (mouseOnAxis > targetS1 + targetLength * (1 - swapThreshold) / 2 && mouseOnAxis < targetS2 - targetLength * (1 - swapThreshold) / 2) {
-          return _getInsertDirection(target);
+          return _getAddDirection(target);
         }
       }
     }
@@ -2641,7 +2641,7 @@
    */
 
 
-  function _getInsertDirection(target) {
+  function _getAddDirection(target) {
     if (index(dragEl) < index(target)) {
       return 1;
     } else {
@@ -3746,9 +3746,9 @@
     });
   }
 
-  function insertMultiDragElements(clonesInserted, rootEl) {
+  function insertMultiDragElements(clonesAdded, rootEl) {
     multiDragElements.forEach(function (multiDragElement, i) {
-      var target = rootEl.children[multiDragElement.sortableIndex + (clonesInserted ? Number(i) : 0)];
+      var target = rootEl.children[multiDragElement.sortableIndex + (clonesAdded ? Number(i) : 0)];
 
       if (target) {
         rootEl.insertBefore(multiDragElement, target);
@@ -3758,15 +3758,15 @@
     });
   }
   /**
-   * Insert multi-drag clones
-   * @param  {[Boolean]} elementsInserted  Whether the multi-drag elements are inserted
+   * Add multi-drag clones
+   * @param  {[Boolean]} elementsAdded  Whether the multi-drag elements are inserted
    * @param  {HTMLElement} rootEl
    */
 
 
-  function insertMultiDragClones(elementsInserted, rootEl) {
+  function insertMultiDragClones(elementsAdded, rootEl) {
     multiDragClones.forEach(function (clone, i) {
-      var target = rootEl.children[clone.sortableIndex + (elementsInserted ? Number(i) : 0)];
+      var target = rootEl.children[clone.sortableIndex + (elementsAdded ? Number(i) : 0)];
 
       if (target) {
         rootEl.insertBefore(clone, target);

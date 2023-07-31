@@ -25,7 +25,7 @@ public class AdminService : IAdminService
     var exists = UnitOfWork.AdminRepository.Any(x => x.EmailAddress == admin.EmailAddress);
     if (exists) return DomainResult.AlreadyExists("email_address");
     var dbAdmin = Admin.FromDto(admin);
-    UnitOfWork.AdminRepository.Insert(dbAdmin);
+    UnitOfWork.AdminRepository.Add(dbAdmin);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddAdmin));
     return DomainResult.OkAdded(nameof(Admin));
@@ -80,20 +80,20 @@ public class AdminService : IAdminService
     return DomainResult.OkDeleted(nameof(Admin));
   }
   public List<AdminDto> GetAdmins() {
-    return UnitOfWork.AdminRepository.GetAll().Select(x => Admin.ToDto(x)).ToList();
+    return UnitOfWork.AdminRepository.Select(x => Admin.ToDto(x)).ToList();
   }
 
   public string? GetAdminRoleId(Guid userId) {
     return Enumerable.Select(UnitOfWork.AdminRepository
-        .Get(x => x.Id == userId && !x.DeleteDate.HasValue), x => x.RoleId)
+        .Where(x => x.Id == userId && !x.DeleteDate.HasValue), x => x.RoleId)
       .FirstOrDefault();
   }
   public List<Permission> GetPermissions() {
-    return UnitOfWork.PermissionRepository.GetAll().ToList();
+    return UnitOfWork.PermissionRepository.ToList();
   }
 
   public List<Permission> GetInvalidPermissions() {
-    return UnitOfWork.PermissionRepository.GetAll().ToList();
+    return UnitOfWork.PermissionRepository.ToList();
   }
 
   public bool IsValidPermission(string permissionId) {
@@ -102,7 +102,7 @@ public class AdminService : IAdminService
 
 
   public List<AdminDto> GetAdminList(Guid requesterAdminId) {
-    return UnitOfWork.AdminRepository.Get(x => x.Id != requesterAdminId)
+    return UnitOfWork.AdminRepository.Where(x => x.Id != requesterAdminId)
       .Include(x => x.Role)
       .Select(x => Admin.ToDto(x))
       .ToList();

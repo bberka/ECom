@@ -58,7 +58,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   public List<CargoOption> ListCargoOptions() {
     var cache = MemoryCache.Get<List<CargoOption>>(CargoOptionCacheKey);
     if (cache is not null) return cache;
-    cache = UnitOfWork.CargoOptionRepository.Get(x => x.DeleteDate.HasValue == false).ToList();
+    cache = UnitOfWork.CargoOptionRepository.Where(x => x.DeleteDate.HasValue == false).ToList();
     MemoryCache.Set(CargoOptionCacheKey, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
@@ -66,7 +66,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   public List<PaymentOption> ListPaymentOptions() {
     var cache = MemoryCache.Get<List<PaymentOption>>(PaymentOptionCacheKey);
     if (cache is not null) return cache;
-    cache = UnitOfWork.PaymentOptionRepository.Get(x => x.DeleteDate.HasValue == false).ToList();
+    cache = UnitOfWork.PaymentOptionRepository.Where(x => x.DeleteDate.HasValue == false).ToList();
     MemoryCache.Set(PaymentOptionCacheKey, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
@@ -75,7 +75,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   public List<SmtpOption> ListSmtpOptions() {
     var cache = MemoryCache.Get<List<SmtpOption>>(SmtpOptionCacheKey);
     if (cache is not null) return cache;
-    cache = UnitOfWork.SmtpOptionRepository.Get(x => x.DeleteDate.HasValue == false).ToList();
+    cache = UnitOfWork.SmtpOptionRepository.Where(x => x.DeleteDate.HasValue == false).ToList();
     MemoryCache.Set(SmtpOptionCacheKey, cache, TimeSpan.FromMinutes(5));
     return cache;
   }

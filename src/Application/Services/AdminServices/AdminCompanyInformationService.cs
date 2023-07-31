@@ -18,11 +18,11 @@ public class AdminCompanyInformationService : CompanyInformationService, IAdminC
       return DomainResult.InvalidState(CompanyInformation.LocKey);
     }
     info.Key = Key;
-    var dbData = UnitOfWork.CompanyInformationRepository.GetAll();
-    UnitOfWork.CompanyInformationRepository.DeleteRange(dbData);
+    var dbData = UnitOfWork.CompanyInformationRepository;
+    UnitOfWork.CompanyInformationRepository.RemoveRange(dbData);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateCompanyInformation));
-    UnitOfWork.CompanyInformationRepository.Insert(info);
+    UnitOfWork.CompanyInformationRepository.Add(info);
     var res2 = UnitOfWork.Save();
     if (!res2) return DomainResult.DbInternalError(nameof(UpdateCompanyInformation));
     SetCacheValue(info);

@@ -36,7 +36,7 @@ public class AdminAccountService : IAdminAccountService
 
   public CustomResult<AdminDto> Login(LoginRequest model) {
     var admin = UnitOfWork.AdminRepository
-      .Get(x => x.EmailAddress == model.EmailAddress)
+      .Where(x => x.EmailAddress == model.EmailAddress)
       .Select(x => Admin.ToDto(x))
       .FirstOrDefault();
     if (admin is null) return DomainResult.NoAccountFound(nameof(Admin));

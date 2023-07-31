@@ -2,6 +2,7 @@
 using ECom.Shared.Abstract.Services.Base;
 using ECom.Shared.Constants;
 using ECom.Shared.Entities;
+using ECom.Shared.Extensions;
 
 namespace ECom.Application.Services.BaseServices;
 
@@ -40,7 +41,7 @@ public abstract class ProductService : IProductService
     List<Guid> productIds,
     ushort page) {
     var lastIdx = Option.PagingProductCount * page;
-    return UnitOfWork.ProductCommentRepository.Get(x => productIds.Contains(x.ProductId))
+    return UnitOfWork.ProductCommentRepository.Where(x => productIds.Contains(x.ProductId))
       .OrderByDescending(x => x.RegisterDate)
       .Skip(lastIdx)
       .Take(Option.PagingProductCount)
@@ -49,7 +50,7 @@ public abstract class ProductService : IProductService
 
   public List<ProductComment> GetProductComments(Guid productId, ushort page) {
     var lastIdx = Option.PagingProductCount * page;
-    return UnitOfWork.ProductCommentRepository.Get(x => x.ProductId == productId)
+    return UnitOfWork.ProductCommentRepository.Where(x => x.ProductId == productId)
       .OrderByDescending(x => x.RegisterDate)
       .Skip(lastIdx)
       .Take(Option.PagingProductCount)
@@ -67,7 +68,7 @@ public abstract class ProductService : IProductService
       UserId = userId,
       Star = model.Star
     };
-    UnitOfWork.ProductCommentRepository.Insert(comment);
+    UnitOfWork.ProductCommentRepository.Add(comment);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddProductComment));
     return DomainResult.OkAdded(nameof(ProductComment));
@@ -108,12 +109,9 @@ public abstract class ProductService : IProductService
     if (page == 0) return new List<Product>();
     var lastIdx = Option.PagingProductCount * (page - 1);
     return UnitOfWork.ProductRepository
-      .Get(
-        x => !x.DeleteDate.HasValue,
-        x => x.RegisterDate,
-        true,
-        page,
-        Option.PagingProductCount)
+      .Where(x => !x.DeleteDate.HasValue)
+      .OrderByDescending(x =>x.RegisterDate)
+      .Paging(page,Option.PagingProductCount)
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
       .Include(x => x.ProductImages)
@@ -122,15 +120,12 @@ public abstract class ProductService : IProductService
 
   public List<Product> GetProducts(List<Guid> productIds, ushort page, string culture = ConstantMgr.DefaultCulture) {
     return UnitOfWork.ProductRepository
-      .Get(x => !x.DeleteDate.HasValue && productIds.Contains(x.Id),
-        x => x.RegisterDate,
-        true,
-        page,
-        Option.PagingProductCount)
+      .Where(x => !x.DeleteDate.HasValue && productIds.Contains(x.Id))
+      .OrderByDescending(x => x.RegisterDate)
+      .Paging(page, Option.PagingProductCount)
       .Include(x => x.ProductComments)
       .Include(x => x.ProductDetails)
       .Include(x => x.ProductImages)
-      .ToList()
       .ToList();
   }
 }

@@ -18,19 +18,19 @@ public class AdminRoleService : IAdminRoleService
 
   public List<Permission> GetPermissions() {
     return UnitOfWork.PermissionRepository
-      .GetAll()
+      
       .ToList();
   }
 
   public List<Role> GetRoles() {
-    return UnitOfWork.RoleRepository.Table
+    return UnitOfWork.RoleRepository
       .Include(x => x.PermissionRoles)
-      .Join(UnitOfWork.AdminRepository.Table, 
+      .Join(UnitOfWork.AdminRepository, 
         x => x.Id, 
         x => x.RoleId, 
         (role, admin) => new Role {
         Id = role.Id,
-        AdminCount = UnitOfWork.AdminRepository.Table.Count(x => x.RoleId == role.Id),
+        AdminCount = UnitOfWork.AdminRepository.Count(x => x.RoleId == role.Id),
         PermissionRoles = role.PermissionRoles
       })
       .ToList();
@@ -59,7 +59,7 @@ public class AdminRoleService : IAdminRoleService
     if (string.IsNullOrEmpty(roleId)) return DomainResult.NotFound(nameof(Role));
     var role = UnitOfWork.RoleRepository.Find(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));
-    var permissionRoles = UnitOfWork.PermissionRoleRepository.Get(x => x.RoleId == roleId)
+    var permissionRoles = UnitOfWork.PermissionRoleRepository.Where(x => x.RoleId == roleId)
       .ToList();
     var permissionsToAdd = permissions
       .Where(x => permissionRoles.All(y => y.PermissionId != x))
@@ -71,9 +71,9 @@ public class AdminRoleService : IAdminRoleService
     var isNeedUpdate = permissionsToAdd.Any() || permissionsToRemove.Any();
     if (!isNeedUpdate) return DomainResult.OkNotChanged(nameof(Role));
     if (permissionsToRemove.Count > 0)
-      UnitOfWork.PermissionRoleRepository.DeleteRange(permissionsToRemove);
+      UnitOfWork.PermissionRoleRepository.RemoveRange(permissionsToRemove);
     if (permissionsToAdd.Count > 0)
-      UnitOfWork.PermissionRoleRepository.InsertRange(permissionsToAdd);
+      UnitOfWork.PermissionRoleRepository.AddRange(permissionsToAdd);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdatePermissions));
     return DomainResult.OkUpdated(nameof(Role));
@@ -85,18 +85,18 @@ public class AdminRoleService : IAdminRoleService
     var exists = RoleExists(roleRequest.RoleName);
     if (exists) return DomainResult.AlreadyExists(nameof(Role));
     var dbPermissionList = UnitOfWork.PermissionRepository
-      .GetAll()
+      
       .Select(x => x.Id)
       .ToList();
     var notExistsPermissions = roleRequest.Permissions.Except(dbPermissionList).ToList();
     //TODO: give invalid permissions as param ?
     if (notExistsPermissions.Count != 0) return DomainResult.Invalid(nameof(Permission));
     var role = new Role { Id = roleRequest.RoleName };
-    UnitOfWork.RoleRepository.Insert(role);
+    UnitOfWork.RoleRepository.Add(role);
     var permissionRoles = roleRequest.Permissions
       .Select(x => new PermissionRole { PermissionId = x, RoleId = roleRequest.RoleName })
       .ToList();
-    UnitOfWork.PermissionRoleRepository.InsertRange(permissionRoles);
+    UnitOfWork.PermissionRoleRepository.AddRange(permissionRoles);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddRole));
     return DomainResult.OkAdded(nameof(Role));
@@ -106,11 +106,11 @@ public class AdminRoleService : IAdminRoleService
     if (roleId == "Owner") return DomainResult.Invalid(nameof(roleId));
     var role = UnitOfWork.RoleRepository.Find(roleId);
     if (role is null) return DomainResult.NotFound(nameof(Role));
-    var admins = UnitOfWork.AdminRepository.Get(x => x.RoleId == roleId).ToList();
+    var admins = UnitOfWork.AdminRepository.Where(x => x.RoleId == roleId).ToList();
     if (admins.Count > 0) return DomainResult.CanNotDeleteBcRelation(nameof(Role), nameof(Admin));
-    var permissions = UnitOfWork.PermissionRoleRepository.Get(x => x.RoleId == roleId).ToList();
-    if (permissions.Count > 0) UnitOfWork.PermissionRoleRepository.DeleteRange(permissions);
-    UnitOfWork.RoleRepository.Delete(role);
+    var permissions = UnitOfWork.PermissionRoleRepository.Where(x => x.RoleId == roleId).ToList();
+    if (permissions.Count > 0) UnitOfWork.PermissionRoleRepository.RemoveRange(permissions);
+    UnitOfWork.RoleRepository.Remove(role);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteRole));
     return DomainResult.OkDeleted(nameof(Role));

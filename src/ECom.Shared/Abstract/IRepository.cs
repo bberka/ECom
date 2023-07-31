@@ -31,8 +31,8 @@ public interface IRepositoryAsync<TEntity>
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
     Task<int> CountAsync();
     Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
-    Task InsertAsync(TEntity entity);
-    Task InsertRangeAsync(IEnumerable<TEntity> entities);
+    Task AddAsync(TEntity entity);
+    Task AddRangeAsync(IEnumerable<TEntity> entities);
     Task<bool> HasChangesAsync();
 
 
@@ -60,12 +60,12 @@ public interface IRepositorySync<TEntity>
     bool Any(Expression<Func<TEntity, bool>> predicate);
     int Count();
     int Count(Expression<Func<TEntity, bool>> predicate);
-    void Insert(TEntity entity);
-    void InsertRange(IEnumerable<TEntity> entities);
+    void Add(TEntity entity);
+    void AddRange(IEnumerable<TEntity> entities);
     void Update(TEntity entity);
     void UpdateRange(IEnumerable<TEntity> entities);
     void Delete(TEntity entity);
-    void DeleteRange(IEnumerable<TEntity> entities);
+    void RemoveRange(IEnumerable<TEntity> entities);
     bool HasChanges();
 
 

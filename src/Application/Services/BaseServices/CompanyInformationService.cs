@@ -39,7 +39,7 @@ public abstract class CompanyInformationService : ICompanyInformationService
   }
 
   protected CompanyInformation GetFromDb() {
-    var companyInformation = UnitOfWork.CompanyInformationRepository.Get(x => x.Key == Key).AsNoTracking().Single();
+    var companyInformation = UnitOfWork.CompanyInformationRepository.Where(x => x.Key == Key).AsNoTracking().Single();
     return companyInformation;
   }
 }

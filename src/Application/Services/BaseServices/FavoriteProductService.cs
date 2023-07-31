@@ -34,7 +34,7 @@ public abstract class FavoriteProductService : IFavoriteProductService
             ProductId = productId,
             UserId = userId
         };
-        UnitOfWork.FavoriteProductRepository.Insert(data);
+        UnitOfWork.FavoriteProductRepository.Add(data);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(AddFavoriteProduct));
         return DomainResult.OkAdded(nameof(FavoriteProduct));
@@ -47,7 +47,7 @@ public abstract class FavoriteProductService : IFavoriteProductService
         var favProduct =
           UnitOfWork.FavoriteProductRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
         if (favProduct is null) return DomainResult.NotFound(nameof(FavoriteProduct));
-        UnitOfWork.FavoriteProductRepository.Delete(favProduct);
+        UnitOfWork.FavoriteProductRepository.Remove(favProduct);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(RemoveFavoriteProduct));
 
@@ -56,7 +56,7 @@ public abstract class FavoriteProductService : IFavoriteProductService
 
     public List<FavoriteProduct> GetFavoriteProducts(Guid userId)
     {
-        return UnitOfWork.FavoriteProductRepository.Get(x => x.UserId == userId)
+        return UnitOfWork.FavoriteProductRepository.Where(x => x.UserId == userId)
           .Include(x => x.Product)
           //.ThenInclude(x => x.Images)
           .ToList();

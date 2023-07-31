@@ -110,11 +110,11 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     return await Task.FromResult(queryable);
   }
 
-  public async Task InsertAsync(TEntity entity) {
+  public async Task AddAsync(TEntity entity) {
     await Table.AddAsync(entity);
   }
 
-  public async Task InsertRangeAsync(IEnumerable<TEntity> entities) {
+  public async Task AddRangeAsync(IEnumerable<TEntity> entities) {
     await Table.AddRangeAsync(entities);
   }
 
@@ -222,11 +222,11 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     return queryable;
   }
 
-  public void Insert(TEntity entity) {
+  public void Add(TEntity entity) {
     Table.Add(entity);
   }
 
-  public void InsertRange(IEnumerable<TEntity> entities) {
+  public void AddRange(IEnumerable<TEntity> entities) {
     Table.AddRange(entities);
   }
 
@@ -242,7 +242,7 @@ public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     Table.Remove(entity);
   }
 
-  public void DeleteRange(IEnumerable<TEntity> entities) {
+  public void RemoveRange(IEnumerable<TEntity> entities) {
     Table.RemoveRange(entities);
   }
 

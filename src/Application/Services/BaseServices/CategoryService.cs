@@ -12,7 +12,7 @@ public abstract class CategoryService : ICategoryService
   }
   public List<CategoryDto> ListCategoriesDto() {
     return UnitOfWork.CategoryRepository
-      .Get(x => x.DeleteDate.HasValue)
+      .Where(x => x.DeleteDate.HasValue)
       .Select(x => new CategoryDto() {
         Order = x.Order,
         NameKey = x.NameKey,
