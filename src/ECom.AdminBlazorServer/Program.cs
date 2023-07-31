@@ -22,6 +22,7 @@ using ECom.Application.Services;
 using ECom.Shared.Abstract.Services;
 using ECom.Shared.Abstract.Services.Admin;
 using ECom.Shared.Abstract.Services.Base;
+using ECom.Shared.Resources;
 
 EComLoggerHelper.Configure(true);
 
@@ -29,7 +30,11 @@ EComLoggerHelper.Configure(true);
 var builder = WebApplication.CreateBuilder(args);
 
 // BASE SERVICES
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+  .AddDataAnnotationsLocalization(options => {
+    options.DataAnnotationLocalizerProvider = (type, factory) =>
+      factory.Create(typeof(LocalizedResource));
+  });
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<HttpClient>();
 //builder.Services.AddAuthenticationCore();
@@ -49,9 +54,9 @@ builder.Services.AddBlazoredSessionStorage();
 //}).AddCookie();
 //builder.Services.AddAuthenticationCore();
 builder.Services.AddAuthentication(options => {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-  })
+  options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
   .AddCookie();
 
 var dictionary = new Dictionary<object, object>();
@@ -94,9 +99,7 @@ builder.Services.AddScoped<ContextMenuService>();
 
 
 //LOCALIZATION
-builder.Services.AddLocalization(x => {
-  x.ResourcesPath = "Resources";
-});
+builder.Services.AddLocalization();
 
 var cultures = builder.Configuration.GetSection("Cultures")
   .GetChildren()

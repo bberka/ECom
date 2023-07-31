@@ -1,15 +1,16 @@
 ﻿
+@using ECom.Shared.Extensions
 @inherits ComponentBase
 
 @code {
   //const int defaultDuration = 4000;
   //protected void ShowResultNotificationWithData<T>(CustomResult<T> result, int duration = 3000) {
   //  var error = result.GetErrorAndName();
-  //  var text = Loc[error.error].Format("name", error.name);
+  //  var text = LocalizedResource[error.error].Format("name", error.name);
 
   //  var message = new NotificationMessage {
   //        Severity = SeverityFromResultLevel(result.Level),
-  //        Summary = Loc[result.LevelText],
+  //        Summary = LocalizedResource[result.LevelText],
   //        Detail = text + Environment.NewLine + Environment.NewLine + result.Data,
 
   //        Duration = duration

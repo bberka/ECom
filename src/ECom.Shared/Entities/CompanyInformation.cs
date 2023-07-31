@@ -7,10 +7,14 @@ public class CompanyInformation : IEntity, ICloneable
   public bool Key { get; set; } = true;
 
   [MaxLength(ValidationSettings.MaxDomainLength)]
+  [Url]
+
   public string DomainUrl { get; set; } = "https://";
 
 
   [MaxLength(ValidationSettings.MaxDomainLength)]
+  [Url]
+
   public string WebApiUrl { get; set; } = "https://";
 
 
@@ -29,22 +33,26 @@ public class CompanyInformation : IEntity, ICloneable
   public string PhoneNumber { get; set; } = "00000000000";
 
   [EmailAddress]
+  [MaxLength(ValidationSettings.MaxEmailLength)]
   public string ContactEmail { get; set; } = "contact@mail.com";
 
   [MaxLength(ValidationSettings.MaxPhoneLength)]
   [MinLength(ValidationSettings.MinPhoneLength)]
+  [Phone]
   public string? WhatsApp { get; set; } 
 
 
   [MaxLength(ValidationSettings.MaxDomainLength)]
-
+  [Url]
   public string? FacebookLink { get; set; }
 
   [MaxLength(ValidationSettings.MaxDomainLength)]
+  [Url]
 
   public string? InstagramLink { get; set; }
 
   [MaxLength(ValidationSettings.MaxDomainLength)]
+  [Url]
 
   public string? YoutubeLink { get; set; }
 

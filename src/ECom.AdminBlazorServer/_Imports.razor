@@ -12,21 +12,14 @@
 @using Radzen.Blazor
 @using Radzen
 @using ECom.AdminBlazorServer.Common
+@using ECom.AdminBlazorServer.Pages.Sub
 @using ECom.AdminBlazorServer.Components
 @using ECom.Shared
 @using ECom.Domain
 @using ECom.Application.Attributes
 @using ECom.AdminBlazorServer.Components
-@using ECom.AdminBlazorServer.Components.LayoutComponents
-@using ECom.AdminBlazorServer.Components.ActionComponents
-@using ECom.AdminBlazorServer.Components.BaseComponents
-@using ECom.AdminBlazorServer.Components.ButtonComponents
-@using ECom.AdminBlazorServer.Components.FieldComponents
-@using ECom.AdminBlazorServer.Components.SimpleComponents
-@using ECom.AdminBlazorServer.Components.SubPageComponents
-@using ECom.AdminBlazorServer.Components.ValidatorComponents
 @using Microsoft.Extensions.Localization
-@using ECom.Domain.Extensions
+@using ECom.Shared.Resources
 @using Microsoft.AspNetCore.Components.Server
 
 @*@inject IAdminAuthenticationStateProvider AuthProvider*@
@@ -36,7 +29,7 @@
 @inject TooltipService Tooltip
 @*@inject AuthenticationStateProvider AuthProvider*@
 
-@inject IStringLocalizer<App> Loc
+@inject IStringLocalizer<LocalizedResource> Loc
 @inject IJsCookieUtil JsCookieUtil
 @inject IJsUtil JsUtil
 

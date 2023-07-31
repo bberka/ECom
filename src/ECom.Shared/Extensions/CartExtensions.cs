@@ -1,8 +1,9 @@
-﻿using ECom.Shared.Entities;
+﻿using EasMe.Extensions;
+using ECom.Shared.Entities;
 using ECom.Shared.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace ECom.Domain.Extensions;
+namespace ECom.Shared.Extensions;
 
 public static class CartExtensions
 {

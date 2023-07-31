@@ -1,4 +1,6 @@
-﻿namespace ECom.Application.Validators;
+﻿using ECom.Shared.Extensions;
+
+namespace ECom.Application.Validators;
 
 public class AddProductCommentRequestValidator : AbstractValidator<AddProductCommentRequest>,
   IValidator<AddProductCommentRequest>

@@ -31,9 +31,9 @@
             </RadzenButton>
           }
           else {
-            @*<RadzenText TextStyle="TextStyle.Body1" Text="@Loc["owner_permissions_can_not_be_updated"]"></RadzenText>*@
+            @*<RadzenText TextStyle="TextStyle.Body1" Text="@LocalizedResource["owner_permissions_can_not_be_updated"]"></RadzenText>*@
           }
-       
+
 
 
         </Template>
@@ -65,21 +65,23 @@
   private async Task ShowEditDialog(Role value) {
     _editPermissions = value.PermissionRoles.Select(y => y.Permission.Id).ToList();
     var result = await DialogService.OpenAsync(Loc["edit"] + " " + Loc[value.Id.ToLower() + "_permissions"], ds =>
-    @<RadzenStack Orientation="Orientation.Vertical">
-      <RadzenListBox @bind-Value="@_editPermissions" Data="@allPermissions" TextProperty="Id" ValueProperty="Id"
-                 FilterOperator="StringFilterOperator.Contains" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Multiple="true" AllowClear="true" Placeholder="@Loc["select_permissions"]" Style="height: 300px; min-width: 300px; width: 100%;" />
-
-
-      <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenStack Orientation="Orientation.Horizontal">
-          <RadzenButton Visible="true" Text=@Loc["update"] Click="() => ds.Close(true)" ButtonType="ButtonType.Submit" Style="width: 120px;" />
-          <RadzenButton Visible="true" Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+      @<RadzenTemplateForm TItem="List<string>">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <RadzenStack Orientation="Orientation.Vertical">
+          <RadzenListBox @bind-Value="@_editPermissions" Data="@allPermissions" TextProperty="Id" ValueProperty="Id"
+                         FilterOperator="StringFilterOperator.Contains" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Multiple="true" AllowClear="true" Placeholder="@Loc["select_permissions"]" Style="height: 300px; min-width: 300px; width: 100%;"/>
+          <ValidationMessage For="@(() => _addRoleRequest.Permissions)"/>
+          <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenStack Orientation="Orientation.Horizontal">
+              <RadzenButton Visible="true" Text=@Loc["update"] Click="() => ds.Close(true)" ButtonType="ButtonType.Submit" Style="width: 120px;"/>
+              <RadzenButton Visible="true" Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light"/>
+            </RadzenStack>
+          </RadzenStack>
         </RadzenStack>
-      </RadzenStack>
-    </RadzenStack>
-  , new DialogOptions {
-        Style = "max-width: 500px"
-      });
+      </RadzenTemplateForm>
+    , new DialogOptions {
+      Style = "max-width: 500px"
+    });
     if (result != true) {
       return;
     }
@@ -98,42 +100,42 @@
 
   private async Task ShowCreateDialog() {
     var result = await Dialog.OpenAsync(Loc["create_role"], ds =>
-      @<RadzenTemplateForm TItem="AddRoleRequest" Data="@_addRoleRequest" Submit="@(OnAddSubmit)">
-        <RadzenStack Orientation="Orientation.Vertical">
-          <div class="mb-2">
-            <RadzenFormField class="mw-100 w-100" Component="RoleName" Text="@Loc["role_name"]" Variant="Variant.Filled">
-              <RadzenTextBox class="mw-100 w-100 " style="min-width: 300px" @bind-Value="@_addRoleRequest.RoleName" Name="RoleName"></RadzenTextBox>
-            </RadzenFormField>
-            <RadzenRequiredValidator Component="RoleName" Text="@Loc["required"].Format("name", Loc["role_name"])"></RadzenRequiredValidator>
-            <RadzenLengthValidator Component="RoleName" Min="2" Text="@Loc["too_short"].Format("name", Loc["role_name"]).Format("limit", 2)"></RadzenLengthValidator>
-            <RadzenLengthValidator Component="RoleName" Max="24" Text="@Loc["too_long"].Format("name", Loc["role_name"]).Format("limit", 24)"></RadzenLengthValidator>
-          </div>
+  @<RadzenTemplateForm TItem="AddRoleRequest" Data="@_addRoleRequest" Submit="@(OnAddSubmit)">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
 
-          <div class="mb-2">
-            
-            <RadzenListBox
-                  @bind-Value="@_addRoleRequest.Permissions" 
-                             Data="@allPermissions" 
-                             TextProperty="Id" 
-                             ValueProperty="Id"
-                             FilterOperator="StringFilterOperator.Contains" 
-                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
-                             AllowFiltering="true" 
-                             Multiple="true" 
-                             AllowClear="true" 
-                             Placeholder="@Loc["select_permissions"]" 
-                             Style="height: 300px; min-width: 300px; width: 100%;" />
+    <RadzenStack Orientation="Orientation.Vertical">
+      <div class="mb-2">
+        <RadzenFormField class="mw-100 w-100" Component="RoleName" Text="@Loc["role_name"]" Variant="Variant.Filled">
+          <RadzenTextBox class="mw-100 w-100 " style="min-width: 300px" @bind-Value="@_addRoleRequest.RoleName" Name="RoleName"></RadzenTextBox>
+        </RadzenFormField>
+        <ValidationMessage For="@(() => _addRoleRequest.RoleName)" />
+      </div>
 
-          </div>
+      <div class="mb-2">
 
-          <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-            <RadzenStack Orientation="Orientation.Horizontal">
-              <RadzenButton Text=@Loc["create"] Click="() => { }" ButtonType="ButtonType.Submit" Style="width: 120px;" />
-              <RadzenButton Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
-            </RadzenStack>
-          </RadzenStack>
+        <RadzenListBox @bind-Value="@_addRoleRequest.Permissions"
+                       Data="@allPermissions"
+                       TextProperty="Id"
+                       ValueProperty="Id"
+                       FilterOperator="StringFilterOperator.Contains"
+                       FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                       AllowFiltering="true"
+                       Multiple="true"
+                       AllowClear="true"
+                       Placeholder="@Loc["select_permissions"]"
+                       Style="height: 300px; min-width: 300px; width: 100%;" />
+        <ValidationMessage For="@(() => _addRoleRequest.Permissions)" />
+
+      </div>
+
+      <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal">
+          <RadzenButton Text=@Loc["create"] Click="() => { }" ButtonType="ButtonType.Submit" Style="width: 120px;" />
+          <RadzenButton Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
         </RadzenStack>
-      </RadzenTemplateForm>
+      </RadzenStack>
+    </RadzenStack>
+  </RadzenTemplateForm>
   , new DialogOptions {
     AutoFocusFirstElement = true,
     Height = "auto",

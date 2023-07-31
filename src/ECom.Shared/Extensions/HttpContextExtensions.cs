@@ -1,7 +1,7 @@
 ﻿using ECom.Shared.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace ECom.Domain.Extensions;
+namespace ECom.Shared.Extensions;
 
 public static class HttpContextExtensions
 {

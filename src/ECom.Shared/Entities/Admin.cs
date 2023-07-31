@@ -1,6 +1,4 @@
-﻿using ECom.Domain;
-
-namespace ECom.Shared.Entities;
+﻿namespace ECom.Shared.Entities;
 
 [Table("Admins", Schema = "ECOperation")]
 public class Admin : IEntity

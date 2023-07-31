@@ -193,7 +193,7 @@
     <value>Company Address</value>
   </data>
   <data name="company_information" xml:space="preserve">
-    <value />
+    <value>Company Information</value>
   </data>
   <data name="company_name" xml:space="preserve">
     <value>Company Name</value>
@@ -267,6 +267,9 @@
   <data name="end_date" xml:space="preserve">
     <value>End Date</value>
   </data>
+  <data name="ensure_one_element" xml:space="preserve">
+    <value>You must select at least one {name}</value>
+  </data>
   <data name="error" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -281,6 +284,9 @@
   </data>
   <data name="fatal" xml:space="preserve">
     <value>Fatal</value>
+  </data>
+  <data name="field_is_invalid" xml:space="preserve">
+    <value>{name} field is invalid</value>
   </data>
   <data name="footer_text" xml:space="preserve">
     <value>© 2021 - Today by ZDK Network. All Rights Reserved</value>
@@ -517,7 +523,7 @@
     <value>Save changes</value>
   </data>
   <data name="selected_announcement" xml:space="preserve">
-    <value />
+    <value>selected announcement</value>
   </data>
   <data name="select_language" xml:space="preserve">
     <value>Select language</value>

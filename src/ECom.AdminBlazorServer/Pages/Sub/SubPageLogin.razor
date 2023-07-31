@@ -3,6 +3,7 @@
 @using ECom.Shared.DTOs
 @using ECom.Shared.Constants
 @using ECom.Shared.Abstract.Services.Admin
+@using ECom.Shared.Extensions
 @inherits SharedBasePage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -27,15 +28,15 @@
           </RadzenText>
           <CustomHr></CustomHr>
           <RadzenTemplateForm TItem="LoginRequest" Data="LoginRequest" Submit="@OnSubmit">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
             <div class="mb-4">
               <RadzenRow>
                 <RadzenColumn SizeSM="12" SizeMD="4">
                   <RadzenLabel class="text-center" Text="@Loc["email_address"]" Component="EmailAddress"></RadzenLabel>
                 </RadzenColumn>
                 <RadzenColumn SizeSM="12" SizeMD="8">
-                  <RadzenMask class="w-100" Pattern="@ValidationSettings.RegexEmail" Name="EmailAddress" @bind-Value="@LoginRequest.EmailAddress" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" />
-                  <RequiredValidator Component="EmailAddress" ValidationType="ValidationType.EmailAddress"></RequiredValidator>
-                  <StringLengthValidator Component="EmailAddress" ValidationType="ValidationType.EmailAddress"></StringLengthValidator>
+                  <RadzenTextBox class="w-100"  @bind-Value="@LoginRequest.EmailAddress" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com"/>
+                  <ValidationMessage  For="() => LoginRequest.EmailAddress"></ValidationMessage>
                 </RadzenColumn>
               </RadzenRow>
             </div>
@@ -48,9 +49,8 @@
                   <RadzenLabel class="text-center" Text="@Loc["password"]" Component="Password"></RadzenLabel>
                 </RadzenColumn>
                 <RadzenColumn SizeSM="12" SizeMD="8">
-                  <RadzenPassword class="w-100" @bind-Value="LoginRequest.Password" Name="Password"></RadzenPassword>
-                  <RequiredValidator Component="Password" ValidationType="ValidationType.Password"></RequiredValidator>
-                  <StringLengthValidator Component="Password" ValidationType="ValidationType.Password"></StringLengthValidator>
+                  <RadzenPassword Placeholder="*********" class="w-100" @bind-Value="LoginRequest.Password" Name="Password"></RadzenPassword>
+                  <ValidationMessage For="() => LoginRequest.Password"></ValidationMessage>
                 </RadzenColumn>
               </RadzenRow>
             </div>

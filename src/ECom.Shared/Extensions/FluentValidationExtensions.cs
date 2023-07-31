@@ -1,7 +1,6 @@
-﻿using FluentValidation.Validators;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace ECom.Domain.Extensions;
+namespace ECom.Shared.Extensions;
 
 public static class FluentValidationExtensions
 {

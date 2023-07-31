@@ -3,7 +3,6 @@ global using EasMe;
 global using EasMe.Extensions;
 global using ECom.Application.Attributes;
 global using ECom.Application.Services;
-global using ECom.Domain.Extensions;
 global using ECom.Infrastructure;
 global using ECom.Shared;
 global using ECom.Shared.DTOs;

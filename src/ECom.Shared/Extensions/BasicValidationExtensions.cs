@@ -1,4 +1,6 @@
-﻿namespace ECom.Domain.Extensions;
+﻿using EasMe.Extensions;
+
+namespace ECom.Shared.Extensions;
 public static class BasicValidationExtensions
 {
 

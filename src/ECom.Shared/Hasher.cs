@@ -1,6 +1,6 @@
 ﻿using EasMe.Extensions;
 
-namespace ECom.Domain;
+namespace ECom.Shared;
 
 public static class Encryptor
 {

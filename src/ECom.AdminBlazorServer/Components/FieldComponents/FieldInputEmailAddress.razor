@@ -1,9 +1,0 @@
-﻿@using ECom.Shared.Constants
-@inherits BaseValueChangedComponent<string>
-<div class="mb-2">
-  <RadzenFormField class="my-2 w-100" Component="EmailAddress" Text="@Loc["email_address"]" Variant="Variant.Filled">
-    <RadzenMask class="w-100" Pattern="@ValidationSettings.RegexEmail" Name="EmailAddress" @bind-Value="Value" MaxLength="@ValidationSettings.MaxEmailLength" Placeholder="example.mail.com" @bind-Value="_edited.ContactEmail" />
-  </RadzenFormField>
-  <RequiredValidator Component="EmailAddress" ValidationType="ValidationType.EmailAddress"></RequiredValidator>
-  <StringLengthValidator Component="EmailAddress" ValidationType="ValidationType.EmailAddress"></StringLengthValidator>
-</div>

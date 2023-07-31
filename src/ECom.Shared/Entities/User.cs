@@ -1,6 +1,4 @@
-﻿using ECom.Domain;
-
-namespace ECom.Shared.Entities;
+﻿namespace ECom.Shared.Entities;
 
 [Table("Users", Schema = "ECPrivate")]
 public class User : IEntity

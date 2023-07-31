@@ -36,6 +36,7 @@ a, .btn-link {
 
 .validation-message {
   color: var(--rz-danger);
+  font-size: 0.8rem;
 }
 
 #blazor-error-ui {

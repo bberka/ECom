@@ -1,5 +1,6 @@
 ﻿using ECom.Shared.Abstract.Services;
 using ECom.Shared.Constants;
+using ECom.Shared.Extensions;
 
 namespace ECom.Application.Validators;
 

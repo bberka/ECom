@@ -1,5 +1,6 @@
 ﻿using ECom.Shared.Abstract;
 using ECom.Shared.Abstract.Services;
+using ECom.Shared.Extensions;
 
 namespace ECom.Application.Services;
 

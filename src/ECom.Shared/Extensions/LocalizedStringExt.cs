@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Localization;
 
-namespace ECom.Domain.Extensions;
+namespace ECom.Shared.Extensions;
 
 public static class LocalizedStringExt
 {
@@ -12,5 +12,8 @@ public static class LocalizedStringExt
   //}
   public static LocalizedString Format(this LocalizedString str, string key, object value) {
     return new LocalizedString(key, str.Value.Replace($"{{{key}}}", value.ToString()), false);
+  }
+  public static string LocFormat(this string str, string key, object value) {
+    return str.Replace($"{{{key}}}", value.ToString());
   }
 }

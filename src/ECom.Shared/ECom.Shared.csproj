@@ -8,9 +8,32 @@
 
   <ItemGroup>
     <PackageReference Include="EasMe" Version="4.0.3" />
+    <PackageReference Include="FluentValidation" Version="11.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.9" />
     <PackageReference Include="Serilog" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\LocalizedResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LocalizedResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\LocalizedResource.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedResource.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Attributes\" />
   </ItemGroup>
 
 </Project>

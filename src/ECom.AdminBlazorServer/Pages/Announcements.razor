@@ -3,6 +3,7 @@
 @using ECom.Shared.DTOs
 @using ECom.Shared.Entities
 @using ECom.Shared.Abstract.Services.Admin
+@using ECom.Shared.Extensions
 @inject IAdminAnnouncementService AnnouncementService
 @inject IJSRuntime JsRuntime
 @inherits SharedBasePage
@@ -42,7 +43,7 @@
       @if (_announcements.Count > 1) {
         <RadzenStack class="mt-4" Orientation="Orientation.Horizontal">
           <RadzenButton Click="ApplyChanges" Icon="check" ButtonStyle="ButtonStyle.Success" Text="@Loc["apply_changes"]"></RadzenButton>
-          @* <RadzenButton Click="ResetSortableList" Icon="settings_backup_restore" ButtonStyle="ButtonStyle.Danger" Text="@Loc["reset"]"></RadzenButton> *@
+          @* <RadzenButton Click="ResetSortableList" Icon="settings_backup_restore" ButtonStyle="ButtonStyle.Danger" Text="@LocalizedResource["reset"]"></RadzenButton> *@
 
         </RadzenStack>
       }
