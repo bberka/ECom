@@ -1,0 +1,9 @@
+﻿@inherits BaseValidatorComponent
+
+<RadzenRequiredValidator Popup="@Popup"
+                         Culture="@CurrentCultureInfo"
+                         Text="@Loc["required"].Format("name", Loc[LocKey])"
+                         Style="@Style"
+                         Component="Component">
+</RadzenRequiredValidator>
+

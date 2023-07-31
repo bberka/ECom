@@ -1,0 +1,23 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Globalization
+
+@code {
+  [Parameter]
+  [Required]
+  public string Component { get; set; }
+
+  [Parameter]
+  public bool Popup { get; set; } = false;
+
+  /// <summary>
+  /// Field name for localization
+  /// </summary>
+  [Parameter]
+  [Required]
+  public string LocKey { get; set; }
+
+  [Parameter]
+  public string Style { get; set; } = "";
+
+  protected CultureInfo CurrentCultureInfo = Thread.CurrentThread.CurrentCulture;
+}

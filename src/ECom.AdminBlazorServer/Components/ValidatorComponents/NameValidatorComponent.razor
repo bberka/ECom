@@ -1,0 +1,24 @@
+﻿@inherits BaseValidatorComponent
+@*<RadzenLengthValidator Min="@ValidationSettings.MinNameLength"
+                       Popup="@Popup"
+                       Culture="@CurrentCultureInfo"
+                       Style="@Style"
+                       Text="@Loc["too_short"].Format("name", Loc[LocKey]).Format("limit", ValidationSettings.MinNameLength)"
+                       Component="Component">
+</RadzenLengthValidator>
+<RadzenLengthValidator Max="@ValidationSettings.MaxNameLength"
+                       Popup="@Popup"
+                       Culture="@CurrentCultureInfo"
+                       Style="@Style"
+                       Text="@Loc["too_long"].Format("name", Loc[LocKey]).Format("limit", ValidationSettings.MaxNameLength)"
+                       Component="Component">
+</RadzenLengthValidator>*@
+
+<RadzenLengthValidator Max="@ValidationSettings.MaxNameLength"
+                       Min="@ValidationSettings.MinNameLength"
+                       Popup="@Popup"
+                       Culture="@CurrentCultureInfo"
+                       Style="@Style"
+                       Text="@Loc["length_must_be_in_between"].Format("name", Loc[LocKey]).Format("max", ValidationSettings.MaxNameLength).Format("min", ValidationSettings.MinNameLength)"
+                       Component="Component">
+</RadzenLengthValidator>
