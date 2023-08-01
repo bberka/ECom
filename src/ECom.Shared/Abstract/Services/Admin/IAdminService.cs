@@ -27,7 +27,7 @@ public interface IAdminService
     /// <param name="requesterAdminId"></param>
     /// <param name="admin"></param>
     /// <returns></returns>
-    CustomResult AddAdmin(Guid requesterAdminId, AddAdminRequest admin);
+    CustomResult AddAdmin(Guid requesterAdminId, AdminAddRequestDto admin);
 
     /// <summary>
     /// Updates an admin account for panel access

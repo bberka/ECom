@@ -2,8 +2,8 @@
 
 namespace ECom.Application.Validators;
 
-public class AddProductCommentRequestValidator : AbstractValidator<AddProductCommentRequest>,
-  IValidator<AddProductCommentRequest>
+public class AddProductCommentRequestValidator : AbstractValidator<ProductCommentAddRequestDto>,
+  IValidator<ProductCommentAddRequestDto>
 {
   public AddProductCommentRequestValidator() {
     RuleFor(x => x.Comment)

@@ -142,7 +142,7 @@ namespace ECom.Infrastructure.Migrations
                             EmailAddress = "owner@mail.com",
                             Password = "25f9e794323b453885f5181f1b624d0b",
                             RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = "Owner",
+                            RoleId = "owner",
                             TwoFactorType = (byte)0
                         });
                 });
@@ -475,13 +475,13 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Key");
 
-                    b.ToTable("CompanyInformation", "ECOperation");
+                    b.ToTable("CompanyInformation", "ECOption");
 
                     b.HasData(
                         new
                         {
                             Key = true,
-                            CompanyAddress = "Address",
+                            CompanyAddress = "Addresses",
                             CompanyName = "CompanyName",
                             ContactEmail = "contact@support.com",
                             Description = "Company Description",
@@ -822,108 +822,134 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("PaymentOptions", "ECOption");
                 });
 
-            modelBuilder.Entity("ECom.Shared.Entities.Permission", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.PermissionRole", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("RoleId")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Permission")
+                        .HasColumnType("int");
 
-                    b.ToTable("Permissions", "ECEnum");
+                    b.HasKey("RoleId", "Permission");
+
+                    b.ToTable("PermissionRoles", "ECOperation");
 
                     b.HasData(
                         new
                         {
-                            Id = "ManageAdmins"
+                            RoleId = "owner",
+                            Permission = 0
                         },
                         new
                         {
-                            Id = "ManageCategories"
+                            RoleId = "owner",
+                            Permission = 1
                         },
                         new
                         {
-                            Id = "ManageProducts"
+                            RoleId = "owner",
+                            Permission = 2
                         },
                         new
                         {
-                            Id = "ManageOrders"
+                            RoleId = "owner",
+                            Permission = 3
                         },
                         new
                         {
-                            Id = "ManageCoupons"
+                            RoleId = "owner",
+                            Permission = 4
                         },
                         new
                         {
-                            Id = "ManageReports"
+                            RoleId = "owner",
+                            Permission = 5
                         },
                         new
                         {
-                            Id = "ManageSettings"
+                            RoleId = "owner",
+                            Permission = 6
                         },
                         new
                         {
-                            Id = "ManageQuestions"
+                            RoleId = "owner",
+                            Permission = 7
                         },
                         new
                         {
-                            Id = "ManageShipping"
+                            RoleId = "owner",
+                            Permission = 8
                         },
                         new
                         {
-                            Id = "ManagePayments"
+                            RoleId = "owner",
+                            Permission = 9
                         },
                         new
                         {
-                            Id = "ManageSmtpOption"
+                            RoleId = "owner",
+                            Permission = 10
                         },
                         new
                         {
-                            Id = "ManagePaymentOptions"
+                            RoleId = "owner",
+                            Permission = 11
                         },
                         new
                         {
-                            Id = "ManageShippingOptions"
+                            RoleId = "owner",
+                            Permission = 12
                         },
                         new
                         {
-                            Id = "ManageTaxOptions"
+                            RoleId = "owner",
+                            Permission = 13
                         },
                         new
                         {
-                            Id = "ManageGeneralOptions"
+                            RoleId = "owner",
+                            Permission = 14
                         },
                         new
                         {
-                            Id = "ManageImages"
+                            RoleId = "owner",
+                            Permission = 15
                         },
                         new
                         {
-                            Id = "ManageAnnouncements"
+                            RoleId = "owner",
+                            Permission = 16
                         },
                         new
                         {
-                            Id = "ManageCompanyInformation"
+                            RoleId = "owner",
+                            Permission = 17
                         },
                         new
                         {
-                            Id = "ManageUserAccounts"
+                            RoleId = "owner",
+                            Permission = 18
                         },
                         new
                         {
-                            Id = "ManageLocalization"
+                            RoleId = "owner",
+                            Permission = 19
                         },
                         new
                         {
-                            Id = "ManageCargoOptions"
+                            RoleId = "owner",
+                            Permission = 20
                         },
                         new
                         {
-                            Id = "ManageLoginSessions"
+                            RoleId = "owner",
+                            Permission = 21
                         },
                         new
                         {
-                            Id = "ManageRoles"
+                            RoleId = "owner",
+                            Permission = 22
                         });
                 });
 
@@ -1106,7 +1132,7 @@ namespace ECom.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "Owner"
+                            Id = "owner"
                         });
                 });
 
@@ -1435,21 +1461,6 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Users", "ECPrivate");
                 });
 
-            modelBuilder.Entity("PermissionRole", b =>
-                {
-                    b.Property<string>("PermissionsId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("RolesId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("PermissionsId", "RolesId");
-
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("PermissionRole");
-                });
-
             modelBuilder.Entity("ECom.Shared.Entities.Address", b =>
                 {
                     b.HasOne("ECom.Shared.Entities.User", null)
@@ -1633,6 +1644,17 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ECom.Shared.Entities.PermissionRole", b =>
+                {
+                    b.HasOne("ECom.Shared.Entities.Role", "Role")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("ECom.Shared.Entities.Product", b =>
                 {
                     b.HasOne("ECom.Shared.Entities.ProductVariant", "ProductVariant")
@@ -1744,21 +1766,6 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PermissionRole", b =>
-                {
-                    b.HasOne("ECom.Shared.Entities.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECom.Shared.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ECom.Shared.Entities.Admin", b =>
                 {
                     b.Navigation("AdminLogs");
@@ -1773,6 +1780,11 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("ProductImages");
 
                     b.Navigation("StockChanges");
+                });
+
+            modelBuilder.Entity("ECom.Shared.Entities.Role", b =>
+                {
+                    b.Navigation("PermissionRoles");
                 });
 
             modelBuilder.Entity("ECom.Shared.Entities.Supplier", b =>

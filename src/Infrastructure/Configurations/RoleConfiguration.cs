@@ -8,9 +8,8 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
   public void Configure(EntityTypeBuilder<Role> builder) {
 
-    builder.Navigation(x => x.Permissions).AutoInclude();
-    var temp = SeedData.AdminRole;
-    temp.Permissions = new List<Permission>();
+    builder.Navigation(x => x.PermissionRoles).AutoInclude();
+    var temp = SeedData.OwnerRole;
     builder.HasData(temp);
   }
 }

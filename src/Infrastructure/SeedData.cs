@@ -9,7 +9,7 @@ internal static class SeedData
     new Admin {
       EmailAddress = "owner@mail.com",
       Password = "25f9e794323b453885f5181f1b624d0b", //123456789
-      RoleId = "Owner",
+      RoleId = Role.OwnerRoleId,
       TwoFactorType = TwoFactorType.None,
       Id = new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"),
       DeleteDate = null,
@@ -18,7 +18,7 @@ internal static class SeedData
     },
   };
   internal static readonly CompanyInformation CompanyInformation = new() {
-    CompanyAddress = "Address",
+    CompanyAddress = "Addresses",
     CompanyName = "CompanyName",
     ContactEmail = "contact@support.com",
     Description = "Company Description",
@@ -31,14 +31,17 @@ internal static class SeedData
     WhatsApp = "5526667788",
     YoutubeLink = "yt.com/company"
   };
-  internal static readonly List<Permission> Permissions = Enum.GetNames(typeof(AdminPermission)).Select(x => new Permission() {
-    Id = x
-  }).ToList();
+
 
   internal static readonly Option Option = new();
 
-  internal static readonly Role AdminRole = new Role() {
-    Id = "Owner",
-    Permissions = Permissions
+  internal static readonly Role OwnerRole = new Role() {
+    Id = Role.OwnerRoleId,
   };
+
+  internal static readonly List<PermissionRole> OwnerPermissionRoles = ConstantMgr.AllPermissions
+    .Select(x => new PermissionRole {
+      Permission = x,
+      RoleId = Role.OwnerRoleId,
+    }).ToList();
 }

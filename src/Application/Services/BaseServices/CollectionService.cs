@@ -14,7 +14,7 @@ public abstract class CollectionService : ICollectionService
         UnitOfWork = unitOfWork;
     }
 
-    public CustomResult CreateCollection(Guid userId, AddCollectionRequest model)
+    public CustomResult CreateCollection(Guid userId, CollectionAddRequestDto model)
     {
         var clc = new Collection
         {
@@ -22,7 +22,7 @@ public abstract class CollectionService : ICollectionService
             UserId = userId,
             Name = model.Name
         };
-        UnitOfWork.CollectionRepository.Add(clc);
+        UnitOfWork.Collections.Add(clc);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(CreateCollection));
         return DomainResult.OkAdded(nameof(Collection));
@@ -32,10 +32,10 @@ public abstract class CollectionService : ICollectionService
     {
         var collectionResult = GetCollection(userId, collectionId);
         if (!collectionResult.Status) return collectionResult;
-        var collectionProducts = UnitOfWork.CollectionProductRepository.Where(x => x.CollectionId == collectionId)
+        var collectionProducts = UnitOfWork.CollectionProducts.Where(x => x.CollectionId == collectionId)
           .Include(x => x.Collection);
-        if (collectionProducts.Any()) UnitOfWork.CollectionProductRepository.RemoveRange(collectionProducts);
-        UnitOfWork.CollectionRepository.Remove(collectionResult.Data!);
+        if (collectionProducts.Any()) UnitOfWork.CollectionProducts.RemoveRange(collectionProducts);
+        UnitOfWork.Collections.Remove(collectionResult.Data!);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(DeleteCollection));
         return DomainResult.OkDeleted(nameof(Collection));
@@ -43,14 +43,14 @@ public abstract class CollectionService : ICollectionService
 
     public CustomResult<Collection> GetCollection(Guid id)
     {
-        var collection = UnitOfWork.CollectionRepository.Find(id);
+        var collection = UnitOfWork.Collections.Find(id);
         if (collection is null) return DomainResult.NotFound(nameof(Collection));
         return collection;
     }
 
     public CustomResult<Collection> GetCollection(Guid userId, Guid id)
     {
-        var collection = UnitOfWork.CollectionRepository.Find(id);
+        var collection = UnitOfWork.Collections.Find(id);
         if (collection is null) return DomainResult.NotFound(nameof(Collection));
         if (collection.UserId == userId) return DomainResult.Unauthorized();
         return collection;
@@ -62,7 +62,7 @@ public abstract class CollectionService : ICollectionService
     {
         var collectionResult = GetCollection(userId, id);
         if (!collectionResult.Status) return collectionResult.ToResult();
-        return UnitOfWork.CollectionProductRepository.Where(x => x.CollectionId == id)
+        return UnitOfWork.CollectionProducts.Where(x => x.CollectionId == id)
           .Include(x => x.Product)
           //.ThenInclude(x => x.ProductDetails)
           .ToList();
@@ -70,7 +70,7 @@ public abstract class CollectionService : ICollectionService
 
     public List<Collection> GetCollections(Guid userId)
     {
-        return UnitOfWork.CollectionRepository.Where(x => x.UserId == userId).ToList();
+        return UnitOfWork.Collections.Where(x => x.UserId == userId).ToList();
     }
 
     public CustomResult UpdateCollection(Guid userId, UpdateCollectionRequest model)
@@ -78,7 +78,7 @@ public abstract class CollectionService : ICollectionService
         var collectionResult = GetCollection(userId, model.CollectionId);
         if (!collectionResult.Status) return collectionResult;
         collectionResult.Data!.Name = model.CollectionName;
-        UnitOfWork.CollectionRepository.Update(collectionResult.Data);
+        UnitOfWork.Collections.Update(collectionResult.Data);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(UpdateCollection));
         return DomainResult.OkUpdated(nameof(Collection));

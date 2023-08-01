@@ -41,7 +41,7 @@ public class EComDbContext : DbContext
 
 
   public DbSet<Admin> Admins { get; set; }
-  public DbSet<Permission> Permissions { get; set; }
+  public DbSet<PermissionRole> PermissionRoles { get; set; }
   public DbSet<Role> Roles { get; set; }
 
 

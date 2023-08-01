@@ -10,7 +10,7 @@ public class UserAnnouncementService : AnnouncementService,IUserAnnouncementServ
   }
 
   public List<AnnouncementDto> ListAnnouncements() {
-    return UnitOfWork.AnnouncementRepository
+    return UnitOfWork.Announcements
       .Where(x => x.ExpireDate > DateTime.Now)
       .Select(x => new AnnouncementDto() {
         Message = x.Message,

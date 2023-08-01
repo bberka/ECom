@@ -24,7 +24,7 @@ public abstract class FavoriteProductService : IFavoriteProductService
 
     public CustomResult AddFavoriteProduct(Guid userId, Guid productId)
     {
-        var userExist = UnitOfWork.UserRepository.Any(x => x.Id == userId);
+        var userExist = UnitOfWork.Users.Any(x => x.Id == userId);
         if (!userExist) return DomainResult.NotFound(nameof(User));
         var productExist = ProductService.Exists(productId);
         if (!productExist) return DomainResult.NotFound(nameof(Product));
@@ -34,7 +34,7 @@ public abstract class FavoriteProductService : IFavoriteProductService
             ProductId = productId,
             UserId = userId
         };
-        UnitOfWork.FavoriteProductRepository.Add(data);
+        UnitOfWork.FavoriteProducts.Add(data);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(AddFavoriteProduct));
         return DomainResult.OkAdded(nameof(FavoriteProduct));
@@ -42,12 +42,12 @@ public abstract class FavoriteProductService : IFavoriteProductService
 
     public CustomResult RemoveFavoriteProduct(Guid userId, Guid productId)
     {
-        var userExist = UnitOfWork.UserRepository.Any(x => x.Id == userId);
+        var userExist = UnitOfWork.Users.Any(x => x.Id == userId);
         if (!userExist) return DomainResult.NotFound(nameof(User));
         var favProduct =
-          UnitOfWork.FavoriteProductRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+          UnitOfWork.FavoriteProducts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
         if (favProduct is null) return DomainResult.NotFound(nameof(FavoriteProduct));
-        UnitOfWork.FavoriteProductRepository.Remove(favProduct);
+        UnitOfWork.FavoriteProducts.Remove(favProduct);
         var res = UnitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(RemoveFavoriteProduct));
 
@@ -56,7 +56,7 @@ public abstract class FavoriteProductService : IFavoriteProductService
 
     public List<FavoriteProduct> GetFavoriteProducts(Guid userId)
     {
-        return UnitOfWork.FavoriteProductRepository.Where(x => x.UserId == userId)
+        return UnitOfWork.FavoriteProducts.Where(x => x.UserId == userId)
           .Include(x => x.Product)
           //.ThenInclude(x => x.Images)
           .ToList();

@@ -22,12 +22,12 @@ public class ValidationService : IValidationService
     }
     public bool NotUsedEmail_Admin(string email)
     {
-        return !UnitOfWork.AdminRepository.Any(x => x.EmailAddress == email);
+        return !UnitOfWork.Admins.Any(x => x.EmailAddress == email);
     }
 
     public bool NotUsedEmail_User(string email)
     {
-        return !UnitOfWork.UserRepository.Any(x => x.EmailAddress == email);
+        return !UnitOfWork.Users.Any(x => x.EmailAddress == email);
     }
 
 

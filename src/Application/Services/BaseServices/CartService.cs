@@ -23,10 +23,10 @@ public abstract class CartService : ICartService
   public CustomResult AddOrIncreaseProduct(Guid userId, Guid productId) {
     var productExist = ProductService.Exists(productId);
     if (!productExist) return DomainResult.NotFound(nameof(Product));
-    var existing = UnitOfWork.CartRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+    var existing = UnitOfWork.Carts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (existing != null) {
       existing.Count++;
-      UnitOfWork.CartRepository.Update(existing);
+      UnitOfWork.Carts.Update(existing);
     }
     else {
       var newBasket = new Cart {
@@ -37,7 +37,7 @@ public abstract class CartService : ICartService
         UpdateDate = DateTime.Now,
         DeleteDate = null,
       };
-      UnitOfWork.CartRepository.Add(newBasket);
+      UnitOfWork.Carts.Add(newBasket);
     }
 
     var res = UnitOfWork.Save();
@@ -46,14 +46,14 @@ public abstract class CartService : ICartService
   }
 
   public CustomResult RemoveOrDecreaseProduct(Guid userId, Guid productId) {
-    var exist = UnitOfWork.CartRepository.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
+    var exist = UnitOfWork.Carts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (exist is null) return DomainResult.NotFound(nameof(Cart));
     if (exist.Count > 1) {
       exist.Count--;
-      UnitOfWork.CartRepository.Update(exist);
+      UnitOfWork.Carts.Update(exist);
     }
     else {
-      UnitOfWork.CartRepository.Remove(exist);
+      UnitOfWork.Carts.Remove(exist);
     }
 
     var res = UnitOfWork.Save();
@@ -63,16 +63,16 @@ public abstract class CartService : ICartService
   }
 
   public int GetBasketProductCount(Guid userId) {
-    return UnitOfWork.CartRepository.Count(x => x.UserId == userId);
+    return UnitOfWork.Carts.Count(x => x.UserId == userId);
   }
 
   public List<Cart> ListBasketProducts(Guid userId) {
-    return UnitOfWork.CartRepository.Where(x => x.UserId == userId).ToList();
+    return UnitOfWork.Carts.Where(x => x.UserId == userId).ToList();
   }
 
   public CustomResult ClearCartProducts(Guid userId) {
-    var list = UnitOfWork.CartRepository.Where(x => x.UserId == userId);
-    UnitOfWork.CartRepository.RemoveRange(list);
+    var list = UnitOfWork.Carts.Where(x => x.UserId == userId);
+    UnitOfWork.Carts.RemoveRange(list);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ClearCartProducts));
     return DomainResult.OkCleared(nameof(Cart));

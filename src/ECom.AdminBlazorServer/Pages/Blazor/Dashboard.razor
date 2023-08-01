@@ -1,0 +1,111 @@
+﻿@page "/dashboard"
+@page "/"
+@using ECom.Shared.DTOs
+@using System.Globalization
+
+<PageTitle>@Loc["dashboard"]</PageTitle>
+<RadzenRow JustifyContent="JustifyContent.SpaceEvenly">
+  <RadzenCard Variant="Variant.Filled" class="rz-background-color-primary rz-shadow-6 rz-border-radius-4">
+    <RadzenColumn  SizeSM="12" SizeMD="12" >
+      <RadzenRow class="mb-3" Gap="10" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="width: 100%">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack  Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon  IconStyle="IconStyle.Primary" Icon="show_chart"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["today_sales_money"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@_statisticsDto.TodaySalesMoney.ToString(CultureInfo.InvariantCulture)"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="min-width: 15vw">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="pie_chart"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["today_sales_count"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@_statisticsDto.TodaySalesCount.ToString(CultureInfo.InvariantCulture)"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+      </RadzenRow>
+      <RadzenRow class="mt-3"  Gap="10">
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="min-width: 15vw">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="bar_chart"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["total_sales_money"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@(_statisticsDto.TotalSalesMoney.ToString(CultureInfo.InvariantCulture))"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="min-width: 15vw">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="signal_cellular_alt"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["total_sales_count"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@_statisticsDto.TotalSalesCount.ToString(CultureInfo.InvariantCulture)"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+      </RadzenRow>
+    </RadzenColumn>
+  </RadzenCard>
+
+  <RadzenCard Variant="Variant.Filled" class="rz-background-color-primary rz-shadow-6 rz-border-radius-4">
+    <RadzenColumn SizeSM="12" SizeMD="12">
+      <RadzenRow class="mb-3" Gap="10" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="width: 100%">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="show_chart"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["today_sales_money"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@_statisticsDto.TodaySalesMoney.ToString(CultureInfo.InvariantCulture)"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="min-width: 15vw">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="pie_chart"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["today_sales_count"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@_statisticsDto.TodaySalesCount.ToString(CultureInfo.InvariantCulture)"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+      </RadzenRow>
+      <RadzenRow class="mt-3" Gap="10">
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="min-width: 15vw">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="bar_chart"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["total_sales_money"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@(_statisticsDto.TotalSalesMoney.ToString(CultureInfo.InvariantCulture))"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+        <RadzenColumn SizeSM="12" SizeMD="6" SizeLG="6" Style="min-width: 15vw">
+          <RadzenCard Variant="Variant.Filled" class="rz-shadow-6 rz-border-radius-4">
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+              <RadzenIcon IconStyle="IconStyle.Primary" Icon="signal_cellular_alt"></RadzenIcon>
+              <RadzenText TextStyle="TextStyle.DisplayH6" Text="@Loc["total_sales_count"]"></RadzenText>
+              <RadzenText TextStyle="TextStyle.DisplayH4" Text="@_statisticsDto.TotalSalesCount.ToString(CultureInfo.InvariantCulture)"></RadzenText>
+            </RadzenStack>
+          </RadzenCard>
+
+        </RadzenColumn>
+      </RadzenRow>
+    </RadzenColumn>
+  </RadzenCard>
+</RadzenRow>
+
+
+@code {
+  private StatisticsDto _statisticsDto = new StatisticsDto();
+
+}

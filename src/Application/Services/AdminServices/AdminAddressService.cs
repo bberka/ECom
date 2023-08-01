@@ -14,7 +14,7 @@ public class AdminAddressService : AddressService,IAdminAddressService
   }
 
   public CustomResult<Address> GetAddress(Guid addressId) {
-    var address = UnitOfWork.AddressRepository.Find(addressId);
+    var address = UnitOfWork.Addresses.Find(addressId);
     if (address is null) return DomainResult.NotFound(nameof(Address));
     if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
     return address;

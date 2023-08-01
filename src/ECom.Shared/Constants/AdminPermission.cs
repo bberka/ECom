@@ -3,7 +3,7 @@
 /// <summary>
 /// Defined admin permissions for the application. The order does not matter the string name is taken as id.
 /// </summary>
-public enum AdminPermission 
+public enum AdminPermission  : int
 {
   ManageAdmins,
   ManageCategories,

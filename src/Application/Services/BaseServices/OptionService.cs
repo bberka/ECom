@@ -18,7 +18,7 @@ public abstract class OptionService : IOptionService
   public Option GetOption() {
     var cache = MemoryCache.Get<Option>("option");
     if (cache is not null) return cache;
-    cache = UnitOfWork.OptionRepository.FirstOrDefault(x => x.Key == true);
+    cache = UnitOfWork.Options.FirstOrDefault(x => x.Key == true);
     if (cache is null) throw new NotFoundException(nameof(Option));
     MemoryCache.Set("option", cache, TimeSpan.FromMinutes(5));
     return cache;

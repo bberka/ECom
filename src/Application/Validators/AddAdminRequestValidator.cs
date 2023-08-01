@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace ECom.Application.Validators;
 
-public class AddAdminRequestValidator : AbstractValidator<AddAdminRequest>
+public class AddAdminRequestValidator : AbstractValidator<AdminAddRequestDto>
 {
   public AddAdminRequestValidator(IValidationService validationService) {
     RuleFor(x => x.EmailAddress)

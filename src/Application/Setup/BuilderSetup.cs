@@ -74,9 +74,9 @@ public static class BuilderSetup
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddScoped<IValidationService, ValidationService>();
     builder.Services.AddTransient<IValidator<LoginRequest>, LoginValidator>();
-    builder.Services.AddTransient<IValidator<RegisterUserRequest>, RegisterValidator>();
-    builder.Services.AddTransient<IValidator<AddAdminRequest>, AddAdminRequestValidator>();
-    builder.Services.AddTransient<IValidator<ChangePasswordRequest>, ChangePasswordRequestValidator>();
+    builder.Services.AddTransient<IValidator<RegisterUserRequestDto>, RegisterValidator>();
+    builder.Services.AddTransient<IValidator<AdminAddRequestDto>, AddAdminRequestValidator>();
+    builder.Services.AddTransient<IValidator<ChangePasswordRequestDto>, ChangePasswordRequestValidator>();
     builder.Services.AddTransient<IValidator<UpdateAdminAccountRequest>, UpdateAdminAccountRequestValidator>();
     return builder;
   }

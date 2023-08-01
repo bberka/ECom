@@ -10,13 +10,13 @@ public class AutoMapperProfiles : Profile
     CreateMap<Admin, AdminDto>().ReverseMap();
 
 
-    CreateMap<RegisterUserRequest, User>();
-    CreateMap<AddCollectionRequest, Collection>();
-    CreateMap<AddOrUpdateCategoryRequest, Category>();
+    CreateMap<RegisterUserRequestDto, User>();
+    CreateMap<CollectionAddRequestDto, Collection>();
+    CreateMap<CategoryAddOrUpdateRequestDto, Category>();
     //CreateMap<AddSubCategoryRequest, SubCategory>();
-    CreateMap<AddAdminRequest, Admin>();
-    CreateMap<AddProductCommentRequest, ProductComment>();
-    CreateMap<AddStockChangeRequest, StockChange>();
+    CreateMap<AdminAddRequestDto, Admin>();
+    CreateMap<ProductCommentAddRequestDto, ProductComment>();
+    CreateMap<StockChangeAddRequestDto, StockChange>();
 
   }
 }

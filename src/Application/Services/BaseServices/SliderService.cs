@@ -13,20 +13,20 @@ public abstract class SliderService : ISliderService
   }
 
   public CustomResult<Slider> GetSlider(int sliderId) {
-    var slider = UnitOfWork.SliderRepository.Find(sliderId);
+    var slider = UnitOfWork.Sliders.Find(sliderId);
     if (slider is null) return DomainResult.NotFound(nameof(Slider));
     if (slider.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Slider));
     return slider;
   }
 
   public List<Slider> GetSliders() {
-    return UnitOfWork.SliderRepository.Where(x => !x.DeleteDate.HasValue).ToList();
+    return UnitOfWork.Sliders.Where(x => !x.DeleteDate.HasValue).ToList();
   }
 
   public CustomResult UpdateSlider(Slider slider) {
-    var exists = UnitOfWork.SliderRepository.Any(x => x.Id == slider.Id && !x.DeleteDate.HasValue);
+    var exists = UnitOfWork.Sliders.Any(x => x.Id == slider.Id && !x.DeleteDate.HasValue);
     if (!exists) return DomainResult.NotFound(nameof(Slider));
-    UnitOfWork.SliderRepository.Update(slider);
+    UnitOfWork.Sliders.Update(slider);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateSlider));
     return DomainResult.OkUpdated(nameof(Slider));
@@ -37,14 +37,14 @@ public abstract class SliderService : ISliderService
     if (!sliderResult.Status) return sliderResult.ToResult();
     var slider = sliderResult.Data!;
     slider.DeleteDate = DateTime.Now;
-    UnitOfWork.SliderRepository.Update(slider);
+    UnitOfWork.Sliders.Update(slider);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(DeleteSlider));
     return DomainResult.Deleted(nameof(Slider));
   }
 
   public CustomResult AddSlider(Slider slider) {
-    UnitOfWork.SliderRepository.Add(slider);
+    UnitOfWork.Sliders.Add(slider);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddSlider));
     return DomainResult.OkAdded(nameof(Slider));

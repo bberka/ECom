@@ -1,4 +1,7 @@
-﻿namespace ECom.Infrastructure;
+﻿using ECom.Shared.Constants;
+using ECom.Shared.Entities;
+
+namespace ECom.Infrastructure;
 
 public class DataEnsureService
 {
@@ -9,11 +12,13 @@ public class DataEnsureService
   }
 
   public void Ensure() {
-    ValidatePermissions();
     EnsureCompanyInformationExists();
     EnsureOptionExists();
     EnsureAdminRoleExists();
     EnsureAdminExists();
+    //stop tracking
+    _dbContext.ChangeTracker.Clear();
+    //close connection
     _dbContext.Dispose();
   }
 
@@ -36,48 +41,22 @@ public class DataEnsureService
   }
 
 
-  private void ValidatePermissions() {
-    var perms = _dbContext.Permissions.ToList();
-    if (perms.Count == 0) _dbContext.Permissions.AddRange(SeedData.Permissions);
-    else if (perms.Count != SeedData.Permissions.Count) {
-      _dbContext.Permissions.RemoveRange(perms);
-      _dbContext.Permissions.AddRange(SeedData.Permissions);
-    }
-    else {
-      var anyInvalid = false;
-      foreach (var perm in perms) {
-        var seedPerm = SeedData.Permissions.FirstOrDefault(x => x.Id == perm.Id);
-        if (seedPerm == null) {
-          anyInvalid = true;
-          break;
-        }
-
-        if (perm.Id != seedPerm.Id) {
-          anyInvalid = true;
-          break;
-        }
-      }
-
-      if (anyInvalid) {
-        _dbContext.Permissions.RemoveRange(perms);
-        _dbContext.Permissions.AddRange(SeedData.Permissions);
-      }
-    }
-    _dbContext.SaveChanges();
-  }
   private void EnsureAdminRoleExists() {
     if (_dbContext.Roles.Any()) {
       EnsureAdminRoleHasPermissions();
       return;
     }
-    _dbContext.Roles.Add(SeedData.AdminRole);
+    _dbContext.Roles.Add(SeedData.OwnerRole);
     _dbContext.SaveChanges();
 
     void EnsureAdminRoleHasPermissions() {
-      var adminRole = _dbContext.Roles.Include(x => x.Permissions).FirstOrDefault(x => x.Id == SeedData.AdminRole.Id);
+      var adminRole = _dbContext.Roles.Include(x => x.PermissionRoles)
+        .FirstOrDefault(x => x.Id == Role.OwnerRoleId);
       if (adminRole == null) return;
-      var permissions = _dbContext.Permissions.ToList();
-      adminRole.Permissions = permissions;
+      var isCountMatch = adminRole.PermissionRoles.Count == ConstantMgr.AllPermissions.Count;
+      if (isCountMatch) return;
+      adminRole.PermissionRoles = SeedData.OwnerPermissionRoles;
+      _dbContext.Roles.Update(adminRole);
       _dbContext.SaveChanges();
     }
   }

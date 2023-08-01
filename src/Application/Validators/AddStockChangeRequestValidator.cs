@@ -2,8 +2,8 @@
 
 namespace ECom.Application.Validators;
 
-public class AddStockChangeRequestValidator : AbstractValidator<AddStockChangeRequest>,
-  IValidator<AddStockChangeRequest>
+public class AddStockChangeRequestValidator : AbstractValidator<StockChangeAddRequestDto>,
+  IValidator<StockChangeAddRequestDto>
 {
   public AddStockChangeRequestValidator() {
     RuleFor(x => x.Cost)

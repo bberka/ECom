@@ -17,7 +17,7 @@ public class UserAddressService : AddressService,IUserAddressService
     if (address is null) return DomainResult.NotFound(nameof(Address));
     if (address.DeleteDate.HasValue) return DomainResult.AlreadyDeleted(nameof(Address));
     address.DeleteDate = DateTime.Now;
-    UnitOfWork.AddressRepository.Update(address);
+    UnitOfWork.Addresses.Update(address);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateAddress));
     return DomainResult.OkDeleted(nameof(Address));
@@ -27,19 +27,19 @@ public class UserAddressService : AddressService,IUserAddressService
     if (!addressResult.Status) return addressResult;
     var address = addressResult.Data!;
     if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
-    UnitOfWork.AddressRepository.Update(data);
+    UnitOfWork.Addresses.Update(data);
     if (!UnitOfWork.Save()) return DomainResult.DbInternalError(nameof(UpdateAddress));
     return DomainResult.OkUpdated(nameof(Address));
   }
 
   public CustomResult AddAddress(Guid userId, Address address) {
-    UnitOfWork.AddressRepository.Add(address);
+    UnitOfWork.Addresses.Add(address);
     if (!UnitOfWork.Save()) return DomainResult.DbInternalError(nameof(AddAddress));
     return DomainResult.OkAdded(nameof(Address));
   }
 
   public CustomResult<Address> GetAddress(Guid addressId) {
-    var address = UnitOfWork.AddressRepository.Find(addressId);
+    var address = UnitOfWork.Addresses.Find(addressId);
     if (address is null) return DomainResult.NotFound(nameof(Address));
     if (address.DeleteDate.HasValue) return DomainResult.Deleted(nameof(Address));
     return address;

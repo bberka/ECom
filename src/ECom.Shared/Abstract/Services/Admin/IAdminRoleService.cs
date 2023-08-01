@@ -4,12 +4,13 @@ namespace ECom.Shared.Abstract.Services.Admin;
 
 public interface IAdminRoleService
 {
-    List<Role> GetRoles();
-    List<Permission> GetPermissions();
+    List<RoleDto> GetRoles();
+    List<AdminPermission> GetPermissions();
+    List<string> GetPermissionStrings();
     bool RoleExists(string roleId);
-    bool HasPermission(Guid adminId, string permissionId);
-    CustomResult UpdatePermissions(Guid requesterAdminId, string roleId, List<string> permissions);
-    CustomResult AddRole(AddRoleRequest role);
+    bool HasPermission(Guid adminId, AdminPermission permissionId);
+    CustomResult UpdatePermissions(Guid requesterAdminId, string roleId, List<AdminPermission> permissions);
+    CustomResult AddRole(RoleDto role);
     CustomResult DeleteRole(string roleId);
 
 }

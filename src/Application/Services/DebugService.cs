@@ -27,15 +27,15 @@ public class DebugService : IDebugService
     public User GetUser()
     {
         CheckAndThrowDebug();
-        return _unitOfWork.UserRepository.FirstOrDefault();
+        return _unitOfWork.Users.FirstOrDefault();
     }
 
     public Admin GetAdmin()
     {
         CheckAndThrowDebug();
-        return _unitOfWork.AdminRepository.Where(x => x.RoleId == "Owner")
+        return _unitOfWork.Admins.Where(x => x.RoleId == "Owner")
           .Include(x => x.Role)
-          .ThenInclude(x => x.Permissions)
+          .ThenInclude(x => x.PermissionRoles)
           .Single();
     }
 

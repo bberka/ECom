@@ -13,7 +13,7 @@ public abstract class ImageService : IImageService
   }
 
   public string GetImageBase64String(Guid id) {
-    var imageData = Enumerable.Select(UnitOfWork.ImageRepository
+    var imageData = Enumerable.Select(UnitOfWork.Images
         .Where(x => x.Id == id), x => x.Data)
       .FirstOrDefault();
     if (imageData is null) return $"data:image/jpg;base64,{DefaultImageBase64String}";

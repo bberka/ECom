@@ -11,7 +11,7 @@ public abstract class CategoryService : ICategoryService
     UnitOfWork = unitOfWork;
   }
   public List<CategoryDto> ListCategoriesDto() {
-    return UnitOfWork.CategoryRepository
+    return UnitOfWork.Categories
       .Where(x => x.DeleteDate.HasValue)
       .Select(x => new CategoryDto() {
         Order = x.Order,

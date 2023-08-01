@@ -22,12 +22,12 @@ public class StockChangeService : IAdminStockService
         _productService = productService;
     }
 
-    public CustomResult AddStockChange(AddStockChangeRequest model)
+    public CustomResult AddStockChange(StockChangeAddRequestDto model)
     {
-        var productExists = _unitOfWork.ProductRepository.Any(x => x.Id == model.ProductId);
+        var productExists = _unitOfWork.Products.Any(x => x.Id == model.ProductId);
         var productExist = _productService.Exists(model.ProductId);
         if (!productExist) return DomainResult.NotFound(nameof(Product));
-        var supplierExist = _unitOfWork.SupplierRepository.Any(x => x.Id == model.SupplierId);
+        var supplierExist = _unitOfWork.Suppliers.Any(x => x.Id == model.SupplierId);
         if (!supplierExist) return DomainResult.NotFound(nameof(Supplier));
         var stockChange = new StockChange
         {
@@ -38,7 +38,7 @@ public class StockChangeService : IAdminStockService
             SupplierId = model.SupplierId,
             Type = model.Type
         };
-        _unitOfWork.StockChangeRepository.Add(stockChange);
+        _unitOfWork.StockChanges.Add(stockChange);
         var res = _unitOfWork.Save();
         if (!res) return DomainResult.DbInternalError(nameof(AddStockChange));
         return DomainResult.OkAdded(nameof(StockChange));
