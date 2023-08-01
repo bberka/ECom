@@ -20,7 +20,7 @@ public class LoggingMiddleware
     var authLogString = "No-Auth";
     //TODO log user id
     //if (context.IsUserAuthenticated()) authLogString = $"User({context.GetUserId()})";
-    //if (context.IsAdminAuthenticated()) authLogString = $"Admin({context.GetAdminId()})";
+    //if (context.IsAdminAuthenticated()) authLogString = $"Admins({context.GetAdminId()})";
     Log.Information("Request Log: {ResponseStatus} {Auth} {TimeElapsed}", responseStatus, authLogString,
       $"TimeElapsed({timer.ElapsedMilliseconds}ms)");
   }

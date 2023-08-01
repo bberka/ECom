@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Radzen;
 using IAdminAccountService = ECom.Shared.Abstract.Services.Admin.IAdminAccountService;
 using ECom.Application.Services;
+using ECom.Infrastructure;
 using ECom.Shared.Abstract.Services;
 using ECom.Shared.Abstract.Services.Admin;
 using ECom.Shared.Abstract.Services.Base;
@@ -245,4 +246,6 @@ app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
+var seed = new DataEnsureService();
+seed.Ensure();
 app.Run();

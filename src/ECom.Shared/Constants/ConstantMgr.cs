@@ -8,7 +8,7 @@ public static class ConstantMgr
   public const Currency DefaultCurrency = Currency.Lira;
   public static readonly DateTime DefaultDateTime = new(1900, 1, 1);
 
-
+  public static readonly List<AdminPermission> AllPermissions = Enum.GetValues<AdminPermission>().ToList();
   public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ??
                                           throw new ArgumentNullException(nameof(AssemblyName.Version));
 

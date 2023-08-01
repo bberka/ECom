@@ -13,7 +13,7 @@ public abstract class AddressService : IAddressService
     UnitOfWork = unitOfWork;
   }
   public List<Address> GetUserAddresses(Guid userId) {
-    return UnitOfWork.AddressRepository.Where(x => x.UserId == userId && !x.DeleteDate.HasValue).ToList();
+    return UnitOfWork.Addresses.Where(x => x.UserId == userId && !x.DeleteDate.HasValue).ToList();
   }
 
 

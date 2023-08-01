@@ -13,31 +13,31 @@ public abstract class SupplierService : IAdminSupplierService
   }
 
   public List<Supplier> GetSuppliers() {
-    return UnitOfWork.SupplierRepository
+    return UnitOfWork.Suppliers
       
       .OrderByDescending(x => x.RegisterDate)
       .ToList();
   }
 
   public CustomResult<Supplier> GetSupplier(int id) {
-    var supplier = UnitOfWork.SupplierRepository.Find(id);
+    var supplier = UnitOfWork.Suppliers.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
     return supplier;
   }
 
   public CustomResult UpdateSupplier(Supplier supplier) {
-    var exists = UnitOfWork.SupplierRepository.Any(x => x.Id == supplier.Id);
+    var exists = UnitOfWork.Suppliers.Any(x => x.Id == supplier.Id);
     if (!exists) return DomainResult.NotFound(nameof(Supplier));
-    UnitOfWork.SupplierRepository.Update(supplier);
+    UnitOfWork.Suppliers.Update(supplier);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateSupplier));
     return DomainResult.OkUpdated(nameof(Supplier));
   }
 
   public CustomResult DeleteSupplier(int id) {
-    var supplier = UnitOfWork.SupplierRepository.Find(id);
+    var supplier = UnitOfWork.Suppliers.Find(id);
     if (supplier is null) return DomainResult.NotFound(nameof(Supplier));
-    UnitOfWork.SupplierRepository.Remove(supplier);
+    UnitOfWork.Suppliers.Remove(supplier);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError("DeleteSupplier");
     return DomainResult.OkDeleted("Supplier");

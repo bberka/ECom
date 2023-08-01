@@ -24,7 +24,7 @@ public class ExceptionLoggerAspect : Attribute
       return target(args);
     }
     catch (Exception ex) {
-      var msg = $"Exception in {className}.{methodName}({argList})";
+      var msg = $"Exception in {className}.{methodName}({argList}) Message:{ex.Message}";
       Log.Fatal(ex, msg);
       throw new Exception(msg, ex);
     }

@@ -139,13 +139,13 @@
     <value>Admins</value>
   </data>
   <data name="admin_count" xml:space="preserve">
-    <value>Admin Count</value>
+    <value>Admins Count</value>
   </data>
   <data name="admin_permissions" xml:space="preserve">
-    <value>Admin Permissions</value>
+    <value>Admins Permissions</value>
   </data>
   <data name="admin_roles" xml:space="preserve">
-    <value>Admin Roles</value>
+    <value>Admins Roles</value>
   </data>
   <data name="already_deleted" xml:space="preserve">
     <value>{name} is already deleted</value>
@@ -180,6 +180,18 @@
   <data name="cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="can_not_contain" xml:space="preserve">
+    <value>{name} can not contain {chars}</value>
+  </data>
+  <data name="can_not_delete" xml:space="preserve">
+    <value>{name} can not be deleted</value>
+  </data>
+  <data name="can_not_delete_db_relation" xml:space="preserve">
+    <value>You can not delete {objectName} when there is related entries in {relationName}</value>
+  </data>
+  <data name="can_only_contain_xxx" xml:space="preserve">
+    <value>{name} can only contain {chars}</value>
+  </data>
   <data name="cargo" xml:space="preserve">
     <value>Cargo</value>
   </data>
@@ -196,7 +208,7 @@
     <value>Company</value>
   </data>
   <data name="company_address" xml:space="preserve">
-    <value>Company Address</value>
+    <value>Company Addresses</value>
   </data>
   <data name="company_information" xml:space="preserve">
     <value>Company Information</value>
@@ -217,7 +229,10 @@
     <value>Are you sure you want to reset selected admin password ?</value>
   </data>
   <data name="contact_email" xml:space="preserve">
-    <value>Contact Email Address</value>
+    <value>Contact Email Addresses</value>
+  </data>
+  <data name="contains_invalid_characters" xml:space="preserve">
+    <value>{name} contains invalid characters</value>
   </data>
   <data name="copyright" xml:space="preserve">
     <value>© 2022 - Today by ZDK Network. All Rights Reserved</value>
@@ -355,7 +370,7 @@
     <value>Login</value>
   </data>
   <data name="login_page_message" xml:space="preserve">
-    <value>Admin Panel by ZDK Network</value>
+    <value>Admins Panel by ZDK Network</value>
   </data>
   <data name="logout" xml:space="preserve">
     <value>Logout</value>
@@ -475,7 +490,7 @@
     <value>Price</value>
   </data>
   <data name="project_name" xml:space="preserve">
-    <value>Admin Panel</value>
+    <value>Admins Panel</value>
   </data>
   <data name="p_already_deleted" xml:space="preserve">
     <value>Already deleted</value>

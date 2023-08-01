@@ -28,7 +28,7 @@ public abstract class BaseAuthenticatedRequest
 
   ///// <summary>
   /////   AdminId received from current HttpContext.
-  /////   If Admin is not authenticated value will be -1
+  /////   If Admins is not authenticated value will be -1
   /////   <br />
   /////   <br />
   /////   This property is ignored in serialization.

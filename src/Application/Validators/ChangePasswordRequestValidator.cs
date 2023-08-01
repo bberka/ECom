@@ -4,8 +4,8 @@ using ECom.Shared.Extensions;
 
 namespace ECom.Application.Validators;
 
-public class ChangePasswordRequestValidator : AbstractValidator<ChangePasswordRequest>,
-  IValidator<ChangePasswordRequest>
+public class ChangePasswordRequestValidator : AbstractValidator<ChangePasswordRequestDto>,
+  IValidator<ChangePasswordRequestDto>
 {
   public ChangePasswordRequestValidator(IValidationService validationService) {
     RuleFor(x => x.OldPassword)

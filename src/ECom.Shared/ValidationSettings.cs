@@ -5,6 +5,12 @@ namespace ECom.Shared;
 
 public static class ValidationSettings
 {
+  public const string DefaultCulture = "en";
+  public const string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  public const string Numbers = "0123456789";
+  public const string AlphabetAndNumbers = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  public const string SpecialChars = "!@#$%^&*()_+";
+
   public const int MinGlobalStringLength = 1;
   public const int MaxGlobalStringLength = 1000;
   public const int MinPasswordLength = 6;
@@ -51,7 +57,7 @@ public static class ValidationSettings
   public const int MaxReasonLength = 64;
 
   //public static readonly IReadOnlyCollection<StringValidation> Validations = new List<StringValidation>() {
-  //    new (ValidationType.Address,MinAddressLength, MaxAddressLength, "address"),
+  //    new (ValidationType.Addresses,MinAddressLength, MaxAddressLength, "address"),
   //    new (ValidationType.City,MinCityLength, MaxCityLength, "city"),
   //    new (ValidationType.Country,MinCountryLength, MaxCountryLength, "country"),
   //    new (ValidationType.Coupon,MinCouponLength, MaxCouponLength, "coupon"),

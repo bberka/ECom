@@ -14,5 +14,5 @@ public interface IAccountService<T>
   /// <param name="userId"></param>
   /// <param name="model"></param>
   /// <returns></returns>
-  CustomResult ChangePassword(Guid userId, ChangePasswordRequest model);
+  CustomResult ChangePassword(Guid userId, ChangePasswordRequestDto model);
 }

@@ -22,16 +22,16 @@ public abstract class UserAccountService : IUserAccountService
   }
 
 
-  public CustomResult RegisterUser(RegisterUserRequest model) {
+  public CustomResult RegisterUser(RegisterUserRequestDto model) {
     var user = User.FromRegisterRequest(model);
-    UnitOfWork.UserRepository.Add(user);
+    UnitOfWork.Users.Add(user);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(RegisterUser));
     return DomainResult.OkUpdated(nameof(User));
   }
 
   public List<User> GetUsers() {
-    return UnitOfWork.UserRepository.ToList();
+    return UnitOfWork.Users.ToList();
   }
 
   public CustomResult<UserDto> Login(LoginRequest model) {
@@ -60,14 +60,14 @@ public abstract class UserAccountService : IUserAccountService
   }
 
   public CustomResult<User> GetUser(string email) {
-    var user = UnitOfWork.UserRepository.FirstOrDefault(x => x.EmailAddress == email);
+    var user = UnitOfWork.Users.FirstOrDefault(x => x.EmailAddress == email);
     if (user is null) return DomainResult.NoAccountFound(nameof(User));
     if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
   }
 
   public CustomResult<User> GetUser(Guid id) {
-    var user = UnitOfWork.UserRepository.Find(id);
+    var user = UnitOfWork.Users.Find(id);
     if (user is null) return DomainResult.NotFound(nameof(User));
     if (user.DeleteDate.HasValue) return DomainResult.Invalid(nameof(User));
     return user;
@@ -76,21 +76,21 @@ public abstract class UserAccountService : IUserAccountService
 
 
 
-  public CustomResult ChangePassword(Guid userId, ChangePasswordRequest model) {
+  public CustomResult ChangePassword(Guid userId, ChangePasswordRequestDto model) {
     var userResult = GetUser(userId);
     if (!userResult.Status) return userResult.ToResult();
     var user = userResult.Data;
     var encryptedPassword = model.NewPassword.ToHashedText();
     if (user.Password != encryptedPassword) return DomainResult.NotFound("User");
     user.Password = encryptedPassword;
-    UnitOfWork.UserRepository.Update(user);
+    UnitOfWork.Users.Update(user);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
     return DomainResult.OkUpdated(nameof(User));
   }
 
   public CustomResult UpdateUser(Guid userId, UpdateUserRequest model) {
-    var user = UnitOfWork.UserRepository.Find(userId);
+    var user = UnitOfWork.Users.Find(userId);
     if (user is null) return DomainResult.NotFound(nameof(User));
     user.EmailAddress = model.EmailAddress;
     user.CitizenShipNumber = model.CitizenShipNumber;
@@ -98,7 +98,7 @@ public abstract class UserAccountService : IUserAccountService
     user.TaxNumber = model.TaxNumber;
     user.FirstName = model.FirstName;
     user.LastName = model.LastName;
-    UnitOfWork.UserRepository.Update(user);
+    UnitOfWork.Users.Update(user);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateUser));
     return DomainResult.OkUpdated(nameof(User));

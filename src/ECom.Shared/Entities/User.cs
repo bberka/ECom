@@ -79,20 +79,20 @@ public class User : IEntity
   public virtual List<EmailVerifyToken> EmailVerifyTokens { get; set; }
 
 
-  public static User FromRegisterRequest(RegisterUserRequest request) {
+  public static User FromRegisterRequest(RegisterUserRequestDto requestDto) {
     return new User {
-      CitizenShipNumber = request.CitizenshipNumber,
+      CitizenShipNumber = requestDto.CitizenshipNumber,
       RegisterDate = DateTime.Now,
       DeleteDate = null,
-      EmailAddress = request.EmailAddress,
-      PhoneNumber = request.PhoneNumber,
-      Password = request.Password.ToHashedText(),
+      EmailAddress = requestDto.EmailAddress,
+      PhoneNumber = requestDto.PhoneNumber,
+      Password = requestDto.Password.ToHashedText(),
       IsEmailVerified = false,
-      TaxNumber = request.TaxNumber,
+      TaxNumber = requestDto.TaxNumber,
       TwoFactorType = 0,
       Culture = "en",
-      FirstName = request.FirstName,
-      LastName = request.LastName,
+      FirstName = requestDto.FirstName,
+      LastName = requestDto.LastName,
     };
   }
 }

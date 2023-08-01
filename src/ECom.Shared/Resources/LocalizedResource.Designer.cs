@@ -115,7 +115,7 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Count.
+        ///   Looks up a localized string similar to Admins Count.
         /// </summary>
         public static string admin_count {
             get {
@@ -124,7 +124,7 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Permissions.
+        ///   Looks up a localized string similar to Admins Permissions.
         /// </summary>
         public static string admin_permissions {
             get {
@@ -133,7 +133,7 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Roles.
+        ///   Looks up a localized string similar to Admins Roles.
         /// </summary>
         public static string admin_roles {
             get {
@@ -232,6 +232,42 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {name} can not contain {chars}.
+        /// </summary>
+        public static string can_not_contain {
+            get {
+                return ResourceManager.GetString("can_not_contain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {name} can not be deleted.
+        /// </summary>
+        public static string can_not_delete {
+            get {
+                return ResourceManager.GetString("can_not_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can not delete {objectName} when there is related entries in {relationName}.
+        /// </summary>
+        public static string can_not_delete_db_relation {
+            get {
+                return ResourceManager.GetString("can_not_delete_db_relation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {name} can only contain {chars}.
+        /// </summary>
+        public static string can_only_contain_xxx {
+            get {
+                return ResourceManager.GetString("can_only_contain_xxx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string cancel {
@@ -286,7 +322,7 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company Address.
+        ///   Looks up a localized string similar to Company Addresses.
         /// </summary>
         public static string company_address {
             get {
@@ -349,11 +385,20 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact Email Address.
+        ///   Looks up a localized string similar to Contact Email Addresses.
         /// </summary>
         public static string contact_email {
             get {
                 return ResourceManager.GetString("contact_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {name} contains invalid characters.
+        /// </summary>
+        public static string contains_invalid_characters {
+            get {
+                return ResourceManager.GetString("contains_invalid_characters", resourceCulture);
             }
         }
         
@@ -763,7 +808,7 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Panel by ZDK Network.
+        ///   Looks up a localized string similar to Admins Panel by ZDK Network.
         /// </summary>
         public static string login_page_message {
             get {
@@ -1177,7 +1222,7 @@ namespace ECom.Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Panel.
+        ///   Looks up a localized string similar to Admins Panel.
         /// </summary>
         public static string project_name {
             get {

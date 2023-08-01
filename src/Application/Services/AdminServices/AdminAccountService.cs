@@ -35,7 +35,7 @@ public class AdminAccountService : IAdminAccountService
 
 
   public CustomResult<AdminDto> Login(LoginRequest model) {
-    var admin = UnitOfWork.AdminRepository
+    var admin = UnitOfWork.Admins
       .Where(x => x.EmailAddress == model.EmailAddress)
       .Select(x => Admin.ToDto(x))
       .FirstOrDefault();
@@ -44,7 +44,7 @@ public class AdminAccountService : IAdminAccountService
     var encryptedPassword = model.IsHashed ? model.Password : model.Password.ToHashedText();
     if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
       return DomainResult.NoAccountFound(nameof(Admin));
-    if (admin.Permissions.Length == 0) return DomainResult.None(nameof(Permission));
+    if (admin.Permissions.Length == 0) return DomainResult.None("permission");
     if (admin.TwoFactorType != 0) {
       //TODO: two factor authentication
     }
@@ -57,15 +57,15 @@ public class AdminAccountService : IAdminAccountService
   }
 
 
-  public CustomResult ChangePassword(Guid adminId, ChangePasswordRequest model) {
-    var admin = UnitOfWork.AdminRepository.Find(adminId);
+  public CustomResult ChangePassword(Guid adminId, ChangePasswordRequestDto model) {
+    var admin = UnitOfWork.Admins.Find(adminId);
     if (admin is null) return DomainResult.NotFound(nameof(Admin));
     var password = model.NewPassword.ToHashedText();
     if (admin.Password != password) return DomainResult.WrongPassword();
     admin.Password = password;
     admin.UpdateDate = DateTime.UtcNow;
 
-    UnitOfWork.AdminRepository.Update(admin);
+    UnitOfWork.Admins.Update(admin);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(ChangePassword));
     return DomainResult.OkUpdated("Password");

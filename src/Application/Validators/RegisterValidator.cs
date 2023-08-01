@@ -3,7 +3,7 @@ using ECom.Shared.Constants;
 
 namespace ECom.Application.Validators;
 
-public class RegisterValidator : AbstractValidator<RegisterUserRequest>, IValidator<RegisterUserRequest>
+public class RegisterValidator : AbstractValidator<RegisterUserRequestDto>, IValidator<RegisterUserRequestDto>
 {
   public RegisterValidator(IValidationService validationService) {
     RuleFor(x => x.Password)

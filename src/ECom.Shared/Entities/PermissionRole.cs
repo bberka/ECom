@@ -1,11 +1,26 @@
-﻿namespace ECom.Shared.Entities;
+﻿using ECom.Shared.Resources;
+
+namespace ECom.Shared.Entities;
 
 [Table("PermissionRoles", Schema = "ECOperation")]
-[PrimaryKey(nameof(RoleId),nameof(PermissionId))]
-public class PermissionRole : IEntity
+[PrimaryKey(nameof(RoleId), nameof(Permission))]
+public sealed class PermissionRole
 {
+  public PermissionRole() {
+    
+  }
+
+  public PermissionRole(string roleId, AdminPermission permission) {
+    RoleId = roleId;
+    Permission = permission;
+  }
+  [MinLength(ValidationSettings.MinNameLength)]
+  [MaxLength(ValidationSettings.MaxNameLength)]
+  [Display(ResourceType = typeof(LocalizedResource), Name = Entities.Role.LocKey)]
   public string RoleId { get; set; }
-  public string PermissionId { get; set; }
-  public virtual Role Role { get; set; }
-  public virtual Permission Permission { get; set; }
+
+  [Display(ResourceType = typeof(LocalizedResource), Name = "permission")]
+  public AdminPermission Permission { get; set; }
+
+  public Role Role { get; set; }
 }

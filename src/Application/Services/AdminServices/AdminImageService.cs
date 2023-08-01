@@ -14,7 +14,7 @@ public class AdminImageService : ImageService, IAdminImageService
   }
 
   public CustomResult<Image> GetImage(Guid id) {
-    var image = UnitOfWork.ImageRepository.Find(id);
+    var image = UnitOfWork.Images.Find(id);
     if (image is null) return DomainResult.NotFound(nameof(Image));
     return image;
   }
@@ -24,7 +24,7 @@ public class AdminImageService : ImageService, IAdminImageService
     file.CopyTo(ms);
     img.Data = ms.ToArray();
     img.Name = file.FileName;
-    UnitOfWork.ImageRepository.Add(img);
+    UnitOfWork.Images.Add(img);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UploadImage));
     return img.Id;

@@ -1,6 +1,6 @@
 ﻿namespace ECom.Shared.Entities;
 
-[Table("CompanyInformation", Schema = "ECOperation")]
+[Table("CompanyInformation", Schema = "ECOption")]
 public class CompanyInformation : IEntity, ICloneable
 {
 

@@ -22,7 +22,7 @@ namespace ECom.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Addresses", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Admin", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,12 +142,12 @@ namespace ECom.Infrastructure.Migrations
                             EmailAddress = "owner@mail.com",
                             Password = "25f9e794323b453885f5181f1b624d0b",
                             RegisterDate = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = "Owner",
+                            RoleId = "owner",
                             TwoFactorType = (byte)0
                         });
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.AdminLog", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.AdminLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -220,7 +220,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("AdminLogs", "ECLog");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Announcement", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Announcement", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,7 +248,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Announcements", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CargoOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -281,7 +281,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("CargoOptions", "ECOption");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Cart", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -308,7 +308,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Carts", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Category", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Category", b =>
                 {
                     b.Property<string>("NameKey")
                         .HasMaxLength(50)
@@ -337,7 +337,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Categories", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CategoryDiscount", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CategoryDiscount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -366,7 +366,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("CategoryDiscounts", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Collection", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Collection", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -396,7 +396,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Collections", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CollectionProduct", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CollectionProduct", b =>
                 {
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -411,7 +411,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("CollectionProducts", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CompanyInformation", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CompanyInformation", b =>
                 {
                     b.Property<bool>("Key")
                         .HasColumnType("bit");
@@ -428,7 +428,8 @@ namespace ECom.Infrastructure.Migrations
 
                     b.Property<string>("ContactEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -474,13 +475,13 @@ namespace ECom.Infrastructure.Migrations
 
                     b.HasKey("Key");
 
-                    b.ToTable("CompanyInformation", "ECOperation");
+                    b.ToTable("CompanyInformation", "ECOption");
 
                     b.HasData(
                         new
                         {
                             Key = true,
-                            CompanyAddress = "Address",
+                            CompanyAddress = "Addresses",
                             CompanyName = "CompanyName",
                             ContactEmail = "contact@support.com",
                             Description = "Company Description",
@@ -494,7 +495,7 @@ namespace ECom.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.DiscountCoupon", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.DiscountCoupon", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -524,7 +525,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("DiscountCoupons", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.DiscountNotify", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.DiscountNotify", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -539,7 +540,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("DiscountNotifies", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.EmailVerifyToken", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.EmailVerifyToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -576,7 +577,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("EmailVerifyTokens", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.FavoriteProduct", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.FavoriteProduct", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -597,7 +598,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("FavoriteProducts", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Image", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Image", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -631,7 +632,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Images", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Option", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Option", b =>
                 {
                     b.Property<bool>("Key")
                         .HasColumnType("bit");
@@ -695,7 +696,7 @@ namespace ECom.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -738,7 +739,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Orders", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.PasswordResetToken", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.PasswordResetToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -775,7 +776,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("PasswordResetTokens", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.PaymentOption", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.PaymentOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -821,244 +822,138 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("PaymentOptions", "ECOption");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.PermissionRole", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("RoleId")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Permission")
+                        .HasColumnType("int");
 
-                    b.ToTable("Permissions", "ECEnum");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ManageAdmins"
-                        },
-                        new
-                        {
-                            Id = "ManageCategories"
-                        },
-                        new
-                        {
-                            Id = "ManageProducts"
-                        },
-                        new
-                        {
-                            Id = "ManageOrders"
-                        },
-                        new
-                        {
-                            Id = "ManageCoupons"
-                        },
-                        new
-                        {
-                            Id = "ManageReports"
-                        },
-                        new
-                        {
-                            Id = "ManageSettings"
-                        },
-                        new
-                        {
-                            Id = "ManageQuestions"
-                        },
-                        new
-                        {
-                            Id = "ManageShipping"
-                        },
-                        new
-                        {
-                            Id = "ManagePayments"
-                        },
-                        new
-                        {
-                            Id = "ManageSmtpOption"
-                        },
-                        new
-                        {
-                            Id = "ManagePaymentOptions"
-                        },
-                        new
-                        {
-                            Id = "ManageShippingOptions"
-                        },
-                        new
-                        {
-                            Id = "ManageTaxOptions"
-                        },
-                        new
-                        {
-                            Id = "ManageGeneralOptions"
-                        },
-                        new
-                        {
-                            Id = "ManageImages"
-                        },
-                        new
-                        {
-                            Id = "ManageAnnouncements"
-                        },
-                        new
-                        {
-                            Id = "ManageCompanyInformation"
-                        },
-                        new
-                        {
-                            Id = "ManageUserAccounts"
-                        },
-                        new
-                        {
-                            Id = "ManageLocalization"
-                        },
-                        new
-                        {
-                            Id = "ManageCargoOptions"
-                        },
-                        new
-                        {
-                            Id = "ManageLoginSessions"
-                        },
-                        new
-                        {
-                            Id = "ManageRoles"
-                        });
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
-                {
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PermissionId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
+                    b.HasKey("RoleId", "Permission");
 
                     b.ToTable("PermissionRoles", "ECOperation");
 
                     b.HasData(
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageAdmins"
+                            RoleId = "owner",
+                            Permission = 0
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageCategories"
+                            RoleId = "owner",
+                            Permission = 1
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageProducts"
+                            RoleId = "owner",
+                            Permission = 2
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageOrders"
+                            RoleId = "owner",
+                            Permission = 3
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageCoupons"
+                            RoleId = "owner",
+                            Permission = 4
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageReports"
+                            RoleId = "owner",
+                            Permission = 5
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageSettings"
+                            RoleId = "owner",
+                            Permission = 6
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageQuestions"
+                            RoleId = "owner",
+                            Permission = 7
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageShipping"
+                            RoleId = "owner",
+                            Permission = 8
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManagePayments"
+                            RoleId = "owner",
+                            Permission = 9
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageSmtpOption"
+                            RoleId = "owner",
+                            Permission = 10
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManagePaymentOptions"
+                            RoleId = "owner",
+                            Permission = 11
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageShippingOptions"
+                            RoleId = "owner",
+                            Permission = 12
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageTaxOptions"
+                            RoleId = "owner",
+                            Permission = 13
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageGeneralOptions"
+                            RoleId = "owner",
+                            Permission = 14
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageImages"
+                            RoleId = "owner",
+                            Permission = 15
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageAnnouncements"
+                            RoleId = "owner",
+                            Permission = 16
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageCompanyInformation"
+                            RoleId = "owner",
+                            Permission = 17
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageUserAccounts"
+                            RoleId = "owner",
+                            Permission = 18
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageLocalization"
+                            RoleId = "owner",
+                            Permission = 19
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageCargoOptions"
+                            RoleId = "owner",
+                            Permission = 20
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageLoginSessions"
+                            RoleId = "owner",
+                            Permission = 21
                         },
                         new
                         {
-                            RoleId = "Owner",
-                            PermissionId = "ManageRoles"
+                            RoleId = "owner",
+                            Permission = 22
                         });
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1092,7 +987,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Products", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductCategory", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductCategory", b =>
                 {
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -1105,7 +1000,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductCategories", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductComment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1137,7 +1032,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductComments", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1184,7 +1079,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductDetails", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductImage", b =>
                 {
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -1199,7 +1094,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductImages", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductVariant", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductVariant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1224,7 +1119,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ProductVariants", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1237,11 +1132,11 @@ namespace ECom.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "Owner"
+                            Id = "owner"
                         });
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.SecurityLog", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.SecurityLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1290,7 +1185,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("SecurityLogs", "ECLog");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ShowCase", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ShowCase", b =>
                 {
                     b.Property<byte>("ShowCaseType")
                         .HasColumnType("tinyint");
@@ -1310,7 +1205,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("ShowCases", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Slider", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Slider", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1353,7 +1248,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Sliders", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.SmtpOption", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.SmtpOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1393,7 +1288,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("SmtpOptions", "ECOption");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.StockChange", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.StockChange", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1440,7 +1335,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("StockChanges", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Supplier", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1485,7 +1380,7 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Suppliers", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.User", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1566,18 +1461,18 @@ namespace ECom.Infrastructure.Migrations
                     b.ToTable("Users", "ECPrivate");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Address", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Address", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.User", null)
+                    b.HasOne("ECom.Shared.Entities.User", null)
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Admin", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Role", "Role")
+                    b.HasOne("ECom.Shared.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1586,16 +1481,16 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.AdminLog", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.AdminLog", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Admin", null)
+                    b.HasOne("ECom.Shared.Entities.Admin", null)
                         .WithMany("AdminLogs")
                         .HasForeignKey("AdminId");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CargoOption", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CargoOption", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Image", "Image")
+                    b.HasOne("ECom.Shared.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1604,15 +1499,15 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Cart", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Cart", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1623,9 +1518,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CategoryDiscount", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CategoryDiscount", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Category", "Category")
+                    b.HasOne("ECom.Shared.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1634,9 +1529,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Collection", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Collection", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany("Collections")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1645,15 +1540,15 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.CollectionProduct", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.CollectionProduct", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Collection", "Collection")
+                    b.HasOne("ECom.Shared.Entities.Collection", "Collection")
                         .WithMany()
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1664,15 +1559,15 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.DiscountNotify", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.DiscountNotify", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1683,9 +1578,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.EmailVerifyToken", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.EmailVerifyToken", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany("EmailVerifyTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1694,15 +1589,15 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.FavoriteProduct", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.FavoriteProduct", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", null)
+                    b.HasOne("ECom.Shared.Entities.User", null)
                         .WithMany("FavoriteProducts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1711,21 +1606,21 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Order", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Order", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.DiscountCoupon", "DiscountCoupon")
+                    b.HasOne("ECom.Shared.Entities.DiscountCoupon", "DiscountCoupon")
                         .WithMany()
                         .HasForeignKey("DiscountCouponId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1738,9 +1633,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.PasswordResetToken", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.PasswordResetToken", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany("PasswordResetTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1749,43 +1644,35 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.PermissionRole", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.PermissionRole", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Permission", "Permission")
-                        .WithMany("PermissionRoles")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECom.Domain.Entities.Role", "Role")
+                    b.HasOne("ECom.Shared.Entities.Role", "Role")
                         .WithMany("PermissionRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Permission");
-
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Product", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.ProductVariant", "ProductVariant")
+                    b.HasOne("ECom.Shared.Entities.ProductVariant", "ProductVariant")
                         .WithMany()
                         .HasForeignKey("ProductVariantId");
 
                     b.Navigation("ProductVariant");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductComment", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductComment", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany("ProductComments")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany("ProductComments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1796,9 +1683,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductDetail", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductDetail", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany("ProductDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1807,15 +1694,15 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ProductImage", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ProductImage", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Image", "Image")
+                    b.HasOne("ECom.Shared.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany("ProductImages")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1826,15 +1713,15 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.ShowCase", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.ShowCase", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Image", "Image")
+                    b.HasOne("ECom.Shared.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
 
@@ -1843,9 +1730,9 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Slider", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Slider", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Image", "Image")
+                    b.HasOne("ECom.Shared.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1854,19 +1741,19 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.StockChange", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.StockChange", b =>
                 {
-                    b.HasOne("ECom.Domain.Entities.Product", "Product")
+                    b.HasOne("ECom.Shared.Entities.Product", "Product")
                         .WithMany("StockChanges")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECom.Domain.Entities.Supplier", "Supplier")
+                    b.HasOne("ECom.Shared.Entities.Supplier", "Supplier")
                         .WithMany("StockChanges")
                         .HasForeignKey("SupplierId");
 
-                    b.HasOne("ECom.Domain.Entities.User", "User")
+                    b.HasOne("ECom.Shared.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1879,17 +1766,12 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Admin", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Admin", b =>
                 {
                     b.Navigation("AdminLogs");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Permission", b =>
-                {
-                    b.Navigation("PermissionRoles");
-                });
-
-            modelBuilder.Entity("ECom.Domain.Entities.Product", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Product", b =>
                 {
                     b.Navigation("ProductComments");
 
@@ -1900,17 +1782,17 @@ namespace ECom.Infrastructure.Migrations
                     b.Navigation("StockChanges");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Role", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Role", b =>
                 {
                     b.Navigation("PermissionRoles");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.Supplier", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.Supplier", b =>
                 {
                     b.Navigation("StockChanges");
                 });
 
-            modelBuilder.Entity("ECom.Domain.Entities.User", b =>
+            modelBuilder.Entity("ECom.Shared.Entities.User", b =>
                 {
                     b.Navigation("Addresses");
 

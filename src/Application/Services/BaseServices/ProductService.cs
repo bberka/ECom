@@ -27,11 +27,11 @@ public abstract class ProductService : IProductService
   }
 
   public bool Exists(Guid id) {
-    return UnitOfWork.ProductRepository.Any(x => x.Id == id);
+    return UnitOfWork.Products.Any(x => x.Id == id);
   }
 
   public CustomResult<Product> GetProduct(Guid productNo) {
-    var product = UnitOfWork.ProductRepository.FirstOrDefault(x => x.Id == productNo);
+    var product = UnitOfWork.Products.FirstOrDefault(x => x.Id == productNo);
     if (product is null) return DomainResult.NotFound(nameof(Product));
     if (product.DeleteDate.HasValue) return DomainResult.Invalid(nameof(Product));
     return product;
@@ -41,7 +41,7 @@ public abstract class ProductService : IProductService
     List<Guid> productIds,
     ushort page) {
     var lastIdx = Option.PagingProductCount * page;
-    return UnitOfWork.ProductCommentRepository.Where(x => productIds.Contains(x.ProductId))
+    return UnitOfWork.ProductComments.Where(x => productIds.Contains(x.ProductId))
       .OrderByDescending(x => x.RegisterDate)
       .Skip(lastIdx)
       .Take(Option.PagingProductCount)
@@ -50,14 +50,14 @@ public abstract class ProductService : IProductService
 
   public List<ProductComment> GetProductComments(Guid productId, ushort page) {
     var lastIdx = Option.PagingProductCount * page;
-    return UnitOfWork.ProductCommentRepository.Where(x => x.ProductId == productId)
+    return UnitOfWork.ProductComments.Where(x => x.ProductId == productId)
       .OrderByDescending(x => x.RegisterDate)
       .Skip(lastIdx)
       .Take(Option.PagingProductCount)
       .ToList();
   }
 
-  public CustomResult<int> AddProductComment(Guid userId, AddProductCommentRequest model) {
+  public CustomResult<int> AddProductComment(Guid userId, ProductCommentAddRequestDto model) {
     var productResult = GetProduct(model.ProductId);
     if (!productResult.Status) return productResult.ToResult();
     //TODO: Check if user purchased the product
@@ -68,7 +68,7 @@ public abstract class ProductService : IProductService
       UserId = userId,
       Star = model.Star
     };
-    UnitOfWork.ProductCommentRepository.Add(comment);
+    UnitOfWork.ProductComments.Add(comment);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(AddProductComment));
     return DomainResult.OkAdded(nameof(ProductComment));
@@ -108,7 +108,7 @@ public abstract class ProductService : IProductService
   public List<Product> GetProducts(ushort page, string culture = ConstantMgr.DefaultCulture) {
     if (page == 0) return new List<Product>();
     var lastIdx = Option.PagingProductCount * (page - 1);
-    return UnitOfWork.ProductRepository
+    return UnitOfWork.Products
       .Where(x => !x.DeleteDate.HasValue)
       .OrderByDescending(x =>x.RegisterDate)
       .Paging(page,Option.PagingProductCount)
@@ -119,7 +119,7 @@ public abstract class ProductService : IProductService
   }
 
   public List<Product> GetProducts(List<Guid> productIds, ushort page, string culture = ConstantMgr.DefaultCulture) {
-    return UnitOfWork.ProductRepository
+    return UnitOfWork.Products
       .Where(x => !x.DeleteDate.HasValue && productIds.Contains(x.Id))
       .OrderByDescending(x => x.RegisterDate)
       .Paging(page, Option.PagingProductCount)

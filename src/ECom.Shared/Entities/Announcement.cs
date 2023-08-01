@@ -15,12 +15,12 @@ public class Announcement : IEntity
 
   [MaxLength(ValidationSettings.MaxMessageLength)]
   public string Message { get; set; }
-  public static Announcement FromDto(AddAnnouncementRequest request) {
+  public static Announcement FromDto(AnnouncementAddRequestDto requestDto) {
     return new Announcement {
-      Order = request.Order,
-      Message = request.Message,
+      Order = requestDto.Order,
+      Message = requestDto.Message,
       RegisterDate = DateTime.Now,
-      ExpireDate = request.ExpireDate 
+      ExpireDate = requestDto.ExpireDate 
     };
   }
 

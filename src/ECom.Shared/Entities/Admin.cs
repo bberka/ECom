@@ -45,7 +45,7 @@ public class Admin : IEntity
       //Permissions = string.Join(",", admin.Role.Permissions.Select(x => x.Name).ToArray()),
       RoleId = admin.RoleId,
       DeletedDate = admin.DeleteDate,
-      Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.Id)?.ToArray() ?? Array.Empty<string>(),
+      Permissions = admin.Role?.PermissionRoles?.Select(x => x.Permission.ToString())?.ToArray() ?? Array.Empty<string>(),
       Password = admin.Password,
       RegisterDate = admin.RegisterDate,
       
@@ -64,14 +64,14 @@ public class Admin : IEntity
     };
   }
 
-  public static Admin FromDto(AddAdminRequest request) {
+  public static Admin FromDto(AdminAddRequestDto requestDto) {
     return new Admin {
       RegisterDate = DateTime.Now,
       DeleteDate = null,
-      EmailAddress = request.EmailAddress,
+      EmailAddress = requestDto.EmailAddress,
       TwoFactorType = 0,
-      RoleId = request.RoleId,
-      Password = request.Password.ToHashedText(),
+      RoleId = requestDto.RoleId,
+      Password = requestDto.Password.ToHashedText(),
     };
   }
 }

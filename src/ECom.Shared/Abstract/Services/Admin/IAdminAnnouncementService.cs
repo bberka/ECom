@@ -8,6 +8,6 @@ public interface IAdminAnnouncementService : IAnnouncementService
   CustomResult DeleteAnnouncement(Guid id);
   CustomResult UpdateAnnouncement(UpdateAnnouncementRequest data);
   CustomResult UpdateAnnouncementsOrder(List<Announcement> activeAnnouncements);
-  CustomResult AddAnnouncement(AddAnnouncementRequest data);
+  CustomResult AddAnnouncement(AnnouncementAddRequestDto data);
   List<Announcement> ListAnnouncements();
 }

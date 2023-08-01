@@ -1,0 +1,164 @@
+﻿@page "/roles"
+@attribute [AdminAuthorize(AdminPermission.ManageAdmins)]
+@inject TooltipService TooltipService
+@inject IAdminRoleService AdminRoleService
+@using AspNetCore.Authorization.Extender
+@using ECom.Application.Services.BaseServices
+@using ECom.Shared.Abstract.Services.Admin
+@using ECom.Shared.Constants
+@using ECom.Shared.DTOs
+@using ECom.Shared.Entities
+@inherits SharedBasePage
+
+<PageTitle>@Loc["roles"]</PageTitle>
+<RadzenCard Variant="Variant.Filled" Style="max-width: 800px">
+  <RadzenStack JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Start" Orientation="Orientation.Horizontal">
+    <RadzenText TextStyle="TextStyle.H4">@Loc["roles"]</RadzenText>
+    <RadzenButton Text="@Loc["create"]" Click="ShowCreateDialog" ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" Variant="Variant.Filled"></RadzenButton>
+  </RadzenStack>
+  <CustomHr></CustomHr>
+  <RadzenDataGrid @ref="_grid" Data="@_roles" EmptyText="@Loc["empty_table"]" TItem="RoleDto" Context="role" PageNumbersCount="10" AllowAlternatingRows="false" AllowFiltering="false" AllowColumnResize="false" AllowSorting="true" PageSize="10" ColumnWidth="auto">
+    <Columns>
+      <RadzenDataGridColumn MinWidth="100px" Width="160px" TItem="RoleDto" Property="Id" Title="@(Loc["role"])" FormatString="{0:d}" />
+      <RadzenDataGridColumn MinWidth="80px" Width="160px" TItem="RoleDto" Property="Permissions.Count" Title="@(Loc["permission_count"])" />
+      <RadzenDataGridColumn MinWidth="100px" Width="200px" TItem="RoleDto" Title="@Loc["actions"]">
+        <Template Context="role">
+          @if (role.Id != Role.OwnerRoleId) {
+            <RadzenButton Icon="edit" Size="ButtonSize.Medium" Text="@Loc["update"]" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Info" ButtonType="ButtonType.Button" Click="() => ShowEditDialog(role)">
+            </RadzenButton>
+            <RadzenButton MouseEnter="@(args => ShowTooltipDanger(args, Loc["delete"]))" Icon="delete" Size="ButtonSize.Medium" Variant="Variant.Outlined" ButtonStyle="ButtonStyle.Danger" ButtonType="ButtonType.Button" Click="() => DeleteRole(role)">
+            </RadzenButton>
+          }
+          else {
+            @*<RadzenText TextStyle="TextStyle.Body1" Text="@LocalizedResource["owner_permissions_can_not_be_updated"]"></RadzenText>*@
+          }
+
+
+
+        </Template>
+
+
+      </RadzenDataGridColumn>
+    </Columns>
+  </RadzenDataGrid>
+</RadzenCard>
+
+
+@code {
+
+  [CascadingParameter]
+  public Task<AuthenticationState> AuthTask { get; set; }
+
+  private List<RoleDto> _roles = new();
+  private RadzenDataGrid<RoleDto> _grid;
+  private RoleDto _roleEdit = new();
+  private RoleDto _roleAdd = new RoleDto();
+
+  protected override void OnInitialized() {
+    if (_roles.Count == 0)
+      _roles = AdminRoleService.GetRoles().ToList();
+
+  }
+  private async Task SubmitUpdate(RoleDto value) {
+    var auth = await AuthTask;
+    var adminId = auth.GetAdminId();
+    var dbResult = AdminRoleService.UpdatePermissions(adminId, value.Id, value.Permissions);
+    ShowResultNotification(dbResult);
+    if (dbResult.Status) {
+      _roles = AdminRoleService.GetRoles().ToList();
+      await _grid.Reload();
+      Dialog.Close();
+    }
+  }
+  private async Task ShowEditDialog(RoleDto value) {
+    _roleEdit = value;
+    //_editPermissions.Permissions = value.PermissionRoles.Select(y => y.Permission.Id).ToList();
+    var result = await Dialog.OpenAsync(Loc["edit"] + " " + value.Id + " " + Loc["permission"], ds =>
+  @<RadzenTemplateForm TItem="RoleDto" Data="@_roleEdit" Submit="SubmitUpdate">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <RadzenStack Orientation="Orientation.Vertical">
+      <RadzenListBox @bind-Value="@_roleEdit.Permissions" Data="@ConstantMgr.AllPermissions" 
+                     FilterOperator="StringFilterOperator.Contains" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" Multiple="true" AllowClear="true" Placeholder="@Loc["select_permissions"]" Style="height: 300px; min-width: 300px; width: 100%;" />
+      <ValidationMessage For="@(() => _roleEdit.Permissions)" />
+      <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal">
+          <RadzenButton Visible="true" Text=@Loc["update"]  ButtonType="ButtonType.Submit" Style="width: 120px;" />
+          <RadzenButton Visible="true" Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+        </RadzenStack>
+      </RadzenStack>
+    </RadzenStack>
+  </RadzenTemplateForm>
+    , new DialogOptions {
+      Style = "max-width: 500px"
+    });
+    
+   
+  }
+
+
+  private async Task ShowCreateDialog() {
+    var result = await Dialog.OpenAsync(Loc["create_role"], ds =>
+  @<RadzenTemplateForm TItem="RoleDto" Data="@_roleAdd" Submit="@(OnAddSubmit)">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <RadzenStack Orientation="Orientation.Vertical">
+      <div class="mb-2">
+        <RadzenFormField class="mw-100 w-100" Component="Role" Text="@Loc["role_name"]" Variant="Variant.Filled">
+          <RadzenTextBox class="mw-100 w-100 " style="min-width: 300px" @bind-Value="@_roleAdd.Id" Name="Role"></RadzenTextBox>
+        </RadzenFormField>
+        <ValidationMessage For="@(() => _roleAdd.Id)" />
+      </div>
+
+      <div class="mb-2">
+
+        <RadzenListBox @bind-Value="@_roleAdd.Permissions"
+                       Data="@ConstantMgr.AllPermissions"
+                       FilterOperator="StringFilterOperator.Contains"
+                       FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                       AllowFiltering="true"
+                       Multiple="true"
+                       AllowClear="true"
+                       Placeholder="@Loc["select_permissions"]"
+                       Style="height: 300px; min-width: 300px; width: 100%;" />
+        <ValidationMessage For="@(() => _roleAdd.Permissions)" />
+
+      </div>
+
+      <RadzenStack Class="my-2" Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal">
+          <RadzenButton Text=@Loc["create"] Click="() => { }" ButtonType="ButtonType.Submit" Style="width: 120px;" />
+          <RadzenButton Text=@Loc["cancel"] Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+        </RadzenStack>
+      </RadzenStack>
+    </RadzenStack>
+  </RadzenTemplateForm>
+  , new DialogOptions {
+    AutoFocusFirstElement = true,
+    Height = "auto",
+    Width = "400px"
+  });
+    void OnAddSubmit(RoleDto model) {
+      var actionResult = AdminRoleService.AddRole(model);
+      ShowResultNotification(actionResult);
+      if (!actionResult.Status) {
+        return;
+      }
+      _roles = AdminRoleService.GetRoles();
+      _roleAdd = new RoleDto();
+      Dialog.Close(true);
+      _grid.Reload();
+    }
+  }
+
+  private async Task DeleteRole(RoleDto value) {
+    var dialogResult = await ShowSimpleDialogLocalized(SimpleActionType.delete, value.Id + " " + Loc["role"]);
+    if (dialogResult != true) {
+      return;
+    }
+    var actionResult = AdminRoleService.DeleteRole(value.Id);
+    if (actionResult.Status) {
+      _roles = AdminRoleService.GetRoles();
+    }
+    ShowResultNotification(actionResult);
+  }
+}

@@ -7,11 +7,9 @@ namespace ECom.Infrastructure.Configurations;
 internal class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
   public void Configure(EntityTypeBuilder<Role> builder) {
+
     builder.Navigation(x => x.PermissionRoles).AutoInclude();
-    var roles = new List<Role>();
-    roles.Add(new Role() {
-      Id = "Owner"
-    });
-    builder.HasData(roles);
+    var temp = SeedData.OwnerRole;
+    builder.HasData(temp);
   }
 }

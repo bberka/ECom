@@ -23,7 +23,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
 
 
   public CustomResult UpdateOption(Option option) {
-    UnitOfWork.OptionRepository.Update(option);
+    UnitOfWork.Options.Update(option);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateOption));
     MemoryCache.Set("option", option, TimeSpan.FromMinutes(5));
@@ -31,21 +31,21 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   }
 
   public CustomResult UpdateCargoOption(CargoOption option) {
-    UnitOfWork.CargoOptionRepository.Update(option);
+    UnitOfWork.CargoOptions.Update(option);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateCargoOption));
     return DomainResult.OkUpdated(nameof(UpdateCargoOption));
   }
 
   public CustomResult UpdatePaymentOption(PaymentOption option) {
-    UnitOfWork.PaymentOptionRepository.Update(option);
+    UnitOfWork.PaymentOptions.Update(option);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdatePaymentOption));
     return DomainResult.OkUpdated(nameof(PaymentOption));
   }
 
   public CustomResult UpdateSmtpOption(SmtpOption option) {
-    UnitOfWork.SmtpOptionRepository.Update(option);
+    UnitOfWork.SmtpOptions.Update(option);
     var res = UnitOfWork.Save();
     if (!res) return DomainResult.DbInternalError(nameof(UpdateSmtpOption));
     return DomainResult.OkUpdated(nameof(SmtpOption));
@@ -58,7 +58,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   public List<CargoOption> ListCargoOptions() {
     var cache = MemoryCache.Get<List<CargoOption>>(CargoOptionCacheKey);
     if (cache is not null) return cache;
-    cache = UnitOfWork.CargoOptionRepository.Where(x => x.DeleteDate.HasValue == false).ToList();
+    cache = UnitOfWork.CargoOptions.Where(x => x.DeleteDate.HasValue == false).ToList();
     MemoryCache.Set(CargoOptionCacheKey, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
@@ -66,7 +66,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   public List<PaymentOption> ListPaymentOptions() {
     var cache = MemoryCache.Get<List<PaymentOption>>(PaymentOptionCacheKey);
     if (cache is not null) return cache;
-    cache = UnitOfWork.PaymentOptionRepository.Where(x => x.DeleteDate.HasValue == false).ToList();
+    cache = UnitOfWork.PaymentOptions.Where(x => x.DeleteDate.HasValue == false).ToList();
     MemoryCache.Set(PaymentOptionCacheKey, cache, TimeSpan.FromMinutes(5));
     return cache;
   }
@@ -75,7 +75,7 @@ public class AdminOptionService : OptionService, IAdminOptionService, IOptionSer
   public List<SmtpOption> ListSmtpOptions() {
     var cache = MemoryCache.Get<List<SmtpOption>>(SmtpOptionCacheKey);
     if (cache is not null) return cache;
-    cache = UnitOfWork.SmtpOptionRepository.Where(x => x.DeleteDate.HasValue == false).ToList();
+    cache = UnitOfWork.SmtpOptions.Where(x => x.DeleteDate.HasValue == false).ToList();
     MemoryCache.Set(SmtpOptionCacheKey, cache, TimeSpan.FromMinutes(5));
     return cache;
   }

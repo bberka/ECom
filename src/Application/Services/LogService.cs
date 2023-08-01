@@ -33,7 +33,7 @@ public class LogService : ILogService
             //    QueryString = context?.Request.QueryString.ToString() ?? "-",
             //    RequestUrl = context?.Request.GetDisplayUrl() ?? "-"
             //  };
-            //  unitOfWork.SecurityLogRepository.Add(log);
+            //  unitOfWork.SecurityLogs.Add(log);
             //  var res = unitOfWork.Save();
             //  if (!res) {
             //    //TODO File logging
@@ -70,7 +70,7 @@ public class LogService : ILogService
             //    //ErrorCode = $"{result.Message.Name}.{result.Message.Error}|{string.Join(":",result.Message.Params)}",
             //    Rv = 0
             //  };
-            //  unitOfWork.AdminLogRepository.Add(log);
+            //  unitOfWork.AdminLogs.Add(log);
             //  var res = unitOfWork.Save();
             //  if (!res) {
             //    //TODO File logging
