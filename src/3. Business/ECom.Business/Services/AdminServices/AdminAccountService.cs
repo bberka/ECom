@@ -40,24 +40,29 @@ public class AdminAccountService : IAdminAccountService
   }
 
 
-  public Result<AdminDto> Login(Request_Login model) {
-    var admin = _unitOfWork.Admins
-                           .AsNoTracking()
-                           .Where(x => x.EmailAddress == model.EmailAddress)
-                           .Select(x => x.ToDto())
-                           .FirstOrDefault();
-    if (admin is null) return DefResult.NoAccountFound(nameof(Admin));
-    if (admin.DeletedDate.HasValue) return DefResult.Invalid(nameof(Admin));
-    var encryptedPassword = model.Password.ToHashedText();
-    if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
-      return DefResult.NoAccountFound(nameof(Admin));
-    if (admin.Permissions.Length == 0) return DefResult.None("permission");
-    if (admin.TwoFactorType != 0) {
-      //TODO: two factor authentication
-    }
-
-    return admin;
-  }
+  // public Result<AdminDto> Login(Request_Login model) {
+  //   var admin = _unitOfWork.Admins
+  //                          .AsNoTracking()
+  //                          .Include(x => x.Role)
+  //                          .ThenInclude(x => x.PermissionRoles)
+  //                          .Where(x => x.EmailAddress == model.EmailAddress)
+  //                          .Select(x => new {
+  //                            Dto = x.ToDto(),
+  //                             x.Password,
+  //                          })
+  //                          .FirstOrDefault();
+  //   if (admin is null) return DefResult.NoAccountFound(nameof(Admin));
+  //   if (admin.Dto.DeleteDate.HasValue) return DefResult.Invalid(nameof(Admin));
+  //   var encryptedPassword = model.Password.ToHashedText();
+  //   if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
+  //     return DefResult.NoAccountFound(nameof(Admin));
+  //   if (admin.Dto.Permissions.Length == 0) return DefResult.None("permission");
+  //   if (admin.Dto.TwoFactorType != 0) {
+  //     //TODO: two factor authentication
+  //   }
+  //
+  //   return admin.Dto;
+  // }
 
   public Result<string> ResetPassword(Guid userId, Request_Password_ResetByToken token) {
     throw new NotImplementedException();

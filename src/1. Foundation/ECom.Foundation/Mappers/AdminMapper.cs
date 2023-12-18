@@ -13,7 +13,8 @@ public static class AdminMapper
       EmailAddress = requestAdmin.EmailAddress,
       Password = requestAdmin.Password,
       PhoneNumber = requestAdmin.PhoneNumber,
-      RegisterDate = DateTime.Now
+      RegisterDate = DateTime.Now,
+      RoleId = requestAdmin.RoleId,
     };
   }
 
@@ -39,7 +40,9 @@ public static class AdminMapper
       PhoneNumber = admin.PhoneNumber,
       RegisterDate = admin.RegisterDate,
       Culture = admin.Culture,
-      TwoFactorType = admin.TwoFactorType
+      TwoFactorType = admin.TwoFactorType,
+      RoleId = admin.RoleId,
+      Permissions = admin.Role.PermissionRoles.Select(x => x.PermissionType.ToString()).ToArray(),
     };
   }
 }

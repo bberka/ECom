@@ -10,8 +10,7 @@ public class AdminDto
   public TwoFactorType TwoFactorType { get; set; }
   public string RoleId { get; set; }
   public string[] Permissions { get; set; } = Array.Empty<string>();
-  public string Password { get; set; }
-  public DateTime? DeletedDate { get; set; }
+  public DateTime? DeleteDate { get; set; }
 
   public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
 

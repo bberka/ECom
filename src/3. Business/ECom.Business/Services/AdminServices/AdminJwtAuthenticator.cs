@@ -12,8 +12,10 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 
   public Result<Response_Admin_Login> Authenticate(Request_Login model) {
     var admin = _unitOfWork.Admins.AsNoTracking()
+                           .Include(x => x.Role)
+                           .ThenInclude(x => x.PermissionRoles)
                            .Where(x => x.EmailAddress == model.EmailAddress)
-                           .FirstOrDefault();
+                           .SingleOrDefault();
     if (admin is null) return DefResult.NoAccountFound(Admin.LocKey);
     if (admin.DeleteDate.HasValue)
       return DefResult.NoAccountFound(Admin.LocKey);
@@ -26,16 +28,7 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
       //TODO: implement two factor
     }
 
-    var adminDto = new AdminDto {
-      TwoFactorType = admin.TwoFactorType,
-      Culture = admin.Culture,
-      EmailAddress = admin.EmailAddress,
-      FirstName = admin.FirstName,
-      LastName = admin.LastName,
-      Id = admin.Id,
-      PhoneNumber = admin.PhoneNumber,
-      RegisterDate = admin.RegisterDate
-    };
+    var adminDto = admin.ToDto();
     var dic = new Dictionary<string, object> {
       { "Id", admin.Id },
       { "EmailAddress", admin.EmailAddress },

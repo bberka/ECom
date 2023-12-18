@@ -11,14 +11,14 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
   }
 
   public Result<Response_User_Login> Authenticate(Request_Login model) {
-    var user = _unitOfWork.Users.AsNoTracking()
+    var user = _unitOfWork.Users
+                          .AsNoTracking()
                           .Where(x => x.EmailAddress == model.EmailAddress)
-                          .FirstOrDefault();
+                          .SingleOrDefault();
     if (user is null) return DefResult.NoAccountFound(User.LocKey);
     if (user.DeleteDate.HasValue)
       return DefResult.NoAccountFound(User.LocKey);
     // return DefResult.Invalid(User.LocKey);
-
     var encryptedPassword = model.Password.ToHashedText();
     if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal))
       return DefResult.NoAccountFound(User.LocKey); //Or invalid password
@@ -26,17 +26,7 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
       //TODO: implement two factor
     }
 
-    var userDto = new UserDto {
-      TwoFactorType = user.TwoFactorType,
-      Culture = user.Culture,
-      EmailAddress = user.EmailAddress,
-      FirstName = user.FirstName,
-      LastName = user.LastName,
-      Id = user.Id,
-      PhoneNumber = user.PhoneNumber,
-      IsEmailVerified = user.IsEmailVerified,
-      RegisterDate = user.RegisterDate
-    };
+    var userDto = user.ToDto();
     var dic = new Dictionary<string, object> {
       { "Id", userDto.Id },
       { "EmailAddress", userDto.EmailAddress },

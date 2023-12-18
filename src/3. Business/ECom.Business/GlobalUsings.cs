@@ -1,6 +1,5 @@
 ﻿global using EasMe;
 global using EasMe.Extensions;
-global using ECom.Infrastructure;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Http;
