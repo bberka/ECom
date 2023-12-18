@@ -1,7 +1,7 @@
 ﻿using ECom.Foundation.Abstract.Services.Admin;
 using ECom.Foundation.DTOs.Response;
 
-namespace ECom.Service.Admin.AuthEndpoints;
+namespace ECom.Service.AdminApi.AuthEndpoints;
 
 public class Login : EndpointBaseSync.WithRequest<Request_Login>.WithResult<Result<Response_Admin_Login>>
 {

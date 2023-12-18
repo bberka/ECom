@@ -1,4 +1,4 @@
-﻿namespace ECom.Service.Public;
+﻿namespace ECom.Service.PublicApi;
 
 public class GetLanguageTypes : EndpointBaseSync.WithoutRequest.WithResult<JsonResult>
 {

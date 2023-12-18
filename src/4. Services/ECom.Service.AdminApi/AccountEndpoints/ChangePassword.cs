@@ -1,6 +1,6 @@
 ﻿using ECom.Foundation.Abstract.Services.Admin;
 
-namespace ECom.Service.Admin.AccountEndpoints;
+namespace ECom.Service.AdminApi.AccountEndpoints;
 
 public class ChangePassword : EndpointBaseSync.WithRequest<Request_Password_Change>.WithResult<Result>
 {

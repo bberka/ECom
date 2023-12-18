@@ -25,11 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Foundation", "src\1. F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. APIs", "5. APIs", "{607BC0F7-EDEA-4A90-8A2A-7E3FEF0AB756}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.Admin", "src\4. Services\ECom.Service.Admin\ECom.Service.Admin.csproj", "{845721B0-2A60-4A7F-BFE6-61D78AF6ADD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.AdminApi", "src\4. Services\ECom.Service.AdminApi\ECom.Service.AdminApi.csproj", "{845721B0-2A60-4A7F-BFE6-61D78AF6ADD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.User", "src\4. Services\ECom.Service.User\ECom.Service.User.csproj", "{418DBB98-F8E8-4BCD-A045-8B3E2719B5FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.UserApi", "src\4. Services\ECom.Service.UserApi\ECom.Service.UserApi.csproj", "{418DBB98-F8E8-4BCD-A045-8B3E2719B5FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.Public", "src\4. Services\ECom.Service.Public\ECom.Service.Public.csproj", "{F22FB630-060D-418A-B912-F4D622FF05F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.PublicApi", "src\4. Services\ECom.Service.PublicApi\ECom.Service.PublicApi.csproj", "{F22FB630-060D-418A-B912-F4D622FF05F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

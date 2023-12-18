@@ -1,4 +1,4 @@
-﻿namespace ECom.Service.Admin.AccountEndpoints;
+﻿namespace ECom.Service.AdminApi.AccountEndpoints;
 
 public class GetInfo : EndpointBaseSync.WithoutRequest.WithResult<UserDto>
 {
