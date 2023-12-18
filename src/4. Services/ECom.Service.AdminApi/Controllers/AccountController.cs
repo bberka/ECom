@@ -1,9 +1,4 @@
-﻿using ECom.Business.Attributes;
-using ECom.Foundation.Abstract.Services.Admin;
-using ECom.Service.AdminApi.Abstract;
-using ECom.Service.AdminApi.Attributes;
-
-namespace ECom.Service.AdminApi.Controllers;
+﻿namespace ECom.Service.AdminApi.Controllers;
 
 [AuthorizeAdminOnly]
 public class AccountController : AdminControllerBase

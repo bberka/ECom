@@ -1,5 +1,4 @@
 ﻿using ECom.Database;
-using ECom.Service.PublicApi.Abstract;
 
 namespace ECom.Service.PublicApi.Controllers;
 

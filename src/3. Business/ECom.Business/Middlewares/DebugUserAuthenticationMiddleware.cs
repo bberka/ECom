@@ -16,9 +16,7 @@ public class DebugUserAuthenticationMiddleware
   }
 
   public async Task InvokeAsync(HttpContext context) {
-    if (!ConstantContainer.IsDevelopment()) {
-      await _next(context);
-    }
+    if (!ConstantContainer.IsDevelopment()) await _next(context);
 
     //var hasBearer = context.Request.Headers.TryGetValue("Authorization", out var bearer);
     //if (!hasBearer) {

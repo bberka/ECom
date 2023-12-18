@@ -1,5 +1,4 @@
 ﻿using ECom.Business.Services.AdminServices;
-using ECom.Foundation.Abstract.Services.Admin;
 
 namespace ECom.Service.AdminApi;
 

@@ -1,8 +1,7 @@
-﻿namespace ECom.Foundation.AspNetCore;
+﻿using Microsoft.AspNetCore.Mvc;
 
-using Microsoft.AspNetCore.Mvc;
+namespace ECom.Foundation.AspNetCore;
 
-#nullable enable
 public static class EndpointSync
 {
   public static class WithRequest<TRequest>

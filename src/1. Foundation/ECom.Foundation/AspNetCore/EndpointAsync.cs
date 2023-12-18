@@ -10,33 +10,33 @@ public static class EndpointAsync
     {
       public abstract Task<TResponse> HandleAsync(
         TRequest request,
-        CancellationToken cancellationToken = default(CancellationToken));
+        CancellationToken cancellationToken = default);
     }
 
     public abstract class WithoutResult : EndpointBase
     {
-      public abstract Task HandleAsync(TRequest request, CancellationToken cancellationToken = default(CancellationToken));
+      public abstract Task HandleAsync(TRequest request, CancellationToken cancellationToken = default);
     }
 
     public abstract class WithActionResult<TResponse> : EndpointBase
     {
       public abstract Task<ActionResult<TResponse>> HandleAsync(
         TRequest request,
-        CancellationToken cancellationToken = default(CancellationToken));
+        CancellationToken cancellationToken = default);
     }
 
     public abstract class WithActionResult : EndpointBase
     {
       public abstract Task<ActionResult> HandleAsync(
         TRequest request,
-        CancellationToken cancellationToken = default(CancellationToken));
+        CancellationToken cancellationToken = default);
     }
 
     public abstract class WithAsyncEnumerableResult<T> : EndpointBase
     {
       public abstract IAsyncEnumerable<T> HandleAsync(
         TRequest request,
-        CancellationToken cancellationToken = default(CancellationToken));
+        CancellationToken cancellationToken = default);
     }
   }
 
@@ -44,28 +44,28 @@ public static class EndpointAsync
   {
     public abstract class WithResult<TResponse> : EndpointBase
     {
-      public abstract Task<TResponse> HandleAsync(CancellationToken cancellationToken = default(CancellationToken));
+      public abstract Task<TResponse> HandleAsync(CancellationToken cancellationToken = default);
     }
 
     public abstract class WithoutResult : EndpointBase
     {
-      public abstract Task HandleAsync(CancellationToken cancellationToken = default(CancellationToken));
+      public abstract Task HandleAsync(CancellationToken cancellationToken = default);
     }
 
     public abstract class WithActionResult<TResponse> : EndpointBase
     {
       public abstract Task<ActionResult<TResponse>> HandleAsync(
-        CancellationToken cancellationToken = default(CancellationToken));
+        CancellationToken cancellationToken = default);
     }
 
     public abstract class WithActionResult : EndpointBase
     {
-      public abstract Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default(CancellationToken));
+      public abstract Task<ActionResult> HandleAsync(CancellationToken cancellationToken = default);
     }
 
     public abstract class WithAsyncEnumerableResult<T> : EndpointBase
     {
-      public abstract IAsyncEnumerable<T> HandleAsync(CancellationToken cancellationToken = default(CancellationToken));
+      public abstract IAsyncEnumerable<T> HandleAsync(CancellationToken cancellationToken = default);
     }
   }
 }

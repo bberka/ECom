@@ -1,6 +1,4 @@
-﻿using ECom.Service.PublicApi.Abstract;
-
-namespace ECom.Service.PublicApi.Controllers;
+﻿namespace ECom.Service.PublicApi.Controllers;
 
 [AllowAnonymous]
 public class ProductController : PublicControllerBase

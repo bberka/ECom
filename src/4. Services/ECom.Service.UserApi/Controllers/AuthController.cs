@@ -1,5 +1,4 @@
 ﻿using ECom.Foundation.DTOs.Response;
-using Serilog;
 
 namespace ECom.Service.UserApi.Controllers;
 

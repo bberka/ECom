@@ -2,18 +2,13 @@
 using AspNetCore.Authorization.Extender;
 using ECom.Business.Filters;
 using ECom.Business.Services;
-using ECom.Business.Services.AdminServices;
-using ECom.Business.Services.BaseServices;
-using ECom.Business.Services.UserServices;
 using ECom.Business.Validators;
-using ECom.Database;
 using ECom.Foundation.Models;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 namespace ECom.Business;
 

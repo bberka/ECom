@@ -1,7 +1,4 @@
-﻿using ECom.Business.Attributes;
-using ECom.Foundation.Abstract.Services.Admin;
-using ECom.Foundation.DTOs.Response;
-using ECom.Service.AdminApi.Abstract;
+﻿using ECom.Foundation.DTOs.Response;
 
 namespace ECom.Service.AdminApi.Controllers;
 

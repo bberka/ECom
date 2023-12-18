@@ -1,6 +1,4 @@
-﻿using ECom.Service.UserApi.Abstract;
-
-namespace ECom.Service.UserApi.Controllers;
+﻿namespace ECom.Service.UserApi.Controllers;
 
 public class AddressController : UserControllerBase
 {

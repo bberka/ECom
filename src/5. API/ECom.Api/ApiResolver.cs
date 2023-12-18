@@ -1,20 +1,14 @@
-﻿using System.Reflection;
-using ECom.Foundation.Lib;
+﻿using ECom.Foundation.Lib;
 using ECom.Service.AdminApi;
-using ECom.Service.AdminApi.Abstract;
 using ECom.Service.PublicApi;
-using ECom.Service.PublicApi.Abstract;
 using ECom.Service.UserApi;
-using ECom.Service.UserApi.Abstract;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace ECom.Api;
 
 public static class ApiResolver
 {
-  private readonly static string ApiName = "ECom WebApi";
+  private static readonly string ApiName = "ECom WebApi";
 
   public static void SetupBuilder(WebApplicationBuilder builder) {
     builder.Services
@@ -57,17 +51,17 @@ public static class ApiResolver
     builder.Services.AddSwaggerGen(x => {
       x.SwaggerDoc(AdminServiceResolver.DocName, new OpenApiInfo {
         Title = AdminServiceResolver.DocTitle,
-        Version = "v1",
+        Version = "v1"
       });
 
       x.SwaggerDoc(PublicServiceResolver.DocName, new OpenApiInfo {
         Title = PublicServiceResolver.DocTitle,
-        Version = "v1",
+        Version = "v1"
       });
 
       x.SwaggerDoc(UserServiceResolver.DocName, new OpenApiInfo {
         Title = UserServiceResolver.DocTitle,
-        Version = "v1",
+        Version = "v1"
       });
 
       x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
