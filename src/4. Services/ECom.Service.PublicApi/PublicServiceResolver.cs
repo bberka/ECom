@@ -6,9 +6,7 @@ namespace ECom.Service.PublicApi;
 public static class PublicServiceResolver
 {
   public const string DocName = "PublicApi";
-  public const string DocTitle = "Public Endpoints";
-
-  public const string DocUrl = "/doc/public";
+  public const string DocTitle = "Public API";
 
   public static void SetupBuilder(WebApplicationBuilder builder) {
     builder.Services.AddScoped<ILogService, LogService>();

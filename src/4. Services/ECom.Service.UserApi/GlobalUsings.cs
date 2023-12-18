@@ -1,5 +1,4 @@
-﻿global using Ardalis.ApiEndpoints;
-global using EasMe.Extensions;
+﻿global using EasMe.Extensions;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
@@ -16,7 +15,6 @@ global using ECom.Foundation.Constants;
 global using ECom.Foundation.DTOs.Request;
 global using ECom.Foundation.Enum;
 global using ECom.Foundation.Extensions;
-global using NSwag.Annotations;
 global using ECom.Service.UserApi.Abstract;
 global using ECom.Business.Attributes;
 global using ECom.Service.UserApi.Abstract;

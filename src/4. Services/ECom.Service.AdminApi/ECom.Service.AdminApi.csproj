@@ -12,11 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.ApiEndpoints" Version="4.1.0"/>
-    <PackageReference Include="NSwag.Annotations" Version="13.20.0"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\1. Foundation\ECom.Foundation\ECom.Foundation.csproj"/>
     <ProjectReference Include="..\..\3. Business\ECom.Business\ECom.Business.csproj"/>
   </ItemGroup>

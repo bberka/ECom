@@ -5,8 +5,7 @@ namespace ECom.Service.UserApi;
 public static class UserServiceResolver
 {
   public const string DocName = "UserApi";
-  public const string DocTitle = "User Endpoints";
-  public const string DocUrl = "/doc/user";
+  public const string DocTitle = "User API";
 
   public static void SetupBuilder(WebApplicationBuilder builder) {
     builder.Services.AddScoped<IUserJwtAuthenticator, UserJwtAuthenticator>();

@@ -6,7 +6,7 @@ public class PasswordController : UserControllerBase
   public IUserAccountService UserAccountService { get; set; }
 
   [AuthorizeUserOnly]
-  [Endpoint("/user/account/change-password", HttpMethodType.POST)]
+  [Endpoint("/user/password/change", HttpMethodType.POST)]
   public Result Change(Request_Password_Change requestPassword) {
     var authId = HttpContext.GetAuthId();
     var res = UserAccountService.ChangePassword(authId, requestPassword);

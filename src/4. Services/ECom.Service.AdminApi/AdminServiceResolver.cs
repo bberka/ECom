@@ -6,9 +6,7 @@ namespace ECom.Service.AdminApi;
 public static class AdminServiceResolver
 {
   public const string DocName = "AdminApi";
-  public const string DocTitle = "Admin Endpoints";
-
-  public const string DocUrl = "/doc/admin";
+  public const string DocTitle = "Admin API";
 
   public static void SetupBuilder(WebApplicationBuilder builder) {
     builder.Services.AddScoped<IAdminAccountService, AdminAccountService>();
