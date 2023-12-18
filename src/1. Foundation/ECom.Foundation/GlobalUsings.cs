@@ -1,0 +1,12 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System.Linq;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using Newtonsoft.Json;
+global using System.Runtime.Serialization;
+global using EasMe.Extensions;
+global using System.Linq.Expressions;
+global using Microsoft.EntityFrameworkCore;
+global using ECom.Foundation.Abstract;
+global using ECom.Foundation.Constants;

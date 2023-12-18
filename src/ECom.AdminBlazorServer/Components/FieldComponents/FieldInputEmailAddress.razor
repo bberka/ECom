@@ -1,8 +1,0 @@
-﻿@inherits BaseValueChangedComponent<string>
-<div class="mb-2">
-  <RadzenFormField class="my-2 w-100" Component="EmailAddress" Text="@Loc["email_address"]" Variant="Variant.Filled">
-    <RadzenTextBox @bind-Value="Value" Name="EmailAddress"></RadzenTextBox>
-  </RadzenFormField>
-  <RadzenRequiredValidator Component="EmailAddress" Text="@Loc["required"].Format("name", Loc["email_address"])"></RadzenRequiredValidator>
-  <RadzenEmailValidator Component="EmailAddress" Text="@Loc["invalid"].Format("name", Loc["email_address"])"></RadzenEmailValidator>
-</div>
