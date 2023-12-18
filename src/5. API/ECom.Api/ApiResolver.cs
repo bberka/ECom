@@ -26,17 +26,13 @@ public static class ApiResolver
 
 
   public static void SetupApplication(WebApplication app) {
-    var enableSwagger = ConfigLib.GetString("EnableSwagger");
-    if (enableSwagger == "true") {
+    if (EComAppSettings.This.EnableSwagger || app.Environment.IsDevelopment()) {
       app.UseSwagger(settings => { settings.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
       app.UseSwaggerUI(x => {
         x.SwaggerEndpoint($"/swagger/{AdminServiceResolver.DocName}/swagger.json", AdminServiceResolver.DocTitle);
         x.SwaggerEndpoint($"/swagger/{UserServiceResolver.DocName}/swagger.json", UserServiceResolver.DocTitle);
         x.SwaggerEndpoint($"/swagger/{PublicServiceResolver.DocName}/swagger.json", PublicServiceResolver.DocTitle);
-
-
         x.RoutePrefix = "swagger";
-        x.DefaultModelsExpandDepth(-1);
       });
     }
 

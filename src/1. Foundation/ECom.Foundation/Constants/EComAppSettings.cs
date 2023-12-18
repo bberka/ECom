@@ -20,6 +20,7 @@ public sealed class EComAppSettings
     ImageResourceDirectory = ConfigLib.GetString("ImageResourceDirectory") ?? throw new NullException(nameof(ImageResourceDirectory));
     SessionCookieName = ConfigLib.GetString("SessionCookieName") ?? throw new NullException(nameof(SessionCookieName));
     DatabaseConnectionString = ConfigLib.GetString("DatabaseConnectionString") ?? throw new NullException(nameof(DatabaseConnectionString));
+    EnableSwagger = ConfigLib.Get<bool>("EnableSwagger") ;
   }
 
   public static EComAppSettings This {
@@ -41,4 +42,5 @@ public sealed class EComAppSettings
   public string ImageResourceDirectory { get; }
   public string SessionCookieName { get; }
   public string DatabaseConnectionString { get; }
+  public bool EnableSwagger { get; }
 }

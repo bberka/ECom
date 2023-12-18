@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace ECom.Infrastructure.Migrations
+namespace ECom.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class mg1 : Migration
+    public partial class miginit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,9 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "ECOption");
+
+            migrationBuilder.EnsureSchema(
+                name: "ECEnum");
 
             migrationBuilder.CreateTable(
                 name: "Announcements",
@@ -133,7 +136,7 @@ namespace ECom.Infrastructure.Migrations
                     RequireNumberInPassword = table.Column<bool>(type: "bit", nullable: false),
                     EmailVerificationTimeoutMinutes = table.Column<int>(type: "int", nullable: false),
                     PasswordResetTimeoutMinutes = table.Column<int>(type: "int", nullable: false),
-                    DefaultCurrency = table.Column<int>(type: "int", nullable: false),
+                    DefaultCurrencyType = table.Column<int>(type: "int", nullable: false),
                     ShowStock = table.Column<bool>(type: "bit", nullable: false),
                     ShowCurrencyConversionRate = table.Column<bool>(type: "bit", nullable: false),
                     PagingProductCount = table.Column<byte>(type: "tinyint", nullable: false),
@@ -191,7 +194,7 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ProductAttributeTypes",
-                schema: "ECPrivate",
+                schema: "ECEnum",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -492,11 +495,11 @@ namespace ECom.Infrastructure.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Permission = table.Column<int>(type: "int", nullable: false)
+                    PermissionType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionRoles", x => new { x.RoleId, x.Permission });
+                    table.PrimaryKey("PK_PermissionRoles", x => new { x.RoleId, x.PermissionType });
                     table.ForeignKey(
                         name: "FK_PermissionRoles_Roles_RoleId",
                         column: x => x.RoleId,
@@ -562,6 +565,33 @@ namespace ECom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmailQueue",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
+                    RetryCount = table.Column<int>(type: "int", nullable: false),
+                    NextRetryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastRetryDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailQueue", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmailQueue_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "ECPrivate",
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmailVerifyTokens",
                 schema: "ECPrivate",
                 columns: table => new
@@ -624,7 +654,8 @@ namespace ECom.Infrastructure.Migrations
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SessionCreateType = table.Column<byte>(type: "tinyint", nullable: false),
-                    RefreshToken = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
+                    RefreshToken = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    OldSessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -839,7 +870,7 @@ namespace ECom.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_ProductDetailAttributes_ProductAttributeTypes_ProductAttributeTypeId",
                         column: x => x.ProductAttributeTypeId,
-                        principalSchema: "ECPrivate",
+                        principalSchema: "ECEnum",
                         principalTable: "ProductAttributeTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -956,9 +987,8 @@ namespace ECom.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Level = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)1),
-                    OperationName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     ErrorCode = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Params = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequestData = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdminId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     HttpStatusCode = table.Column<int>(type: "int", nullable: false),
                     RemoteIpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
@@ -966,7 +996,8 @@ namespace ECom.Infrastructure.Migrations
                     CFConnecting_IpAddress = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     UserAgent = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     RequestUrl = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    QueryString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
+                    QueryString = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    ActionType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -991,7 +1022,8 @@ namespace ECom.Infrastructure.Migrations
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    SessionCreateType = table.Column<byte>(type: "tinyint", nullable: false)
+                    SessionCreateType = table.Column<byte>(type: "tinyint", nullable: false),
+                    OldSessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1041,11 +1073,11 @@ namespace ECom.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 schema: "ECOption",
                 table: "Options",
-                columns: new[] { "Key", "DefaultCurrency", "EmailVerificationTimeoutMinutes", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "ShowCurrencyConversionRate", "ShowStock", "UpdateDate" },
+                columns: new[] { "Key", "DefaultCurrencyType", "EmailVerificationTimeoutMinutes", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "ShowCurrencyConversionRate", "ShowStock", "UpdateDate" },
                 values: new object[] { true, 0, 30, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, false, false, null });
 
             migrationBuilder.InsertData(
-                schema: "ECPrivate",
+                schema: "ECEnum",
                 table: "ProductAttributeTypes",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -1087,7 +1119,7 @@ namespace ECom.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 schema: "ECOperation",
                 table: "PermissionRoles",
-                columns: new[] { "Permission", "RoleId" },
+                columns: new[] { "PermissionType", "RoleId" },
                 values: new object[,]
                 {
                     { 0, "owner" },
@@ -1197,6 +1229,12 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate",
                 table: "DiscountNotifies",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailQueue_UserId",
+                schema: "ECPrivate",
+                table: "EmailQueue",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailVerifyTokens_Token",
@@ -1382,6 +1420,10 @@ namespace ECom.Infrastructure.Migrations
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(
+                name: "EmailQueue",
+                schema: "ECPrivate");
+
+            migrationBuilder.DropTable(
                 name: "EmailVerifyTokens",
                 schema: "ECPrivate");
 
@@ -1471,7 +1513,7 @@ namespace ECom.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductAttributeTypes",
-                schema: "ECPrivate");
+                schema: "ECEnum");
 
             migrationBuilder.DropTable(
                 name: "Products",
