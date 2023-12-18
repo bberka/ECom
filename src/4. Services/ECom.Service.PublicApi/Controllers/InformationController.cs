@@ -6,14 +6,14 @@ public class InformationController : PublicControllerBase
 {
   [Endpoint("/health", HttpMethodType.GET)]
   public IActionResult Health() {
-    return Ok();
+    return Ok("200!");
   }
 
   [Endpoint("/db-health", HttpMethodType.GET)]
   public IActionResult DatabaseHealth([FromServices] EComDbContext dbContext) {
     var isDbConnected = dbContext.Database.CanConnect();
     return isDbConnected
-             ? Ok()
+             ? Ok("200!")
              : StatusCode(500);
   }
 
