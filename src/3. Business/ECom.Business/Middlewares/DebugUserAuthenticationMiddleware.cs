@@ -1,4 +1,4 @@
-﻿namespace ECom.Api.Middlewares;
+﻿namespace ECom.Business.Middlewares;
 
 public class DebugUserAuthenticationMiddleware
 {

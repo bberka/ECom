@@ -96,6 +96,7 @@ public static class ConstantContainer
   public static readonly List<SmtpHostType> SmtpHostTypes = System.Enum.GetValues<SmtpHostType>().ToList();
   public static readonly List<PaymentType> PaymentTypes = System.Enum.GetValues<PaymentType>().ToList();
   public static readonly List<string> LanguageNames = System.Enum.GetValues<LanguageType>().Select(x => x.ToString()).ToList();
+  public static readonly List<LanguageType> Languages = System.Enum.GetValues<LanguageType>().ToList();
 
   public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ??
                                           throw new ArgumentNullException(nameof(AssemblyName.Version));

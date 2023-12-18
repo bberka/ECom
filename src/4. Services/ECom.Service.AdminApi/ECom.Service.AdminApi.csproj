@@ -12,15 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AddressEndpoints\"/>
-    <Folder Include="CartEndpoints\"/>
-    <Folder Include="CategoryEndpoints\"/>
-    <Folder Include="ManagerEndpoints\"/>
-    <Folder Include="ProductEndpoints\"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Ardalis.ApiEndpoints" Version="4.1.0"/>
+    <PackageReference Include="NSwag.Annotations" Version="13.20.0"/>
   </ItemGroup>
 
   <ItemGroup>

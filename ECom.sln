@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.UserApi", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Service.PublicApi", "src\4. Services\ECom.Service.PublicApi\ECom.Service.PublicApi.csproj", "{F22FB630-060D-418A-B912-F4D622FF05F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Api", "src\5. API\ECom.Api\ECom.Api.csproj", "{1529774B-6716-48A0-9974-028310D1DD6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{F22FB630-060D-418A-B912-F4D622FF05F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F22FB630-060D-418A-B912-F4D622FF05F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F22FB630-060D-418A-B912-F4D622FF05F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1529774B-6716-48A0-9974-028310D1DD6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1529774B-6716-48A0-9974-028310D1DD6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1529774B-6716-48A0-9974-028310D1DD6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1529774B-6716-48A0-9974-028310D1DD6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{845721B0-2A60-4A7F-BFE6-61D78AF6ADD5} = {AA68A3E1-C201-400B-AFE3-F30294430A4B}
 		{418DBB98-F8E8-4BCD-A045-8B3E2719B5FC} = {AA68A3E1-C201-400B-AFE3-F30294430A4B}
 		{F22FB630-060D-418A-B912-F4D622FF05F5} = {AA68A3E1-C201-400B-AFE3-F30294430A4B}
+		{1529774B-6716-48A0-9974-028310D1DD6B} = {607BC0F7-EDEA-4A90-8A2A-7E3FEF0AB756}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5CF92F4B-C824-4F8F-B0D5-433075F64207}
