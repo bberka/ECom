@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECom.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class miginit : Migration
+    public partial class mg1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,6 +74,20 @@ namespace ECom.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contents",
+                schema: "ECPrivate",
+                columns: table => new
+                {
+                    Key = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Culture = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contents", x => new { x.Key, x.Culture });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DiscountCoupons",
                 schema: "ECPrivate",
                 columns: table => new
@@ -106,20 +120,6 @@ namespace ECom.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ManagedLocalization",
-                schema: "ECPrivate",
-                columns: table => new
-                {
-                    Key = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Culture = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ManagedLocalization", x => new { x.Key, x.Culture });
                 });
 
             migrationBuilder.CreateTable(
@@ -1067,13 +1067,13 @@ namespace ECom.Database.Migrations
             migrationBuilder.InsertData(
                 schema: "ECOption",
                 table: "CompanyInformation",
-                columns: new[] { "Key", "AdminPanelUrl", "CompanyAddress", "CompanyName", "ContactEmail", "Description", "FacebookLink", "FavIcoImageId", "InstagramLink", "LogoImageId", "PhoneNumber", "WebUiUrl", "WhatsApp", "YoutubeLink" },
+                columns: new[] { "Id", "AdminPanelUrl", "CompanyAddress", "CompanyName", "ContactEmail", "Description", "FacebookLink", "FavIcoImageId", "InstagramLink", "LogoImageId", "PhoneNumber", "WebUiUrl", "WhatsApp", "YoutubeLink" },
                 values: new object[] { true, "https://panel.shop.zdk.network", "Worldwide", "ZDK Network", "contact@zdk.network", "Company Description", null, null, null, null, null, "https://shop.zdk.network", null, null });
 
             migrationBuilder.InsertData(
                 schema: "ECOption",
                 table: "Options",
-                columns: new[] { "Key", "DefaultCurrencyType", "EmailVerificationTimeoutMinutes", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "ShowCurrencyConversionRate", "ShowStock", "UpdateDate" },
+                columns: new[] { "Id", "DefaultCurrencyType", "EmailVerificationTimeoutMinutes", "IsOpen", "PagingProductCount", "PasswordResetTimeoutMinutes", "ProductCommentImageLimit", "ProductImageLimit", "RequireLowerCaseInPassword", "RequireNumberInPassword", "RequireSpecialCharacterInPassword", "RequireUpperCaseInPassword", "ShowCurrencyConversionRate", "ShowStock", "UpdateDate" },
                 values: new object[] { true, 0, 30, true, (byte)20, 30, (byte)5, (byte)10, false, false, false, false, false, false, null });
 
             migrationBuilder.InsertData(
@@ -1416,6 +1416,10 @@ namespace ECom.Database.Migrations
                 schema: "ECOption");
 
             migrationBuilder.DropTable(
+                name: "Contents",
+                schema: "ECPrivate");
+
+            migrationBuilder.DropTable(
                 name: "DiscountNotifies",
                 schema: "ECPrivate");
 
@@ -1429,10 +1433,6 @@ namespace ECom.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "FavoriteProducts",
-                schema: "ECPrivate");
-
-            migrationBuilder.DropTable(
-                name: "ManagedLocalization",
                 schema: "ECPrivate");
 
             migrationBuilder.DropTable(

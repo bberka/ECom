@@ -3,7 +3,7 @@
 // [Table("SupportedLanguages", Schema = "ECEnum")]
 // public sealed class SupportedLanguage : IEntity
 // {
-//   [Key]
+//   [Id]
 //   public int Id { get; set; }
 //
 //   [MaxLength(ConstantContainer.MaxCultureLength)]

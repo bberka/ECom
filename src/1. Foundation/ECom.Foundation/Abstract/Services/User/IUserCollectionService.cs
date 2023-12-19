@@ -14,7 +14,7 @@ public interface IUserCollectionService
     Guid userId,
     Guid collectionId,
     ushort page,
-    LanguageType culture = ConstantContainer.DefaultLanguage);
+    Language culture = ConstantContainer.DefaultLanguage);
 
   Result UpdateCollection(Guid authId, Request_Collection_Update request);
 }

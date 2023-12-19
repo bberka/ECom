@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECom.Database.Migrations
 {
     [DbContext(typeof(EComDbContext))]
-    [Migration("20231218233847_mig-init")]
-    partial class miginit
+    [Migration("20231219005738_mg-1")]
+    partial class mg1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -555,6 +555,23 @@ namespace ECom.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ECom.Foundation.Entities.Content", b =>
+                {
+                    b.Property<Guid>("Key")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Culture")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Key", "Culture");
+
+                    b.ToTable("Contents", "ECPrivate");
+                });
+
             modelBuilder.Entity("ECom.Foundation.Entities.DiscountCoupon", b =>
                 {
                     b.Property<Guid>("Id")
@@ -736,23 +753,6 @@ namespace ECom.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images", "ECPrivate");
-                });
-
-            modelBuilder.Entity("ECom.Foundation.Entities.ManagedLocalization", b =>
-                {
-                    b.Property<Guid>("Key")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Culture")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Key", "Culture");
-
-                    b.ToTable("ManagedLocalization", "ECPrivate");
                 });
 
             modelBuilder.Entity("ECom.Foundation.Entities.Option", b =>

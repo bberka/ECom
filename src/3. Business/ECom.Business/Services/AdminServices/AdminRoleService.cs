@@ -39,8 +39,15 @@ public class AdminRoleService : IAdminRoleService
 
   public bool HasPermission(Guid adminId, AdminPermissionType permissionId) {
     var hasPermission = _unitOfWork.Admins
+                                   .Include(x => x.Role)
+                                   .ThenInclude(x => x.PermissionRoles)
                                    .Any(x => x.Id == adminId && x.Role.PermissionRoles.Any(y => y.PermissionType == permissionId));
     return hasPermission;
+  }
+
+  public void EnsurePermission(Guid adminId, AdminPermissionType permissionTypeId) {
+    var hasPermission = HasPermission(adminId, permissionTypeId);
+    if (!hasPermission) throw new NotAuthorizedException(AuthType.Admin);
   }
 
   public Result UpdatePermissions(Guid requesterAdminId, string roleId, List<AdminPermissionType> newPermissions) {

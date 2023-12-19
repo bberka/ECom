@@ -99,7 +99,7 @@ public class ProductService : IProductService
   //    return DefResult.ProductCommentImage.AddSuccessResult(commentId);
   //}
 
-  public List<Product> GetProducts(ushort page, LanguageType culture = ConstantContainer.DefaultLanguage) {
+  public List<Product> GetProducts(ushort page, Language culture = ConstantContainer.DefaultLanguage) {
     if (page == 0) return new List<Product>();
     var lastIdx = Option.PagingProductCount * (page - 1);
     return _unitOfWork.Products
@@ -113,7 +113,7 @@ public class ProductService : IProductService
                       .ToList();
   }
 
-  public List<Product> GetProducts(List<Guid> productIds, ushort page, LanguageType culture = ConstantContainer.DefaultLanguage) {
+  public List<Product> GetProducts(List<Guid> productIds, ushort page, Language culture = ConstantContainer.DefaultLanguage) {
     return _unitOfWork.Products
                       .Where(x => !x.DeleteDate.HasValue && productIds.Contains(x.Id))
                       .OrderByDescending(x => x.RegisterDate)

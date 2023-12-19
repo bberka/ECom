@@ -5,7 +5,7 @@ namespace ECom.Foundation.Constants;
 
 public static class ConstantContainer
 {
-  public const LanguageType DefaultLanguage = LanguageType.en;
+  public const Language DefaultLanguage = Language.English;
   public const CurrencyType DefaultCurrency = CurrencyType.Lira;
 
   public const string Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -89,14 +89,18 @@ public static class ConstantContainer
   public const bool SingletonDbTableKey = true;
   public const int MaxEmailContentLength = int.MaxValue;
   public const int MaxEmailTitleLength = 64;
+  public const int MaxAnnouncementMessageLength = 128;
+  public const int MinAnnouncementMessageLength = 6;
+
+  public const int AnnouncementDefaultExpireMinutes = 24 * 60;
   public static readonly DateTime DefaultDateTime = new(1900, 1, 1);
 
   public static readonly List<AdminPermissionType> AdminPermissionTypes = System.Enum.GetValues<AdminPermissionType>().ToList();
   public static readonly List<CurrencyType> CurrencyTypes = System.Enum.GetValues<CurrencyType>().ToList();
   public static readonly List<SmtpHostType> SmtpHostTypes = System.Enum.GetValues<SmtpHostType>().ToList();
   public static readonly List<PaymentType> PaymentTypes = System.Enum.GetValues<PaymentType>().ToList();
-  public static readonly List<string> LanguageNames = System.Enum.GetValues<LanguageType>().Select(x => x.ToString()).ToList();
-  public static readonly List<LanguageType> Languages = System.Enum.GetValues<LanguageType>().ToList();
+  public static readonly List<string> LanguageNames = System.Enum.GetValues<Language>().Select(x => x.ToString()).ToList();
+  public static readonly List<Language> Languages = System.Enum.GetValues<Language>().ToList();
 
   public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ??
                                           throw new ArgumentNullException(nameof(AssemblyName.Version));

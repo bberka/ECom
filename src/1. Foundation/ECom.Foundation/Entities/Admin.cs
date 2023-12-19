@@ -48,7 +48,7 @@ public class Admin : IEntity
   public Role Role { get; set; } = null!;
   public virtual List<AdminLog> AdminLogs { get; set; }
 
-  public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
 
   [MinLength(ConstantContainer.MinPhoneLength)]
   [MaxLength(ConstantContainer.MaxPhoneLength)]

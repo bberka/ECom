@@ -41,7 +41,7 @@ public class UnitOfWork : UnitOfWorkBase<EComDbContext>,
   public virtual DbSet<StockChange> StockChanges => DbContext.Set<StockChange>();
   public virtual DbSet<Supplier> Suppliers => DbContext.Set<Supplier>();
   public virtual DbSet<User> Users => DbContext.Set<User>();
-  public virtual DbSet<ManagedLocalization> ManagedLocalizations => DbContext.Set<ManagedLocalization>();
+  public virtual DbSet<Content> Contents => DbContext.Set<Content>();
   public virtual DbSet<AdminSession> AdminSessions => DbContext.Set<AdminSession>();
   public virtual DbSet<UserSession> UserSessions => DbContext.Set<UserSession>();
   public virtual DbSet<EmailQueue> EmailQueue => DbContext.Set<EmailQueue>();

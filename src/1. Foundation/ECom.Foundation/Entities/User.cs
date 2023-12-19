@@ -63,7 +63,7 @@ public class User : IEntity
 
   public TwoFactorType TwoFactorType { get; set; }
 
-  public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
 
 
   //Virtual

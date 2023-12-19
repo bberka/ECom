@@ -13,5 +13,5 @@ public interface IAdminCollectionService
   public Result<List<CollectionProduct>> GetCollectionProducts(
     Guid collectionId,
     ushort page,
-    LanguageType language = ConstantContainer.DefaultLanguage);
+    Language language = ConstantContainer.DefaultLanguage);
 }

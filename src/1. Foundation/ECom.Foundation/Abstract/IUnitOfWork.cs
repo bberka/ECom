@@ -38,7 +38,7 @@ public interface IUnitOfWork : IUnitOfWorkBase
   DbSet<StockChange> StockChanges { get; }
   DbSet<Supplier> Suppliers { get; }
   DbSet<User> Users { get; }
-  DbSet<ManagedLocalization> ManagedLocalizations { get; }
+  DbSet<Content> Contents { get; }
   DbSet<AdminSession> AdminSessions { get; }
   DbSet<UserSession> UserSessions { get; }
   DbSet<EmailQueue> EmailQueue { get; }

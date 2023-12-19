@@ -6,7 +6,7 @@ public class ProductDetail : IEntity
   [Key]
   public Guid Id { get; set; }
 
-  public Guid NameLanguageKey { get; set; }
-  public Guid ShortDescriptionLanguageKey { get; set; }
-  public Guid DescriptionMarkdownLanguageKey { get; set; }
+  public Guid NameContentId { get; set; }
+  public Guid ShortDescriptionContentId { get; set; }
+  public Guid DescriptionMarkdownContentId { get; set; }
 }

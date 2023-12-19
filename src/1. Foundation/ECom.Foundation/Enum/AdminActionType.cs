@@ -4,5 +4,9 @@ public enum AdminActionType
 {
   None,
   Login,
-  ChangePassword
+  ChangePassword,
+  UpdateMyAccount,
+  GetAccountInformation,
+  AddAnnouncement,
+  UpdateAnnouncement
 }

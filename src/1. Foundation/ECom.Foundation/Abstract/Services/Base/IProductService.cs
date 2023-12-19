@@ -20,7 +20,7 @@ public interface IProductService
   ///   <see cref="ProductImage" />, <see cref="ProductDetail" />
   ///   without including <see cref="ProductComment" /> or related data
   /// </returns>
-  List<Product> GetProducts(List<Guid> productIds, ushort page, LanguageType culture = ConstantContainer.DefaultLanguage);
+  List<Product> GetProducts(List<Guid> productIds, ushort page, Language culture = ConstantContainer.DefaultLanguage);
 
   /// <summary>
   /// </summary>
@@ -32,7 +32,7 @@ public interface IProductService
   ///   <see cref="ProductImage" />, <see cref="ProductDetail" />
   ///   without including <see cref="ProductComment" /> or related data
   /// </returns>
-  List<Product> GetProducts(ushort page, LanguageType culture = ConstantContainer.DefaultLanguage);
+  List<Product> GetProducts(ushort page, Language culture = ConstantContainer.DefaultLanguage);
 
   /// <summary>
   /// </summary>
@@ -60,8 +60,8 @@ public interface IProductService
 
   //CustomResult<int> AddCommentImage(IFormFile file, Guid UserId,int commentId);
   //ListProducts<ProductDetail>? GetProductDetails(long productNo);
-  //ProductDetail? GetProductDetails(long productNo, LanguageType type = LanguageType.Default);
-  //ProductDetail GetProductDetailsSingle(long productNo, LanguageType type = LanguageType.Default);
+  //ProductDetail? GetProductDetails(long productNo, Language type = Language.Default);
+  //ProductDetail GetProductDetailsSingle(long productNo, Language type = Language.Default);
   //Product? GetProductSingle(long productNo);
   //ProductVariant? GetVariant(int id);
   //ListProducts<Product> GetVariantProducts(int variantId);

@@ -51,7 +51,7 @@ public class CollectionService : ICollectionService
 
 
   public Result<List<CollectionProduct>> GetCollectionProducts(Guid userId, Guid id, ushort page,
-                                                               LanguageType culture = ConstantContainer.DefaultLanguage) {
+                                                               Language culture = ConstantContainer.DefaultLanguage) {
     var collectionResult = GetCollection(userId, id);
     if (!collectionResult.Status) return collectionResult.ToResult();
     return _unitOfWork.CollectionProducts.Where(x => x.CollectionId == id)

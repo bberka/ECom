@@ -17,18 +17,18 @@ public interface IAdminManageService
   ///   Resets password by other admin request and returns randomly generated password
   /// </summary>
   /// <param name="requesterAdminId"></param>
-  /// <param name="adminId"></param>
+  /// <param name="id"></param>
   /// <returns></returns>
-  Result<string> ResetPassword(Guid requesterAdminId, Guid adminId);
+  Result<string> ResetPassword(Guid requesterAdminId, Guid id);
 
 
   /// <summary>
   ///   Adds new admin account to admin panel access
   /// </summary>
   /// <param name="requesterAdminId"></param>
-  /// <param name="requestAdmin"></param>
+  /// <param name="request"></param>
   /// <returns></returns>
-  Result AddAdmin(Guid requesterAdminId, Request_Admin_Add requestAdmin);
+  Result AddAdmin(Guid requesterAdminId, Request_Admin_Add request);
 
   /// <summary>
   ///   Updates an admin account for panel access
@@ -36,7 +36,7 @@ public interface IAdminManageService
   /// <param name="requesterAdminId"></param>
   /// <param name="request"></param>
   /// <returns></returns>
-  Result UpdateAdmin(Guid requesterAdminId, Request_Admin_UpdateAccount request);
+  Result UpdateAnotherAdmin(Guid requesterAdminId, Request_Admin_Update request);
 
   /// <summary>
   ///   Soft deletes an admin account by doing so disables the panel access however this wont have affect till admin
@@ -44,9 +44,9 @@ public interface IAdminManageService
   ///   Account can be recovered later
   /// </summary>
   /// <param name="requesterAdminId"></param>
-  /// <param name="userId"></param>
+  /// <param name="id"></param>
   /// <returns></returns>
-  Result DeleteAdmin(Guid requesterAdminId, Guid userId);
+  Result DeleteAdmin(Guid requesterAdminId, Guid id);
 
   /// <summary>
   ///   Recovers a deleted admin account by doing so enables the panel access

@@ -24,7 +24,7 @@ public enum AdminPermissionType
   ManageAnnouncements,
   ManageCompanyInformation,
   ManageUserAccounts,
-  ManageLocalization,
+  ManageContent,
   ManageCargoOptions,
   ManageLoginSessions,
   ManageRoles,
@@ -32,5 +32,5 @@ public enum AdminPermissionType
   ManageProductQuestions,
   ManageProductComments,
   ManageUserTwoFactorAuthentication,
-  ManageAdminTwoFactorAuthentication
+  ManageAdminTwoFactorAuthentication,
 }

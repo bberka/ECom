@@ -39,6 +39,21 @@ public class AdminAccountService : IAdminAccountService
     return DefResult.OkUpdated("Password");
   }
 
+  public Result UpdateMyAccount(Request_Admin_UpdateAccount admin) {
+    throw new NotImplementedException();
+  }
+
+  public AdminDto GetAccountInformation(Guid authId) {
+    var adminDto = _unitOfWork.Admins
+                              .AsNoTracking()
+                              .Include(x => x.Role)
+                              .ThenInclude(x => x.PermissionRoles)
+                              .Where(x => x.Id == authId)
+                              .Select(x => x.ToDto())
+                              .SingleOrDefault();
+    return adminDto;
+  }
+
 
   // public Result<AdminDto> Login(Request_Login model) {
   //   var admin = _unitOfWork.Admins

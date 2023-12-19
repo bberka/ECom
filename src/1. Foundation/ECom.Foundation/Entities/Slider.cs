@@ -22,7 +22,7 @@ public class Slider : IEntity
 
   public Guid ImageId { get; set; }
 
-  public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
 
 
   //virtual

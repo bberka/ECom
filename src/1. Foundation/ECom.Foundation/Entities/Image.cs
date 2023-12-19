@@ -21,7 +21,7 @@ public class Image : IEntity
   public long Size { get; set; } = 0;
 
 
-  public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
 
 
   [MaxLength(ConstantContainer.MaxContentTypeHeaderLength)]

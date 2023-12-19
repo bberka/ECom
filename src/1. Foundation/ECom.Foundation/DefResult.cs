@@ -59,6 +59,10 @@ public static class DefResult
     return Result.Error("not_implemented", new LocParam("name", name));
   }
 
+  public static Result OkAddedOrUpdated(string name) {
+    return Result.OkParam("ok_added_or_updated", new LocParam("name", name));
+  }
+
   #region OK
 
   public static Result Success(string error, string name = "") {

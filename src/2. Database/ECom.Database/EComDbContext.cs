@@ -60,7 +60,7 @@ public class EComDbContext : DbContext
   public DbSet<AdminSession> AdminSessions { get; set; }
   public DbSet<UserSession> UserSessions { get; set; }
 
-  public DbSet<ManagedLocalization> ManagedLocalizations { get; set; }
+  public DbSet<Content> Contents { get; set; }
 
   public DbSet<EmailQueue> EmailQueue { get; set; }
 

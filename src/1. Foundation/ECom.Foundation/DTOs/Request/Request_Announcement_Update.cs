@@ -5,9 +5,6 @@ public class Request_Announcement_Update
   public Guid Id { get; set; }
   public int Order { get; set; }
 
-  [MaxLength(ConstantContainer.MaxMessageLength)]
-  [MinLength(ConstantContainer.MinMessageLength)]
-  public string Message { get; set; } = null!;
-
+  public List<AnnouncementContentDto> Contents { get; set; }
   public DateTime ExpireDate { get; set; }
 }

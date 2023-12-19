@@ -12,5 +12,5 @@ public class UserDto
   public string LastName { get; set; } = null!;
   public string PhoneNumber { get; set; } = null!;
   public TwoFactorType TwoFactorType { get; set; } = 0;
-  public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
 }

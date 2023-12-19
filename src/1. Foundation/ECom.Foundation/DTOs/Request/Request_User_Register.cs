@@ -10,5 +10,5 @@ public sealed class Request_User_Register
   public string Password { get; set; }
   public string PhoneNumber { get; set; }
   public int? CitizenshipNumber { get; set; }
-  public LanguageType PreferredLanguage { get; set; }
+  public Language PreferredLanguage { get; set; }
 }

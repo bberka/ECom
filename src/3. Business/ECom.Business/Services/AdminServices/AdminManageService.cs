@@ -12,19 +12,27 @@ public class AdminManageService : IAdminManageService
     _roleService = roleService;
   }
 
-  public Result AddAdmin(Guid adminId, Request_Admin_Add requestAdmin) {
-    var roleExist = _roleService.RoleExists(requestAdmin.RoleId);
+  public Result AddAdmin(Guid requesterAdminId, Request_Admin_Add request) {
+    requesterAdminId.EnsureNotNull();
+    request.EnsureNotNull();
+    _roleService.EnsurePermission(requesterAdminId, AdminPermissionType.ManageAdmins);
+    var roleExist = _roleService.RoleExists(request.RoleId);
     if (!roleExist) return DefResult.NotFound("role");
-    var exists = _unitOfWork.Admins.Any(x => x.EmailAddress == requestAdmin.EmailAddress);
+    var exists = _unitOfWork.Admins.Any(x => x.EmailAddress == request.EmailAddress);
     if (exists) return DefResult.AlreadyExists("email_address");
-    var dbAdmin = requestAdmin.FromRequestAddAdmin();
+    var dbAdmin = request.FromRequestAddAdmin();
     _unitOfWork.Admins.Add(dbAdmin);
     var res = _unitOfWork.Save();
     if (!res) return DefResult.DbInternalError(nameof(AddAdmin));
     return DefResult.OkAdded(nameof(Admin));
   }
 
-  public Result UpdateAdmin(Guid requesterAdminId, Request_Admin_UpdateAccount request) {
+  public Result UpdateAnotherAdmin(Guid requesterAdminId, Request_Admin_Update request) {
+    requesterAdminId.EnsureNotNull();
+    request.EnsureNotNull();
+    _roleService.EnsurePermission(requesterAdminId, AdminPermissionType.ManageAdmins);
+    var isSelf = requesterAdminId.Equals(request.Id);
+    if (isSelf) return DefResult.Invalid(nameof(Admin));
     var admin = _unitOfWork.Admins.Find(request.Id);
     if (admin is null) return DefResult.NotFound(nameof(Admin));
     if (admin.DeleteDate.HasValue) return DefResult.Invalid(nameof(Admin));
@@ -49,11 +57,16 @@ public class AdminManageService : IAdminManageService
 
     _unitOfWork.Admins.Update(admin);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateAdmin));
+    if (!res) return DefResult.DbInternalError(nameof(UpdateAnotherAdmin));
     return DefResult.OkUpdated(nameof(Admin));
   }
 
   public Result RecoverAdmin(Guid requesterAdminId, Guid id) {
+    requesterAdminId.EnsureNotNull();
+    id.EnsureNotNull();
+    _roleService.EnsurePermission(requesterAdminId, AdminPermissionType.ManageAdmins);
+    var isSelf = requesterAdminId.Equals(id);
+    if (isSelf) return DefResult.Invalid(nameof(Admin));
     var admin = _unitOfWork.Admins.Find(id);
     if (admin is null) return DefResult.NotFound(nameof(Admin));
     if (!admin.DeleteDate.HasValue) return DefResult.NotDeleted(nameof(Admin));
@@ -65,8 +78,13 @@ public class AdminManageService : IAdminManageService
     return DefResult.OkRecovered(nameof(Admin));
   }
 
-  public Result DeleteAdmin(Guid requesterAdminId, Guid adminId) {
-    var admin = _unitOfWork.Admins.Find(adminId);
+  public Result DeleteAdmin(Guid requesterAdminId, Guid id) {
+    requesterAdminId.EnsureNotNull();
+    id.EnsureNotNull();
+    _roleService.EnsurePermission(requesterAdminId, AdminPermissionType.ManageAdmins);
+    var isSelf = requesterAdminId.Equals(id);
+    if (isSelf) return DefResult.Invalid(nameof(Admin));
+    var admin = _unitOfWork.Admins.Find(id);
     if (admin is null) return DefResult.NotFound(nameof(Admin));
     if (admin.DeleteDate.HasValue) return DefResult.AlreadyDeleted(nameof(Admin));
     admin.DeleteDate = DateTime.Now;
@@ -78,16 +96,23 @@ public class AdminManageService : IAdminManageService
 
 
   public List<AdminDto> GetAdminList(Guid requesterAdminId) {
+    requesterAdminId.EnsureNotNull();
+    _roleService.EnsurePermission(requesterAdminId, AdminPermissionType.ManageAdmins);
     return _unitOfWork.Admins.Where(x => x.Id != requesterAdminId)
                       .Include(x => x.Role)
                       .Select(x => x.ToDto())
                       .ToList();
   }
 
-  public Result<string> ResetPassword(Guid requesterAdminId, Guid adminId) {
-    var isEquals = requesterAdminId.Equals(adminId);
+  public Result<string> ResetPassword(Guid requesterAdminId, Guid id) {
+    requesterAdminId.EnsureNotNull();
+    id.EnsureNotNull();
+    _roleService.EnsurePermission(requesterAdminId, AdminPermissionType.ManageAdmins);
+    var isSelf = requesterAdminId.Equals(id);
+    if (isSelf) return DefResult.Invalid(nameof(Admin));
+    var isEquals = requesterAdminId.Equals(id);
     if (isEquals) return DefResult.Invalid(nameof(Admin));
-    var admin = _unitOfWork.Admins.FirstOrDefault(x => x.Id == adminId && !x.DeleteDate.HasValue);
+    var admin = _unitOfWork.Admins.FirstOrDefault(x => x.Id == id && !x.DeleteDate.HasValue);
     if (admin is null) return DefResult.NotFound(nameof(Admin));
     if (admin.DeleteDate.HasValue) return DefResult.Invalid(nameof(Admin));
     var newPassword = EasGenerate.RandomString(12);
@@ -97,21 +122,5 @@ public class AdminManageService : IAdminManageService
     var result = _unitOfWork.Save();
     if (!result) return DefResult.DbInternalError(nameof(ResetPassword));
     return newPassword;
-  }
-
-  public List<AdminDto> GetAdmins() {
-    return _unitOfWork.Admins.Select(x => x.ToDto()).ToList();
-  }
-
-  public string? GetAdminRoleId(Guid id) {
-    return _unitOfWork.Admins.Where(x => x.Id == id && !x.DeleteDate.HasValue)
-                      .Select(x => x.RoleId)
-                      .FirstOrDefault();
-  }
-
-  public bool IsValidPermission(string permissionId) {
-    //var tryParse = Enum.TryParse(permissionId, out AdminPermission permission);
-    //if (!tryParse) return false;
-    return Enum.IsDefined(typeof(AdminPermissionType), permissionId);
   }
 }

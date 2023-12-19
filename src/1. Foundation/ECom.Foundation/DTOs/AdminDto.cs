@@ -12,7 +12,7 @@ public class AdminDto
   public string[] Permissions { get; set; } = Array.Empty<string>();
   public DateTime? DeleteDate { get; set; }
 
-  public LanguageType Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
 
 
   [MinLength(ConstantContainer.MinNameLength)]
