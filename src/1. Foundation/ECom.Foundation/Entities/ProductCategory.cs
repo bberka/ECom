@@ -4,9 +4,9 @@
 [Table("ProductCategories", Schema = "ECPrivate")]
 public class ProductCategory : IEntity
 {
-  [ForeignKey(nameof(Product))]
+  [ForeignKey("product")]
   public Guid ProductId { get; set; }
 
-  [ForeignKey(nameof(Category))]
+  [ForeignKey("category")]
   public Guid CategoryId { get; set; }
 }

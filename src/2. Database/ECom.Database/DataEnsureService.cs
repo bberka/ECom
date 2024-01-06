@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Constants;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Database;
 
@@ -51,9 +51,9 @@ public class DataEnsureService
 
     void EnsureAdminRoleHasPermissions() {
       var adminRole = _dbContext.Roles.Include(x => x.PermissionRoles)
-                                .FirstOrDefault(x => x.Id == Role.OwnerRoleId);
+                                .FirstOrDefault(x => x.Id == Role.OWNER_ROLE_ID);
       if (adminRole == null) return;
-      var isCountMatch = adminRole.PermissionRoles.Count == ConstantContainer.AdminPermissionTypes.Count;
+      var isCountMatch = adminRole.PermissionRoles.Count == StaticValues.ADMIN_PERMISSION_TYPES.Count;
       if (isCountMatch) return;
       adminRole.PermissionRoles = SeedData.OwnerPermissionRoles;
       _dbContext.Roles.Update(adminRole);

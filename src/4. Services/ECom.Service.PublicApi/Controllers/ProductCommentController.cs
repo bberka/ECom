@@ -1,4 +1,6 @@
-﻿namespace ECom.Service.PublicApi.Controllers;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Service.PublicApi.Controllers;
 
 public class ProductCommentController : PublicControllerBase
 {

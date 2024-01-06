@@ -12,21 +12,22 @@ public class AdminCargoOptionService : IAdminCargoOptionService
 
   public Result DeleteCargoOption(Guid id) {
     var data = _unitOfWork.CargoOptions.Find(id);
-    if (data is null) return DefResult.NotFound(CargoOption.LocKey);
+    if (data is null)
+      return DomResults.x_is_not_found("cargo_option");
     data.DeleteDate = DateTime.Now;
     _unitOfWork.CargoOptions.Update(data);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(DeleteCargoOption));
+    if (!res) return DomResults.db_internal_error(nameof(DeleteCargoOption));
     _cargoOptionService.ClearCache();
-    return DefResult.OkDeleted(CargoOption.LocKey);
+    return DomResults.x_is_deleted_successfully("cargo_option");
   }
 
   public Result UpdateCargoOption(CargoOption option) {
     _unitOfWork.CargoOptions.Update(option);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateCargoOption));
+    if (!res) return DomResults.db_internal_error(nameof(UpdateCargoOption));
     _cargoOptionService.ClearCache();
-    return DefResult.OkUpdated(nameof(UpdateCargoOption));
+    return DomResults.x_is_updated_successfully("cargo_option");
   }
 
   public Result AddCargoOption(CargoOption model) {

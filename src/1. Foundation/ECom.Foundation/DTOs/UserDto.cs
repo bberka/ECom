@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs;
 
@@ -12,5 +12,5 @@ public class UserDto
   public string LastName { get; set; } = null!;
   public string PhoneNumber { get; set; } = null!;
   public TwoFactorType TwoFactorType { get; set; } = 0;
-  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public CultureType Culture { get; set; } = StaticValues.DEFAULT_LANGUAGE;
 }

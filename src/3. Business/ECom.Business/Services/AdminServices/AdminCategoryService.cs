@@ -37,13 +37,13 @@ public class AdminCategoryService : IAdminCategoryService
     }
 
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateCategoryOrdering));
-    return DefResult.OkUpdated(Category.LocKey);
+    if (!res) return DomResults.db_internal_error(nameof(UpdateCategoryOrdering));
+    return DomResults.x_is_updated_successfully("category");
   }
 
   public Result AddCategory(Request_Category_Add model) {
     var exists = _unitOfWork.Categories.Any(x => x.NameKey == model.NameKey);
-    if (exists) return DefResult.AlreadyExists(Category.LocKey);
+    if (exists) return DomResults.x_already_exists("category");
     var category = new Category {
       NameKey = model.NameKey,
       MainCategoryNameKey = model.MainCategoryNameKey,
@@ -55,18 +55,18 @@ public class AdminCategoryService : IAdminCategoryService
     };
     _unitOfWork.Categories.Add(category);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddCategory));
+    if (!res) return DomResults.db_internal_error(nameof(AddCategory));
 
-    return DefResult.OkAdded(Category.LocKey);
+    return DomResults.x_is_added_successfully("category");
   }
 
   public Result DeleteCategory(string key) {
     var category = _unitOfWork.Categories.Find(key);
-    if (category is null) return DefResult.NotFound(nameof(Category));
+    if (category is null) return DomResults.x_is_not_found("category");
     _unitOfWork.Categories.Remove(category);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(DeleteCategory));
-    return DefResult.OkDeleted(nameof(Category));
+    if (!res) return DomResults.db_internal_error(nameof(DeleteCategory));
+    return DomResults.x_is_deleted_successfully("category");
   }
 
   public Result UpdateCategory(Request_Category_Update model) {
@@ -119,13 +119,13 @@ public class AdminCategoryService : IAdminCategoryService
 
   public Result UpdateCategoryOrdering(Request_Category_Update model) {
     var category = _unitOfWork.Categories.FirstOrDefault(x => x.NameKey == model.NameKey);
-    if (category is null) return DefResult.NotFound(nameof(Category));
+    if (category is null) return DomResults.x_is_not_found("category");
     category.NameKey = model.NameKey;
     category.MainCategoryNameKey = model.MainCategoryNameKey;
     _unitOfWork.Categories.Update(category);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateCategoryOrdering));
-    return DefResult.OkUpdated(nameof(Category));
+    if (!res) return DomResults.db_internal_error(nameof(UpdateCategoryOrdering));
+    return DomResults.x_is_updated_successfully("category");
   }
 
   public Result AddCategory(Request_Category_Update model) {
@@ -135,7 +135,7 @@ public class AdminCategoryService : IAdminCategoryService
     };
     _unitOfWork.Categories.Add(category);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddCategory));
-    return DefResult.OkAdded(nameof(Category));
+    if (!res) return DomResults.db_internal_error(nameof(AddCategory));
+    return DomResults.x_is_added_successfully("category");
   }
 }

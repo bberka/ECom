@@ -1,6 +1,6 @@
 ﻿using ECom.Foundation.DTOs;
-using ECom.Foundation.Enum;
 using ECom.Foundation.Exceptions;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Extensions;
 
@@ -39,7 +39,7 @@ public static class AuthExtensions
     if (context.User == null) throw new NotAuthorizedException(AuthType.None);
     if (context.User.Identity == null) throw new NotAuthorizedException(AuthType.None);
     if (context.User.Identity?.IsAuthenticated != true) throw new NotAuthorizedException(AuthType.None);
-    var isUser = context.HasClaim(EComClaimTypes.UserClaimType);
+    var isUser = context.HasClaim(DomClaimTypes.UserClaimType);
     if (!isUser) throw new NotAuthorizedException(AuthType.User);
   }
 
@@ -48,7 +48,7 @@ public static class AuthExtensions
     if (context.User == null) throw new NotAuthorizedException(AuthType.None);
     if (context.User.Identity == null) throw new NotAuthorizedException(AuthType.None);
     if (context.User.Identity?.IsAuthenticated != true) throw new NotAuthorizedException(AuthType.None);
-    var isAdmin = context.HasClaim(EComClaimTypes.AdminClaimType);
+    var isAdmin = context.HasClaim(DomClaimTypes.AdminClaimType);
     if (!isAdmin) throw new NotAuthorizedException(AuthType.Admin);
   }
 

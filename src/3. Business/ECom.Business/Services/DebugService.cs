@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services;
 
 public class DebugService : IDebugService
 {
@@ -10,7 +12,7 @@ public class DebugService : IDebugService
   }
 
   public void CheckAndThrowDebug() {
-    if (!ConstantContainer.IsDevelopment()) throw new Exception("Only available when debugging");
+    if (!StaticValues.IsDevelopment) throw new Exception("Only available when debugging");
   }
 
   public User GetUser() {

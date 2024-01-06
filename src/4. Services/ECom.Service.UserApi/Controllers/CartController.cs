@@ -1,4 +1,6 @@
-﻿namespace ECom.Service.UserApi.Controllers;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Service.UserApi.Controllers;
 
 [AllowAnonymous]
 public class CartController : UserControllerBase
@@ -16,7 +18,7 @@ public class CartController : UserControllerBase
     }
 
     HttpContext.AddOrIncreaseInCart(id);
-    return DefResult.OkAdded(nameof(Cart));
+    return DomResults.x_is_added_successfully("cart");
   }
 
   [Endpoint("/user/cart/clear", HttpMethodType.POST)]
@@ -29,7 +31,7 @@ public class CartController : UserControllerBase
     }
 
     HttpContext.ClearCart();
-    return DefResult.OkCleared(nameof(Cart));
+    return DomResults.x_is_cleared_successfully("cart");
   }
 
   [Endpoint("/user/cart/list-products", HttpMethodType.GET)]
@@ -39,7 +41,7 @@ public class CartController : UserControllerBase
     var userId = HttpContext.GetAuthId();
     var list = CartService.ListBasketProducts(userId);
     LogService.UserLog(UserActionType.ListCartProducts, list, userId);
-    return list.Data;
+    return list.Value;
   }
 
   [Endpoint("/user/cart/product-count", HttpMethodType.GET)]
@@ -61,6 +63,6 @@ public class CartController : UserControllerBase
     }
 
     HttpContext.RemoveOrDecreaseInCart(id);
-    return DefResult.OkRemoved(nameof(Cart));
+    return DomResults.x_is_removed_successfully("cart");
   }
 }

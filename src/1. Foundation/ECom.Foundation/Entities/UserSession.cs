@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
@@ -18,7 +18,7 @@ public sealed class UserSession : IEntity
 
   public SessionCreateType SessionCreateType { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string RefreshToken { get; set; }
 
   public User User { get; set; }

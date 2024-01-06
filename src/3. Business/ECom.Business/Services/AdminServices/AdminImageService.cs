@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.AdminServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.AdminServices;
 
 [PerformanceLoggerAspect]
 [ExceptionLoggerAspect]
@@ -12,7 +14,7 @@ public class AdminImageService : IAdminImageService
 
   public Result<Image> GetImageWithResult(Guid id) {
     var image = _unitOfWork.Images.Find(id);
-    if (image is null) return DefResult.NotFound(nameof(Image));
+    if (image is null) return DomResults.x_is_not_found("image");
     return image;
   }
 
@@ -23,15 +25,15 @@ public class AdminImageService : IAdminImageService
 
   public Result DeleteImage(Guid id) {
     var image = _unitOfWork.Images.Find(id);
-    if (image is null) return DefResult.NotFound(Image.LocKey);
+    if (image is null) return DomResults.x_is_not_found("image");
     _unitOfWork.Images.Remove(image);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(DeleteImage));
-    var filePath = Path.Combine(EComAppSettings.This.ImageResourceDirectory, id + "." + image.FileExtension);
+    if (!res) return DomResults.db_internal_error(nameof(DeleteImage));
+    var filePath = Path.Combine(DomAppSettings.This.ImageResourceDirectory, id + "." + image.FileExtension);
     var exists = File.Exists(filePath);
     if (exists) File.Delete(filePath);
 
-    return DefResult.OkDeleted(Image.LocKey);
+    return DomResults.x_is_deleted_successfully("image");
   }
 
   public Result<Guid> UploadImage(IFormFile file) {
@@ -40,15 +42,15 @@ public class AdminImageService : IAdminImageService
     file.CopyTo(ms);
     img.Name = Path.GetFileNameWithoutExtension(file.FileName);
     img.FileExtension = Path.GetExtension(file.FileName);
-    img.Culture = ConstantContainer.DefaultLanguage; //TODO: get culture from request 
+    img.Culture = StaticValues.DEFAULT_LANGUAGE; //TODO: get culture from request 
     img.RegisterDate = DateTime.UtcNow;
     img.Size = file.Length;
     img.ContentType = file.ContentType;
     _unitOfWork.Images.Add(img);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UploadImage));
+    if (!res) return DomResults.db_internal_error(nameof(UploadImage));
     var id = img.Id;
-    var path = Path.Combine(EComAppSettings.This.ImageResourceDirectory, id + "." + img.FileExtension);
+    var path = Path.Combine(DomAppSettings.This.ImageResourceDirectory, id + "." + img.FileExtension);
     File.WriteAllBytes(path, ms.ToArray());
     return img.Id;
   }

@@ -1,6 +1,6 @@
 ﻿using ECom.Foundation.DTOs.Request;
 using ECom.Foundation.Entities;
-using ECom.Foundation.Enum;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Abstract.Services.User;
 
@@ -14,7 +14,7 @@ public interface IUserCollectionService
     Guid userId,
     Guid collectionId,
     ushort page,
-    Language culture = ConstantContainer.DefaultLanguage);
+    CultureType culture = StaticValues.DEFAULT_LANGUAGE);
 
   Result UpdateCollection(Guid authId, Request_Collection_Update request);
 }

@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
@@ -6,9 +6,8 @@ namespace ECom.Foundation.Entities;
 [PrimaryKey(nameof(Id), nameof(Culture))]
 public class Content : IEntity
 {
-  public const string LocKey = "content";
   public Guid Id { get; set; }
-  public Language Culture { get; set; }
+  public CultureType Culture { get; set; }
 
   [MaxLength(int.MaxValue)]
   public string Value { get; set; }

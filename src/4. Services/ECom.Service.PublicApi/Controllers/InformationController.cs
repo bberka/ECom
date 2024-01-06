@@ -1,4 +1,5 @@
 ﻿using ECom.Database;
+using ECom.Foundation.Static;
 
 namespace ECom.Service.PublicApi.Controllers;
 
@@ -19,7 +20,7 @@ public class InformationController : PublicControllerBase
 
   [Endpoint("/get-languages", HttpMethodType.GET)]
   public IActionResult GetLanguages() {
-    var dictionary = ConstantContainer.Languages.ToDictionary(x => (int)x, x => x.ToString());
+    var dictionary = StaticValues.LANGUAGES.ToDictionary(x => (int)x, x => x.ToString());
     return Ok(dictionary);
   }
 }

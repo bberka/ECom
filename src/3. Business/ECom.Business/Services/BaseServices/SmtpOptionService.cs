@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.BaseServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.BaseServices;
 
 public class SmtpOptionService : ISmtpOptionService
 {

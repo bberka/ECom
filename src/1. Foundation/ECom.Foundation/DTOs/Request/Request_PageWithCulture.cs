@@ -1,8 +1,8 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs.Request;
 
 public class Request_PageWithCulture : Request_Page
 {
-  public Language Culture { get; set; }
+  public CultureType Culture { get; set; }
 }

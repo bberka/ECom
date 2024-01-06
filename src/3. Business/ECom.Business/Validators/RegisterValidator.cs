@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Validators;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Validators;
 
 public class RegisterValidator : AbstractValidator<Request_User_Register>,
                                  IValidator<Request_User_Register>

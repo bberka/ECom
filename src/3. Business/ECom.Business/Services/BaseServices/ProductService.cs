@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.BaseServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.BaseServices;
 
 public class ProductService : IProductService
 {
@@ -26,8 +28,8 @@ public class ProductService : IProductService
 
   public Result<Product> GetProduct(Guid productNo) {
     var product = _unitOfWork.Products.FirstOrDefault(x => x.Id == productNo);
-    if (product is null) return DefResult.NotFound(nameof(Product));
-    if (product.DeleteDate.HasValue) return DefResult.Invalid(nameof(Product));
+    if (product is null) return DomResults.x_is_not_found("product");
+    if (product.DeleteDate.HasValue) return DomResults.x_is_invalid("product");
     return product;
   }
 
@@ -51,7 +53,7 @@ public class ProductService : IProductService
                       .ToList();
   }
 
-  public Result<int> AddProductComment(Guid userId, Request_ProductComment_Add model) {
+  public Result AddProductComment(Guid userId, Request_ProductComment_Add model) {
     var productResult = GetProduct(model.ProductId);
     if (!productResult.Status) return productResult.ToResult();
     //TODO: Check if user purchased the product
@@ -64,8 +66,8 @@ public class ProductService : IProductService
     };
     _unitOfWork.ProductComments.Add(comment);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddProductComment));
-    return DefResult.OkAdded(nameof(ProductComment));
+    if (!res) return DomResults.db_internal_error(nameof(AddProductComment));
+    return DomResults.x_is_added_successfully("product_comment");
   }
 
   //public CustomResult<int> AddCommentImage(IFormFile file, Guid UserId,int commentId)
@@ -73,33 +75,33 @@ public class ProductService : IProductService
   //    var productComment = _productCommentRepo.Find(commentId);
   //    if (productComment is null)
   //    {
-  //        return DefResult.ProductComment.NotFound();
+  //        return DomResults.ProductComment.NotFound();
   //    }
   //    if (productComment.UserId != userId)
   //    {
-  //        return DefResult.User.NotAuthorized();
+  //        return DomResults.User.NotAuthorized();
   //    }
   //    var imageResult = ImageService.UploadImage(file);
   //    if (imageResult.IsFailure)
   //    {
-  //        return DefResult.DbInternalError();
+  //        return DomResults.DbInternalError();
   //    }
 
   //    var commentImage = new ProductCommentImage()
   //    {
-  //        ImageId = imageResult.Data,
+  //        ImageId = imageResult.Value,
   //        RegisterDate = DateTime.Now,
   //        ProductCommentId = commentId
   //    };
-  //    var commentImageResult = _productCommentImageRepo.Create(commentImage);
+  //    var commentImageResult = _productCommentImageRepo.New(commentImage);
   //    if (!commentImageResult)
   //    {
-  //        return DefResult.DbInternalError();
+  //        return DomResults.DbInternalError();
   //    }
-  //    return DefResult.ProductCommentImage.AddSuccessResult(commentId);
+  //    return DomResults.ProductCommentImage.AddSuccessResult(commentId);
   //}
 
-  public List<Product> GetProducts(ushort page, Language culture = ConstantContainer.DefaultLanguage) {
+  public List<Product> GetProducts(ushort page, CultureType culture = StaticValues.DEFAULT_LANGUAGE) {
     if (page == 0) return new List<Product>();
     var lastIdx = Option.PagingProductCount * (page - 1);
     return _unitOfWork.Products
@@ -113,7 +115,7 @@ public class ProductService : IProductService
                       .ToList();
   }
 
-  public List<Product> GetProducts(List<Guid> productIds, ushort page, Language culture = ConstantContainer.DefaultLanguage) {
+  public List<Product> GetProducts(List<Guid> productIds, ushort page, CultureType culture = StaticValues.DEFAULT_LANGUAGE) {
     return _unitOfWork.Products
                       .Where(x => !x.DeleteDate.HasValue && productIds.Contains(x.Id))
                       .OrderByDescending(x => x.RegisterDate)

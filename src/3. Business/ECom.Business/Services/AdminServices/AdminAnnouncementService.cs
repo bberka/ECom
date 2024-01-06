@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.AdminServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.AdminServices;
 
 [PerformanceLoggerAspect]
 [ExceptionLoggerAspect]
@@ -23,14 +25,17 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     data.Order.EnsureNotNull();
     data.Contents.EnsureOneElementAndNotNull();
     var dbData = _unitOfWork.Announcements.Find(data.Id);
-    if (dbData is null) return DefResult.NotFound(nameof(Announcement));
+    if (dbData is null)
+      return DomResults.x_is_not_found("announcement");
     var isAlreadyExpired = dbData.ExpireDate < DateTime.Now;
     var isSetExpired = data.ExpireDate < DateTime.Now;
-    if (isSetExpired && !isAlreadyExpired) return DefResult.CannotSetExpired(nameof(Announcement));
+    if (isSetExpired && !isAlreadyExpired)
+      return DomResults.x_already_expired("announcement");
     var maxCount = _unitOfWork.Announcements.Count(x => x.ExpireDate > DateTime.Now);
     //Checks equals because can not update an expired announcement without setting expire date to future
-    if (maxCount >= ConstantContainer.MaxAnnouncementCount) return DefResult.MaxCountReached(nameof(Announcement), ConstantContainer.MaxAnnouncementCount);
-    var contentAsDictionary = data.Contents.ToDictionary(x => x.Language, x => x.Message);
+    if (maxCount >= StaticValues.MAX_ANNOUNCEMENT_COUNT)
+      return DomResults.max_count_reached(StaticValues.MAX_ANNOUNCEMENT_COUNT);
+    var contentAsDictionary = data.Contents.ToDictionary(x => x.CultureType, x => x.Message);
     var contentId = Guid.NewGuid();
     var contentResult = _contentService.AddOrUpdateContents(contentId, contentAsDictionary);
     if (!contentResult.Status) return contentResult;
@@ -40,8 +45,9 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     dbData.ExpireDate = data.ExpireDate;
     _unitOfWork.Announcements.Update(dbData);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError("update_announcement");
-    return DefResult.OkUpdated("announcement");
+    if (!res)
+      return DomResults.db_internal_error(nameof(UpdateAnnouncement));
+    return DomResults.x_is_updated_successfully("announcement");
   }
 
   public Result UpdateAnnouncementsOrder(List<NestableListElementDto> activeAnnouncements) {
@@ -58,8 +64,9 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     }
 
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateAnnouncementsOrder));
-    return DefResult.OkUpdated(nameof(Announcement));
+    if (!res)
+      return DomResults.db_internal_error(nameof(UpdateAnnouncementsOrder));
+    return DomResults.x_is_updated_successfully("announcements");
   }
 
   public Result AddAnnouncement(Request_Announcement_Add data) {
@@ -68,12 +75,12 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     data.Order.EnsureNotNull();
     data.Contents.EnsureOneElementAndNotNull();
     //TODO: This check necessary ? 
-    // var existsSameMessage = _unitOfWork.Announcements.Any(x => x.ContentId == data.Message);
-    // if (existsSameMessage) return DefResult.AlreadyExists(nameof(Announcement));
+    // var existsSameMessage = _unitOfWork.Announcements.Any(x => x.ContentId == data.Key);
+    // if (existsSameMessage) return DomResults.x_already_exists(nameof(Announcement));
     var totalAnnouncementCount = _unitOfWork.Announcements.Count(x => x.ExpireDate > DateTime.Now);
-    if (totalAnnouncementCount > ConstantContainer.MaxAnnouncementCount)
-      return DefResult.MaxCountReached(nameof(Announcement), ConstantContainer.MaxAnnouncementCount);
-    var contentAsDictionary = data.Contents.ToDictionary(x => x.Language, x => x.Message);
+    if (totalAnnouncementCount > StaticValues.MAX_ANNOUNCEMENT_COUNT)
+      return DomResults.max_count_reached(StaticValues.MAX_ANNOUNCEMENT_COUNT);
+    var contentAsDictionary = data.Contents.ToDictionary(x => x.CultureType, x => x.Message);
     var contentId = Guid.NewGuid();
     var contentResult = _contentService.AddOrUpdateContents(contentId, contentAsDictionary);
     if (!contentResult.Status) return contentResult;
@@ -86,17 +93,21 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     };
     _unitOfWork.Announcements.Add(announcement);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddAnnouncement));
-    return DefResult.OkAdded(nameof(Announcement));
+    if (!res)
+      return DomResults.db_internal_error(nameof(AddAnnouncement));
+
+    return DomResults.x_is_added_successfully("announcement");
   }
 
 
   public Result DeleteAnnouncement(Guid id) {
     var data = _unitOfWork.Announcements.Find(id);
-    if (data is null) return DefResult.NotFound(nameof(Announcement));
+    if (data is null)
+      return DomResults.x_is_not_found("announcement");
     _unitOfWork.Announcements.Remove(data);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(DeleteAnnouncement));
-    return DefResult.OkDeleted(nameof(Announcement));
+    if (!res)
+      return DomResults.db_internal_error(nameof(DeleteAnnouncement));
+    return DomResults.x_is_deleted_successfully("announcement");
   }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using ECom.Foundation.Static;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECom.Database.Configurations;
@@ -17,7 +18,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
   //    RegisterDate = ConstantMgr.DefaultDateTime,
   //    TwoFactorKey = null,
   //    CitizenShipNumber = null,
-  //    Culture = "Turkish",
+  //    Culture = "tr_tr",
   //    Id = 1,
   //    IsEmailVerified = false,
   //    OAuthKey = null,
@@ -35,7 +36,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
   //    RegisterDate = ConstantMgr.DefaultDateTime,
   //    TwoFactorKey = null,
   //    CitizenShipNumber = null,
-  //    Culture = "Turkish",
+  //    Culture = "tr_tr",
   //    Id = 2,
   //    IsEmailVerified = false,
   //    OAuthKey = null,

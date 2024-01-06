@@ -9,4 +9,3 @@ global using EasMe.Extensions;
 global using System.Linq.Expressions;
 global using Microsoft.EntityFrameworkCore;
 global using ECom.Foundation.Abstract;
-global using ECom.Foundation.Constants;

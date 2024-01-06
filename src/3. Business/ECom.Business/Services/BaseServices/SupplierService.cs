@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.BaseServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.BaseServices;
 
 public class SupplierService : IAdminSupplierService
 {
@@ -16,25 +18,29 @@ public class SupplierService : IAdminSupplierService
 
   public Result<Supplier> GetSupplier(int id) {
     var supplier = _unitOfWork.Suppliers.Find(id);
-    if (supplier is null) return DefResult.NotFound(nameof(Supplier));
+    if (supplier is null)
+      return DomResults.x_is_not_found("supplier");
     return supplier;
   }
 
   public Result UpdateSupplier(Supplier supplier) {
     var exists = _unitOfWork.Suppliers.Any(x => x.Id == supplier.Id);
-    if (!exists) return DefResult.NotFound(nameof(Supplier));
+    if (!exists)
+      return DomResults.x_is_not_found("supplier");
     _unitOfWork.Suppliers.Update(supplier);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateSupplier));
-    return DefResult.OkUpdated(nameof(Supplier));
+    if (!res) return DomResults.db_internal_error(nameof(UpdateSupplier));
+    return DomResults.x_is_updated_successfully("supplier");
   }
 
   public Result DeleteSupplier(int id) {
     var supplier = _unitOfWork.Suppliers.Find(id);
-    if (supplier is null) return DefResult.NotFound(nameof(Supplier));
+    if (supplier is null)
+      return DomResults.x_is_not_found("supplier");
     _unitOfWork.Suppliers.Remove(supplier);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError("DeleteSupplier");
-    return DefResult.OkDeleted("Supplier");
+    if (!res)
+      return DomResults.db_internal_error("supplier");
+    return DomResults.x_is_deleted_successfully("supplier");
   }
 }

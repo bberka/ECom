@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services;
 
 public class LogService : ILogService
 {
@@ -9,6 +11,7 @@ public class LogService : ILogService
     _unitOfWork = unitOfWork;
   }
 
+//TODO DB LOG
   public void SecurityLog(LogEventLevel severity, string reason) {
     var context = new HttpContextAccessor().HttpContext;
     var data = context.GetNecessaryRequestData();
@@ -53,7 +56,7 @@ public class LogService : ILogService
           RemoteIpAddress = httpData?.RemoteIpAddress ?? "-",
           XReal_IpAddress = httpData?.XRealIpAddress,
           UserAgent = httpData?.UserAgent ?? "-",
-          ErrorCode = string.Join("|", result.Errors.Select(x => x.Code)) ?? "-",
+          ErrorCode = result.Message,
           HttpStatusCode = context?.Response.StatusCode ?? -1,
           QueryString = context?.Request.QueryString.ToString() ?? "-",
           RequestUrl = context?.Request.GetDisplayUrl() ?? "-",
@@ -73,9 +76,13 @@ public class LogService : ILogService
     LoggerTask.AddToQueue(action);
   }
 
+  public void AdminLog<T>(AdminActionType actionType, Result<T> result, Guid? adminId = null, object? requestData = null) { }
+
   public void AdminLog(AdminActionType actionType, Guid? adminId = null, object? requestData = null) { }
 
   public void UserLog(UserActionType actionType, Result result, Guid? userId = null, object? requestData = null) { }
+
+  public void UserLog<T>(UserActionType actionType, Result<T> result, Guid? userId = null, object? requestData = null) { }
 
   public void UserLog(UserActionType actionType, Guid? userId = null, object? requestData = null) { }
 }

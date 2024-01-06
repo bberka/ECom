@@ -10,8 +10,7 @@ public class SliderService : ISliderService
 
   public Result<Slider> GetSlider(int sliderId) {
     var slider = _unitOfWork.Sliders.Find(sliderId);
-    if (slider is null) return DefResult.NotFound(nameof(Slider));
-    if (slider.DeleteDate.HasValue) return DefResult.Deleted(nameof(Slider));
+    if (slider is null || slider.DeleteDate.HasValue) return DomResults.x_is_not_found("slider");
     return slider;
   }
 
@@ -21,28 +20,28 @@ public class SliderService : ISliderService
 
   public Result UpdateSlider(Slider slider) {
     var exists = _unitOfWork.Sliders.Any(x => x.Id == slider.Id && !x.DeleteDate.HasValue);
-    if (!exists) return DefResult.NotFound(nameof(Slider));
+    if (!exists) return DomResults.x_is_not_found("slider");
     _unitOfWork.Sliders.Update(slider);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateSlider));
-    return DefResult.OkUpdated(nameof(Slider));
+    if (!res) return DomResults.db_internal_error(nameof(UpdateSlider));
+    return DomResults.x_is_updated_successfully("slider");
   }
 
   public Result DeleteSlider(int sliderId) {
     var sliderResult = GetSlider(sliderId);
     if (!sliderResult.Status) return sliderResult.ToResult();
-    var slider = sliderResult.Data!;
+    var slider = sliderResult.Value!;
     slider.DeleteDate = DateTime.Now;
     _unitOfWork.Sliders.Update(slider);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(DeleteSlider));
-    return DefResult.Deleted(nameof(Slider));
+    if (!res) return DomResults.db_internal_error(nameof(DeleteSlider));
+    return DomResults.x_is_deleted_successfully("slider");
   }
 
   public Result AddSlider(Slider slider) {
     _unitOfWork.Sliders.Add(slider);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddSlider));
-    return DefResult.OkAdded(nameof(Slider));
+    if (!res) return DomResults.db_internal_error(nameof(AddSlider));
+    return DomResults.x_is_added_successfully("slider");
   }
 }

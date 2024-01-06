@@ -1,12 +1,10 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
 [Table("Users", Schema = "ECPrivate")]
 public class User : IEntity
 {
-  public const string LocKey = "user";
-
   [Key]
   public Guid Id { get; set; }
 
@@ -15,15 +13,15 @@ public class User : IEntity
   public DateTime? DeleteDate { get; set; }
 
 
-  [MinLength(ConstantContainer.MinHashedPasswordLength)]
-  [MaxLength(ConstantContainer.MaxHashedPasswordLength)]
+  [MinLength(StaticValues.MIN_HASHED_PASSWORD_LENGTH)]
+  [MaxLength(StaticValues.MAX_HASHED_PASSWORD_LENGTH)]
   [JsonIgnore]
   [System.Text.Json.Serialization.JsonIgnore]
   [IgnoreDataMember]
 
   public string Password { get; set; }
 
-  [MaxLength(ConstantContainer.MaxEmailLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_LENGTH)]
   [EmailAddress]
   public string EmailAddress { get; set; }
 
@@ -31,23 +29,23 @@ public class User : IEntity
   public bool IsEmailVerified { get; set; }
 
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string FirstName { get; set; }
 
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string LastName { get; set; }
 
 
-  [MinLength(ConstantContainer.MinPhoneLength)]
-  [MaxLength(ConstantContainer.MaxPhoneLength)]
+  [MinLength(StaticValues.MIN_PHONE_LENGTH)]
+  [MaxLength(StaticValues.MAX_PHONE_LENGTH)]
   public string PhoneNumber { get; set; }
 
   public int? CitizenShipNumber { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   [JsonIgnore]
   [System.Text.Json.Serialization.JsonIgnore]
   [IgnoreDataMember]
@@ -55,7 +53,7 @@ public class User : IEntity
 
   public OAuthType OAuthType { get; set; } = OAuthType.None;
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   [JsonIgnore]
   [System.Text.Json.Serialization.JsonIgnore]
   [IgnoreDataMember]
@@ -63,7 +61,7 @@ public class User : IEntity
 
   public TwoFactorType TwoFactorType { get; set; }
 
-  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public CultureType Culture { get; set; } = StaticValues.DEFAULT_LANGUAGE;
 
 
   //Virtual

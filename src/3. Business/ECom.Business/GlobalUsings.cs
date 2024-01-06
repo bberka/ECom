@@ -28,7 +28,5 @@ global using ECom.Foundation.Abstract.Services.User;
 global using ECom.Foundation.Entities;
 global using ECom.Foundation.Abstract.Services.Base;
 global using ECom.Foundation.DTOs.Response;
-global using ECom.Foundation.Enum;
-global using ECom.Foundation.Constants;
 global using ECom.Foundation.Extensions;
 global using ECom.Foundation.Exceptions;

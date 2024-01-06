@@ -1,187 +1,537 @@
-﻿using ECom.Foundation.Enum;
+﻿using System.Runtime.InteropServices.JavaScript;
+using System.Text;
+using System.Text.Json.Serialization;
+using ECom.Foundation.Lib;
 using ECom.Foundation.Models;
+using ECom.Foundation.Static;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Newtonsoft.Json.Converters;
 
 namespace ECom.Foundation;
 
-public class Result : Result<Result>
+public class Result : Result<object>
 {
-  public Result<T> ToGenericResult<T>(T data) {
-    return new Result<T> {
-      Status = Status,
-      Errors = Errors,
-      Data = data,
-      Level = Level,
-      Exception = Exception
-    };
+  internal Result(bool status,
+                  ResultLevel level,
+                  List<ResultMessage> errors,
+                  Exception? exception = null) : base(status, level, errors, exception, new object()) { }
+
+
+  public static implicit operator bool(Result value) {
+    return value.Status;
   }
-}
 
-public readonly struct Error
-{
-  public string Code { get; }
-  public LocParam[] LocParams { get; }
+  public static implicit operator Result(bool value) {
+    return new Result(value, ResultLevel.Info, new List<ResultMessage>());
+  }
 
-  public Error(string code, LocParam[] locParams) {
-    Code = code;
-    LocParams = locParams;
+
+  public static implicit operator Result(Exception value) {
+    return new Result(false, ResultLevel.Fatal, new List<ResultMessage>(), value);
+  }
+
+  public static implicit operator Result(List<ResultMessage> value) {
+    return new Result(false, ResultLevel.Warning, value);
+  }
+
+  public static implicit operator Result(ResultMessage value) {
+    return new Result(false, ResultLevel.Warning, new List<ResultMessage> { value });
+  }
+
+
+  public static Result operator &(Result a,
+                                  Result b) {
+    if (a.Status && b.Status) return true;
+    if (!a.Status && !b.Status) return a._errors.Concat(b._errors).ToList();
+    return a.Status
+             ? b._errors
+             : a._errors;
+  }
+
+  public static Result operator |(Result a,
+                                  Result b) {
+    if (a.Status || b.Status) return true;
+    return a._errors.Concat(b._errors).ToList();
+  }
+
+  public static Result operator !(Result a) {
+    return !a.Status;
+  }
+
+
+  internal static Result Success(ServerMessage message) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString())
+                      });
+  }
+
+  //FOR performance
+  internal static Result Success(ServerMessage message,
+                                 object param1) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1
+                            })
+                      });
+  }
+
+  internal static Result Success(ServerMessage message,
+                                 object param1,
+                                 object param2) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2
+                            })
+                      });
+  }
+
+  internal static Result Success(ServerMessage message,
+                                 object param1,
+                                 object param2,
+                                 object param3) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3
+                            })
+                      });
+  }
+
+  internal static Result Success(ServerMessage message,
+                                 object param1,
+                                 object param2,
+                                 object param3,
+                                 object param4) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4
+                            })
+                      });
+  }
+
+  internal static Result Success(ServerMessage message,
+                                 object param1,
+                                 object param2,
+                                 object param3,
+                                 object param4,
+                                 object param5) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4, param5
+                            })
+                      });
+  }
+
+  internal static Result Success(ServerMessage message,
+                                 params string[] prm) {
+    return new Result(true,
+                      ResultLevel.Info,
+                      new List<ResultMessage>() {
+                        new(message.ToString(), prm)
+                      });
+  }
+
+  internal static Result Success(List<ResultMessage> list) {
+    return new Result(true, ResultLevel.Info, list);
+  }
+
+  internal static Result Warning(ServerMessage loc) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(loc.ToString())
+                      });
+  }
+
+  internal static Result Warning(ServerMessage message,
+                                 params object[] parameters) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(message.ToString(), parameters)
+                      });
+  }
+
+  internal static Result Warning(ServerMessage message,
+                                 object param1) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1
+                            })
+                      });
+  }
+
+  internal static Result Warning(ServerMessage message,
+                                 object param1,
+                                 object param2) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2
+                            })
+                      });
+  }
+
+  internal static Result Warning(ServerMessage message,
+                                 object param1,
+                                 object param2,
+                                 object param3) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3
+                            })
+                      });
+  }
+
+  internal static Result Warning(ServerMessage message,
+                                 object param1,
+                                 object param2,
+                                 object param3,
+                                 object param4) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4
+                            })
+                      });
+  }
+
+  internal static Result Warning(ServerMessage message,
+                                 object param1,
+                                 object param2,
+                                 object param3,
+                                 object param4,
+                                 object param5) {
+    return new Result(false,
+                      ResultLevel.Warning,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4, param5
+                            })
+                      });
+  }
+
+
+  internal static Result Warning(List<ResultMessage> list) {
+    return new Result(false, ResultLevel.Warning, list);
+  }
+
+  internal static Result Error(ServerMessage message) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString())
+                      });
+  }
+
+  internal static Result Error(ServerMessage message,
+                               params object[] parameters) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString(), parameters)
+                      });
+  }
+
+  internal static Result Error(ServerMessage message,
+                               object param1) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1
+                            })
+                      });
+  }
+
+  internal static Result Error(ServerMessage message,
+                               object param1,
+                               object param2) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2
+                            })
+                      });
+  }
+
+  internal static Result Error(ServerMessage message,
+                               object param1,
+                               object param2,
+                               object param3) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3
+                            })
+                      });
+  }
+
+  internal static Result Error(ServerMessage message,
+                               object param1,
+                               object param2,
+                               object param3,
+                               object param4) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4
+                            })
+                      });
+  }
+
+  internal static Result Error(ServerMessage message,
+                               object param1,
+                               object param2,
+                               object param3,
+                               object param4,
+                               object param5) {
+    return new Result(false,
+                      ResultLevel.Error,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4, param5
+                            })
+                      });
+  }
+
+
+  internal static Result Error(List<ResultMessage> list) {
+    return new Result(false, ResultLevel.Error, list);
+  }
+
+
+  internal static Result Fatal(ServerMessage message) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString())
+                      });
+  }
+
+  internal static Result Fatal(ServerMessage message,
+                               params object[] parameters) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString(), parameters)
+                      });
+  }
+
+  internal static Result Fatal(ServerMessage message,
+                               object param1) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1
+                            })
+                      });
+  }
+
+  internal static Result Fatal(ServerMessage message,
+                               object param1,
+                               object param2) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2
+                            })
+                      });
+  }
+
+  internal static Result Fatal(ServerMessage message,
+                               object param1,
+                               object param2,
+                               object param3) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3
+                            })
+                      });
+  }
+
+  internal static Result Fatal(ServerMessage message,
+                               object param1,
+                               object param2,
+                               object param3,
+                               object param4) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4
+                            })
+                      });
+  }
+
+  internal static Result Fatal(ServerMessage message,
+                               object param1,
+                               object param2,
+                               object param3,
+                               object param4,
+                               object param5) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new(message.ToString(),
+                            new[] {
+                              param1, param2, param3, param4, param5
+                            })
+                      });
+  }
+
+  internal static Result Fatal(List<ResultMessage> list) {
+    return new Result(false, ResultLevel.Fatal, list);
+  }
+
+  internal static Result Exception(Exception ex,
+                                   string name = "",
+                                   ResultLevel level = ResultLevel.Fatal) {
+    return new Result(false,
+                      ResultLevel.Fatal,
+                      new List<ResultMessage>() {
+                        new("exception", new[] { name })
+                      },
+                      ex);
   }
 }
 
 public class Result<T>
 {
-  protected internal Result() { }
-  public bool Status { get; internal init; }
+  protected readonly List<ResultMessage> _errors;
 
-  public ResultLevel Level { get; internal init; }
+  protected string _message = string.Empty;
 
-  public string LevelText => Level switch {
-    ResultLevel.Info => "info",
-    ResultLevel.Warning => "warn",
-    ResultLevel.Error => "error",
-    ResultLevel.Fatal => "fatal",
-    _ => throw new ArgumentOutOfRangeException()
-  };
-
-  public List<Error> Errors { get; internal init; }
-
-  // public string ErrorCode { get; internal init; }
-  // public LocParam[] RequestData { get; internal init; } = Array.Empty<LocParam>();
-  public T? Data { get; internal init; }
-
-  [IgnoreDataMember]
-  [System.Text.Json.Serialization.JsonIgnore]
-  [JsonIgnore]
-  public Exception? Exception { get; internal init; }
-
-
-  public static Result<T> Ok(string error, T? data = default, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = true,
-      Errors = new List<Error> { new(error, locParams) },
-      Exception = null,
-      Data = data,
-      Level = ResultLevel.Info
-    };
+  internal Result(bool status,
+                  ResultLevel level,
+                  List<ResultMessage> errors,
+                  Exception? exception = null,
+                  object? value = null) {
+    if (errors == null) throw new ArgumentNullException(nameof(errors));
+    if (errors.Count == 0) throw new ArgumentException("Error list cannot be an empty collection.", nameof(errors));
+    Status = status;
+    Level = level;
+    _errors = errors;
+    ExceptionInfo = exception;
   }
 
-  public static Result<T> OkData(T data, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = true,
-      Errors = new List<Error> { new("success", locParams) },
-      Data = data,
-      Level = ResultLevel.Info
-    };
+  public string Message {
+    get {
+      if (!string.IsNullOrEmpty(_message)) return _message;
+      if (_errors.Count == 0) return string.Empty;
+      var sb = new StringBuilder();
+      foreach (var error in _errors) {
+        if (error.Parameters != null && error.Parameters.Length > 0) {
+          var translated = CultureLib.This.GetWithParams(error.Key, error.Parameters);
+          sb.AppendLine(translated);
+        }
+        else {
+          var translated = CultureLib.This.Get(error.Key);
+          sb.AppendLine(translated);
+        }
+      }
+
+      return sb.ToString();
+    }
   }
 
-  public static Result<T> OkParam(string error, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = true,
-      Errors = new List<Error> { new(error, locParams) },
-      Exception = null,
-      Data = default,
-      Level = ResultLevel.Info
-    };
+  public bool Status { get; }
+
+  [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
+  public ResultLevel Level { get; }
+
+  public Exception? ExceptionInfo { get; }
+
+  [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+  public T Value { get; } = default;
+
+  public T GetValue<T>() {
+    if (Value is null)
+      throw new Exception($"Cannot convert null to {typeof(T).Name}");
+    if (Value is not T value)
+      throw new Exception($"Cannot convert {Value?.GetType().Name} to {typeof(T).Name}");
+    return value;
   }
 
-  public static Result<T> Warn(string error, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = false,
-      Errors = new List<Error> { new(error, locParams) },
-      Level = ResultLevel.Warning
-    };
-  }
-
-  public static Result<T> Error(string error, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = false,
-      Errors = new List<Error> { new(error, locParams) },
-      Level = ResultLevel.Error
-    };
-  }
-
-  public static Result<T> Fatal(string error, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = false,
-      Errors = new List<Error> { new(error, locParams) },
-      Level = ResultLevel.Fatal
-    };
-  }
-
-  public static Result<T> Validation(string message, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = false,
-      Errors = new List<Error> { new(message, locParams) },
-      Level = ResultLevel.Warning
-    };
-  }
-
-  public static Result<T> Validation(List<Error> errors) {
-    return new Result<T> {
-      Status = false,
-      Errors = errors,
-      Level = ResultLevel.Warning
-    };
-  }
-
-  public static Result<T> Fatal(Exception? exception, params LocParam[] locParams) {
-    return new Result<T> {
-      Status = false,
-      Errors = new List<Error> { new("fatal", locParams) },
-      Level = ResultLevel.Fatal,
-      Exception = exception
-    };
-  }
-
-
-  public Result ToResult() {
-    return new Result {
-      Status = Status,
-      Errors = Errors,
-      Level = Level,
-      Exception = Exception,
-      Data = null
-    };
-  }
-
-
-  public static implicit operator Result(Result<T> value) {
-    return new Result {
-      Status = value.Status,
-      Errors = value.Errors,
-      Data = null,
-      Level = value.Level,
-      Exception = value.Exception
-    };
-  }
 
   public static implicit operator bool(Result<T> value) {
     return value.Status;
   }
 
-  public static implicit operator Result<T>(Result value) {
-    if (value.Status) throw new Exception("Cannot convert success result to generic result");
-    return new Result<T> {
-      Status = value.Status,
-      Errors = value.Errors,
-      Level = value.Level,
-      Exception = value.Exception
-    };
+  public static implicit operator Result<T>(Result result) {
+    return new Result<T>(result.Status, result.Level, result._errors, result.ExceptionInfo, result.Value);
   }
 
-  public static implicit operator Result<T>(T? data) {
-    var typeName = data?.GetType().Name ?? "N/A";
-    var status = data != null;
-    if (status)
-      return new Result<T> {
-        Status = true,
-        Errors = new List<Error> { new("success", Array.Empty<LocParam>()) },
-        Data = data,
-        Level = ResultLevel.Info
-      };
-    return new Result<T> {
-      Status = false,
-      Errors = new List<Error> { new("not_found", new[] { new LocParam("name", typeName) }) },
-      Level = ResultLevel.Warning
-    };
+  public static implicit operator T(Result<T> result) {
+    return result.GetValue<T>();
+  }
+
+  public static implicit operator Result<T>(T value) {
+    if (value is null) throw new ArgumentNullException(nameof(value), "Cannot convert null to Result<T>");
+    return new Result<T>(true, ResultLevel.Info, new List<ResultMessage>(), null, value);
+  }
+
+
+  public Result ToResult() {
+    return new(Status, Level, _errors, ExceptionInfo);
+  }
+}
+
+public readonly struct ResultMessage
+{
+  public string Key { get; }
+  public object[] Parameters { get; } = null;
+
+  public ResultMessage(string key,
+                       object[] parameters) {
+    Key = key;
+    Parameters = parameters;
+  }
+
+  public ResultMessage(string key) {
+    Key = key;
   }
 }

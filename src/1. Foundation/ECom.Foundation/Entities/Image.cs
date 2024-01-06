@@ -1,29 +1,27 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
 [Table("Images", Schema = "ECPrivate")]
 public class Image : IEntity
 {
-  public const string LocKey = "image";
-
   [Key]
   public Guid Id { get; set; }
 
   public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
 
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string Name { get; set; }
 
-  [MaxLength(ConstantContainer.MaxExtensionLength)]
+  [MaxLength(StaticValues.MAX_EXTENSION_LENGTH)]
   public string FileExtension { get; set; }
 
   public long Size { get; set; } = 0;
 
 
-  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public CultureType Culture { get; set; } = StaticValues.DEFAULT_LANGUAGE;
 
 
-  [MaxLength(ConstantContainer.MaxContentTypeHeaderLength)]
+  [MaxLength(StaticValues.MAX_CONTENT_TYPE_HEADER_LENGTH)]
   public string ContentType { get; set; }
 }

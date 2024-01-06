@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("SecurityLogs", Schema = "ECLog")]
 public class SecurityLog : IEntity
@@ -8,7 +10,7 @@ public class SecurityLog : IEntity
 
   public DateTime RegisterDate { get; set; } = DateTime.UtcNow;
 
-  [MaxLength(ConstantContainer.MaxReasonLength)]
+  [MaxLength(StaticValues.MAX_REASON_LENGTH)]
   public string Reason { get; set; }
 
   public int HttpStatusCode { get; set; } = 0;

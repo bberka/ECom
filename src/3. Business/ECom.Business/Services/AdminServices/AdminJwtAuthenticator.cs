@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.AdminServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.AdminServices;
 
 public class AdminJwtAuthenticator : IAdminJwtAuthenticator
 {
@@ -17,14 +19,14 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
                            .ThenInclude(x => x.PermissionRoles)
                            .Where(x => x.EmailAddress == model.EmailAddress)
                            .SingleOrDefault();
-    if (admin is null) return DefResult.NoAccountFound(Admin.LocKey);
+    if (admin is null) return DomResults.x_is_not_found("account");
     if (admin.DeleteDate.HasValue)
-      return DefResult.NoAccountFound(Admin.LocKey);
-    // return DefResult.Invalid(User.LocKey);
+      return DomResults.x_is_not_found("account");
+    // return DomResults.x_is_invalid("user");
 
     var encryptedPassword = model.Password.ToHashedText();
     if (!admin.Password.Equals(encryptedPassword, StringComparison.Ordinal))
-      return DefResult.NoAccountFound(Admin.LocKey); //Or invalid password
+      return DomResults.x_is_not_found("account"); //Or invalid password
     if (admin.TwoFactorType != 0) {
       //TODO: implement two factor
     }
@@ -39,10 +41,10 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
       { "Culture", admin.Culture },
       { "TwoFactorType", admin.TwoFactorType },
       { "RegisterDate", admin.RegisterDate },
-      { EComClaimTypes.AdminClaimType, true }
+      { DomClaimTypes.AdminClaimType, true }
     };
-    var refresh = EasGenerate.RandomString(ConstantContainer.MaxTokenLength);
-    var expire = DateTime.Now.AddMinutes(EComAppSettings.This.JwtTokenExpireMinutes);
+    var refresh = EasGenerate.RandomString(StaticValues.MAX_TOKEN_LENGTH);
+    var expire = DateTime.Now.AddMinutes(DomAppSettings.This.JwtTokenExpireMinutes);
     var unix = new DateTimeOffset(expire).ToUnixTimeSeconds();
     var token = JwtService.Jwt.GenerateToken(dic, expire);
     var response = new Response_Admin_Login {
@@ -50,7 +52,7 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
         ExpireUnix = unix,
         Token = token,
         RefreshToken = refresh,
-        ValidForMinutes = EComAppSettings.This.JwtTokenExpireMinutes
+        ValidForMinutes = DomAppSettings.This.JwtTokenExpireMinutes
       },
       Admin = adminDto
     };
@@ -65,7 +67,7 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
     };
     _unitOfWork.AdminSessions.Add(adminSession);
     var updateResult = _unitOfWork.Save();
-    if (!updateResult) return DefResult.DbInternalError(nameof(Authenticate));
+    if (!updateResult) return DomResults.db_internal_error(nameof(Authenticate));
     return response;
   }
 

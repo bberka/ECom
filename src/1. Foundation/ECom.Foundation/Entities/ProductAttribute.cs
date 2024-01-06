@@ -1,3 +1,5 @@
+using ECom.Foundation.Static;
+
 namespace ECom.Foundation.Entities;
 
 [Table("ProductDetailAttributes", Schema = "ECPrivate")]
@@ -12,6 +14,6 @@ public class ProductAttribute
   public Guid ProductId { get; set; }
   public virtual Product Product { get; set; }
 
-  [MaxLength(ConstantContainer.MaxAttributeValueLength)]
+  [MaxLength(StaticValues.MAX_ATTRIBUTE_VALUE_LENGTH)]
   public string Value { get; set; } //Red, XL, 100KG, 256GB etc. 
 }

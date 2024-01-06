@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("Suppliers", Schema = "ECPrivate")]
 public class Supplier : IEntity
@@ -11,23 +13,23 @@ public class Supplier : IEntity
   public DateTime? DeleteDate { get; set; }
 
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string Name { get; set; }
 
-  [MinLength(ConstantContainer.MinDescriptionLength)]
-  [MaxLength(ConstantContainer.MaxDescriptionLength)]
+  [MinLength(StaticValues.MIN_DESCRIPTION_LENGTH)]
+  [MaxLength(StaticValues.MAX_DESCRIPTION_LENGTH)]
   public string Description { get; set; }
 
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string CompanyName { get; set; }
 
-  [MinLength(ConstantContainer.MinPhoneLength)]
-  [MaxLength(ConstantContainer.MaxPhoneLength)]
+  [MinLength(StaticValues.MIN_PHONE_LENGTH)]
+  [MaxLength(StaticValues.MAX_PHONE_LENGTH)]
   public string PhoneNumber { get; set; }
 
   [EmailAddress]
-  [MaxLength(ConstantContainer.MaxEmailLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_LENGTH)]
   public string EmailAddress { get; set; }
 
   public virtual List<StockChange> StockChanges { get; set; }

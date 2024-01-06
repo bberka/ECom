@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Middlewares;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Middlewares;
 
 public class DebugUserAuthenticationMiddleware
 {
@@ -16,7 +18,7 @@ public class DebugUserAuthenticationMiddleware
   }
 
   public async Task InvokeAsync(HttpContext context) {
-    if (!ConstantContainer.IsDevelopment()) await _next(context);
+    if (!StaticValues.IsDevelopment) await _next(context);
 
     //var hasBearer = context.Request.Headers.TryGetValue("Authorization", out var bearer);
     //if (!hasBearer) {
@@ -25,13 +27,13 @@ public class DebugUserAuthenticationMiddleware
     //    var adminResult = _userService.GetUser(1);
     //    if (adminResult.Status) {
     //      var tokenResult = _userJwtAuthenticator.Authenticate(new LoginRequest {
-    //        Password = adminResult.Data.Password,
-    //        EmailAddress = adminResult.Data.EmailAddress,
+    //        Password = adminResult.Value.Password,
+    //        EmailAddress = adminResult.Value.EmailAddress,
     //        IsHashed = true
     //      });
     //      if (tokenResult.Status) {
-    //        var token = tokenResult.Data!;
-    //        context.Response.Headers.Add("Authorization", $"Bearer {tokenResult.Data?.Token.Token}");
+    //        var token = tokenResult.Value!;
+    //        context.Response.Headers.Add("Authorization", $"Bearer {tokenResult.Value?.Token.Token}");
     //        context.Session.SetString("user_debug_token", token.Token.Token);
     //      }
     //    }

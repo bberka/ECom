@@ -1,219 +1,108 @@
-﻿using ECom.Foundation.Models;
+﻿// using ECom.Foundation.Models;
+// using ECom.Foundation.Static;
+//
+// namespace ECom.Foundation;
+//
+// /// <summary>
+// ///   Defined Results
+// /// </summary>
+// public static class DefResult
+// {
+//   public static Result exception(ExceptionInfo exception,
+//                                  string name,
+//                                  ResultLevel level = ResultLevel.Fatal) {
+//     var errorList = ErrorListBuilder
+//                     .New("exception", "name", name)
+//                     .Build();
+//     return new Result(false, level, errorList, exception);
+//   }
+//
+//   public static Result validation_error(FieldError error,
+//                                         string name) {
+//     var errorList = ErrorListBuilder
+//                     .New(error.ToString(), "name", name)
+//                     .Build();
+//     return new Result(false, ResultLevel.Warning, errorList);
+//   }
+//   
+//   public static Result action_ok(ActionSuccess success,
+//                                  string name) {
+//     var errorList = ErrorListBuilder
+//                     .New(success.ToString(), "name", name)
+//                     .Build();
+//     return new Result(true, ResultLevel.Info, errorList);
+//   }
+//   
+//
+//   public static Result unauthorized_x(string name) { 
+//     var errorList = ErrorListBuilder
+//                     .New("unauthorized_x", "name", name)
+//                     .Build();
+//     return new Result(false, ResultLevel.Error, errorList);
+//   }
+//
+//   public static Result forbidden(string name) {
+//     var errorList = ErrorListBuilder
+//                     .New("forbidden", "name", name)
+//                     .Build();
+//     return new Result(false, ResultLevel.Error, errorList);
+//   }
+//
+//   public static Result under_maintenance() { 
+//     var errorList = ErrorListBuilder
+//                     .New("under_maintenance")
+//                     .Build();
+//     return new Result(false, ResultLevel.Warning, errorList);
+//   }
+//
+//   public static Result db_internal_error(string operationName) {
+//      var errorList = ErrorListBuilder
+//                     .New("db_internal_error", "operationName", operationName)
+//                     .Build();
+//     return new Result(false, ResultLevel.Fatal, errorList);
+//   }
+//
+//   
+//   
+//   private class ErrorListBuilder
+//   {
+//     private ErrorListBuilder() {
+//       _errors = new();
+//     }
+//
+//     private List<ResultMessage> _errors;
+//
+//     public List<ResultMessage> Build() {
+//       return _errors;
+//     }
+//
+//     public ErrorListBuilder Add(string message,
+//                                 Dictionary<string, object> parameters) {
+//       _errors.Add(new ResultMessage(message, parameters));
+//       return this;
+//     }  
+//     public ErrorListBuilder Add(string message) {
+//       _errors.Add(new ResultMessage(message, new Dictionary<string, object>()));
+//       return this;
+//     }
+//
+//     public ErrorListBuilder AddSingleParam(string message,
+//                                            string key,
+//                                            object value) {
+//       _errors.Add(new ResultMessage(message, new Dictionary<string, object> { { key, value } })); 
+//       return this;
+//     }
+//
+//   
+//     public static ErrorListBuilder New(string message,
+//                                        string key,
+//                                        object value) {
+//       return new ErrorListBuilder().AddSingleParam(message, key, value);
+//     }  
+//     public static ErrorListBuilder New(string message) {
+//       return new ErrorListBuilder().Add(message);
+//     }
+//   
+//   }
+// }
 
-namespace ECom.Foundation;
-
-/// <summary>
-///   Defined Results
-/// </summary>
-public static class DefResult
-{
-  public static Result Exception(Exception exception,
-                                 string name) {
-    return Result.Fatal(exception, new LocParam("name", name));
-  }
-
-  public static Result InvalidState(string name) {
-    return Result.Warn("invalid_state", new LocParam("name", name));
-  }
-
-  public static Result NotDeleted(string name) {
-    return Result.Warn("not_deleted", new LocParam("name", name));
-  }
-
-  public static Result NotChanged(string name) {
-    return Result.Warn("not_changed", new LocParam("name", name));
-  }
-
-  public static Result NotSupported(string operationName = "action") {
-    return Result.Fatal("not_supported", new LocParam("name", operationName));
-  }
-
-  public static Result OkRecovered(string name) {
-    return Result.OkParam("ok_recovered", new LocParam("name", name));
-  }
-
-  public static Result MaxCountReached(string name,
-                                       int maxCountParam) {
-    return Result.Error("max_count_reached", new LocParam("name", name), new LocParam("count", maxCountParam));
-  }
-
-  public static Result CannotSetExpired(string name) {
-    return Result.Error("can_not_set_expired", new LocParam("name", name));
-  }
-
-  public static Result CanNotDelete(string name) {
-    return Result.Error("can_not_delete", new LocParam("name", name));
-  }
-
-  public static Result CanNotDeleteBecauseOfDbRelation(string mainObjectName,
-                                                       string relationName) {
-    return Result.Error("can_not_delete_because_of_db_relation",
-                        new LocParam("main_object_name", mainObjectName),
-                        new LocParam("relation_name", relationName));
-  }
-
-  public static Result MustBeSame(string mainPropertyName,
-                                  string comparePropertyName) {
-    return Result.Error("must_be_same",
-                        new LocParam("main_property_name", mainPropertyName),
-                        new LocParam("compare_property_name", comparePropertyName));
-  }
-
-  public static Result NotImplemented(string name) {
-    return Result.Error("not_implemented", new LocParam("name", name));
-  }
-
-  public static Result OkAddedOrUpdated(string name) {
-    return Result.OkParam("ok_added_or_updated", new LocParam("name", name));
-  }
-
-  public static Result AlreadyLoggedIn() {
-    return Result.Warn("already_logged_in");
-  }
-
-  #region OK
-
-  public static Result Success(string error,
-                               string name = "") {
-    return Result.OkParam(error, new LocParam("name", name));
-  }
-
-  public static Result Ok(string name) {
-    return Result.OkParam("success", new LocParam("name", name));
-  }
-
-  public static Result OkAdded(string name) {
-    return Result.OkParam("ok_added", new LocParam("name", name));
-  }
-
-  public static Result OkAuthenticated(string name) {
-    return Result.OkParam("ok_authenticated", new LocParam("name", name));
-  }
-
-  public static Result OkUpdated(string name) {
-    return Result.OkParam("ok_updated", new LocParam("name", name));
-  }
-
-  public static Result OkRemoved(string name) {
-    return Result.OkParam("ok_removed", new LocParam("name", name));
-  }
-
-  public static Result OkDeleted(string name) {
-    return Result.OkParam("ok_deleted", new LocParam("name", name));
-  }
-
-  public static Result OkCleared(string name) {
-    return Result.OkParam("ok_cleared", new LocParam("name", name));
-  }
-
-  public static Result OkNotChanged(string name) {
-    return Result.OkParam("ok_not_changed", new LocParam("name", name));
-  }
-
-  #endregion
-
-  #region WARNINGS
-
-  public static Result Validation(string name,
-                                  string message) {
-    return Result.Validation(message, new LocParam("name", name));
-  }
-
-  public static Result Validation(List<Error> errors) {
-    return Result.Validation(errors);
-  }
-
-  public static Result Deleted(string name) {
-    return Result.Warn("deleted", new LocParam("name", name));
-  }
-
-  public static Result Invalid(string name) {
-    return Result.Warn("invalid", new LocParam("name", name));
-  }
-
-  public static Result EmptyTable(string name) {
-    return Result.Warn("empty_table", new LocParam("name", name));
-  }
-
-  public static Result NotFound(string name) {
-    return Result.Warn("not_found", new LocParam("name", name));
-  }
-
-  public static Result AlreadyDisabled(string name) {
-    return Result.Warn("already_disabled", new LocParam("name", name));
-  }
-
-  public static Result AlreadyEnabled(string name) {
-    return Result.Warn("already_enabled", new LocParam("name", name));
-  }
-
-  public static Result AlreadyDeleted(string name) {
-    return Result.Warn("already_deleted", new LocParam("name", name));
-  }
-
-  public static Result AlreadyExists(string name) {
-    return Result.Warn("already_exists", new LocParam("name", name));
-  }
-
-  public static Result AlreadyInUse(string name) {
-    return Result.Warn("already_in_use", new LocParam("name", name));
-  }
-
-  public static Result NotVerified(string name) {
-    return Result.Warn("not_verified", new LocParam("name", name));
-  }
-
-  public static Result VerificationRequired(string name) {
-    return Result.Warn("verification_required", new LocParam("name", name));
-  }
-
-  public static Result TooShort(string name) {
-    return Result.Warn("too_short", new LocParam("name", name));
-  }
-
-  public static Result NoAccountFound(string name) {
-    return Result.Warn("no_account_found", new LocParam("name", name));
-  }
-
-  public static Result TooLong(string name) {
-    return Result.Warn("too_long", new LocParam("name", name));
-  }
-
-  public static Result CanNotContainSpace(string name) {
-    return Result.Warn("can_not_contain_space", new LocParam("name", name));
-  }
-
-  public static Result DoNotMatch(string name) {
-    return Result.Warn("do_not_match", new LocParam("name", name));
-  }
-
-  public static Result WrongPassword() {
-    return Result.Warn("wrong_password");
-  }
-
-  public static Result None(string name) {
-    return Result.Warn("none", new LocParam("name", name));
-  }
-
-  #endregion
-
-  #region ERRORS
-
-  public static Result Unauthorized(string name = "User") {
-    return Result.Error("unauthorized", new LocParam("name", name));
-  }
-
-  public static Result Forbidden(string name = "User") {
-    return Result.Error("forbidden", new LocParam("name", name));
-  }
-
-  public static Result UnderMaintenance() {
-    return Result.Error("under_maintenance");
-  }
-
-  public static Result DbInternalError(string operationName) {
-    return Result.Fatal("db_internal_error", new LocParam("name", operationName));
-  }
-
-  #endregion
-}

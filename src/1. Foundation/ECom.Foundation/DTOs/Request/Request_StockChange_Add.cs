@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs.Request;
 
@@ -6,7 +6,7 @@ public class Request_StockChange_Add
 {
   /// <summary>
   ///   0: Decrease
-  ///   1: Create
+  ///   1: New
   /// </summary>
   public StockChangeType Type { get; set; }
 

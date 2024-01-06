@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Routing;
+﻿using ECom.Foundation.Static;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace ECom.Business.Attributes;
 

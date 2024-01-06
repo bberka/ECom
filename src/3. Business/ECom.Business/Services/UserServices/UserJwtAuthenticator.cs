@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.UserServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.UserServices;
 
 public class UserJwtAuthenticator : IUserJwtAuthenticator
 {
@@ -15,13 +17,10 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
                           .AsNoTracking()
                           .Where(x => x.EmailAddress == model.EmailAddress)
                           .SingleOrDefault();
-    if (user is null) return DefResult.NoAccountFound(User.LocKey);
-    if (user.DeleteDate.HasValue)
-      return DefResult.NoAccountFound(User.LocKey);
-    // return DefResult.Invalid(User.LocKey);
     var encryptedPassword = model.Password.ToHashedText();
-    if (!user.Password.Equals(encryptedPassword, StringComparison.Ordinal))
-      return DefResult.NoAccountFound(User.LocKey); //Or invalid password
+    if (user is null
+        || user.DeleteDate.HasValue
+        || !user.Password.Equals(encryptedPassword, StringComparison.Ordinal)) return DomResults.x_is_not_found("account");
     if (user.TwoFactorType != 0) {
       //TODO: implement two factor
     }
@@ -37,10 +36,10 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
       { "TwoFactorType", userDto.TwoFactorType },
       { "IsEmailVerified", userDto.IsEmailVerified },
       { "RegisterDate", userDto.RegisterDate },
-      { EComClaimTypes.UserClaimType, true }
+      { DomClaimTypes.UserClaimType, true }
     };
-    var refresh = EasGenerate.RandomString(ConstantContainer.MaxTokenLength);
-    var expire = DateTime.Now.AddMinutes(EComAppSettings.This.JwtTokenExpireMinutes);
+    var refresh = EasGenerate.RandomString(StaticValues.MAX_TOKEN_LENGTH);
+    var expire = DateTime.Now.AddMinutes(DomAppSettings.This.JwtTokenExpireMinutes);
     var unix = new DateTimeOffset(expire).ToUnixTimeSeconds();
     var token = JwtService.Jwt.GenerateToken(dic, expire);
     var response = new Response_User_Login {
@@ -48,7 +47,7 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
         ExpireUnix = unix,
         Token = token,
         RefreshToken = refresh,
-        ValidForMinutes = EComAppSettings.This.JwtTokenExpireMinutes
+        ValidForMinutes = DomAppSettings.This.JwtTokenExpireMinutes
       },
       User = userDto
     };
@@ -63,7 +62,7 @@ public class UserJwtAuthenticator : IUserJwtAuthenticator
     };
     _unitOfWork.UserSessions.Add(userSession);
     var updateResult = _unitOfWork.Save();
-    if (!updateResult) return DefResult.DbInternalError(nameof(Authenticate));
+    if (!updateResult) return DomResults.db_internal_error(nameof(Authenticate));
 
     return response;
   }

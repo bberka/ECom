@@ -1,16 +1,15 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
 [Table("Roles", Schema = "ECOperation")]
 public sealed class Role : IEntity
 {
-  public const string LocKey = "role";
-  public const string OwnerRoleId = "owner";
+  public const string OWNER_ROLE_ID = "owner";
 
   [Key]
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string Id { get; set; }
 
   // [EnsureOneElement(Name = "permissionType")]

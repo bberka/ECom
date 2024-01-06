@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.DTOs.Request;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.DTOs.Request;
 
 public class Request_Admin_Update : BaseAuthenticatedRequest
 {
@@ -7,23 +9,23 @@ public class Request_Admin_Update : BaseAuthenticatedRequest
 
   [EmailAddress]
   [Required]
-  [MaxLength(ConstantContainer.MaxEmailLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_LENGTH)]
   public string EmailAddress { get; set; }
 
   [Required]
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string RoleId { get; set; }
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string FirstName { get; set; }
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string LastName { get; set; }
 
-  [MinLength(ConstantContainer.MinPhoneLength)]
-  [MaxLength(ConstantContainer.MaxPhoneLength)]
+  [MinLength(StaticValues.MIN_PHONE_LENGTH)]
+  [MaxLength(StaticValues.MAX_PHONE_LENGTH)]
   public string PhoneNumber { get; set; }
 }

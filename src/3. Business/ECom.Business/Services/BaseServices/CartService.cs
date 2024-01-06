@@ -17,7 +17,8 @@ public class CartService : ICartService
 
   public Result AddOrIncreaseProduct(Guid userId, Guid productId) {
     var productExist = _productService.Exists(productId);
-    if (!productExist) return DefResult.NotFound(nameof(Product));
+    if (!productExist)
+      return DomResults.x_is_not_found("product");
     var existing = _unitOfWork.Carts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
     if (existing != null) {
       existing.Count++;
@@ -36,13 +37,15 @@ public class CartService : ICartService
     }
 
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddOrIncreaseProduct));
-    return DefResult.OkAdded(nameof(Cart));
+    if (!res)
+      return DomResults.db_internal_error(nameof(AddOrIncreaseProduct));
+    return DomResults.x_is_added_to_y_successfully("product", "cart");
   }
 
   public Result RemoveOrDecreaseProduct(Guid userId, Guid productId) {
     var exist = _unitOfWork.Carts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
-    if (exist is null) return DefResult.NotFound(nameof(Cart));
+    if (exist is null)
+      return DomResults.x_is_not_found("cart");
     if (exist.Count > 1) {
       exist.Count--;
       _unitOfWork.Carts.Update(exist);
@@ -52,9 +55,9 @@ public class CartService : ICartService
     }
 
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(RemoveOrDecreaseProduct));
-
-    return DefResult.OkRemoved(nameof(Cart));
+    if (!res)
+      return DomResults.db_internal_error(nameof(RemoveOrDecreaseProduct));
+    return DomResults.x_is_removed_successfully_from_y("product", "cart");
   }
 
   public int GetBasketProductCount(Guid userId) {
@@ -69,7 +72,9 @@ public class CartService : ICartService
     var list = _unitOfWork.Carts.Where(x => x.UserId == userId);
     _unitOfWork.Carts.RemoveRange(list);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(ClearCartProducts));
-    return DefResult.OkCleared(nameof(Cart));
+    if (!res)
+      return DomResults.db_internal_error(nameof(ClearCartProducts));
+
+    return DomResults.x_is_cleared_successfully("cart");
   }
 }

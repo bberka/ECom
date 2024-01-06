@@ -1,5 +1,5 @@
 ﻿using ECom.Foundation.Entities;
-using ECom.Foundation.Enum;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs;
 
@@ -23,9 +23,9 @@ public class RoleDto
   }
 
   [Required]
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
-  // [AllowedChars(Chars = ConstantContainer.Alphabet)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
+  // [AllowedChars(Chars = StaticValues.ALPHABET)]
   public string Id { get; set; }
 
   // [EnsureOneElement(Name = "permissionType")]

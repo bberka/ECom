@@ -15,12 +15,12 @@ public class AdminPaymentOptionService : IAdminPaymentOptionService
     var dbData = _unitOfWork.PaymentOptions;
     _unitOfWork.PaymentOptions.RemoveRange(dbData);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdatePaymentOption));
+    if (!res) return DomResults.db_internal_error(nameof(UpdatePaymentOption));
     option.UpdateDate = DateTime.Now;
     _unitOfWork.PaymentOptions.Add(option);
     var res2 = _unitOfWork.Save();
-    if (!res2) return DefResult.DbInternalError(nameof(UpdatePaymentOption));
+    if (!res2) return DomResults.db_internal_error(nameof(UpdatePaymentOption));
     _paymentOptionService.ClearCache();
-    return DefResult.OkUpdated(PaymentOption.LocKey);
+    return DomResults.x_is_updated_successfully("payment_option");
   }
 }

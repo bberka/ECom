@@ -1,6 +1,6 @@
 ﻿using ECom.Foundation.DTOs.Request;
 using ECom.Foundation.Entities;
-using ECom.Foundation.Enum;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Abstract.Services.Base;
 
@@ -20,7 +20,7 @@ public interface IProductService
   ///   <see cref="ProductImage" />, <see cref="ProductDetail" />
   ///   without including <see cref="ProductComment" /> or related data
   /// </returns>
-  List<Product> GetProducts(List<Guid> productIds, ushort page, Language culture = ConstantContainer.DefaultLanguage);
+  List<Product> GetProducts(List<Guid> productIds, ushort page, CultureType culture = StaticValues.DEFAULT_LANGUAGE);
 
   /// <summary>
   /// </summary>
@@ -32,7 +32,7 @@ public interface IProductService
   ///   <see cref="ProductImage" />, <see cref="ProductDetail" />
   ///   without including <see cref="ProductComment" /> or related data
   /// </returns>
-  List<Product> GetProducts(ushort page, Language culture = ConstantContainer.DefaultLanguage);
+  List<Product> GetProducts(ushort page, CultureType culture = StaticValues.DEFAULT_LANGUAGE);
 
   /// <summary>
   /// </summary>
@@ -56,12 +56,12 @@ public interface IProductService
   /// </returns>
   List<ProductComment> GetProductComments(Guid productId, ushort page);
 
-  Result<int> AddProductComment(Guid userId, Request_ProductComment_Add model);
+  Result AddProductComment(Guid userId, Request_ProductComment_Add model);
 
   //CustomResult<int> AddCommentImage(IFormFile file, Guid UserId,int commentId);
   //ListProducts<ProductDetail>? GetProductDetails(long productNo);
-  //ProductDetail? GetProductDetails(long productNo, Language type = Language.Default);
-  //ProductDetail GetProductDetailsSingle(long productNo, Language type = Language.Default);
+  //ProductDetail? GetProductDetails(long productNo, LanguagePacks type = LanguagePacks.Default);
+  //ProductDetail GetProductDetailsSingle(long productNo, LanguagePacks type = LanguagePacks.Default);
   //Product? GetProductSingle(long productNo);
   //ProductVariant? GetVariant(int id);
   //ListProducts<Product> GetVariantProducts(int variantId);

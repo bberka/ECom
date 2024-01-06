@@ -1,5 +1,5 @@
 ﻿using ECom.Foundation.Entities;
-using ECom.Foundation.Enum;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Abstract.Services;
 
@@ -7,14 +7,14 @@ public interface IContentService
 {
   List<Content> GetContents(Guid id);
 
-  Result<Content> GetContent(Guid id, Language language);
-  Content GetContentEnsureNotNull(Guid id, Language language);
+  Result<Content> GetContent(Guid id, CultureType cultureType);
+  Content GetContentEnsureNotNull(Guid id, CultureType cultureType);
 
-  Result AddOrUpdateContent(Guid id, Language language, string value);
+  Result AddOrUpdateContent(Guid id, CultureType cultureType, string value);
 
-  Result<Guid> AddNewContent(Language language, string value);
+  Result<Guid> AddNewContent(CultureType cultureType, string value);
 
-  Result AddOrUpdateContents(Guid id, Dictionary<Language, string> languageAndValuesDictionary);
+  Result AddOrUpdateContents(Guid id, Dictionary<CultureType, string> languageAndValuesDictionary);
 
-  bool ContentExists(Guid id, Language language);
+  bool ContentExists(Guid id, CultureType cultureType);
 }

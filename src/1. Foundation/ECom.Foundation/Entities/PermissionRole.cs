@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
@@ -13,8 +13,8 @@ public sealed class PermissionRole
     PermissionType = permissionType;
   }
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string RoleId { get; set; }
 
   public AdminPermissionType PermissionType { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("ProductComments", Schema = "ECPrivate")]
 public class ProductComment : IEntity
@@ -12,8 +14,8 @@ public class ProductComment : IEntity
   public bool IsHidden { get; set; } = false;
   public bool IsShowComment => IsApproved && !IsHidden;
 
-  [MaxLength(ConstantContainer.MaxProductCommentLength)]
-  [MinLength(ConstantContainer.MinProductCommentLength)]
+  [MaxLength(StaticValues.MAX_PRODUCT_COMMENT_LENGTH)]
+  [MinLength(StaticValues.MIN_PRODUCT_COMMENT_LENGTH)]
   public string Comment { get; set; }
 
   [Range(0, 5)]

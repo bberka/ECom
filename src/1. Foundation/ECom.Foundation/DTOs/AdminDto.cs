@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs;
 
@@ -12,19 +12,19 @@ public class AdminDto
   public string[] Permissions { get; set; } = Array.Empty<string>();
   public DateTime? DeleteDate { get; set; }
 
-  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public CultureType Culture { get; set; } = StaticValues.DEFAULT_LANGUAGE;
 
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string FirstName { get; set; }
 
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string LastName { get; set; }
 
-  [MinLength(ConstantContainer.MinPhoneLength)]
-  [MaxLength(ConstantContainer.MaxPhoneLength)]
+  [MinLength(StaticValues.MIN_PHONE_LENGTH)]
+  [MaxLength(StaticValues.MAX_PHONE_LENGTH)]
   public string PhoneNumber { get; set; }
 }

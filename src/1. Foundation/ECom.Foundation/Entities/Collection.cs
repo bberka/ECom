@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("Collections", Schema = "ECPrivate")]
 public class Collection : IEntity
@@ -10,8 +12,8 @@ public class Collection : IEntity
   public DateTime? UpdateDate { get; set; }
   public DateTime? DeleteDate { get; set; }
 
-  [MaxLength(ConstantContainer.MaxNameLength)]
-  [MinLength(ConstantContainer.MinNameLength)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
   public string Name { get; set; }
 
   public Guid UserId { get; set; }

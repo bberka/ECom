@@ -1,4 +1,5 @@
 ﻿using ECom.Foundation.DTOs.Response;
+using ECom.Foundation.Static;
 
 namespace ECom.Service.UserApi.Controllers;
 
@@ -16,7 +17,7 @@ public class AuthController : UserControllerBase
   [Endpoint("/user/auth/login", HttpMethodType.POST)]
   public Result<Response_User_Login> Login(Request_Login request) {
     var res = UserJwtAuthenticator.Authenticate(request);
-    var userId = res.Data?.User.Id;
+    var userId = res.Value?.User.Id;
     LogService.UserLog(UserActionType.Login, res, userId, request.EmailAddress);
     return res;
   }

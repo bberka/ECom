@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Validators;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Validators;
 
 public class ChangePasswordRequestValidator : AbstractValidator<Request_Password_Change>,
                                               IValidator<Request_Password_Change>

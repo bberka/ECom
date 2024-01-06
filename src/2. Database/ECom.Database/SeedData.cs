@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Constants;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Database;
 
@@ -11,8 +11,8 @@ internal static class SeedData
       PhoneNumber = "5526667788",
       FirstName = "John",
       LastName = "Doe",
-      Culture = ConstantContainer.DefaultLanguage,
-      RegisterDate = ConstantContainer.DefaultDateTime,
+      Culture = StaticValues.DEFAULT_LANGUAGE,
+      RegisterDate = StaticValues.DEFAULT_DATE_TIME,
       Password = "6759BF4BD24209B74B0B6374921F45D3317CFBA9B1F72374563F8E25B49108DC", //123456789
       TwoFactorKey = null,
       IsEmailVerified = true,
@@ -24,21 +24,21 @@ internal static class SeedData
     new Admin {
       EmailAddress = "owner@mail.com",
       Password = "6759BF4BD24209B74B0B6374921F45D3317CFBA9B1F72374563F8E25B49108DC", //123456789
-      RoleId = Role.OwnerRoleId,
+      RoleId = Role.OWNER_ROLE_ID,
       TwoFactorType = TwoFactorType.None,
       Id = new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"),
       DeleteDate = null,
-      RegisterDate = ConstantContainer.DefaultDateTime,
+      RegisterDate = StaticValues.DEFAULT_DATE_TIME,
       TwoFactorKey = null,
       PhoneNumber = "5526667788",
       FirstName = "John",
       LastName = "Doe",
-      Culture = ConstantContainer.DefaultLanguage
+      Culture = StaticValues.DEFAULT_LANGUAGE
     }
   };
 
   internal static readonly CompanyInformation CompanyInformation = new() {
-    Key = ConstantContainer.SingletonDbTableKey,
+    Key = StaticValues.SINGLETON_DB_TABLE_KEY,
     CompanyAddress = "Worldwide",
     CompanyName = "ZDK Network",
     ContactEmail = "contact@zdk.network",
@@ -49,14 +49,15 @@ internal static class SeedData
   internal static readonly Option Option = new();
 
   internal static readonly Role OwnerRole = new() {
-    Id = Role.OwnerRoleId
+    Id = Role.OWNER_ROLE_ID
   };
 
-  internal static readonly List<PermissionRole> OwnerPermissionRoles = ConstantContainer.AdminPermissionTypes
-                                                                                        .Select(x => new PermissionRole {
-                                                                                          PermissionType = x,
-                                                                                          RoleId = Role.OwnerRoleId
-                                                                                        }).ToList();
+  internal static readonly List<PermissionRole> OwnerPermissionRoles = StaticValues.ADMIN_PERMISSION_TYPES
+                                                                                   .Select(x => new PermissionRole {
+                                                                                     PermissionType = x,
+                                                                                     RoleId = Role.OWNER_ROLE_ID
+                                                                                   })
+                                                                                   .ToList();
 
   public static List<ProductAttributeType> ProductAttributes => new() {
     new ProductAttributeType {

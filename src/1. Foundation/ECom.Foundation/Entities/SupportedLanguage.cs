@@ -6,9 +6,9 @@
 //   [Id]
 //   public int Id { get; set; }
 //
-//   [MaxLength(ConstantContainer.MaxCultureLength)]
+//   [MaxLength(StaticValues.MaxCultureLength)]
 //   public string Culture { get; set; }
 //
-//   [MaxLength(ConstantContainer.MaxNameLength)]
+//   [MaxLength(StaticValues.MaxNameLength)]
 //   public string FullCultureName { get; set; }
 // }

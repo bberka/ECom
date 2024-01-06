@@ -1,5 +1,5 @@
 ﻿using ECom.Foundation.DTOs;
-using ECom.Foundation.Enum;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Abstract.Services.Admin;
 

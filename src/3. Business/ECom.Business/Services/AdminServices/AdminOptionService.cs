@@ -18,12 +18,12 @@ public class AdminOptionService : IAdminOptionService
     var dbData = _unitOfWork.Options;
     _unitOfWork.Options.RemoveRange(dbData);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateOption));
+    if (!res) return DomResults.db_internal_error(nameof(UpdateOption));
     option.UpdateDate = DateTime.Now;
     _unitOfWork.Options.Add(option);
     var res2 = _unitOfWork.Save();
-    if (!res2) return DefResult.DbInternalError(nameof(UpdateOption));
+    if (!res2) return DomResults.db_internal_error(nameof(UpdateOption));
     _optionService.SetCacheValue(option);
-    return DefResult.OkUpdated(nameof(Option));
+    return DomResults.x_is_updated_successfully("option");
   }
 }

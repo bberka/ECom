@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("DiscountCoupons", Schema = "ECPrivate")]
 [Index(nameof(Coupon))]
@@ -13,7 +15,7 @@ public class DiscountCoupon : IEntity
 
   public float DiscountPercent { get; set; }
 
-  [MaxLength(ConstantContainer.MaxCouponLength)]
-  [MinLength(ConstantContainer.MinCouponLength)]
+  [MaxLength(StaticValues.MAX_COUPON_LENGTH)]
+  [MinLength(StaticValues.MIN_COUPON_LENGTH)]
   public string Coupon { get; set; }
 }

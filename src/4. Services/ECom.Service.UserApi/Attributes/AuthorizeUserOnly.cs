@@ -1,8 +1,10 @@
-﻿namespace ECom.Service.UserApi.Attributes;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Service.UserApi.Attributes;
 
 public sealed class AuthorizeUserOnly : AuthorizeAttribute
 {
   public AuthorizeUserOnly() {
-    Policy = EComClaimTypes.UserPolicy;
+    Policy = DomClaimTypes.UserPolicy;
   }
 }

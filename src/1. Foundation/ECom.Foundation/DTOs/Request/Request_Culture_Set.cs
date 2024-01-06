@@ -7,7 +7,7 @@ public class Request_Culture_Set
   [MaxLength(6)]
   [MinLength(2)]
   [FromQuery]
-  public string Culture { get; set; } = "English-US";
+  public string Culture { get; set; } = "en_us-US";
 
   [FromQuery]
   public string RedirectUri { get; set; }

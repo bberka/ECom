@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.BaseServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.BaseServices;
 
 public class OptionService : IOptionService
 {
@@ -32,7 +34,7 @@ public class OptionService : IOptionService
 
   public Option GetFromDb() {
     var dbData = _unitOfWork.Options.AsNoTracking().Single(x => x.Key == true);
-    if (dbData is null) throw new NotFoundException(nameof(Option));
+    if (dbData is null) throw new NotFoundException("option");
     return dbData;
   }
 }

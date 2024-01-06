@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("EmailVerifyTokens", Schema = "ECPrivate")]
 [Index(nameof(Token))]
@@ -11,12 +13,12 @@ public class EmailVerifyToken : IEntity
   public DateTime ExpireDate { get; set; }
   public DateTime? UseDate { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
-  [MinLength(ConstantContainer.MinTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
+  [MinLength(StaticValues.MIN_TOKEN_LENGTH)]
   public string Token { get; set; }
 
   [EmailAddress]
-  [MaxLength(ConstantContainer.MaxEmailLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_LENGTH)]
   public string EmailAddress { get; set; }
 
   public Guid UserId { get; set; }

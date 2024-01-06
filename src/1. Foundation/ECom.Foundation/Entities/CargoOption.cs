@@ -1,10 +1,10 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("CargoOptions", Schema = "ECOption")]
 public class CargoOption : IEntity
 {
-  public const string LocKey = "cargo_option";
-
   [Key]
 
   public Guid Id { get; set; }
@@ -17,8 +17,8 @@ public class CargoOption : IEntity
 
   public DateTime? DeleteDate { get; set; }
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
 
   public string Name { get; set; }
 

@@ -16,7 +16,7 @@ public static class UserMapper
       PhoneNumber = requestUser.PhoneNumber,
       CitizenShipNumber = requestUser.CitizenshipNumber,
       RegisterDate = DateTime.Now,
-      Culture = requestUser.PreferredLanguage
+      Culture = requestUser.PreferredCultureType
     };
   }
 

@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using ECom.Foundation.Static;
+using Serilog;
 using Serilog.ConfigHelper;
 using Serilog.ConfigHelper.Enricher;
 using Serilog.ConfigHelper.Enricher.HttpRequestEnrichers;
@@ -13,8 +14,8 @@ public static class EComLoggerHelper
   public static void Configure(bool enableConsoleLogging = false) {
     Log.Logger = GetDefaultConfiguration(enableConsoleLogging)
       .CreateLogger();
-    AppDomain.CurrentDomain.ProcessExit += EComEvents.OnProcessExit;
-    AppDomain.CurrentDomain.UnhandledException += EComEvents.OnUnhandledException;
+    AppDomain.CurrentDomain.ProcessExit += DomEvents.OnProcessExit;
+    AppDomain.CurrentDomain.UnhandledException += DomEvents.OnUnhandledException;
   }
 
   private static LoggerConfiguration GetDefaultConfiguration(bool enableConsoleLogging = false) {

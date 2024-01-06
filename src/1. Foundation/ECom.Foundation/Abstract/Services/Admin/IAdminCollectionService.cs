@@ -1,6 +1,6 @@
 ﻿using ECom.Foundation.DTOs.Request;
 using ECom.Foundation.Entities;
-using ECom.Foundation.Enum;
+using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Abstract.Services.Admin;
 
@@ -13,5 +13,5 @@ public interface IAdminCollectionService
   public Result<List<CollectionProduct>> GetCollectionProducts(
     Guid collectionId,
     ushort page,
-    Language language = ConstantContainer.DefaultLanguage);
+    CultureType cultureType = StaticValues.DEFAULT_LANGUAGE);
 }

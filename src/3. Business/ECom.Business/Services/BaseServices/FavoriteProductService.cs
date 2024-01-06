@@ -25,9 +25,9 @@ public class FavoriteProductService : IFavoriteProductService
 
   public Result AddFavoriteProduct(Guid userId, Guid productId) {
     var userExist = _unitOfWork.Users.Any(x => x.Id == userId);
-    if (!userExist) return DefResult.NotFound(User.LocKey);
+    if (!userExist) return DomResults.x_is_not_found("user");
     var productExist = _productService.Exists(productId);
-    if (!productExist) return DefResult.NotFound(nameof(Product));
+    if (!productExist) return DomResults.x_is_not_found("product");
     var data = new FavoriteProduct {
       RegisterDate = DateTime.Now,
       ProductId = productId,
@@ -35,20 +35,19 @@ public class FavoriteProductService : IFavoriteProductService
     };
     _unitOfWork.FavoriteProducts.Add(data);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddFavoriteProduct));
-    return DefResult.OkAdded(nameof(FavoriteProduct));
+    if (!res) return DomResults.db_internal_error(nameof(AddFavoriteProduct));
+    return DomResults.x_is_added_successfully("favorite_product");
   }
 
   public Result RemoveFavoriteProduct(Guid userId, Guid productId) {
     var userExist = _unitOfWork.Users.Any(x => x.Id == userId);
-    if (!userExist) return DefResult.NotFound(User.LocKey);
+    if (!userExist) return DomResults.x_is_not_found("user");
     var favProduct =
       _unitOfWork.FavoriteProducts.FirstOrDefault(x => x.UserId == userId && x.ProductId == productId);
-    if (favProduct is null) return DefResult.NotFound(nameof(FavoriteProduct));
+    if (favProduct is null) return DomResults.x_is_not_found("favorite_product");
     _unitOfWork.FavoriteProducts.Remove(favProduct);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(RemoveFavoriteProduct));
-
-    return DefResult.OkRemoved(nameof(FavoriteProduct));
+    if (!res) return DomResults.db_internal_error(nameof(RemoveFavoriteProduct));
+    return DomResults.x_is_removed_successfully_from_y("product", "favorites");
   }
 }

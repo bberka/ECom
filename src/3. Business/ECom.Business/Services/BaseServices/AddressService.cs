@@ -17,8 +17,8 @@ public class AddressService : IAddressService
   public Result<Address> GetAddress(Guid addressId) {
     ArgumentNullException.ThrowIfNull(addressId);
     var address = _unitOfWork.Addresses.Find(addressId);
-    if (address is null) return DefResult.NotFound(nameof(Address));
-    if (address.DeleteDate.HasValue) return DefResult.Deleted(nameof(Address));
+    if (address is null || address.DeleteDate.HasValue)
+      return DomResults.x_is_not_found("address");
     return address;
   }
 

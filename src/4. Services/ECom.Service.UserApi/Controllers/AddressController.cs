@@ -1,4 +1,6 @@
-﻿namespace ECom.Service.UserApi.Controllers;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Service.UserApi.Controllers;
 
 [AuthorizeUserOnly]
 public class AddressController : UserControllerBase
@@ -30,7 +32,7 @@ public class AddressController : UserControllerBase
     var userId = HttpContext.GetAuthId();
     var res = AddressService.GetUserAddresses(userId);
     LogService.UserLog(UserActionType.ListAddresses, res, userId);
-    return res.Data;
+    return res.Value;
   }
 
   [Endpoint("/user/address/update", HttpMethodType.POST)]

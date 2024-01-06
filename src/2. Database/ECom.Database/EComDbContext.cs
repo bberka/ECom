@@ -1,5 +1,5 @@
 ﻿using ECom.Database.Configurations;
-using ECom.Foundation.Constants;
+using ECom.Foundation.Static;
 using Microsoft.Extensions.Logging;
 
 namespace ECom.Database;
@@ -65,7 +65,7 @@ public class EComDbContext : DbContext
   public DbSet<EmailQueue> EmailQueue { get; set; }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-    optionsBuilder.UseSqlServer(EComAppSettings.This.DatabaseConnectionString);
+    optionsBuilder.UseSqlServer(DomAppSettings.This.DatabaseConnectionString);
 
     optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
   }

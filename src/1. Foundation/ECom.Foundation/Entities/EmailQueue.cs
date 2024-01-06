@@ -1,4 +1,6 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("EmailQueue", Schema = "ECPrivate")]
 public sealed class EmailQueue : IEntity
@@ -13,10 +15,10 @@ public sealed class EmailQueue : IEntity
 
   public string EmailAddress { get; set; }
 
-  [MaxLength(ConstantContainer.MaxEmailTitleLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_TITLE_LENGTH)]
   public string Title { get; set; }
 
-  [MaxLength(ConstantContainer.MaxEmailContentLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_CONTENT_LENGTH)]
   public string Content { get; set; }
 
   public int RetryCount { get; set; } = 0;

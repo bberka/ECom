@@ -3,12 +3,14 @@ using AspNetCore.Authorization.Extender;
 using ECom.Business.Filters;
 using ECom.Foundation.Lib;
 using ECom.Foundation.Models;
+using ECom.Foundation.Static;
 using ECom.Service.AdminApi;
 using ECom.Service.PublicApi;
 using ECom.Service.UserApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace ECom.Api;
 
@@ -27,7 +29,7 @@ public static class ApiResolver
 
 
   public static void SetupApplication(WebApplication app) {
-    if (EComAppSettings.This.EnableSwagger || app.Environment.IsDevelopment()) {
+    if (DomAppSettings.This.EnableSwagger || app.Environment.IsDevelopment()) {
       app.UseSwagger(settings => { settings.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
       app.UseSwaggerUI(x => {
         x.SwaggerEndpoint($"/swagger/{AdminServiceResolver.DocName}/swagger.json", AdminServiceResolver.DocTitle);
@@ -105,28 +107,23 @@ public static class ApiResolver
            })
            .AddJwtBearer("Bearer",
                          token => {
-                           if (ConstantContainer.IsDevelopment())
+                           if (StaticValues.IsDevelopment)
                              token.RequireHttpsMetadata = false;
                            token.SaveToken = true;
                            token.TokenValidationParameters = new TokenValidationParameters {
                              ValidateIssuerSigningKey = true,
-                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(EComAppSettings.This.JwtSecret)),
-                             ValidateIssuer = EComAppSettings.This.JwtValidateIssuer,
-                             ValidateAudience = EComAppSettings.This.JwtValidateAudience,
+                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(DomAppSettings.This.JwtSecret)),
+                             ValidateIssuer = DomAppSettings.This.JwtValidateIssuer,
+                             ValidateAudience = DomAppSettings.This.JwtValidateAudience,
                              RequireExpirationTime = true,
                              ValidateLifetime = true,
                              ClockSkew = TimeSpan.Zero
                            };
                          });
 
-    // services.AddAuthentication(options => {
-    //           options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    //           options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-    //         })
-    //         .AddCookie();
     builder.Services.AddAuthorization(options => {
-      options.AddPolicy(EComClaimTypes.AdminPolicy, policy => policy.RequireClaim(EComClaimTypes.AdminClaimType));
-      options.AddPolicy(EComClaimTypes.UserPolicy, policy => policy.RequireClaim(EComClaimTypes.UserClaimType));
+      options.AddPolicy(DomClaimTypes.AdminPolicy, policy => policy.RequireClaim(DomClaimTypes.AdminClaimType));
+      options.AddPolicy(DomClaimTypes.UserPolicy, policy => policy.RequireClaim(DomClaimTypes.UserClaimType));
     });
     var dictionary = new Dictionary<object, object>();
     var permissions = Enum.GetNames(typeof(AdminPermissionType));
@@ -136,67 +133,15 @@ public static class ApiResolver
   }
 
   public static WebApplicationBuilder ConfigureApplicationControllers(this WebApplicationBuilder builder) {
-    // var assembly = typeof(Status).Assembly;
     builder.Services
            .AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); })
            .AddApplicationPart(typeof(AdminServiceResolver).Assembly)
            .AddApplicationPart(typeof(UserServiceResolver).Assembly)
            .AddApplicationPart(typeof(PublicServiceResolver).Assembly)
            .ConfigureApiBehaviorOptions(
-                                        options => {
-                                          options.InvalidModelStateResponseFactory = c => {
-                                            var firstModelTypeName = c.ActionDescriptor.Parameters.FirstOrDefault()?.ParameterType.Name ?? "N/A";
-                                            var errors = new List<Error>();
-                                            foreach (var modelState in c.ModelState)
-                                            foreach (var error in modelState.Value.Errors) {
-                                              var message = error.Exception?.Message ?? error.ErrorMessage;
-                                              var propertyName = modelState.Key;
-                                              errors.Add(new Error("ValidationFailed",
-                                                                   new[] {
-                                                                     new LocParam("name", propertyName),
-                                                                     new LocParam("errorMessage", message)
-                                                                   }));
-                                            }
-
-                                            return new BadRequestObjectResult(DefResult.Validation(errors));
-                                          };
-                                        })
+                                        options => { options.InvalidModelStateResponseFactory = c => { return new BadRequestObjectResult(DomResults.validation_error(c.ModelState)); }; })
            // .AddApplicationPart(assembly)
            .AddControllersAsServices();
     return builder;
   }
-
-
-  // public static void InjectAutoMapper(this IServiceCollection services, IConfiguration configuration) {
-  //   services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-  // }
-
-//public static WebApplicationBuilder AddAuthenticationPolicies(this WebApplicationBuilder builder) {
-//  builder.Services
-//    .AddAuthentication(op => {
-//      op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//      op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//      op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//    })
-//    .AddJwtBearer("Bearer", token => {
-//      if (ConstantMgr.IsDevelopment())
-//        token.RequireHttpsMetadata = false;
-//      token.SaveToken = true;
-//      token.TokenValidationParameters = new TokenValidationParameters {
-//        ValidateIssuerSigningKey = true,
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(JwtOption.This.Secret)),
-//        ValidateIssuer = JwtOption.This.ValidateIssuer,
-//        ValidateAudience = JwtOption.This.ValidateAudience,
-//        RequireExpirationTime = true,
-//        ValidateLifetime = true,
-//        ClockSkew = TimeSpan.Zero
-//      };
-//    });
-
-//  builder.Services.AddAuthorization(options => {
-//    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminOnly"));
-//    options.AddPolicy("UserOnly", policy => policy.RequireClaim("UserOnly"));
-//  });
-//  return builder;
-//}
 }

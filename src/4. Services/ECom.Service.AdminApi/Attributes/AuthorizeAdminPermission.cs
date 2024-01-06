@@ -1,4 +1,6 @@
-﻿namespace ECom.Service.AdminApi.Attributes;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Service.AdminApi.Attributes;
 
 public class AuthorizeAdminPermission : AuthorizeAttribute
 {

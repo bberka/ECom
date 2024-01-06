@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs.Response;
 
@@ -18,7 +18,7 @@ public class Response_Option
 
   public int PasswordResetTimeoutMinutes { get; set; } = 30;
 
-  public CurrencyType DefaultCurrencyType { get; set; } = CurrencyType.Lira;
+  public CurrencyType DefaultCurrencyType { get; set; } = CurrencyType.TRY;
 
   public bool ShowStock { get; set; } = false;
 

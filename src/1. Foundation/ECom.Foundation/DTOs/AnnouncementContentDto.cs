@@ -1,12 +1,12 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.DTOs;
 
 public class AnnouncementContentDto
 {
-  [MinLength(ConstantContainer.MinAnnouncementMessageLength)]
-  [MaxLength(ConstantContainer.MaxAnnouncementMessageLength)]
+  [MinLength(StaticValues.MIN_ANNOUNCEMENT_MESSAGE_LENGTH)]
+  [MaxLength(StaticValues.MAX_ANNOUNCEMENT_MESSAGE_LENGTH)]
   public string Message { get; set; } = null!;
 
-  public Language Language { get; set; }
+  public CultureType CultureType { get; set; }
 }

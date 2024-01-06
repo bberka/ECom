@@ -1,12 +1,10 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
 [Table("Admins", Schema = "ECOperation")]
 public class Admin : IEntity
 {
-  public const string LocKey = "admin";
-
   [Key]
   public Guid Id { get; set; }
 
@@ -14,21 +12,21 @@ public class Admin : IEntity
   public DateTime? UpdateDate { get; set; }
   public DateTime? DeleteDate { get; set; }
 
-  [MinLength(ConstantContainer.MinHashedPasswordLength)]
-  [MaxLength(ConstantContainer.MaxHashedPasswordLength)]
+  [MinLength(StaticValues.MIN_HASHED_PASSWORD_LENGTH)]
+  [MaxLength(StaticValues.MAX_HASHED_PASSWORD_LENGTH)]
   public string Password { get; set; }
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string FirstName { get; set; }
 
 
-  [MinLength(ConstantContainer.MinNameLength)]
-  [MaxLength(ConstantContainer.MaxNameLength)]
+  [MinLength(StaticValues.MIN_NAME_LENGTH)]
+  [MaxLength(StaticValues.MAX_NAME_LENGTH)]
   public string LastName { get; set; }
 
   [EmailAddress]
-  [MaxLength(ConstantContainer.MaxEmailLength)]
+  [MaxLength(StaticValues.MAX_EMAIL_LENGTH)]
   public string EmailAddress { get; set; }
 
 
@@ -48,9 +46,9 @@ public class Admin : IEntity
   public Role Role { get; set; } = null!;
   public virtual List<AdminLog> AdminLogs { get; set; }
 
-  public Language Culture { get; set; } = ConstantContainer.DefaultLanguage;
+  public CultureType Culture { get; set; } = StaticValues.DEFAULT_LANGUAGE;
 
-  [MinLength(ConstantContainer.MinPhoneLength)]
-  [MaxLength(ConstantContainer.MaxPhoneLength)]
+  [MinLength(StaticValues.MIN_PHONE_LENGTH)]
+  [MaxLength(StaticValues.MAX_PHONE_LENGTH)]
   public string PhoneNumber { get; set; }
 }

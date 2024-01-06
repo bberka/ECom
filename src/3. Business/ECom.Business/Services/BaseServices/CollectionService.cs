@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.BaseServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.BaseServices;
 
 public class CollectionService : ICollectionService
 {
@@ -10,8 +12,8 @@ public class CollectionService : ICollectionService
 
   public Result<Collection> GetCollection(Guid userId, Guid id) {
     var collection = _unitOfWork.Collections.Find(id);
-    if (collection is null) return DefResult.NotFound(nameof(Collection));
-    if (collection.UserId == userId) return DefResult.Unauthorized();
+    if (collection is null) return DomResults.x_is_not_found("Collection");
+    if (collection.UserId == userId) return DomResults.unauthorized();
     return collection;
   }
 
@@ -27,31 +29,33 @@ public class CollectionService : ICollectionService
     };
     _unitOfWork.Collections.Add(clc);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(CreateCollection));
-    return DefResult.OkAdded(nameof(Collection));
+    if (!res) return DomResults.db_internal_error(nameof(CreateCollection));
+    return DomResults.x_is_added_successfully("collection");
   }
 
   public Result DeleteCollection(Guid userId, Guid collectionId) {
     var collectionResult = GetCollection(userId, collectionId);
-    if (!collectionResult.Status) return collectionResult;
+    if (!collectionResult.Status) return collectionResult.ToResult();
     var collectionProducts = _unitOfWork.CollectionProducts.Where(x => x.CollectionId == collectionId)
                                         .Include(x => x.Collection);
     if (collectionProducts.Any()) _unitOfWork.CollectionProducts.RemoveRange(collectionProducts);
-    _unitOfWork.Collections.Remove(collectionResult.Data!);
+    _unitOfWork.Collections.Remove(collectionResult.Value!);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(DeleteCollection));
-    return DefResult.OkDeleted(nameof(Collection));
+    if (!res) return DomResults.db_internal_error(nameof(DeleteCollection));
+    return DomResults.x_is_deleted_successfully("collection");
   }
 
   public Result<Collection> GetCollection(Guid id) {
     var collection = _unitOfWork.Collections.Find(id);
-    if (collection is null) return DefResult.NotFound(nameof(Collection));
+    if (collection is null) return DomResults.x_is_not_found("collection");
     return collection;
   }
 
 
-  public Result<List<CollectionProduct>> GetCollectionProducts(Guid userId, Guid id, ushort page,
-                                                               Language culture = ConstantContainer.DefaultLanguage) {
+  public Result<List<CollectionProduct>> GetCollectionProducts(Guid userId,
+                                                               Guid id,
+                                                               ushort page,
+                                                               CultureType culture = StaticValues.DEFAULT_LANGUAGE) {
     var collectionResult = GetCollection(userId, id);
     if (!collectionResult.Status) return collectionResult.ToResult();
     return _unitOfWork.CollectionProducts.Where(x => x.CollectionId == id)
@@ -62,11 +66,11 @@ public class CollectionService : ICollectionService
 
   public Result UpdateCollection(Guid userId, Request_Collection_Update model) {
     var collectionResult = GetCollection(userId, model.CollectionId);
-    if (!collectionResult.Status) return collectionResult;
-    collectionResult.Data!.Name = model.CollectionName;
-    _unitOfWork.Collections.Update(collectionResult.Data);
+    if (!collectionResult.Status) return collectionResult.ToResult();
+    collectionResult.Value!.Name = model.CollectionName;
+    _unitOfWork.Collections.Update(collectionResult.Value);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(UpdateCollection));
-    return DefResult.OkUpdated(nameof(Collection));
+    if (!res) return DomResults.db_internal_error(nameof(UpdateCollection));
+    return DomResults.x_is_updated_successfully("collection");
   }
 }

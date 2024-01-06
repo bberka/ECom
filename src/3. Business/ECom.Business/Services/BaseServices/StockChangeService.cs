@@ -18,9 +18,9 @@ public class StockChangeService : IAdminStockService
   public Result AddStockChange(Request_StockChange_Add model) {
     var productExists = _unitOfWork.Products.Any(x => x.Id == model.ProductId);
     var productExist = _productService.Exists(model.ProductId);
-    if (!productExist) return DefResult.NotFound(nameof(Product));
+    if (!productExist) return DomResults.x_is_not_found("product");
     var supplierExist = _unitOfWork.Suppliers.Any(x => x.Id == model.SupplierId);
-    if (!supplierExist) return DefResult.NotFound(nameof(Supplier));
+    if (!supplierExist) return DomResults.x_is_not_found("supplier");
     var stockChange = new StockChange {
       ProductId = model.ProductId,
       Cost = model.Cost,
@@ -31,8 +31,8 @@ public class StockChangeService : IAdminStockService
     };
     _unitOfWork.StockChanges.Add(stockChange);
     var res = _unitOfWork.Save();
-    if (!res) return DefResult.DbInternalError(nameof(AddStockChange));
-    return DefResult.OkAdded(nameof(StockChange));
+    if (!res) return DomResults.db_internal_error(nameof(AddStockChange));
+    return DomResults.x_is_added_successfully("stock_change");
   }
 
   public Result DecreaseStockOnOrder(int productId, int quantity) {

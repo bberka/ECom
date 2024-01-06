@@ -1,11 +1,10 @@
-﻿namespace ECom.Foundation.Entities;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Foundation.Entities;
 
 [Table("PaymentOptions", Schema = "ECOption")]
 public class PaymentOption : IEntity
 {
-  public const string LocKey = "payment_option";
-
-
   [Key]
   public bool Key { get; set; } = true;
 
@@ -42,62 +41,62 @@ public class PaymentOption : IEntity
   public float CashOnDeliveryTax { get; set; }
 
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? IyzicoApiKey { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? IyzicoSecretKey { get; set; }
 
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? PayTrMerchantId { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? PayTrMerchantKey { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? PayTrMerchantSalt { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? PayTrInstallment { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
 
   public string? StripeApiKey { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
 
   public string? StripeClientId { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
 
   public string? ShopierUsername { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
 
   public string? ShopierPassword { get; set; }
 
 
   public bool IncludeTaxToViewPrice { get; set; } = true;
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? LiraBankTransferIban { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? LiraBankTransferSwift { get; set; }
 
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? DollarBankTransferIban { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? DollarBankTransferSwift { get; set; }
 
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? EuroBankTransferIban { get; set; }
 
-  [MaxLength(ConstantContainer.MaxTokenLength)]
+  [MaxLength(StaticValues.MAX_TOKEN_LENGTH)]
   public string? EuroBankTransferSwift { get; set; }
 
 

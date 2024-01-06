@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using ECom.Foundation.Static;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ECom.Service.AdminApi.Controllers;
 

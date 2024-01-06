@@ -1,4 +1,6 @@
-﻿namespace ECom.Service.UserApi.Controllers;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Service.UserApi.Controllers;
 
 public class PasswordController : UserControllerBase
 {

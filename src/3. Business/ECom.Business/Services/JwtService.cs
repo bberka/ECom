@@ -1,8 +1,10 @@
-﻿namespace ECom.Business.Services;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services;
 
 public static class JwtService
 {
-  public static EasJWT Jwt { get; set; } = new(EComAppSettings.This.JwtSecret,
-                                               EComAppSettings.This.JwtIssuer,
-                                               EComAppSettings.This.JwtAudience);
+  public static EasJWT Jwt { get; set; } = new(DomAppSettings.This.JwtSecret,
+                                               DomAppSettings.This.JwtIssuer,
+                                               DomAppSettings.This.JwtAudience);
 }

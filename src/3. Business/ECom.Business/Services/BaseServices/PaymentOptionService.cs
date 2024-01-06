@@ -1,4 +1,6 @@
-﻿namespace ECom.Business.Services.BaseServices;
+﻿using ECom.Foundation.Static;
+
+namespace ECom.Business.Services.BaseServices;
 
 public class PaymentOptionService : IPaymentOptionService
 {
@@ -24,7 +26,7 @@ public class PaymentOptionService : IPaymentOptionService
 
   public PaymentOption GetFromDb() {
     var data = _unitOfWork.PaymentOptions.SingleOrDefault();
-    if (data is null) throw new NotFoundException(nameof(PaymentOption));
+    if (data is null) throw new NotFoundException("payment_option");
     return data;
   }
 

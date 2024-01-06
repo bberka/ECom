@@ -1,4 +1,4 @@
-﻿using ECom.Foundation.Enum;
+﻿using ECom.Foundation.Static;
 
 namespace ECom.Foundation.Entities;
 
@@ -12,7 +12,7 @@ public class AdminLog : IEntity
   public ResultLevel Level { get; set; }
 
 
-  [MaxLength(ConstantContainer.MaxErrorCodeLength)]
+  [MaxLength(StaticValues.MAX_ERROR_CODE_LENGTH)]
   public string ErrorCode { get; set; } = "None";
 
   public string? RequestData { get; set; }
