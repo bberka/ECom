@@ -9,8 +9,9 @@ public class AdminDto
   public string EmailAddress { get; set; }
   public TwoFactorType TwoFactorType { get; set; }
   public string RoleId { get; set; }
+
   public string[] Permissions { get; set; } = Array.Empty<string>();
-  public DateTime? DeleteDate { get; set; }
+  // public DateTime? DeleteDate { get; set; }
 
   public CultureType Culture { get; set; } = StaticValues.DEFAULT_LANGUAGE;
 

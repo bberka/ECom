@@ -16,6 +16,10 @@ public class Result : Result<object>
                   List<ResultMessage> errors,
                   Exception? exception = null) : base(status, level, errors, exception, new object()) { }
 
+  [Newtonsoft.Json.JsonIgnore]
+  [System.Text.Json.Serialization.JsonIgnore]
+  [IgnoreDataMember]
+  public override object Value => null;
 
   public static implicit operator bool(Result value) {
     return value.Status;
@@ -443,6 +447,8 @@ public class Result<T>
 {
   protected readonly List<ResultMessage> _errors;
 
+  private readonly Exception? _exceptionInfo;
+
   protected string _message = string.Empty;
 
   internal Result(bool status,
@@ -455,7 +461,9 @@ public class Result<T>
     Status = status;
     Level = level;
     _errors = errors;
-    ExceptionInfo = exception;
+    _exceptionInfo = exception;
+    if (value is not null)
+      Value = (T)value;
   }
 
   public string Message {
@@ -483,10 +491,12 @@ public class Result<T>
   [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
   public ResultLevel Level { get; }
 
-  public Exception? ExceptionInfo { get; }
-
   [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-  public T Value { get; } = default;
+  public virtual T Value { get; } = default;
+
+  public Exception? GetException() {
+    return _exceptionInfo;
+  }
 
   public T GetValue<T>() {
     if (Value is null)
@@ -502,7 +512,7 @@ public class Result<T>
   }
 
   public static implicit operator Result<T>(Result result) {
-    return new Result<T>(result.Status, result.Level, result._errors, result.ExceptionInfo, result.Value);
+    return new Result<T>(result.Status, result.Level, result._errors, result._exceptionInfo, result.Value);
   }
 
   public static implicit operator T(Result<T> result) {
@@ -516,7 +526,7 @@ public class Result<T>
 
 
   public Result ToResult() {
-    return new(Status, Level, _errors, ExceptionInfo);
+    return new(Status, Level, _errors, _exceptionInfo);
   }
 }
 
