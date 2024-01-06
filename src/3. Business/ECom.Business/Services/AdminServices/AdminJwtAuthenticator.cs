@@ -5,7 +5,8 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
   private readonly IUnitOfWork _unitOfWork;
   private readonly IUserAccountService _userAccountService;
 
-  public AdminJwtAuthenticator(IUnitOfWork unitOfWork, IUserAccountService userAccountService) {
+  public AdminJwtAuthenticator(IUnitOfWork unitOfWork,
+                               IUserAccountService userAccountService) {
     _unitOfWork = unitOfWork;
     _userAccountService = userAccountService;
   }

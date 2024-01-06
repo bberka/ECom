@@ -7,7 +7,8 @@ namespace ECom.Foundation;
 /// </summary>
 public static class DefResult
 {
-  public static Result Exception(Exception exception, string name) {
+  public static Result Exception(Exception exception,
+                                 string name) {
     return Result.Fatal(exception, new LocParam("name", name));
   }
 
@@ -31,7 +32,8 @@ public static class DefResult
     return Result.OkParam("ok_recovered", new LocParam("name", name));
   }
 
-  public static Result MaxCountReached(string name, int maxCountParam) {
+  public static Result MaxCountReached(string name,
+                                       int maxCountParam) {
     return Result.Error("max_count_reached", new LocParam("name", name), new LocParam("count", maxCountParam));
   }
 
@@ -43,13 +45,15 @@ public static class DefResult
     return Result.Error("can_not_delete", new LocParam("name", name));
   }
 
-  public static Result CanNotDeleteBecauseOfDbRelation(string mainObjectName, string relationName) {
+  public static Result CanNotDeleteBecauseOfDbRelation(string mainObjectName,
+                                                       string relationName) {
     return Result.Error("can_not_delete_because_of_db_relation",
                         new LocParam("main_object_name", mainObjectName),
                         new LocParam("relation_name", relationName));
   }
 
-  public static Result MustBeSame(string mainPropertyName, string comparePropertyName) {
+  public static Result MustBeSame(string mainPropertyName,
+                                  string comparePropertyName) {
     return Result.Error("must_be_same",
                         new LocParam("main_property_name", mainPropertyName),
                         new LocParam("compare_property_name", comparePropertyName));
@@ -63,9 +67,14 @@ public static class DefResult
     return Result.OkParam("ok_added_or_updated", new LocParam("name", name));
   }
 
+  public static Result AlreadyLoggedIn() {
+    return Result.Warn("already_logged_in");
+  }
+
   #region OK
 
-  public static Result Success(string error, string name = "") {
+  public static Result Success(string error,
+                               string name = "") {
     return Result.OkParam(error, new LocParam("name", name));
   }
 
@@ -105,7 +114,8 @@ public static class DefResult
 
   #region WARNINGS
 
-  public static Result Validation(string name, string message) {
+  public static Result Validation(string name,
+                                  string message) {
     return Result.Validation(message, new LocParam("name", name));
   }
 

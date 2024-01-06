@@ -21,7 +21,6 @@ public static class ApiResolver
     builder.Services.AddMemoryCache();
     builder.Services.AddEndpointsApiExplorer();
 
-
     ConfigureSwagger(builder);
     ConfigureAuthentication(builder);
   }
@@ -47,31 +46,36 @@ public static class ApiResolver
 
   private static void ConfigureSwagger(WebApplicationBuilder builder) {
     builder.Services.AddSwaggerGen(x => {
-      x.SwaggerDoc(AdminServiceResolver.DocName, new OpenApiInfo {
-        Title = AdminServiceResolver.DocTitle,
-        Version = "v1"
-      });
+      x.SwaggerDoc(AdminServiceResolver.DocName,
+                   new OpenApiInfo {
+                     Title = AdminServiceResolver.DocTitle,
+                     Version = "v1"
+                   });
 
-      x.SwaggerDoc(PublicServiceResolver.DocName, new OpenApiInfo {
-        Title = PublicServiceResolver.DocTitle,
-        Version = "v1"
-      });
+      x.SwaggerDoc(PublicServiceResolver.DocName,
+                   new OpenApiInfo {
+                     Title = PublicServiceResolver.DocTitle,
+                     Version = "v1"
+                   });
 
-      x.SwaggerDoc(UserServiceResolver.DocName, new OpenApiInfo {
-        Title = UserServiceResolver.DocTitle,
-        Version = "v1"
-      });
+      x.SwaggerDoc(UserServiceResolver.DocName,
+                   new OpenApiInfo {
+                     Title = UserServiceResolver.DocTitle,
+                     Version = "v1"
+                   });
 
-      x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-        Description = @$"JWT Authorization header using the Bearer scheme. 
+      x.AddSecurityDefinition("Bearer",
+                              new OpenApiSecurityScheme {
+                                Description = @$"JWT Authorization header using the Bearer scheme. 
                         {Environment.NewLine}{Environment.NewLine}Enter 'Your token in the text input below.
                       {Environment.NewLine}{Environment.NewLine}Example: '12345abcdef'",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer"
-      });
-      x.DocInclusionPredicate((groupName, apiDescription) => {
+                                Name = "Authorization",
+                                In = ParameterLocation.Header,
+                                Type = SecuritySchemeType.Http,
+                                Scheme = "Bearer"
+                              });
+      x.DocInclusionPredicate((groupName,
+                               apiDescription) => {
         if (apiDescription.GroupName == null || apiDescription.GroupName == groupName) return true;
         return false;
       });
@@ -99,20 +103,21 @@ public static class ApiResolver
              op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
              op.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
            })
-           .AddJwtBearer("Bearer", token => {
-             if (ConstantContainer.IsDevelopment())
-               token.RequireHttpsMetadata = false;
-             token.SaveToken = true;
-             token.TokenValidationParameters = new TokenValidationParameters {
-               ValidateIssuerSigningKey = true,
-               IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(EComAppSettings.This.JwtSecret)),
-               ValidateIssuer = EComAppSettings.This.JwtValidateIssuer,
-               ValidateAudience = EComAppSettings.This.JwtValidateAudience,
-               RequireExpirationTime = true,
-               ValidateLifetime = true,
-               ClockSkew = TimeSpan.Zero
-             };
-           });
+           .AddJwtBearer("Bearer",
+                         token => {
+                           if (ConstantContainer.IsDevelopment())
+                             token.RequireHttpsMetadata = false;
+                           token.SaveToken = true;
+                           token.TokenValidationParameters = new TokenValidationParameters {
+                             ValidateIssuerSigningKey = true,
+                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(EComAppSettings.This.JwtSecret)),
+                             ValidateIssuer = EComAppSettings.This.JwtValidateIssuer,
+                             ValidateAudience = EComAppSettings.This.JwtValidateAudience,
+                             RequireExpirationTime = true,
+                             ValidateLifetime = true,
+                             ClockSkew = TimeSpan.Zero
+                           };
+                         });
 
     // services.AddAuthentication(options => {
     //           options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

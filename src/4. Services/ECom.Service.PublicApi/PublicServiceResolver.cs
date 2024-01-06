@@ -20,6 +20,7 @@ public static class PublicServiceResolver
     builder.Services.AddScoped<ISmtpOptionService, SmtpOptionService>();
     builder.Services.AddScoped<ICargoOptionService, CargoOptionService>();
     builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IContentService, ContentService>();
   }
 
   public static void SetupApplication(WebApplication app) { }

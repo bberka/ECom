@@ -1,5 +1,6 @@
 ﻿namespace ECom.Service.UserApi.Controllers;
 
+[AuthorizeUserOnly]
 public class AddressController : UserControllerBase
 {
   [FromServices]

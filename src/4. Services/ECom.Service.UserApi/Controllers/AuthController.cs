@@ -2,6 +2,8 @@
 
 namespace ECom.Service.UserApi.Controllers;
 
+[NotAuthorizedOnly]
+[AllowAnonymous]
 public class AuthController : UserControllerBase
 {
   [FromServices]
