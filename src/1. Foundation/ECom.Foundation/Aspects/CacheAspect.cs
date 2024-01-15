@@ -1,5 +1,10 @@
-﻿using AspectInjector.Broker;
+﻿using System.Reflection;
+using AspectInjector.Broker;
 using EasMe;
+using ECom.Foundation.Static;
+using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ECom.Foundation.Aspects;
 
@@ -13,8 +18,9 @@ namespace ECom.Foundation.Aspects;
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public class CacheAspect : Attribute
 {
-  public int DurationSeconds { get; set; } = 1;
-  public bool VaryByArguments { get; set; } = true;
+  [FromServices]
+  public IMemoryCache MemoryCache { get; set; }
+
 
   [Advice(Kind.Around)]
   public object Intercept(
@@ -23,19 +29,18 @@ public class CacheAspect : Attribute
     [Argument(Source.Name)] string methodName,
     [Argument(Source.Type)] Type type,
     [Argument(Source.ReturnType)] Type returnType) {
-    var cacheKey = BuildCacheKey(type, methodName, args, VaryByArguments);
+    var cacheKey = BuildCacheKey(type, methodName, args);
     var cacheResult = EasMemoryCache.This.Get(cacheKey);
     if (cacheResult is not null) return cacheResult;
     var result = target(args);
-    EasMemoryCache.This.Set(cacheKey, result, DurationSeconds);
+    EasMemoryCache.This.Set(cacheKey, result, 1);
     return result;
   }
 
-  private static string BuildCacheKey(Type classType, string methodName, object[] args, bool varyByArguments) {
+  private static string BuildCacheKey(Type classType, string methodName, object[] args) {
     var nameSpace = classType.Namespace;
     var classTypeName = classType.Name;
     var cacheKey = $"{nameSpace}.{classTypeName}.{methodName}";
-    if (!varyByArguments) return cacheKey;
     if (args.Length == 0) return cacheKey;
     var array = args.Select(x => x.GetHashCode()).ToList();
     var joined = string.Join(", ", array);

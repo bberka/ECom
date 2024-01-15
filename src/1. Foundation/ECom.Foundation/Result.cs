@@ -451,6 +451,7 @@ public class Result<T>
 
   protected string _message = string.Empty;
 
+
   internal Result(bool status,
                   ResultLevel level,
                   List<ResultMessage> errors,
@@ -532,6 +533,7 @@ public class Result<T>
 
 public readonly struct ResultMessage
 {
+  //TODO CONVERT THIS TO DICT STRING LIST OBJECT
   public string Key { get; }
   public object[] Parameters { get; } = null;
 

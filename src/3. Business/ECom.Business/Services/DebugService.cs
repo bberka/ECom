@@ -12,7 +12,7 @@ public class DebugService : IDebugService
   }
 
   public void CheckAndThrowDebug() {
-    if (!StaticValues.IsDevelopment) throw new Exception("Only available when debugging");
+    if (!StaticValues.IS_DEVELOPMENT) throw new Exception("Only available when debugging");
   }
 
   public User GetUser() {

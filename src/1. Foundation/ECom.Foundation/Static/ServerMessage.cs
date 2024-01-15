@@ -55,5 +55,6 @@ public enum ServerMessage
   x_is_cleared_successfully,
   x_already_expired,
   x_is_expired,
-  max_count_reached
+  max_count_reached,
+  x_must_be_unique_in_y
 }

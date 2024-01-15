@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection;
+using ECom.Foundation.Aspects;
 
 namespace ECom.Foundation.Static;
 
@@ -86,16 +87,19 @@ public static class StaticValues
   public const int MAX_ATTRIBUTE_VALUE_LENGTH = 500;
   public const int MAX_ANNOUNCEMENT_COUNT = 4;
 
-  public const bool SINGLETON_DB_TABLE_KEY = true;
+  // public const bool SINGLETON_DB_TABLE_KEY = true;
   public const int MAX_EMAIL_CONTENT_LENGTH = int.MaxValue;
   public const int MAX_EMAIL_TITLE_LENGTH = 64;
   public const int MAX_ANNOUNCEMENT_MESSAGE_LENGTH = 128;
   public const int MIN_ANNOUNCEMENT_MESSAGE_LENGTH = 6;
 
   public const int ANNOUNCEMENT_DEFAULT_EXPIRE_MINUTES = 24 * 60;
+
+  public const string OWNER_ROLE_ID = "owner";
+
+  public const string DEFAULT_CULTURE_NAME = "en-US";
   public static readonly CultureInfo DEFAULT_CULTURE = new(DEFAULT_CULTURE_NAME);
-  public static readonly string DEFAULT_CULTURE_NAME = "en-US";
-  public static readonly DateTime DEFAULT_DATE_TIME = new(1900, 1, 1);
+  public static readonly DateTime DEFAULT_DATE_TIME = new(1970, 1, 1);
 
   public static readonly List<AdminPermissionType> ADMIN_PERMISSION_TYPES = System.Enum.GetValues<AdminPermissionType>().ToList();
   public static readonly List<CurrencyType> CURRENCY_TYPES = System.Enum.GetValues<CurrencyType>().ToList();
@@ -107,18 +111,43 @@ public static class StaticValues
   public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ??
                                           throw new ArgumentNullException(nameof(AssemblyName.Version));
 
-  public static bool IsDevelopment {
-    get {
-      #if DEBUG || RELEASE_TEST
-      return true;
-      #endif
-      return false;
-    }
-  }
-
+  #if DEBUG || RELEASE_TEST
+  public const bool IS_DEVELOPMENT = true;
+  public const int DEFAULT_CACHE_SECONDS = 1;
+  #else
+    public const bool IS_DEVELOPMENT = false;
+  #endif
   public static bool IsCultureValid(string cultureName) {
     if (string.IsNullOrEmpty(cultureName)) return false;
     if (!LANGUAGE_NAMES.Contains(cultureName)) return false;
     return true;
+  }
+
+  [CacheAspect]
+  public static Dictionary<string, object> GetAllForJson() {
+    var dictionary = new Dictionary<string, object>();
+    var type = typeof(StaticValues);
+    var constantsAndFields = type
+                             .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                             .Select(x => {
+                               var name = x.Name;
+                               var value = x.GetValue(null);
+                               return new KeyValuePair<string, object>(name, value);
+                             });
+
+
+    var staticProperties = type
+                           .GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                           .Select(x => {
+                             var name = x.Name;
+                             var value = x.GetValue(null);
+                             return new KeyValuePair<string, object>(name, value);
+                           });
+    var union = constantsAndFields.Union(staticProperties);
+    foreach (var (key, value) in union) {
+      dictionary.Add(key, value);
+    }
+
+    return dictionary;
   }
 }

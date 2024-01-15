@@ -5,8 +5,6 @@ namespace ECom.Foundation.Entities;
 [Table("Roles", Schema = "ECOperation")]
 public sealed class Role : IEntity
 {
-  public const string OWNER_ROLE_ID = "owner";
-
   [Key]
   [MinLength(StaticValues.MIN_NAME_LENGTH)]
   [MaxLength(StaticValues.MAX_NAME_LENGTH)]

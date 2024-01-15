@@ -3,5 +3,5 @@
 public class AnnouncementDto
 {
   public int Order { get; set; }
-  public AnnouncementDto Content { get; set; }
+  public ContentDto Content { get; set; }
 }

@@ -10,6 +10,8 @@ using ECom.Service.UserApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace ECom.Api;
@@ -107,7 +109,7 @@ public static class ApiResolver
            })
            .AddJwtBearer("Bearer",
                          token => {
-                           if (StaticValues.IsDevelopment)
+                           if (StaticValues.IS_DEVELOPMENT)
                              token.RequireHttpsMetadata = false;
                            token.SaveToken = true;
                            token.TokenValidationParameters = new TokenValidationParameters {
@@ -135,6 +137,10 @@ public static class ApiResolver
   public static WebApplicationBuilder ConfigureApplicationControllers(this WebApplicationBuilder builder) {
     builder.Services
            .AddControllers(x => { x.Filters.Add(new ExceptionHandleFilter()); })
+           .AddNewtonsoftJson(x => {
+             x.SerializerSettings.Converters.Add(new StringEnumConverter());
+             x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+           })
            .AddApplicationPart(typeof(AdminServiceResolver).Assembly)
            .AddApplicationPart(typeof(UserServiceResolver).Assembly)
            .AddApplicationPart(typeof(PublicServiceResolver).Assembly)

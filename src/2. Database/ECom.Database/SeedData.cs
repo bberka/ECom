@@ -24,7 +24,7 @@ internal static class SeedData
     new Admin {
       EmailAddress = "owner@mail.com",
       Password = "6759BF4BD24209B74B0B6374921F45D3317CFBA9B1F72374563F8E25B49108DC", //123456789
-      RoleId = Role.OWNER_ROLE_ID,
+      RoleId = StaticValues.OWNER_ROLE_ID,
       TwoFactorType = TwoFactorType.None,
       Id = new Guid("5993a4f6-ff07-4635-97a4-a7c94c8b22ff"),
       DeleteDate = null,
@@ -38,7 +38,7 @@ internal static class SeedData
   };
 
   internal static readonly CompanyInformation CompanyInformation = new() {
-    Key = StaticValues.SINGLETON_DB_TABLE_KEY,
+    Key = true,
     CompanyAddress = "Worldwide",
     CompanyName = "ZDK Network",
     ContactEmail = "contact@zdk.network",
@@ -49,13 +49,13 @@ internal static class SeedData
   internal static readonly Option Option = new();
 
   internal static readonly Role OwnerRole = new() {
-    Id = Role.OWNER_ROLE_ID
+    Id = StaticValues.OWNER_ROLE_ID
   };
 
   internal static readonly List<PermissionRole> OwnerPermissionRoles = StaticValues.ADMIN_PERMISSION_TYPES
                                                                                    .Select(x => new PermissionRole {
                                                                                      PermissionType = x,
-                                                                                     RoleId = Role.OWNER_ROLE_ID
+                                                                                     RoleId = StaticValues.OWNER_ROLE_ID
                                                                                    })
                                                                                    .ToList();
 

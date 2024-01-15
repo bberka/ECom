@@ -35,7 +35,7 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     //Checks equals because can not update an expired announcement without setting expire date to future
     if (maxCount >= StaticValues.MAX_ANNOUNCEMENT_COUNT)
       return DomResults.max_count_reached(StaticValues.MAX_ANNOUNCEMENT_COUNT);
-    var contentAsDictionary = data.Contents.ToDictionary(x => x.CultureType, x => x.Message);
+    var contentAsDictionary = data.Contents.ToDictionary(x => x.CultureType, x => x.Text);
     var contentId = Guid.NewGuid();
     var contentResult = _contentService.AddOrUpdateContents(contentId, contentAsDictionary);
     if (!contentResult.Status) return contentResult;
@@ -73,30 +73,31 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     data.EnsureNotNull();
     data.ExpireDate.EnsureNotNull();
     data.Order.EnsureNotNull();
-    data.Contents.EnsureOneElementAndNotNull();
+    // data.Content.EnsureOneElementAndNotNull();
     //TODO: This check necessary ? 
     // var existsSameMessage = _unitOfWork.Announcements.Any(x => x.ContentId == data.Key);
     // if (existsSameMessage) return DomResults.x_already_exists(nameof(Announcement));
     var totalAnnouncementCount = _unitOfWork.Announcements.Count(x => x.ExpireDate > DateTime.Now);
     if (totalAnnouncementCount > StaticValues.MAX_ANNOUNCEMENT_COUNT)
       return DomResults.max_count_reached(StaticValues.MAX_ANNOUNCEMENT_COUNT);
-    var contentAsDictionary = data.Contents.ToDictionary(x => x.CultureType, x => x.Message);
-    var contentId = Guid.NewGuid();
-    var contentResult = _contentService.AddOrUpdateContents(contentId, contentAsDictionary);
-    if (!contentResult.Status) return contentResult;
-    var announcement = new Announcement {
-      Id = Guid.NewGuid(),
-      ContentId = contentId,
-      ExpireDate = data.ExpireDate,
-      Order = data.Order,
-      RegisterDate = DateTime.Now,
-    };
-    _unitOfWork.Announcements.Add(announcement);
-    var res = _unitOfWork.Save();
-    if (!res)
-      return DomResults.db_internal_error(nameof(AddAnnouncement));
-
-    return DomResults.x_is_added_successfully("announcement");
+    throw new NotImplementedException();
+    // var contentAsDictionary = data.Content.ToDictionary(x => x.CultureType, x => x.Message);
+    // var contentId = Guid.NewGuid();
+    // var contentResult = _contentService.AddOrUpdateContents(contentId, contentAsDictionary);
+    // if (!contentResult.Status) return contentResult;
+    // var announcement = new Announcement {
+    //   Id = Guid.NewGuid(),
+    //   ContentId = contentId,
+    //   ExpireDate = data.ExpireDate,
+    //   Order = data.Order,
+    //   RegisterDate = DateTime.Now,
+    // };
+    // _unitOfWork.Announcements.Add(announcement);
+    // var res = _unitOfWork.Save();
+    // if (!res)
+    //   return DomResults.db_internal_error(nameof(AddAnnouncement));
+    //
+    // return DomResults.x_is_added_successfully("announcement");
   }
 
 
