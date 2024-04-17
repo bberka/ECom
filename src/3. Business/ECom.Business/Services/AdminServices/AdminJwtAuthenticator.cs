@@ -1,4 +1,6 @@
-﻿using ECom.Foundation.Static;
+﻿using ECom.Database;
+using ECom.Database.Specifications;
+using ECom.Foundation.Static;
 
 namespace ECom.Business.Services.AdminServices;
 
@@ -14,15 +16,13 @@ public class AdminJwtAuthenticator : IAdminJwtAuthenticator
   }
 
   public Result<Response_Admin_Login> Authenticate(Request_Login model) {
-    var admin = _unitOfWork.Admins.AsNoTracking()
-                           .Include(x => x.Role)
-                           .ThenInclude(x => x.PermissionRoles)
-                           .Where(x => x.EmailAddress == model.EmailAddress)
+    var admin = _unitOfWork.Admins
+                           .GetQuery(new GetAdminByEmailSpec(model.EmailAddress))
+                           .AsNoTracking()
                            .SingleOrDefault();
     if (admin is null) return DomResults.x_is_not_found("account");
     if (admin.DeleteDate.HasValue)
       return DomResults.x_is_not_found("account");
-    // return DomResults.x_is_invalid("user");
 
     var encryptedPassword = model.Password.ToHashedText();
     if (!admin.Password.Equals(encryptedPassword, StringComparison.Ordinal))

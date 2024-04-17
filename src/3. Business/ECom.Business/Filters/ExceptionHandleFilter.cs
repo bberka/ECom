@@ -16,7 +16,7 @@ public class ExceptionHandleFilter : IExceptionFilter
     else {
       context.Result = new ObjectResult(DomResults.exception(context.Exception, "ExceptionFilter"));
       context.HttpContext.Response.StatusCode = 500;
-      Log.Fatal(context.Exception, $"Query({query})");
+      Log.Fatal(context.Exception, $"Specifications({query})");
     }
   }
 }

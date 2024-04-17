@@ -1,4 +1,6 @@
-﻿using ECom.Foundation.Static;
+﻿using ECom.Database;
+using ECom.Database.Specifications;
+using ECom.Foundation.Static;
 
 namespace ECom.Business.Services.AdminServices;
 
@@ -24,14 +26,17 @@ public class AdminAnnouncementService : IAdminAnnouncementService
     data.Id.EnsureNotNull();
     data.Order.EnsureNotNull();
     data.Contents.EnsureOneElementAndNotNull();
-    var dbData = _unitOfWork.Announcements.Find(data.Id);
+    var dbData = _unitOfWork.Announcements
+                            .GetQuery(new GetAnnouncementsByIdSpec(data.Id))
+                            .First();
     if (dbData is null)
       return DomResults.x_is_not_found("announcement");
     var isAlreadyExpired = dbData.ExpireDate < DateTime.Now;
     var isSetExpired = data.ExpireDate < DateTime.Now;
     if (isSetExpired && !isAlreadyExpired)
       return DomResults.x_already_expired("announcement");
-    var maxCount = _unitOfWork.Announcements.Count(x => x.ExpireDate > DateTime.Now);
+    var maxCount = _unitOfWork.Announcements
+                              .Count(x => x.ExpireDate > DateTime.Now);
     //Checks equals because can not update an expired announcement without setting expire date to future
     if (maxCount >= StaticValues.MAX_ANNOUNCEMENT_COUNT)
       return DomResults.max_count_reached(StaticValues.MAX_ANNOUNCEMENT_COUNT);
@@ -53,7 +58,9 @@ public class AdminAnnouncementService : IAdminAnnouncementService
   public Result UpdateAnnouncementsOrder(List<NestableListElementDto> activeAnnouncements) {
     activeAnnouncements.EnsureNotNull();
     var idList = activeAnnouncements.Select(x => Guid.Parse(x.Id)).ToArray();
-    var dbAnnouncements = _unitOfWork.Announcements.Where(x => idList.Contains(x.Id)).ToList();
+    var dbAnnouncements = _unitOfWork.Announcements
+                                     .GetQuery(new GetAnnouncementsByIdListSpec(idList))
+                                     .ToList();
     for (var i = 0; i < activeAnnouncements.Count; i++) {
       var item = activeAnnouncements[i];
       var dbData = dbAnnouncements.FirstOrDefault(x => x.Id == Guid.Parse(item.Id));
@@ -102,7 +109,9 @@ public class AdminAnnouncementService : IAdminAnnouncementService
 
 
   public Result DeleteAnnouncement(Guid id) {
-    var data = _unitOfWork.Announcements.Find(id);
+    var data = _unitOfWork.Announcements
+                          .GetQuery(new GetAnnouncementsByIdSpec(id))
+                          .First();
     if (data is null)
       return DomResults.x_is_not_found("announcement");
     _unitOfWork.Announcements.Remove(data);

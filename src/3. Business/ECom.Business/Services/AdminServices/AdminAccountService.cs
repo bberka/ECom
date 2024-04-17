@@ -1,4 +1,6 @@
-﻿using ECom.Foundation.Static;
+﻿using ECom.Database;
+using ECom.Database.Specifications;
+using ECom.Foundation.Static;
 
 namespace ECom.Business.Services.AdminServices;
 
@@ -26,7 +28,9 @@ public class AdminAccountService : IAdminAccountService
   public Result ChangePassword(Guid adminId,
                                Request_Password_Change model) {
     //TODO: Validation with DB Options ?
-    var admin = _unitOfWork.Admins.Single(x => x.Id == adminId && !x.IsDeleted);
+    var admin = _unitOfWork.Admins
+                           .GetQuery(new GetAdminByIdSpec(adminId))
+                           .Single();
     var isMatch = model.NewPassword.Equals(model.RepeatNewPassword, StringComparison.OrdinalIgnoreCase);
     if (!isMatch)
       return DomResults.x_must_be_same_with_y("new_password", "repeat_new_password");
@@ -53,39 +57,12 @@ public class AdminAccountService : IAdminAccountService
 
   public AdminDto GetAccountInformation(Guid authId) {
     var adminDto = _unitOfWork.Admins
+                              .GetQuery(new GetAdminByIdSpec(authId))
                               .AsNoTracking()
-                              .Include(x => x.Role)
-                              .ThenInclude(x => x.PermissionRoles)
-                              .Where(x => x.Id == authId)
                               .Select(x => x.ToDto())
                               .SingleOrDefault();
     return adminDto;
   }
-
-
-  // public Result<AdminDto> Login(Request_Login model) {
-  //   var admin = _unitOfWork.Admins
-  //                          .AsNoTracking()
-  //                          .Include(x => x.Role)
-  //                          .ThenInclude(x => x.PermissionRoles)
-  //                          .Where(x => x.EmailAddress == model.EmailAddress)
-  //                          .Select(x => new {
-  //                            Dto = x.ToDto(),
-  //                             x.Password,
-  //                          })
-  //                          .FirstOrDefault();
-  //   if (admin is null) return DomResults.NoAccountFound("admin");
-  //   if (admin.Dto.DeleteDate.HasValue) return DomResults.x_is_invalid("admin");
-  //   var encryptedPassword = model.Password.ToHashedText();
-  //   if (!admin.Password.Equals(encryptedPassword, StringComparison.OrdinalIgnoreCase))
-  //     return DomResults.NoAccountFound("admin");
-  //   if (admin.Dto.Permissions.Length == 0) return DomResults.None("permission");
-  //   if (admin.Dto.TwoFactorType != 0) {
-  //     //TODO: two factor authentication
-  //   }
-  //
-  //   return admin.Dto;
-  // }
 
   public Result<string> ResetPassword(Guid userId,
                                       Request_Password_ResetByToken token) {

@@ -1,4 +1,7 @@
-﻿namespace ECom.Business.Services.AdminServices;
+﻿using ECom.Database;
+using ECom.Database.Specifications;
+
+namespace ECom.Business.Services.AdminServices;
 
 public class AdminCargoOptionService : IAdminCargoOptionService
 {
@@ -11,7 +14,9 @@ public class AdminCargoOptionService : IAdminCargoOptionService
   }
 
   public Result DeleteCargoOption(Guid id) {
-    var data = _unitOfWork.CargoOptions.Find(id);
+    var data = _unitOfWork.CargoOptions
+                          .GetQuery(new GetCargoOptionByIdSpec(id))
+                          .First();
     if (data is null)
       return DomResults.x_is_not_found("cargo_option");
     data.DeleteDate = DateTime.Now;
