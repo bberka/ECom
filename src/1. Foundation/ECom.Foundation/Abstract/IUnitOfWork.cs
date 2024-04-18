@@ -1,8 +1,9 @@
 ﻿using ECom.Foundation.Entities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ECom.Foundation.Abstract;
 
-public interface IUnitOfWork : IUnitOfWorkBase
+public interface IUnitOfWork : IDisposable
 {
   DbSet<Address> Addresses { get; }
   DbSet<Admin> Admins { get; }
@@ -42,4 +43,11 @@ public interface IUnitOfWork : IUnitOfWorkBase
   DbSet<AdminSession> AdminSessions { get; }
   DbSet<UserSession> UserSessions { get; }
   DbSet<EmailQueue> EmailQueue { get; }
+  bool Save();
+  Task<bool> SaveAsync();
+  int SaveChanges();
+  Task<int> SaveChangesAsync();
+  void Dispose();
+  IDbContextTransaction BeginTransaction();
+  Task<IDbContextTransaction> BeginTransactionAsync();
 }
